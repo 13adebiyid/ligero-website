@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ligero</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav>
+  <a href="#" class="logo" onclick="showPage('home')">LIGERO</a>
+  <div class="nav-menu">
+    <a href="#" class="nav-item" onclick="showPage('shop')">Shop</a>
+    <span class="nav-separator">|</span>
+    <a href="#" class="nav-item" onclick="showPage('services')">Services</a>
+    <span class="nav-separator">|</span>
+    <a href="#" class="nav-item" onclick="showPage('policies')">Policies</a>
+  </div>
+</nav>
+
+<!-- Home Page -->
+<div class="home-page" id="home-page">
+  <!-- Replace with your actual video -->
+  <video class="background-video" autoplay muted loop>
+    <source src="test_video.mp4" type="video/mp4">
+    <!-- Placeholder for now -->
+  </video>
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.5); padding: 200px; text-align: center;">
+    <p style="margin-bottom: 30px; font-size: 1.2rem;">VIDEO PLACEHOLDER</p>
+    <button class="choose-button" onclick="showPage('shop')">CHOOSE</button>
+  </div>
+</div>
+
+<!-- Shop Page -->
+<div class="shop-page" id="shop-page">
+  <div class="theme-switcher">
+    <div class="theme-circle black" onclick="setTheme('black')"></div>
+    <div class="theme-circle white" onclick="setTheme('white')"></div>
+  </div>
+
+  <div class="product-container">
+    <div class="product-image">
+      PRODUCT IMAGE
+    </div>
+    <div class="product-info">
+      <h1 class="product-title">Premium T-Shirt</h1>
+      <p class="product-price">$89</p>
+      <p class="product-description">
+        Crafted from the finest organic cotton, this minimalist piece embodies our commitment to sustainable luxury. Clean lines meet exceptional comfort in this timeless design that transcends seasons.
+      </p>
+      <button class="buy-button">BUY</button>
+      <button class="info-button">INFO</button>
+    </div>
+  </div>
+</div>
+
+<!-- Services Page -->
+<div class="services-page" id="services-page">
+  <div class="theme-switcher">
+    <div class="theme-circle black" onclick="setTheme('black')"></div>
+    <div class="theme-circle white" onclick="setTheme('white')"></div>
+  </div>
+  <h1 class="services-title">OUR CAPABILITIES</h1>
+  <div class="carousel-container">
+    <button class="carousel-arrow left" onclick="slideCarousel(-1)">‹</button>
+    <div class="carousel" id="carousel">
+      <div class="service-card">STYLING</div>
+      <div class="service-card">CREATIVE DIRECTING</div>
+      <div class="service-card">SHOOTS</div>
+      <div class="service-card">SET DESIGNING</div>
+      <div class="service-card">MODELS</div>
+      <div class="service-card">MUSIC</div>
+    </div>
+    <button class="carousel-arrow right" onclick="slideCarousel(1)">›</button>
+  </div>
+</div>
+
+<!-- Policies Page -->
+<div class="policies-page" id="policies-page">
+  <div class="theme-switcher">
+    <div class="theme-circle black" onclick="setTheme('black')"></div>
+    <div class="theme-circle white" onclick="setTheme('white')"></div>
+  </div>
+  <div class="policies-content">
+    <h1 class="policies-title">OUR POLICY</h1>
+
+    <div class="policy-section">
+      <h3>Privacy Policy</h3>
+      <p>We collect and process your personal information in accordance with applicable data protection laws. Your privacy is important to us, and we are committed to protecting your personal information.</p>
+      <p>Information we collect includes contact details, payment information, and browsing data to enhance your shopping experience.</p>
+    </div>
+
+    <div class="policy-section">
+      <h3>Shipping Policy</h3>
+      <p>All orders are processed within 1-2 business days. Shipping times vary based on location and selected shipping method.</p>
+      <p>Free shipping is available on orders over $150. Express shipping options are available at checkout.</p>
+    </div>
+
+    <div class="policy-section">
+      <h3>Return Policy</h3>
+      <p>We accept returns within 30 days of purchase. Items must be in original condition with tags attached.</p>
+      <p>Refunds will be processed to the original payment method within 5-10 business days after we receive your return.</p>
+    </div>
+
+    <div class="policy-section">
+      <h3>Terms of Service</h3>
+      <p>By using our website and purchasing our products, you agree to comply with our terms and conditions.</p>
+      <p>All content on this website is protected by copyright and intellectual property laws.</p>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

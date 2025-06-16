@@ -1,0 +1,413 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Suissnord';
+    src: url('fonts/suissnord.regular.woff') format('woff');
+}
+
+
+body {
+    font-family: "San Francisco";
+    background: black;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    font-family: Suissnord;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0 20px;
+    transition: opacity 0.3s;
+}
+
+.nav-item:hover {
+    opacity: 0.7;
+}
+
+.nav-separator {
+    color: white;
+    font-size: 1rem;
+}
+
+/* Home Page */
+.home-page {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.choose-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 2px;
+}
+
+.choose-button:hover {
+    background: white;
+    color: black;
+}
+
+/* Shop Page */
+.shop-page {
+    min-height: 100vh;
+    display: none;
+    padding: 100px 50px 50px;
+    position: relative;
+}
+
+.theme-switcher {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.theme-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #666;
+    transition: all 0.3s;
+}
+
+.theme-circle.white {
+    background: white;
+}
+
+.theme-circle.black {
+    background: black;
+}
+
+.theme-circle:hover {
+    transform: scale(1.1);
+}
+
+.product-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    gap: 100px;
+}
+
+.product-image {
+    width: 400px;
+    height: 500px;
+    background: #333;
+    margin-left: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1.2rem;
+}
+
+.product-info {
+    max-width: 400px;
+}
+
+.product-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.product-price {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+.product-description {
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.buy-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+    margin-right: 20px;
+}
+
+.buy-button:hover {
+    background: white;
+    color: black;
+}
+
+.info-button {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+.info-button:hover {
+    opacity: 0.7;
+}
+
+/* Services Page */
+.services-page {
+    min-height: 100vh;
+    display: none;
+    padding: 80px 50px 50px;
+    position: relative;
+}
+
+.services-page.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.services-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 60px;
+    font-weight: 300;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    gap: 40px;
+    overflow: visible;
+    padding: 0 10px; /* Add padding to keep cards away from edges */
+    height: 100%;
+    align-items: center;
+    width: calc(100% - 240px); /* Account for padding */
+    position: relative;
+    margin: 0 auto;
+}
+
+.service-card {
+    min-width: 800px;
+    height: 750px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+}
+
+.service-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-10px);
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.carousel-arrow:hover {
+    background: white;
+    color: black;
+}
+
+.carousel-arrow.left {
+    left: 1%;
+}
+
+.carousel-arrow.right {
+    right: 5%;
+}
+
+/* Policies Page */
+.policies-page {
+    min-height: 100vh;
+    display: none;
+    padding: 100px 50px 50px;
+}
+
+.policies-content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.policies-title {
+    font-size: 3rem;
+    margin-bottom: 50px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.policy-section {
+    margin-bottom: 40px;
+}
+
+.policy-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.policy-section p {
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+/* White theme */
+body.white-theme {
+    background: white;
+    color: black;
+}
+
+body.white-theme .logo {
+    color: black;
+}
+
+body.white-theme .nav-item {
+    color: black;
+}
+
+body.white-theme .nav-separator {
+    color: black;
+}
+
+body.white-theme nav {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+body.white-theme .choose-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .choose-button:hover {
+    background: black;
+    color: white;
+}
+
+body.white-theme .buy-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .buy-button:hover {
+    background: black;
+    color: white;
+}
+
+body.white-theme .info-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .service-card {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+body.white-theme .service-card:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.white-theme .carousel-arrow {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .carousel-arrow:hover {
+    background: black;
+    color: white;
+}
+
+body.white-theme .product-image {
+    background: #f0f0f0;
+    color: #666;
+}
