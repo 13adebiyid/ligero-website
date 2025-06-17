@@ -10,7 +10,17 @@
 <body>
 <!-- Navigation -->
 <nav>
-  <a href="/Website/index.html" class="logo" onclick="showPage('home')">LIGERO</a>
+  <!-- Hamburger Menu for Mobile -->
+  <div class="hamburger-menu">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
+
+  <!-- Logo (centered on mobile) -->
+  <a href="/Website/index.html" class="logo">LIGERO</a>
+
+  <!-- Desktop Navigation Menu -->
   <div class="nav-menu">
     <a href="/Website/shop/index.html" class="nav-item">Shop</a>
     <span class="nav-separator">|</span>
@@ -20,14 +30,20 @@
   </div>
 </nav>
 
+<!-- Mobile menu overlay - ADD THIS RIGHT AFTER </nav> -->
+<div class="mobile-menu-overlay">
+  <a href="/Website/index.html" class="mobile-menu-item">HOME</a>
+  <a href="/Website/shop/index.html" class="mobile-menu-item">SHOP</a>
+  <a href="/Website/services/index.html" class="mobile-menu-item">SERVICES</a>
+  <a href="/Website/policies/index.html" class="mobile-menu-item">POLICIES</a>
+</div>
 <!-- Home Page -->
 <div class="home-page" id="home-page">
   <video class="background-video" autoplay muted loop>
     <source src="videos/test_video.mp4" type="video/mp4">
   </video>
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.5); padding: 200px; text-align: center;">
-    <p style="margin-bottom: 30px; font-size: 1.2rem;">VIDEO PLACEHOLDER</p>
-    <button class="choose-button" onclick="showPage('shop')">CHOOSE</button>
+    <button class="choose-button">CHOOSE</button>
   </div>
 </div>
 

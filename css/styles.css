@@ -67,6 +67,71 @@ nav {
     font-size: 1rem;
 }
 
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    justify-content: space-between;
+    z-index: 1001;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 3px;
+    background: white;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 999;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.mobile-menu-overlay.active {
+    display: flex;
+}
+
+.mobile-menu-item {
+    color: white;
+    text-decoration: none;
+    font-size: 2rem;
+    font-family: 'Suissnord';
+    transition: opacity 0.3s;
+    text-align: center;
+}
+
+.mobile-menu-item:hover {
+    opacity: 0.7;
+}
+
 /* Home Page */
 .home-page {
     height: 100vh;
@@ -248,10 +313,10 @@ nav {
     display: flex;
     gap: 40px;
     overflow: visible;
-    padding: 0 10px; /* Add padding to keep cards away from edges */
+    padding: 0 10px;
     height: 100%;
     align-items: center;
-    width: calc(100% - 240px); /* Account for padding */
+    width: calc(100% - 240px);
     position: relative;
     margin: 0 auto;
 }
@@ -364,6 +429,18 @@ body.white-theme nav {
     background: rgba(255, 255, 255, 0.3);
 }
 
+body.white-theme .hamburger-line {
+    background: black;
+}
+
+body.white-theme .mobile-menu-overlay {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+body.white-theme .mobile-menu-item {
+    color: black;
+}
+
 body.white-theme .choose-button {
     border-color: black;
     color: black;
@@ -411,4 +488,414 @@ body.white-theme .carousel-arrow:hover {
 body.white-theme .product-image {
     background: #f0f0f0;
     color: #666;
+}
+
+body.white-theme .carousel-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.white-theme .carousel-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+body.white-theme .carousel-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* ================== RESPONSIVE DESIGN ================== */
+
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    nav {
+        padding: 15px 30px;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+    }
+
+    .nav-item {
+        font-size: 0.9rem;
+        padding: 0 15px;
+    }
+
+    .product-container {
+        gap: 60px;
+    }
+
+    .product-image {
+        width: 350px;
+        height: 450px;
+        margin-left: 50px;
+    }
+
+    .product-title {
+        font-size: 2.2rem;
+    }
+
+    .product-price {
+        font-size: 1.8rem;
+    }
+
+    .services-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .service-card {
+        min-width: 600px;
+        height: 500px;
+        font-size: 1.5rem;
+    }
+
+    .policies-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* Mobile Landscape (576px - 768px) */
+@media screen and (max-width: 768px) {
+    nav {
+        padding: 15px 20px;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    /* Home Page Mobile */
+    .home-page div {
+        padding: 100px 20px !important;
+    }
+
+    .choose-button {
+        padding: 12px 30px;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    /* Shop Page Mobile */
+    .shop-page {
+        padding: 120px 20px 50px;
+    }
+
+    .product-container {
+        flex-direction: column;
+        gap: 40px;
+        min-height: auto;
+        padding: 20px 0;
+    }
+
+    .product-image {
+        width: 100%;
+        max-width: 350px;
+        height: 400px;
+        margin-left: 0;
+    }
+
+    .product-info {
+        max-width: 100%;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .product-description {
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .buy-button, .info-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    /* Services Page Mobile - Vertical Scroll */
+    .services-page {
+        padding: 120px 20px 50px;
+    }
+
+    .services-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+    }
+
+    .carousel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 0;
+        width: 100%;
+        height: auto;
+        align-items: stretch;
+        position: static;
+        margin: 0;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .service-card {
+        min-width: auto;
+        width: 100%;
+        height: 200px;
+        font-size: 1.2rem;
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .carousel-arrow {
+        display: none;
+    }
+
+    /* Custom scrollbar for services */
+    .carousel-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .carousel-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Policies Page Mobile */
+    .policies-page {
+        padding: 120px 20px 50px;
+    }
+
+    .policies-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .policies-content {
+        max-width: 100%;
+        line-height: 1.6;
+    }
+
+    .policy-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .policy-section p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    /* Theme Switcher Mobile */
+    .theme-switcher {
+        bottom: 20px;
+        left: 20px;
+        gap: 10px;
+    }
+
+    .theme-circle {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+/* Small Mobile (up to 576px) */
+@media screen and (max-width: 576px) {
+    nav {
+        padding: 12px 15px;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .hamburger-menu {
+        width: 25px;
+        height: 20px;
+    }
+
+    .hamburger-line {
+        height: 2px;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.8rem;
+    }
+
+    /* Home Page Small Mobile */
+    .home-page div {
+        padding: 80px 15px !important;
+    }
+
+    .choose-button {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+
+    /* Shop Page Small Mobile */
+    .shop-page {
+        padding: 100px 15px 30px;
+    }
+
+    .product-image {
+        height: 300px;
+    }
+
+    .product-title {
+        font-size: 1.8rem;
+    }
+
+    .product-price {
+        font-size: 1.4rem;
+    }
+
+    .product-description {
+        font-size: 0.9rem;
+    }
+
+    .buy-button, .info-button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+        width: 100%;
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+
+    /* Services Page Small Mobile - Enhanced Vertical Scroll */
+    .services-page {
+        padding: 100px 15px 30px;
+    }
+
+    .services-title {
+        font-size: 1.8rem;
+    }
+
+    .carousel-container {
+        max-height: calc(100vh - 160px);
+        padding: 10px 0;
+    }
+
+    .carousel {
+        gap: 15px;
+    }
+
+    .service-card {
+        height: 180px;
+        font-size: 1rem;
+        padding: 20px;
+    }
+
+    /* Policies Page Small Mobile */
+    .policies-page {
+        padding: 100px 15px 30px;
+    }
+
+    .policies-title {
+        font-size: 1.8rem;
+    }
+
+    .policy-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .policy-section p {
+        font-size: 0.9rem;
+    }
+
+    /* Theme Switcher Small Mobile */
+    .theme-switcher {
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .theme-circle {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Large Mobile Portrait and Small Landscape adjustments */
+@media screen and (max-width: 480px) {
+    .service-card {
+        height: 160px;
+        font-size: 0.95rem;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.6rem;
+    }
+}
+
+/* Very Small Screens */
+@media screen and (max-width: 375px) {
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .hamburger-menu {
+        width: 22px;
+        height: 18px;
+    }
+
+    .product-title {
+        font-size: 1.6rem;
+    }
+
+    .services-title {
+        font-size: 1.6rem;
+    }
+
+    .policies-title {
+        font-size: 1.6rem;
+    }
+
+    .service-card {
+        height: 150px;
+        font-size: 0.9rem;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.4rem;
+    }
 }
