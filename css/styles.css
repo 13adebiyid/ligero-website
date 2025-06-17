@@ -335,11 +335,13 @@ nav {
     backdrop-filter: blur(10px);
     border-radius: 10px;
     text-decoration: none;
+    color: white;
 }
 
 .service-card:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-10px);
+    color: white;
 }
 
 .carousel-arrow {
