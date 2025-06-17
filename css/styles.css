@@ -682,6 +682,10 @@ body.white-theme .carousel-container::-webkit-scrollbar-thumb:hover {
         flex-shrink: 0;
     }
 
+    .service-card:visited {
+        color: white;
+    }
+
     .carousel-arrow {
         display: none;
     }
