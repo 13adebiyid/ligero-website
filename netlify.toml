@@ -1,22 +1,23 @@
 # Netlify configuration for multi-page setup
 
+# Clean URL redirects for pages
 [[redirects]]
 from = "/shop"
-to = "/Website/shop/index.html"
-status = 200
+to = "/shop/"
+status = 301
 
 [[redirects]]
 from = "/services"
-to = "/Website/services/index.html"
-status = 200
+to = "/services/"
+status = 301
 
 [[redirects]]
 from = "/policies"
-to = "/Website/policies/index.html"
-status = 200
+to = "/policies/"
+status = 301
 
-# Handle 404s by redirecting to home page
+# Only redirect actual 404 pages to home, not files
 [[redirects]]
-from = "/*"
+from = "/404"
 to = "/index.html"
 status = 404
