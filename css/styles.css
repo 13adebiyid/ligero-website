@@ -336,6 +336,7 @@ nav {
     border-radius: 10px;
     text-decoration: none;
     color: white;
+    border-color: red;
 }
 
 .service-card:hover {
@@ -343,6 +344,50 @@ nav {
     transform: translateY(-10px);
     color: white;
 }
+
+/* Force service card colors - override all browser defaults */
+.carousel .service-card,
+.carousel .service-card:link,
+.carousel .service-card:visited,
+.carousel .service-card:hover,
+.carousel .service-card:active,
+.carousel .service-card:focus {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* White theme override */
+body.white-theme .carousel .service-card,
+body.white-theme .carousel .service-card:link,
+body.white-theme .carousel .service-card:visited,
+body.white-theme .carousel .service-card:hover,
+body.white-theme .carousel .service-card:active,
+body.white-theme .carousel .service-card:focus {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+/* Mobile responsive service cards */
+@media screen and (max-width: 768px) {
+    .carousel .service-card,
+    .carousel .service-card:link,
+    .carousel .service-card:visited,
+    .carousel .service-card:hover,
+    .carousel .service-card:active,
+    .carousel .service-card:focus {
+        color: white !important;
+    }
+
+    body.white-theme .carousel .service-card,
+    body.white-theme .carousel .service-card:link,
+    body.white-theme .carousel .service-card:visited,
+    body.white-theme .carousel .service-card:hover,
+    body.white-theme .carousel .service-card:active,
+    body.white-theme .carousel .service-card:focus {
+        color: black !important;
+    }
+}
+
 
 .carousel-arrow {
     position: absolute;
@@ -472,10 +517,16 @@ body.white-theme .info-button {
 body.white-theme .service-card {
     background: rgba(0, 0, 0, 0.1);
     border-color: rgba(0, 0, 0, 0.2);
+    color: black;
 }
 
 body.white-theme .service-card:hover {
     background: rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+body.white-theme .service-card:visited {
+    color: black;
 }
 
 body.white-theme .carousel-arrow {

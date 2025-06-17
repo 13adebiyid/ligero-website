@@ -1,5 +1,4 @@
-[build]
-publish = "Website"
+# Netlify configuration - no publish directory needed
 
 # Clean URL redirects for pages
 [[redirects]]
