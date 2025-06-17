@@ -2,17 +2,17 @@
 
 [[redirects]]
 from = "/shop"
-to = "/shop/index.html"
+to = "/Website/shop/index.html"
 status = 200
 
 [[redirects]]
 from = "/services"
-to = "/services/index.html"
+to = "/Website/services/index.html"
 status = 200
 
 [[redirects]]
 from = "/policies"
-to = "/policies/index.html"
+to = "/Website/policies/index.html"
 status = 200
 
 # Handle 404s by redirecting to home page
