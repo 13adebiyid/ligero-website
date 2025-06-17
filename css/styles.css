@@ -6,12 +6,16 @@
 
 @font-face {
     font-family: 'Suissnord';
-    src: url('fonts/suissnord.regular.woff') format('woff');
+    src: url('../fonts/suissnord.regular.woff') format('woff');
 }
 
+@font-face {
+    font-family: 'Madani';
+    src: url('../fonts/MadaniDEMO-Thin.woff') format('woff');
+}
 
 body {
-    font-family: "San Francisco";
+    font-family: "Madani";
     background: black;
     color: white;
     overflow-x: hidden;
@@ -101,7 +105,6 @@ nav {
 /* Shop Page */
 .shop-page {
     min-height: 100vh;
-    display: none;
     padding: 100px 50px 50px;
     position: relative;
 }
@@ -213,7 +216,6 @@ nav {
 /* Services Page */
 .services-page {
     min-height: 100vh;
-    display: none;
     padding: 80px 50px 50px;
     position: relative;
 }
@@ -309,7 +311,6 @@ nav {
 /* Policies Page */
 .policies-page {
     min-height: 100vh;
-    display: none;
     padding: 100px 50px 50px;
 }
 

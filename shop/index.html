@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav>
+    <a href="/Website/index.html" class="logo" onclick="showPage('home')">LIGERO</a>
+    <div class="nav-menu">
+        <a href="/Website/shop/index.html" class="nav-item">Shop</a>
+        <span class="nav-separator">|</span>
+        <a href="/Website/services/index.html" class="nav-item">Services</a>
+        <span class="nav-separator">|</span>
+        <a href="/Website/policies/index.html" class="nav-item">Policies</a>
+    </div>
+</nav>
+
+<!-- Shop Page -->
+<div class="shop-page">
+    <div class="theme-switcher">
+        <div class="theme-circle black" onclick="setTheme('black')"></div>
+        <div class="theme-circle white" onclick="setTheme('white')"></div>
+    </div>
+
+    <div class="product-container">
+        <div class="product-image">
+            PRODUCT IMAGE
+        </div>
+        <div class="product-info">
+            <h1 class="product-title">Premium T-Shirt</h1>
+            <p class="product-price">$89</p>
+            <p class="product-description">
+                Crafted from the finest organic cotton, this minimalist piece embodies our commitment to sustainable luxury. Clean lines meet exceptional comfort in this timeless design that transcends seasons.
+            </p>
+            <button class="buy-button">BUY</button>
+            <button class="info-button">INFO</button>
+        </div>
+    </div>
+</div>
+
+<script src="/Website/js/script.js"></script>
+</body>
+</html>

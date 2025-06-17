@@ -24,10 +24,27 @@ function showPage(page) {
 function setTheme(theme) {
     if (theme === 'white') {
         document.body.classList.add('white-theme');
+        localStorage.setItem('theme', 'white'); // Save theme to localStorage
+    } else {
+        document.body.classList.remove('white-theme');
+        localStorage.setItem('theme', 'black'); // Save theme to localStorage
+    }
+}
+
+// Apply theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'white') {
+        document.body.classList.add('white-theme');
     } else {
         document.body.classList.remove('white-theme');
     }
-}
+});
+
+    // Example usage
+    document.querySelector('.theme-circle.white').onclick = () => setTheme('white');
+    document.querySelector('.theme-circle.black').onclick = () => setTheme('black');
+
 
 function slideCarousel(direction) {
     const carousel = document.getElementById('carousel');

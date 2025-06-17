@@ -1,0 +1,22 @@
+# Netlify configuration for multi-page setup
+
+[[redirects]]
+from = "/shop"
+to = "/shop/index.html"
+status = 200
+
+[[redirects]]
+from = "/services"
+to = "/services/index.html"
+status = 200
+
+[[redirects]]
+from = "/policies"
+to = "/policies/index.html"
+status = 200
+
+# Handle 404s by redirecting to home page
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 404
