@@ -555,6 +555,148 @@ body.white-theme .carousel-container::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.5);
 }
 
+/* Service Detail Pages */
+.service-detail-page {
+    min-height: 100vh;
+    padding: 120px 50px 50px;
+    position: relative;
+}
+
+.service-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.service-title {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-bottom: 40px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.back-link:hover {
+    opacity: 1;
+}
+
+.service-description {
+    line-height: 1.8;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.service-description p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.service-features h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.service-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.service-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.8;
+}
+
+.service-features li:last-child {
+    border-bottom: none;
+}
+
+.service-actions {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.contact-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+.contact-button:hover {
+    background: white;
+    color: black;
+}
+
+/* White theme for service detail pages */
+body.white-theme .back-link {
+    color: black;
+}
+
+body.white-theme .service-features li {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.white-theme .contact-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .contact-button:hover {
+    background: black;
+    color: white;
+}
+
+/* Responsive for service detail pages */
+@media screen and (max-width: 768px) {
+    .service-detail-page {
+        padding: 120px 20px 50px;
+    }
+
+    .service-title {
+        font-size: 2rem;
+    }
+
+    .service-description {
+        text-align: center;
+    }
+
+    .service-features {
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .service-detail-page {
+        padding: 100px 15px 30px;
+    }
+
+    .service-title {
+        font-size: 1.8rem;
+    }
+
+    .contact-button {
+        width: 100%;
+        padding: 12px 30px;
+    }
+}
+
 /* ================== RESPONSIVE DESIGN ================== */
 
 /* Tablet Styles (768px - 1024px) */
