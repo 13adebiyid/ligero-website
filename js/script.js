@@ -1,3 +1,17 @@
+// Start loading animation immediately when script loads
+(function() {
+    // Check if this is a fresh page load
+    const isInitialLoad = !window.performance || performance.navigation.type === 0;
+
+    if (isInitialLoad) {
+        // Create overlay immediately
+        const overlay = document.createElement('div');
+        overlay.className = 'page-transition active';
+        overlay.innerHTML = '<div class="loading-text">LIGERO</div>';
+        document.body.appendChild(overlay);
+    }
+})();
+
 let currentSlide = 0;
 
 function showPage(page) {
@@ -266,10 +280,10 @@ function hidePageTransition() {
 function handleHomePageTransition(url) {
     const overlay = showPageTransition();
 
-    // Add slight delay for transition effect
+    // Shorter delay for navigation to home page (not initial load)
     setTimeout(() => {
         window.location.href = url;
-    }, 250);
+    }, 800);
 }
 
 function handleSimplePageTransition(url) {
@@ -323,32 +337,38 @@ function setupPageTransitions() {
 }
 
 function initPageLoad() {
-    // Check if this is the home page for special treatment
-    const isHomePageLoad = window.location.pathname === '/' ||
-        window.location.pathname.includes('index.html') ||
-        window.location.pathname === '';
+    // Check if this is a fresh page load (not from navigation)
+    const isInitialLoad = !window.performance || performance.navigation.type === 0;
 
-    if (isHomePageLoad) {
-        // Create transition overlay for home page
-        if (!document.querySelector('.page-transition')) {
-            createTransitionOverlay();
-        }
+    if (isInitialLoad) {
+        // Overlay should already exist from immediate script
+        const overlay = document.querySelector('.page-transition');
 
-        // Show overlay briefly on home page load
+        // Keep overlay visible for 1.8 seconds total, then fade out
         setTimeout(() => {
-            hidePageTransition();
+            if (overlay) {
+                hidePageTransition();
+            }
+        }, 1800);
+
+        // Start page content animations after overlay begins to fade
+        setTimeout(() => {
+            document.body.classList.add('page-loaded');
+        }, 1600);
+
+        setTimeout(() => {
+            document.body.classList.add('content-loaded');
+        }, 1900);
+    } else {
+        // For navigation between pages, just do quick animations
+        setTimeout(() => {
+            document.body.classList.add('page-loaded');
         }, 100);
+
+        setTimeout(() => {
+            document.body.classList.add('content-loaded');
+        }, 300);
     }
-
-    // Add page loaded class with slight delay
-    setTimeout(() => {
-        document.body.classList.add('page-loaded');
-    }, 100);
-
-    // Add content loaded class with more delay for staggered effect
-    setTimeout(() => {
-        document.body.classList.add('content-loaded');
-    }, 300);
 }
 
 // Apply theme on page load
