@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Styling - Ligero</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoots - Ligero</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+
 <nav>
     <div class="hamburger-menu">
         <div class="hamburger-line"></div>
@@ -14,6 +16,7 @@
     </div>
 
     <a href="/" class="logo">LIGERO</a>
+
     <div class="nav-menu">
         <a href="/shop/" class="nav-item">Shop</a>
         <span class="nav-separator">|</span>
@@ -29,12 +32,37 @@
     <a href="/services/" class="mobile-menu-item">SERVICES</a>
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
-<h1 class="service-title">STYLING</h1>
-<p>Personal styling services that transform your wardrobe and elevate your personal brand...</p>
-<li>Personal styling consultations</li>
-<li>Wardrobe analysis and organization</li>
-<li>Personal shopping services</li>
-<li>Special event styling</li>
+
+<div class="service-detail-page">
+    <div class="theme-switcher">
+        <div class="theme-circle black" onclick="setTheme('black')"></div>
+        <div class="theme-circle white" onclick="setTheme('white')"></div>
+    </div>
+
+    <div class="service-content">
+        <h1 class="service-title">SHOOTS</h1>
+        <a href="/services/" class="back-link">← Back to Services</a>
+
+        <div class="service-description">
+            <p>Professional photography and videography services for fashion, lifestyle, and commercial projects. We create stunning visual content that captures your brand's essence and tells your story.</p>
+
+            <div class="service-features">
+                <h1 class="service-title">STYLING</h1>
+                <p>Personal styling services that transform your wardrobe and elevate your personal brand...</p>
+                <li>Personal styling consultations</li>
+                <li>Wardrobe analysis and organization</li>
+                <li>Personal shopping services</li>
+                <li>Special event styling</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="service-actions">
+            <button class="contact-button">Get in Touch</button>
+        </div>
+    </div>
+</div>
+
 <script src="/js/script.js"></script>
 </body>
 </html>

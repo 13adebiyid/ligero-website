@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creative Directing - Ligero</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+
+<!-- Navigation with Hamburger Menu -->
 <nav>
     <div class="hamburger-menu">
         <div class="hamburger-line"></div>
@@ -30,12 +33,38 @@
     <a href="/services/" class="mobile-menu-item">SERVICES</a>
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
-<h1 class="service-title">CREATIVE DIRECTING</h1>
-<p>Complete creative direction for your brand campaigns, photoshoots, and visual projects...</p>
-<li>Brand campaign development</li>
-<li>Creative concept development</li>
-<li>Art direction for shoots</li>
-<li>Visual storytelling</li>
+
+<div class="service-detail-page">
+    <div class="theme-switcher">
+        <div class="theme-circle black" onclick="setTheme('black')"></div>
+        <div class="theme-circle white" onclick="setTheme('white')"></div>
+    </div>
+
+    <div class="service-content">
+        <h1 class="service-title">CREATIVE DIRECTING</h1>
+        <a href="/services/" class="back-link">← Back to Services</a>
+
+        <div class="service-description">
+            <p>Complete creative direction for your brand campaigns, photoshoots, and visual projects. We bring your vision to life through strategic creative leadership and innovative storytelling.</p>
+
+            <div class="service-features">
+                <h3>What We Offer:</h3>
+                <ul>
+                    <li>Brand campaign development</li>
+                    <li>Creative concept development</li>
+                    <li>Art direction for shoots</li>
+                    <li>Visual storytelling</li>
+                    <li>Creative team coordination</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="service-actions">
+            <button class="contact-button">Get in Touch</button>
+        </div>
+    </div>
+</div>
+
 <script src="/js/script.js"></script>
 </body>
 </html>
