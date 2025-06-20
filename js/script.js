@@ -1,18 +1,5 @@
-// Start loading animation immediately when script loads
-(function() {
-    // Check if this is a fresh page load
-    const isInitialLoad = !window.performance || performance.navigation.type === 0;
-
-    if (isInitialLoad) {
-        // Create overlay immediately
-        const overlay = document.createElement('div');
-        overlay.className = 'page-transition active';
-        overlay.innerHTML = '<div class="loading-text">LIGERO</div>';
-        document.body.appendChild(overlay);
-    }
-})();
-
 let currentSlide = 0;
+let isNavigating = false;
 
 function showPage(page) {
     // For multi-page website, we don't need to hide/show pages
@@ -259,44 +246,63 @@ function createTransitionOverlay() {
     return overlay;
 }
 
-function showPageTransition() {
-    const overlay = document.querySelector('.page-transition') || createTransitionOverlay();
+function showInitialLoading() {
+    // Create and show initial loading overlay
+    const overlay = createTransitionOverlay();
     overlay.classList.add('active');
-    return overlay;
-}
 
-function hidePageTransition() {
-    const overlay = document.querySelector('.page-transition');
-    if (overlay) {
+    // Hide after 1.8 seconds
+    setTimeout(() => {
         overlay.classList.remove('active');
         setTimeout(() => {
             if (overlay.parentNode) {
                 overlay.parentNode.removeChild(overlay);
             }
-        }, 500);
-    }
+        }, 600);
+    }, 1800);
+
+    return overlay;
+}
+
+function showNavigationTransition() {
+    // Create overlay for navigation (only for home page)
+    const overlay = createTransitionOverlay();
+    overlay.classList.add('active');
+
+    // Hide after shorter duration for navigation
+    setTimeout(() => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            if (overlay.parentNode) {
+                overlay.parentNode.removeChild(overlay);
+            }
+        }, 600);
+    }, 800);
+
+    return overlay;
 }
 
 function handleHomePageTransition(url) {
-    const overlay = showPageTransition();
+    if (isNavigating) return;
+    isNavigating = true;
 
-    // Shorter delay for navigation to home page (not initial load)
+    showNavigationTransition();
+
+    // Navigate after delay
     setTimeout(() => {
         window.location.href = url;
-    }, 800);
+    }, 400);
 }
 
 function handleSimplePageTransition(url) {
+    if (isNavigating) return;
+    isNavigating = true;
+
     // Just fade out and navigate - no overlay
     document.body.style.opacity = '0.3';
     setTimeout(() => {
         window.location.href = url;
     }, 150);
-}
-
-function isHomePage(url) {
-    // Check if the URL is for the home page
-    return url === '/' || url === '/index.html' || url.includes('index.html');
 }
 
 function setupPageTransitions() {
@@ -337,19 +343,14 @@ function setupPageTransitions() {
 }
 
 function initPageLoad() {
-    // Check if this is a fresh page load (not from navigation)
-    const isInitialLoad = !window.performance || performance.navigation.type === 0;
+    // Check if this is a fresh page load (not from browser navigation)
+    const isInitialPageLoad = !document.referrer ||
+        window.performance?.navigation?.type === 0 ||
+        !window.performance;
 
-    if (isInitialLoad) {
-        // Overlay should already exist from immediate script
-        const overlay = document.querySelector('.page-transition');
-
-        // Keep overlay visible for 1.8 seconds total, then fade out
-        setTimeout(() => {
-            if (overlay) {
-                hidePageTransition();
-            }
-        }, 1800);
+    if (isInitialPageLoad && !document.querySelector('.page-transition')) {
+        // Show initial loading animation only on fresh page loads
+        showInitialLoading();
 
         // Start page content animations after overlay begins to fade
         setTimeout(() => {
