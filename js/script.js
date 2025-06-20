@@ -306,19 +306,21 @@ function handleSimplePageTransition(url) {
 }
 
 function setupPageTransitions() {
-    // Get all navigation links that should have transitions
+    // Logo clicks and mobile home menu get the special overlay transition
     const logoLinks = document.querySelectorAll('.logo');
-    const homeLinks = document.querySelectorAll('a[href="/"], a[href="/index.html"], a[href*="index.html"]');
+    const mobileHomeLinks = document.querySelectorAll('.mobile-menu-item[href="/"], .mobile-menu-item[href*="index.html"]');
+
+    // All other links get simple fade transition
     const otherLinks = document.querySelectorAll(`
-        .nav-item:not([href="/"]):not([href="/index.html"]):not([href*="index.html"]),
-        .mobile-menu-item:not([href="/"]):not([href="/index.html"]):not([href*="index.html"]),
+        .nav-item,
+        .mobile-menu-item:not([href="/"]):not([href*="index.html"]),
         .service-card,
-        .choose-button:not([href="/"]):not([href="/index.html"]):not([href*="index.html"]),
+        .choose-button,
         .back-link
     `);
 
-    // Home page transitions (with overlay)
-    [...logoLinks, ...homeLinks].forEach(link => {
+    // Logo and mobile home clicks (with overlay)
+    [...logoLinks, ...mobileHomeLinks].forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
 
@@ -329,7 +331,7 @@ function setupPageTransitions() {
         });
     });
 
-    // Other page transitions (simple fade)
+    // All other page transitions (simple fade)
     otherLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -343,13 +345,24 @@ function setupPageTransitions() {
 }
 
 function initPageLoad() {
-    // Check if this is a fresh page load (not from browser navigation)
-    const isInitialPageLoad = !document.referrer ||
-        window.performance?.navigation?.type === 0 ||
-        !window.performance;
+    // Only show loading screen on the very first visit to the website
+    // Check if user has visited before using sessionStorage
+    const hasVisitedBefore = sessionStorage.getItem('hasVisited');
+    const isHomePage = window.location.pathname === '/' ||
+        window.location.pathname.endsWith('index.html') ||
+        window.location.pathname === '';
 
-    if (isInitialPageLoad && !document.querySelector('.page-transition')) {
-        // Show initial loading animation only on fresh page loads
+    // Show loading screen only if:
+    // 1. User hasn't visited before AND it's the home page, OR
+    // 2. User is coming from external site to any page
+    const shouldShowLoading = (!hasVisitedBefore && isHomePage) ||
+        (!document.referrer || !document.referrer.includes(window.location.hostname));
+
+    if (shouldShowLoading && !document.querySelector('.page-transition')) {
+        // Mark that user has visited
+        sessionStorage.setItem('hasVisited', 'true');
+
+        // Show initial loading animation
         showInitialLoading();
 
         // Start page content animations after overlay begins to fade
@@ -361,7 +374,7 @@ function initPageLoad() {
             document.body.classList.add('content-loaded');
         }, 1900);
     } else {
-        // For navigation between pages, just do quick animations
+        // For all other navigation, just do quick animations
         setTimeout(() => {
             document.body.classList.add('page-loaded');
         }, 100);
