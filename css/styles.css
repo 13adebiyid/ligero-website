@@ -60,7 +60,7 @@ body.white-theme .page-transition .loading-text {
     color: black;
 }
 
-/* Fade In Animation for Page Load */
+/* Simple Fade In Animation for Page Load */
 body {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
@@ -70,14 +70,14 @@ body.page-loaded {
     opacity: 1;
 }
 
-/* Smooth content transitions */
+/* Staggered content animations */
 .home-page,
 .shop-page,
 .services-page,
 .policies-page,
 .service-detail-page {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
     transition: all 0.6s ease-out;
 }
 
@@ -90,16 +90,268 @@ body.page-loaded {
     transform: translateY(0);
 }
 
-/* Navigation fade effect */
+/* Navigation staggered animation */
 nav {
     opacity: 0;
     transform: translateY(-20px);
-    transition: all 0.6s ease-out 0.2s;
+    transition: all 0.5s ease-out;
 }
 
 .content-loaded nav {
     opacity: 1;
     transform: translateY(0);
+    transition-delay: 0.1s;
+}
+
+/* Individual element staggered animations */
+.services-title {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .services-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+}
+
+.carousel-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+.content-loaded .carousel-container {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+}
+
+.service-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .service-card:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
+}
+
+.content-loaded .service-card:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s;
+}
+
+.content-loaded .service-card:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.6s;
+}
+
+.content-loaded .service-card:nth-child(4) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.7s;
+}
+
+.content-loaded .service-card:nth-child(5) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.8s;
+}
+
+.content-loaded .service-card:nth-child(6) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.9s;
+}
+
+/* Product elements staggered animation */
+.product-container .product-image {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.6s ease-out;
+}
+
+.content-loaded .product-container .product-image {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.2s;
+}
+
+.product-container .product-info {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.6s ease-out;
+}
+
+.content-loaded .product-container .product-info {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.4s;
+}
+
+.product-title {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .product-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s;
+}
+
+.product-price {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .product-price {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.6s;
+}
+
+.product-description {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .product-description {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.7s;
+}
+
+.buy-button, .info-button {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .buy-button {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.8s;
+}
+
+.content-loaded .info-button {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.9s;
+}
+
+/* Service detail page animations */
+.service-title {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .service-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+}
+
+.back-link {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .back-link {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.3s;
+}
+
+.service-description {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+.content-loaded .service-description {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
+}
+
+.service-actions {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .service-actions {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.6s;
+}
+
+/* Policies page animations */
+.policies-title {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .policies-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+}
+
+.policy-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .policy-section:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+}
+
+.content-loaded .policy-section:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
+}
+
+.content-loaded .policy-section:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s;
+}
+
+.content-loaded .policy-section:nth-child(4) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.6s;
+}
+
+/* Theme switcher animation */
+.theme-switcher {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.content-loaded .theme-switcher {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.8s;
 }
 
 /* Navigation */

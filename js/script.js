@@ -263,7 +263,7 @@ function hidePageTransition() {
     }
 }
 
-function handlePageTransition(url) {
+function handleHomePageTransition(url) {
     const overlay = showPageTransition();
 
     // Add slight delay for transition effect
@@ -272,34 +272,72 @@ function handlePageTransition(url) {
     }, 250);
 }
 
+function handleSimplePageTransition(url) {
+    // Just fade out and navigate - no overlay
+    document.body.style.opacity = '0.3';
+    setTimeout(() => {
+        window.location.href = url;
+    }, 150);
+}
+
+function isHomePage(url) {
+    // Check if the URL is for the home page
+    return url === '/' || url === '/index.html' || url.includes('index.html');
+}
+
 function setupPageTransitions() {
     // Get all navigation links that should have transitions
-    const navLinks = document.querySelectorAll(`
-        .nav-item,
-        .mobile-menu-item,
-        .logo,
+    const logoLinks = document.querySelectorAll('.logo');
+    const homeLinks = document.querySelectorAll('a[href="/"], a[href="/index.html"], a[href*="index.html"]');
+    const otherLinks = document.querySelectorAll(`
+        .nav-item:not([href="/"]):not([href="/index.html"]):not([href*="index.html"]),
+        .mobile-menu-item:not([href="/"]):not([href="/index.html"]):not([href*="index.html"]),
         .service-card,
-        .choose-button,
+        .choose-button:not([href="/"]):not([href="/index.html"]):not([href*="index.html"]),
         .back-link
     `);
 
-    navLinks.forEach(link => {
+    // Home page transitions (with overlay)
+    [...logoLinks, ...homeLinks].forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
 
-            // Only apply transition for internal links
             if (href && href.startsWith('/') && !href.startsWith('//')) {
                 e.preventDefault();
-                handlePageTransition(href);
+                handleHomePageTransition(href);
+            }
+        });
+    });
+
+    // Other page transitions (simple fade)
+    otherLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+
+            if (href && href.startsWith('/') && !href.startsWith('//')) {
+                e.preventDefault();
+                handleSimplePageTransition(href);
             }
         });
     });
 }
 
 function initPageLoad() {
-    // Create transition overlay if it doesn't exist
-    if (!document.querySelector('.page-transition')) {
-        createTransitionOverlay();
+    // Check if this is the home page for special treatment
+    const isHomePageLoad = window.location.pathname === '/' ||
+        window.location.pathname.includes('index.html') ||
+        window.location.pathname === '';
+
+    if (isHomePageLoad) {
+        // Create transition overlay for home page
+        if (!document.querySelector('.page-transition')) {
+            createTransitionOverlay();
+        }
+
+        // Show overlay briefly on home page load
+        setTimeout(() => {
+            hidePageTransition();
+        }, 100);
     }
 
     // Add page loaded class with slight delay
@@ -311,11 +349,6 @@ function initPageLoad() {
     setTimeout(() => {
         document.body.classList.add('content-loaded');
     }, 300);
-
-    // Hide transition overlay
-    setTimeout(() => {
-        hidePageTransition();
-    }, 100);
 }
 
 // Apply theme on page load
