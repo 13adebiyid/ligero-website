@@ -51,7 +51,7 @@ body {
     font-size: 5rem;
     letter-spacing: 4px;
     opacity: 0.9;
-    animation: pulse 2s ease-in-out infinite;
+    animation: pulse 3s ease-in-out infinite;
 }
 
 @keyframes pulse {
