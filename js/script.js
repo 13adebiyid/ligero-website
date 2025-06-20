@@ -236,8 +236,94 @@ function handleTouchEnd(e) {
     isSwiping = false;
 }
 
+// Page Transition Functions
+function createTransitionOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'page-transition';
+    overlay.innerHTML = '<div class="loading-text">LIGERO</div>';
+    document.body.appendChild(overlay);
+    return overlay;
+}
+
+function showPageTransition() {
+    const overlay = document.querySelector('.page-transition') || createTransitionOverlay();
+    overlay.classList.add('active');
+    return overlay;
+}
+
+function hidePageTransition() {
+    const overlay = document.querySelector('.page-transition');
+    if (overlay) {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            if (overlay.parentNode) {
+                overlay.parentNode.removeChild(overlay);
+            }
+        }, 500);
+    }
+}
+
+function handlePageTransition(url) {
+    const overlay = showPageTransition();
+
+    // Add slight delay for transition effect
+    setTimeout(() => {
+        window.location.href = url;
+    }, 250);
+}
+
+function setupPageTransitions() {
+    // Get all navigation links that should have transitions
+    const navLinks = document.querySelectorAll(`
+        .nav-item,
+        .mobile-menu-item,
+        .logo,
+        .service-card,
+        .choose-button,
+        .back-link
+    `);
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+
+            // Only apply transition for internal links
+            if (href && href.startsWith('/') && !href.startsWith('//')) {
+                e.preventDefault();
+                handlePageTransition(href);
+            }
+        });
+    });
+}
+
+function initPageLoad() {
+    // Create transition overlay if it doesn't exist
+    if (!document.querySelector('.page-transition')) {
+        createTransitionOverlay();
+    }
+
+    // Add page loaded class with slight delay
+    setTimeout(() => {
+        document.body.classList.add('page-loaded');
+    }, 100);
+
+    // Add content loaded class with more delay for staggered effect
+    setTimeout(() => {
+        document.body.classList.add('content-loaded');
+    }, 300);
+
+    // Hide transition overlay
+    setTimeout(() => {
+        hidePageTransition();
+    }, 100);
+}
+
 // Apply theme on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize page transitions first
+    initPageLoad();
+    setupPageTransitions();
+
     // Try to load saved theme
     try {
         const savedTheme = localStorage.getItem('theme');
@@ -282,10 +368,15 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.addEventListener('click', toggleMobileMenu);
     }
 
-    // Setup mobile menu item click handlers
+    // Setup mobile menu item click handlers (transitions handle the navigation)
     const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
     mobileMenuItems.forEach(item => {
-        item.addEventListener('click', closeMobileMenu);
+        item.addEventListener('click', () => {
+            // Close menu after transition starts
+            setTimeout(() => {
+                closeMobileMenu();
+            }, 100);
+        });
     });
 
     // Close mobile menu when clicking overlay
@@ -338,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
         blackThemeCircle.onclick = () => setTheme('black');
     }
 
-    // Handle navigation clicks for mobile
+    // Handle navigation clicks for mobile (transitions now handle this)
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
