@@ -86,27 +86,27 @@ function isMobile() {
     return window.innerWidth <= 768;
 }
 
-// Get responsive carousel settings based on screen size
+// CORRECTED: Get responsive carousel settings - MUST match CSS dimensions exactly
 function getCarouselSettings() {
     const screenWidth = window.innerWidth;
 
     if (screenWidth >= 1400) {
         return {
-            cardWidth: 450,
-            cardGap: 30,
-            containerPadding: 200
+            cardWidth: 500,  // Matches CSS: 500px
+            cardGap: 40,
+            containerPadding: 180  // Reduced for better fit
         };
     } else if (screenWidth >= 1025) {
         return {
-            cardWidth: 400,
-            cardGap: 30,
-            containerPadding: 180
+            cardWidth: 420,  // Matches CSS: 420px
+            cardGap: 40,
+            containerPadding: 160
         };
     } else if (screenWidth >= 769) {
         return {
-            cardWidth: 350,
-            cardGap: 25,
-            containerPadding: 160
+            cardWidth: 380,  // Matches CSS: 380px
+            cardGap: 30,
+            containerPadding: 140
         };
     } else if (screenWidth <= 375) {
         return {
@@ -147,6 +147,7 @@ function setupCarouselKeyboardNavigation() {
     });
 }
 
+// FIXED: Improved carousel sliding logic
 function slideCarousel(direction) {
     // Don't slide on mobile - it's now a vertical scroll
     if (isMobile()) {
@@ -154,6 +155,11 @@ function slideCarousel(direction) {
     }
 
     const carousel = document.getElementById('carousel');
+    if (!carousel) {
+        console.error('Carousel element not found!');
+        return;
+    }
+
     const cards = carousel.querySelectorAll('.service-card');
     const totalCards = cards.length;
 
@@ -165,10 +171,16 @@ function slideCarousel(direction) {
     const settings = getCarouselSettings();
     const { cardWidth, cardGap, containerPadding } = settings;
 
+    // Calculate available width for cards
     const containerWidth = window.innerWidth - containerPadding;
+
+    // How many cards can fit in the visible area
     const cardsVisible = Math.max(1, Math.floor(containerWidth / (cardWidth + cardGap)));
+
+    // Maximum slides = total cards minus visible cards
     const maxSlide = Math.max(0, totalCards - cardsVisible);
 
+    // Update current slide
     currentSlide += direction;
 
     // Keep within bounds
@@ -179,20 +191,34 @@ function slideCarousel(direction) {
         currentSlide = maxSlide;
     }
 
-    // Calculate translation
-    let translateX;
-    if (currentSlide === maxSlide && maxSlide > 0) {
-        // Position so last card is fully visible with proper spacing
-        const totalCarouselWidth = (totalCards * cardWidth) + ((totalCards - 1) * cardGap);
-        const availableWidth = containerWidth;
-        translateX = Math.min(0, -(totalCarouselWidth - availableWidth));
+    // IMPROVED: Calculate translation with better logic
+    let translateX = 0;
+
+    if (currentSlide === 0) {
+        // First position - no translation
+        translateX = 0;
+    } else if (currentSlide >= maxSlide) {
+        // Last position - ensure last cards are fully visible
+        const totalContentWidth = (totalCards * cardWidth) + ((totalCards - 1) * cardGap);
+        translateX = Math.min(0, containerWidth - totalContentWidth);
     } else {
+        // Middle positions - slide by card width + gap
         translateX = -(currentSlide * (cardWidth + cardGap));
     }
 
+    // Apply the transformation
     carousel.style.transform = `translateX(${translateX}px)`;
 
-    console.log(`Direction: ${direction}, Current slide: ${currentSlide}, Max slide: ${maxSlide}, Cards visible: ${cardsVisible}, Translate: ${translateX}px`);
+    // Enhanced debugging
+    console.log('=== CAROUSEL DEBUG ===');
+    console.log(`Screen width: ${window.innerWidth}px`);
+    console.log(`Card dimensions: ${cardWidth}px × ${settings.cardHeight || 'auto'}px`);
+    console.log(`Gap: ${cardGap}px, Container padding: ${containerPadding}px`);
+    console.log(`Container width: ${containerWidth}px`);
+    console.log(`Total cards: ${totalCards}, Cards visible: ${cardsVisible}`);
+    console.log(`Current slide: ${currentSlide}/${maxSlide}`);
+    console.log(`Translation: ${translateX}px`);
+    console.log('===================');
 }
 
 // Reset carousel when window is resized
@@ -201,6 +227,7 @@ function resetCarousel() {
     const carousel = document.getElementById('carousel');
     if (carousel && !isMobile()) {
         carousel.style.transform = 'translateX(0px)';
+        console.log('Carousel reset to initial position');
     }
 }
 
@@ -214,6 +241,18 @@ function handleResize() {
         // Close mobile menu if screen becomes large
         if (window.innerWidth > 768) {
             closeMobileMenu();
+        }
+
+        // Re-log carousel info after resize
+        if (!isMobile()) {
+            const carousel = document.getElementById('carousel');
+            if (carousel) {
+                const cards = carousel.querySelectorAll('.service-card');
+                const settings = getCarouselSettings();
+                const containerWidth = window.innerWidth - settings.containerPadding;
+                const cardsVisible = Math.floor(containerWidth / (settings.cardWidth + settings.cardGap));
+                console.log(`After resize - Cards visible: ${cardsVisible}/${cards.length}`);
+            }
         }
     }, 250);
 }
@@ -403,6 +442,34 @@ function initPageLoad() {
     }
 }
 
+// ENHANCED: Better carousel testing function
+function testCarouselReach() {
+    if (isMobile()) {
+        console.log('Mobile mode - vertical scrolling enabled');
+        return;
+    }
+
+    const carousel = document.getElementById('carousel');
+    if (!carousel) return;
+
+    const cards = carousel.querySelectorAll('.service-card');
+    const settings = getCarouselSettings();
+    const containerWidth = window.innerWidth - settings.containerPadding;
+    const cardsVisible = Math.floor(containerWidth / (settings.cardWidth + settings.cardGap));
+    const maxSlides = Math.max(0, cards.length - cardsVisible);
+
+    console.log('=== CAROUSEL REACHABILITY TEST ===');
+    console.log(`Total service cards: ${cards.length}`);
+    cards.forEach((card, index) => {
+        const title = card.querySelector('.service-card-title')?.textContent || `Card ${index + 1}`;
+        console.log(`${index + 1}. ${title}`);
+    });
+    console.log(`Cards visible at once: ${cardsVisible}`);
+    console.log(`Maximum slides needed: ${maxSlides}`);
+    console.log('All cards should be reachable by clicking the right arrow');
+    console.log('===============================');
+}
+
 // Apply theme on page load
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize page transitions first
@@ -436,16 +503,11 @@ document.addEventListener('DOMContentLoaded', () => {
             carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
             carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-            // Log carousel info for debugging
-            const cards = carousel.querySelectorAll('.service-card');
-            console.log(`Found ${cards.length} service cards`);
+            // ENHANCED: Better debugging and testing
+            setTimeout(() => {
+                testCarouselReach();
+            }, 100);
 
-            // Test if all cards are reachable
-            const settings = getCarouselSettings();
-            const containerWidth = window.innerWidth - settings.containerPadding;
-            const cardsVisible = Math.floor(containerWidth / (settings.cardWidth + settings.cardGap));
-            const maxSlides = Math.max(0, cards.length - cardsVisible);
-            console.log(`Cards visible at once: ${cardsVisible}, Max slides needed: ${maxSlides}`);
         } else {
             // Reset any transform on mobile
             carousel.style.transform = 'none';
