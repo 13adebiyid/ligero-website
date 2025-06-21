@@ -801,8 +801,8 @@ body.white-theme .contact-button:hover {
     }
 
     .service-card {
-        min-width: 600px;
-        height: 500px;
+        min-width: 500px;
+        height: 400px;
         font-size: 1.5rem;
     }
 
@@ -823,6 +823,12 @@ body.white-theme .contact-button:hover {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    .service-card{
+        min-width: 400px;
+        height: 300px;
+        font-size: 1.2rem;
     }
 
     .nav-menu {
