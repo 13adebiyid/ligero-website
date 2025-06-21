@@ -45,60 +45,71 @@
     <div class="theme-circle white" onclick="setTheme('white')"></div>
   </div>
   <h1 class="services-title">OUR CAPABILITIES</h1>
-  <div class="carousel" id="carousel">
-    <a href="/services/styling" class="service-card">
-      <video class="service-card-video" autoplay muted loop>
-        <source src="/videos/styling-video.mp4" type="video/mp4">
-      </video>
-      <div class="service-card-content">
-        <span class="service-card-title">STYLING</span>
-      </div>
-    </a>
 
-    <a href="/services/creative-directing" class="service-card">
-      <video class="service-card-video" autoplay muted loop>
-        <source src="/videos/creative-directing-video.mp4" type="video/mp4">
-      </video>
-      <div class="service-card-content">
-        <span class="service-card-title">CREATIVE DIRECTING</span>
-      </div>
-    </a>
+  <!-- Added missing carousel container and arrows -->
+  <div class="carousel-container">
+    <!-- Left Arrow -->
+    <button class="carousel-arrow left" onclick="slideCarousel(-1)">‹</button>
 
-    <a href="/services/shoots" class="service-card">
-      <video class="service-card-video" autoplay muted loop>
-        <source src="/videos/shoots-video.mp4" type="video/mp4">
-      </video>
-      <div class="service-card-content">
-        <span class="service-card-title">SHOOTS</span>
-      </div>
-    </a>
+    <!-- Carousel -->
+    <div class="carousel" id="carousel">
+      <a href="/services/styling" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/styling-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">STYLING</span>
+        </div>
+      </a>
 
-    <a href="/services/set-designing" class="service-card">
-      <video class="service-card-video" autoplay muted loop>
-        <source src="/videos/set-designing-video.mp4" type="video/mp4">
-      </video>
-      <div class="service-card-content">
-        <span class="service-card-title">SET DESIGNING</span>
-      </div>
-    </a>
+      <a href="/services/creative-directing" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/creative-directing-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">CREATIVE DIRECTING</span>
+        </div>
+      </a>
 
-    <a href="/services/models" class="service-card">
-      <video class="service-card-video" autoplay muted loop>
-        <source src="/videos/models-video.mp4" type="video/mp4">
-      </video>
-      <div class="service-card-content">
-        <span class="service-card-title">MODELS</span>
-      </div>
-    </a>
+      <a href="/services/shoots" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/shoots-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">SHOOTS</span>
+        </div>
+      </a>
 
-    <a href="/services/music" class="service-card">
-      <video class="service-card-video" autoplay muted loop>
-        <source src="/videos/music-video.mp4" type="video/mp4">
-      </video>
-      <div class="service-card-content">
-        <span class="service-card-title">MUSIC</span>
-      </div>
-    </a>
+      <a href="/services/set-designing" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/set-designing-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">SET DESIGNING</span>
+        </div>
+      </a>
+
+      <a href="/services/models" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/models-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">MODELS</span>
+        </div>
+      </a>
+
+      <a href="/services/music" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/music-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">MUSIC</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Right Arrow -->
+    <button class="carousel-arrow right" onclick="slideCarousel(1)">›</button>
   </div>
 </div>
 

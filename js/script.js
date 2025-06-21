@@ -90,7 +90,25 @@ function isMobile() {
 function getCarouselSettings() {
     const screenWidth = window.innerWidth;
 
-    if (screenWidth <= 375) {
+    if (screenWidth >= 1400) {
+        return {
+            cardWidth: 500,
+            cardGap: 40,
+            containerPadding: 240
+        };
+    } else if (screenWidth >= 1025) {
+        return {
+            cardWidth: 420,
+            cardGap: 40,
+            containerPadding: 240
+        };
+    } else if (screenWidth >= 768) {
+        return {
+            cardWidth: 380,
+            cardGap: 30,
+            containerPadding: 200
+        };
+    } else if (screenWidth <= 375) {
         return {
             cardWidth: 200,
             cardGap: 15,
@@ -108,23 +126,11 @@ function getCarouselSettings() {
             cardGap: 20,
             containerPadding: 100
         };
-    } else if (screenWidth <= 768) {
+    } else {
         return {
             cardWidth: 280,
             cardGap: 20,
             containerPadding: 120
-        };
-    } else if (screenWidth <= 1024) {
-        return {
-            cardWidth: 600,
-            cardGap: 40,
-            containerPadding: 240
-        };
-    } else {
-        return {
-            cardWidth: 800,
-            cardGap: 40,
-            containerPadding: 240
         };
     }
 }

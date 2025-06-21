@@ -385,20 +385,48 @@ nav {
 }
 
 .service-card {
-    min-width: 800px;
-    height: 750px;
+    min-width: 450px;
+    height: 520px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     cursor: pointer;
     transition: all 0.3s;
     backdrop-filter: blur(10px);
     border-radius: 10px;
     text-decoration: none;
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Video styling for service cards */
+.service-card-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.service-card-content {
+    position: relative;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.service-card-title {
+    font-weight: 300;
+    letter-spacing: 2px;
 }
 
 .service-card:hover {
@@ -762,6 +790,24 @@ body.white-theme .contact-button:hover {
 
 /* ================== RESPONSIVE DESIGN ================== */
 
+/* Large desktop screens */
+@media screen and (min-width: 1400px) {
+    .service-card {
+        min-width: 800px;
+        height: 750px;
+        font-size: 1.8rem;
+    }
+}
+
+/* Standard desktop/laptop (1024px - 1400px) */
+@media screen and (max-width: 1400px) and (min-width: 1025px) {
+    .service-card {
+        min-width: 420px;
+        height: 500px;
+        font-size: 1.5rem;
+    }
+}
+
 /* Tablet Styles (768px - 1024px) */
 @media screen and (max-width: 1024px) {
     nav {
@@ -801,9 +847,9 @@ body.white-theme .contact-button:hover {
     }
 
     .service-card {
-        min-width: 600px;
-        height: 500px;
-        font-size: 1.5rem;
+        min-width: 380px;
+        height: 450px;
+        font-size: 1.4rem;
     }
 
     .policies-title {
