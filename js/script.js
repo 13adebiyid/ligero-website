@@ -92,21 +92,21 @@ function getCarouselSettings() {
 
     if (screenWidth >= 1400) {
         return {
-            cardWidth: 500,
-            cardGap: 40,
-            containerPadding: 240
+            cardWidth: 450,
+            cardGap: 30,
+            containerPadding: 200
         };
     } else if (screenWidth >= 1025) {
         return {
-            cardWidth: 420,
-            cardGap: 40,
-            containerPadding: 240
-        };
-    } else if (screenWidth >= 768) {
-        return {
-            cardWidth: 380,
+            cardWidth: 400,
             cardGap: 30,
-            containerPadding: 200
+            containerPadding: 180
+        };
+    } else if (screenWidth >= 769) {
+        return {
+            cardWidth: 350,
+            cardGap: 25,
+            containerPadding: 160
         };
     } else if (screenWidth <= 375) {
         return {
@@ -133,6 +133,18 @@ function getCarouselSettings() {
             containerPadding: 120
         };
     }
+}
+
+function setupCarouselKeyboardNavigation() {
+    if (isMobile()) return;
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            slideCarousel(-1);
+        } else if (e.key === 'ArrowRight') {
+            slideCarousel(1);
+        }
+    });
 }
 
 function slideCarousel(direction) {
@@ -416,23 +428,30 @@ document.addEventListener('DOMContentLoaded', () => {
             carousel.style.transition = 'transform 0.3s ease';
             console.log('Carousel found and initialized for desktop');
 
+            // Setup keyboard navigation
+            setupCarouselKeyboardNavigation();
+
             // Add touch event listeners for desktop swiping
             carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
             carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
             carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+            // Log carousel info for debugging
+            const cards = carousel.querySelectorAll('.service-card');
+            console.log(`Found ${cards.length} service cards`);
+
+            // Test if all cards are reachable
+            const settings = getCarouselSettings();
+            const containerWidth = window.innerWidth - settings.containerPadding;
+            const cardsVisible = Math.floor(containerWidth / (settings.cardWidth + settings.cardGap));
+            const maxSlides = Math.max(0, cards.length - cardsVisible);
+            console.log(`Cards visible at once: ${cardsVisible}, Max slides needed: ${maxSlides}`);
         } else {
             // Reset any transform on mobile
             carousel.style.transform = 'none';
             carousel.style.transition = 'none';
             console.log('Mobile detected - carousel converted to vertical scroll');
         }
-
-        // Check if cards exist
-        const cards = carousel.querySelectorAll('.service-card');
-        console.log(`Found ${cards.length} service cards`);
-        cards.forEach((card, index) => {
-            console.log(`Card ${index}:`, card.textContent);
-        });
     }
 
     // Setup hamburger menu functionality
