@@ -1,0 +1,1183 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Suissnord';
+    src: url('../fonts/suissnord.regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Madani';
+    src: url('../fonts/MadaniDEMO-Thin.woff') format('woff');
+}
+
+body {
+    font-family: "Madani";
+    background: black;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Page Transitions */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.page-transition.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.page-transition .loading-text {
+    color: white;
+    font-family: 'Suissnord', sans-serif;
+    font-size: 5rem;
+    letter-spacing: 4px;
+    opacity: 0.9;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+/* White theme for transition */
+body.white-theme .page-transition {
+    background: white;
+}
+
+body.white-theme .page-transition .loading-text {
+    color: black;
+}
+
+/* Simple Fade In Animation for Page Load */
+body {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+
+body.page-loaded {
+    opacity: 1;
+}
+
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    font-family: Suissnord;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0 20px;
+    transition: opacity 0.3s;
+}
+
+.nav-item:hover {
+    opacity: 0.7;
+}
+
+.nav-separator {
+    color: white;
+    font-size: 1rem;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    justify-content: space-between;
+    z-index: 1001;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 3px;
+    background: white;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 999;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.mobile-menu-overlay.active {
+    display: flex;
+}
+
+.mobile-menu-item {
+    color: white;
+    text-decoration: none;
+    font-size: 2rem;
+    font-family: 'Suissnord';
+    transition: opacity 0.3s;
+    text-align: center;
+}
+
+.mobile-menu-item:hover {
+    opacity: 0.7;
+}
+
+/* Home Page */
+.home-page {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.choose-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 2px;
+}
+
+.choose-button:hover {
+    background: white;
+    color: black;
+}
+
+/* Shop Page */
+.shop-page {
+    min-height: 100vh;
+    padding: 100px 50px 50px;
+    position: relative;
+}
+
+.theme-switcher {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.theme-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #666;
+    transition: all 0.3s;
+}
+
+.theme-circle.white {
+    background: white;
+}
+
+.theme-circle.black {
+    background: black;
+}
+
+.theme-circle:hover {
+    transform: scale(1.1);
+}
+
+.product-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    gap: 100px;
+}
+
+.product-image {
+    width: 400px;
+    height: 500px;
+    background: #333;
+    margin-left: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1.2rem;
+}
+
+.product-info {
+    max-width: 400px;
+}
+
+.product-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.product-price {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+.product-description {
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.buy-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+    margin-right: 20px;
+}
+
+.buy-button:hover {
+    background: white;
+    color: black;
+}
+
+.info-button {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+.info-button:hover {
+    opacity: 0.7;
+}
+
+/* Services Page */
+.services-page {
+    min-height: 100vh;
+    padding: 80px 50px 50px;
+    position: relative;
+}
+
+.services-page.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.services-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 60px;
+    font-weight: 300;
+}
+
+/* RESPONSIVE CAROUSEL AND SERVICE CARDS */
+.carousel-container {
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.carousel {
+    display: flex;
+    gap: 2vw;  /* Responsive gap - 2% of viewport width */
+    overflow: visible;
+    padding: 0 10px;
+    height: 100%;
+    align-items: center;
+    width: calc(100% - 160px);
+    position: relative;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+/* RESPONSIVE SERVICE CARDS - CHANGE THESE VALUES TO RESIZE */
+.service-card {
+    /* MAIN SIZE CONTROLS - ADJUST THESE VALUES */
+    width: 80vw;           /* 28% of viewport width - CHANGE THIS TO RESIZE */
+    height: 55vh;          /* 65% of viewport height - CHANGE THIS TO RESIZE */
+
+    /* ADJUSTED LIMITS - Made more flexible to allow vw to work */
+    min-width: 280px;      /* Reduced from 350px - allows smaller vw values */
+
+    min-height: 350px;     /* Reduced from 400px */
+
+
+    /* Rest of styling stays the same */
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Video styling for service cards */
+.service-card-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.service-card-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.service-card-title {
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-shadow:
+            2px 2px 4px rgba(0, 0, 0, 0.8),
+            -1px -1px 2px rgba(0, 0, 0, 0.5),
+            1px 1px 3px rgba(0, 0, 0, 0.7);
+    color: white;
+}
+
+.service-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-10px);
+    color: white;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 100;
+}
+
+.carousel-arrow:hover {
+    background: white;
+    color: black;
+}
+
+.carousel-arrow.left {
+    left: 1%;
+}
+
+.carousel-arrow.right {
+    right: 5%;
+}
+
+/* Force service card colors - override all browser defaults */
+.carousel .service-card,
+.carousel .service-card:link,
+.carousel .service-card:visited,
+.carousel .service-card:hover,
+.carousel .service-card:active,
+.carousel .service-card:focus {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* White theme override */
+body.white-theme .carousel .service-card,
+body.white-theme .carousel .service-card:link,
+body.white-theme .carousel .service-card:visited,
+body.white-theme .carousel .service-card:hover,
+body.white-theme .carousel .service-card:active,
+body.white-theme .carousel .service-card:focus {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+/* White theme text shadow */
+body.white-theme .service-card-title {
+    text-shadow:
+            2px 2px 4px rgba(255, 255, 255, 0.9),
+            -1px -1px 2px rgba(255, 255, 255, 0.7),
+            1px 1px 3px rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+body.white-theme .service-card {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+body.white-theme .service-card:hover {
+    background: rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+body.white-theme .carousel-arrow {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .carousel-arrow:hover {
+    background: black;
+    color: white;
+}
+
+/* Policies Page */
+.policies-page {
+    min-height: 100vh;
+    padding: 100px 50px 50px;
+}
+
+.policies-content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.policies-title {
+    font-size: 3rem;
+    margin-bottom: 50px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.policy-section {
+    margin-bottom: 40px;
+}
+
+.policy-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.policy-section p {
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+/* White theme */
+body.white-theme {
+    background: white;
+    color: black;
+}
+
+body.white-theme .logo {
+    color: black;
+}
+
+body.white-theme .nav-item {
+    color: black;
+}
+
+body.white-theme .nav-separator {
+    color: black;
+}
+
+body.white-theme nav {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+body.white-theme .hamburger-line {
+    background: black;
+}
+
+body.white-theme .mobile-menu-overlay {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+body.white-theme .mobile-menu-item {
+    color: black;
+}
+
+body.white-theme .choose-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .choose-button:hover {
+    background: black;
+    color: white;
+}
+
+body.white-theme .buy-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .buy-button:hover {
+    background: black;
+    color: white;
+}
+
+body.white-theme .info-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .product-image {
+    background: #f0f0f0;
+    color: #666;
+}
+
+body.white-theme .carousel-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.white-theme .carousel-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+body.white-theme .carousel-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Service Detail Pages */
+.service-detail-page {
+    min-height: 100vh;
+    padding: 120px 50px 50px;
+    position: relative;
+}
+
+.service-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.service-title {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-bottom: 40px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.back-link:hover {
+    opacity: 1;
+}
+
+.service-description {
+    line-height: 1.8;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.service-description p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.service-features h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.service-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.service-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.8;
+}
+
+.service-features li:last-child {
+    border-bottom: none;
+}
+
+.service-actions {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.contact-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+.contact-button:hover {
+    background: white;
+    color: black;
+}
+
+/* White theme for service detail pages */
+body.white-theme .back-link {
+    color: black;
+}
+
+body.white-theme .service-features li {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.white-theme .contact-button {
+    border-color: black;
+    color: black;
+}
+
+body.white-theme .contact-button:hover {
+    background: black;
+    color: white;
+}
+
+/* ================== RESPONSIVE DESIGN ================== */
+
+/* Tablet Styles (769px - 1024px) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    nav {
+        padding: 15px 30px;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+    }
+
+    .nav-item {
+        font-size: 0.9rem;
+        padding: 0 15px;
+    }
+
+    .product-container {
+        gap: 60px;
+    }
+
+    .product-image {
+        width: 350px;
+        height: 450px;
+        margin-left: 50px;
+    }
+
+    .product-title {
+        font-size: 2.2rem;
+    }
+
+    .product-price {
+        font-size: 1.8rem;
+    }
+
+    .services-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .policies-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* Mobile and below (768px and below) */
+@media screen and (max-width: 768px) {
+    nav {
+        padding: 15px 20px;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    /* Home Page Mobile */
+    .home-page div {
+        padding: 100px 20px !important;
+    }
+
+    .choose-button {
+        padding: 12px 30px;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    /* Shop Page Mobile */
+    .shop-page {
+        padding: 120px 20px 50px;
+    }
+
+    .product-container {
+        flex-direction: column;
+        gap: 40px;
+        min-height: auto;
+        padding: 20px 0;
+    }
+
+    .product-image {
+        width: 100%;
+        max-width: 350px;
+        height: 400px;
+        margin-left: 0;
+    }
+
+    .product-info {
+        max-width: 100%;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .product-description {
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .buy-button, .info-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    /* Services Page Mobile - Vertical Scroll */
+    .services-page {
+        padding: 160px 20px 50px;
+    }
+
+    .services-title {
+        font-size: 2rem;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 260px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 20px 0;
+        margin: 20px 0 0;
+    }
+
+    .carousel {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        padding: 0;
+        width: 100%;
+        height: auto;
+        align-items: stretch;
+        position: static;
+        margin: 0;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .service-card {
+        width: 100%;           /* Full width on mobile */
+        height: 200px;         /* Fixed height on mobile */
+        min-width: auto;
+        max-width: none;
+        min-height: 180px;
+        max-height: 220px;
+        margin: 0;
+        flex-shrink: 0;
+        font-size: 1.2rem;
+    }
+
+    .carousel-arrow {
+        display: none;
+    }
+
+    .carousel .service-card,
+    .carousel .service-card:link,
+    .carousel .service-card:visited,
+    .carousel .service-card:hover,
+    .carousel .service-card:active,
+    .carousel .service-card:focus {
+        color: white !important;
+    }
+
+    body.white-theme .carousel .service-card,
+    body.white-theme .carousel .service-card:link,
+    body.white-theme .carousel .service-card:visited,
+    body.white-theme .carousel .service-card:hover,
+    body.white-theme .carousel .service-card:active,
+    body.white-theme .carousel .service-card:focus {
+        color: black !important;
+    }
+
+    /* Custom scrollbar for services */
+    .carousel-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .carousel-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Policies Page Mobile */
+    .policies-page {
+        padding: 120px 20px 50px;
+    }
+
+    .policies-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .policies-content {
+        max-width: 100%;
+        line-height: 1.6;
+    }
+
+    .policy-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .policy-section p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    /* Theme Switcher Mobile */
+    .theme-switcher {
+        bottom: 20px;
+        left: 20px;
+        gap: 10px;
+    }
+
+    .theme-circle {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Service detail pages mobile */
+    .service-detail-page {
+        padding: 120px 20px 50px;
+    }
+
+    .service-title {
+        font-size: 2rem;
+    }
+
+    .service-description {
+        text-align: center;
+    }
+
+    .service-features {
+        text-align: left;
+    }
+}
+
+/* Small Mobile (up to 576px) */
+@media screen and (max-width: 576px) {
+    nav {
+        padding: 12px 15px;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .hamburger-menu {
+        width: 25px;
+        height: 20px;
+    }
+
+    .hamburger-line {
+        height: 2px;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.8rem;
+    }
+
+    .services-page {
+        padding: 120px 15px 30px;
+    }
+
+    .services-title {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+    }
+
+    .carousel-container {
+        max-height: calc(100vh - 240px);
+        padding: 15px 0;
+        margin-top: 15px;
+    }
+
+    .carousel {
+        gap: 20px;
+    }
+
+    .service-card {
+        height: 180px;
+        font-size: 1rem;
+        padding: 140px 15px 30px;
+    }
+
+    .shop-page {
+        padding: 100px 15px 30px;
+    }
+
+    .product-image {
+        height: 300px;
+    }
+
+    .product-title {
+        font-size: 1.8rem;
+    }
+
+    .product-price {
+        font-size: 1.4rem;
+    }
+
+    .product-description {
+        font-size: 0.9rem;
+    }
+
+    .buy-button, .info-button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+        width: 100%;
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+
+    .policies-page {
+        padding: 100px 15px 30px;
+    }
+
+    .policies-title {
+        font-size: 1.8rem;
+    }
+
+    .policy-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .policy-section p {
+        font-size: 0.9rem;
+    }
+
+    .theme-switcher {
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .theme-circle {
+        width: 22px;
+        height: 22px;
+    }
+
+    .service-detail-page {
+        padding: 100px 15px 30px;
+    }
+
+    .contact-button {
+        width: 100%;
+        padding: 12px 30px;
+    }
+}
+
+/* Large Mobile Portrait and Small Landscape adjustments */
+@media screen and (max-width: 480px) {
+    .service-card {
+        height: 160px;
+        font-size: 0.95rem;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.6rem;
+    }
+}
+
+/* Very Small Screens */
+@media screen and (max-width: 375px) {
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .hamburger-menu {
+        width: 22px;
+        height: 18px;
+    }
+
+    .product-title {
+        font-size: 1.6rem;
+    }
+
+    .services-title {
+        font-size: 1.6rem;
+    }
+
+    .policies-title {
+        font-size: 1.6rem;
+    }
+
+    .service-card {
+        height: 150px;
+        font-size: 0.9rem;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.4rem;
+    }
+}

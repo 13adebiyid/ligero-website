@@ -1,0 +1,48 @@
+# Netlify configuration - no publish directory needed
+
+# Clean URL redirects for pages
+[[redirects]]
+from = "/shop"
+to = "/shop/"
+status = 301
+
+[[redirects]]
+from = "/services"
+to = "/services/"
+status = 301
+
+[[redirects]]
+from = "/policies"
+to = "/policies/"
+status = 301
+
+# Service sub-pages redirects
+[[redirects]]
+from = "/services/styling"
+to = "/services/styling.html"
+status = 200
+
+[[redirects]]
+from = "/services/creative-directing"
+to = "/services/creative-directing.html"
+status = 200
+
+[[redirects]]
+from = "/services/shoots"
+to = "/services/shoots.html"
+status = 200
+
+[[redirects]]
+from = "/services/set-designing"
+to = "/services/set-designing.html"
+status = 200
+
+[[redirects]]
+from = "/services/models"
+to = "/services/models.html"
+status = 200
+
+[[redirects]]
+from = "/services/music"
+to = "/services/music.html"
+status = 200

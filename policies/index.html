@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <!-- Hamburger Menu for Mobile -->
+    <div class="hamburger-menu">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+
+    <!-- Logo (centered on mobile) -->
+    <a href="/" class="logo">LIGERO</a>
+
+    <!-- Desktop Navigation Menu -->
+    <div class="nav-menu">
+        <a href="/shop/" class="nav-item">Shop</a>
+        <span class="nav-separator">|</span>
+        <a href="/services/" class="nav-item">Services</a>
+        <span class="nav-separator">|</span>
+        <a href="/policies/" class="nav-item">Policies</a>
+    </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu-overlay">
+    <a href="/" class="mobile-menu-item">HOME</a>
+    <a href="/shop/" class="mobile-menu-item">SHOP</a>
+    <a href="/services/" class="mobile-menu-item">SERVICES</a>
+    <a href="/policies/" class="mobile-menu-item">POLICIES</a>
+</div>
+
+<!-- Policies Page -->
+<div class="policies-page" id="policies-page">
+    <div class="theme-switcher">
+        <div class="theme-circle black" onclick="setTheme('black')"></div>
+        <div class="theme-circle white" onclick="setTheme('white')"></div>
+    </div>
+    <div class="policies-content">
+        <h1 class="policies-title">OUR POLICY</h1>
+
+        <div class="policy-section">
+            <h3>Privacy Policy</h3>
+            <p>We collect and process your personal information in accordance with applicable data protection laws. Your privacy is important to us, and we are committed to protecting your personal information.</p>
+            <p>Information we collect includes contact details, payment information, and browsing data to enhance your shopping experience.</p>
+        </div>
+
+        <div class="policy-section">
+            <h3>Shipping Policy</h3>
+            <p>All orders are processed within 1-2 business days. Shipping times vary based on location and selected shipping method.</p>
+            <p>Free shipping is available on orders over $150. Express shipping options are available at checkout.</p>
+        </div>
+
+        <div class="policy-section">
+            <h3>Return Policy</h3>
+            <p>We accept returns within 30 days of purchase. Items must be in original condition with tags attached.</p>
+            <p>Refunds will be processed to the original payment method within 5-10 business days after we receive your return.</p>
+        </div>
+
+        <div class="policy-section">
+            <h3>Terms of Service</h3>
+            <p>By using our website and purchasing our products, you agree to comply with our terms and conditions.</p>
+            <p>All content on this website is protected by copyright and intellectual property laws.</p>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/script.js"></script>
+</body>
+</html>

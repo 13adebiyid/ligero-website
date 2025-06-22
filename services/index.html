@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <!-- Hamburger Menu for Mobile -->
+  <div class="hamburger-menu">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
+
+  <!-- Logo (centered on mobile) -->
+  <a href="/" class="logo">LIGERO</a>
+
+  <!-- Desktop Navigation Menu -->
+  <div class="nav-menu">
+    <a href="/shop/" class="nav-item">Shop</a>
+    <span class="nav-separator">|</span>
+    <a href="/services/" class="nav-item">Services</a>
+    <span class="nav-separator">|</span>
+    <a href="/policies/" class="nav-item">Policies</a>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu-overlay">
+  <a href="/" class="mobile-menu-item">HOME</a>
+  <a href="/shop/" class="mobile-menu-item">SHOP</a>
+  <a href="/services/" class="mobile-menu-item">SERVICES</a>
+  <a href="/policies/" class="mobile-menu-item">POLICIES</a>
+</div>
+
+<!-- Services Page -->
+<div class="services-page" id="services-page">
+  <div class="theme-switcher">
+    <div class="theme-circle black" onclick="setTheme('black')"></div>
+    <div class="theme-circle white" onclick="setTheme('white')"></div>
+  </div>
+  <h1 class="services-title">OUR CAPABILITIES</h1>
+
+  <!-- Added missing carousel container and arrows -->
+  <div class="carousel-container">
+    <!-- Left Arrow -->
+    <button class="carousel-arrow left" onclick="slideCarousel(-1)">‹</button>
+
+    <!-- Carousel -->
+    <div class="carousel" id="carousel">
+      <a href="/services/styling" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/styling-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">STYLING</span>
+        </div>
+      </a>
+
+      <a href="/services/creative-directing" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/creative-directing-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">CREATIVE DIRECTING</span>
+        </div>
+      </a>
+
+      <a href="/services/shoots" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/shoots-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">SHOOTS</span>
+        </div>
+      </a>
+
+      <a href="/services/set-designing" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/set-designing-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">SET DESIGNING</span>
+        </div>
+      </a>
+
+      <a href="/services/models" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/models-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">MODELS</span>
+        </div>
+      </a>
+
+      <a href="/services/music" class="service-card">
+        <video class="service-card-video" autoplay muted loop>
+          <source src="/videos/music-video.mp4" type="video/mp4">
+        </video>
+        <div class="service-card-content">
+          <span class="service-card-title">MUSIC</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Right Arrow -->
+    <button class="carousel-arrow right" onclick="slideCarousel(1)">›</button>
+  </div>
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>
