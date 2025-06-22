@@ -398,7 +398,7 @@ nav {
 
     min-height: 350px;     /* Reduced from 400px */
 
-    border-color: red;
+    border: 3px solid red !important;
     /* Rest of styling stays the same */
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
