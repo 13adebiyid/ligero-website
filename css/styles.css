@@ -390,16 +390,12 @@ nav {
 /* RESPONSIVE SERVICE CARDS - CHANGE THESE VALUES TO RESIZE */
 .service-card {
     /* MAIN SIZE CONTROLS - ADJUST THESE VALUES */
-    width: 80vw;           /* 28% of viewport width - CHANGE THIS TO RESIZE */
-    height: 55vh;          /* 65% of viewport height - CHANGE THIS TO RESIZE */
 
-    /* ADJUSTED LIMITS - Made more flexible to allow vw to work */
-    min-width: 280px;      /* Reduced from 350px - allows smaller vw values */
-
-    min-height: 350px;     /* Reduced from 400px */
-
-    border: 3px solid red !important;
-    /* Rest of styling stays the same */
+    height: 55vh;          /* 55% of viewport height */
+    flex-basis: 30%;
+    flex-shrink: 0;
+    min-width: 280px;
+    min-height: 350px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
