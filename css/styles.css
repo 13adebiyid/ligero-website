@@ -392,7 +392,7 @@ nav {
     /* MAIN SIZE CONTROLS - ADJUST THESE VALUES */
 
     height: 55vh;          /* 55% of viewport height */
-    flex-basis: 60%;
+    flex-basis: 45%;
     flex-shrink: 0;
     min-width: 280px;
     min-height: 350px;
