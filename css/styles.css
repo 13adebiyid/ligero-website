@@ -216,10 +216,10 @@ nav {
 
 .choose-button {
     background: transparent;
-    border: 1.5px solid white;
+    border: 1px solid white;
     color: white;
-    padding: 15px 30px;
-    font-size: 0.5rem;
+    padding: 70px 190px;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s;
     letter-spacing: 2px;
