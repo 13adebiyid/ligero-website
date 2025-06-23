@@ -172,7 +172,7 @@ nav {
     backdrop-filter: blur(10px);
     z-index: 999;
     display: none;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 40px;
@@ -909,7 +909,7 @@ body.white-theme .contact-button:hover {
         transform: none !important;
         transition: none !important;
         display: flex !important;
-        flex-direction: column !important;
+        flex-direction: row !important;
         gap: 20px !important;
         width: 100% !important;
         margin: 0 !important;
