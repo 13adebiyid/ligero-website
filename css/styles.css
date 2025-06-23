@@ -879,12 +879,12 @@ body.white-theme .contact-button:hover {
 
     /* Services Page Mobile - Vertical Scroll */
     .services-page {
-        padding: 160px 20px 50px;
+        padding: 120px 20px 50px;
     }
 
     .services-title {
         font-size: 2rem;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
         position: relative;
         z-index: 10;
     }
@@ -893,17 +893,17 @@ body.white-theme .contact-button:hover {
         position: relative;
         width: 100%;
         height: auto;
-        max-height: calc(100vh - 260px);
+        max-height: calc(100vh - 200px);
         overflow-y: auto;
         overflow-x: hidden;
-        padding: 20px 0;
-        margin: 20px 0 0;
+        padding: 10px 0;
+        margin: 10px 0 0;
     }
 
     .carousel {
         display: flex;
         flex-direction: column;
-        gap: 25px;
+        gap: 20px;
         padding: 0;
         width: 100%;
         height: auto;
@@ -924,6 +924,38 @@ body.white-theme .contact-button:hover {
         margin: 0;
         flex-shrink: 0;
         font-size: 1.2rem;
+    }
+
+    .service-card-content {
+        position: absolute; /* Changed from relative to absolute */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+        z-index: 2;
+        padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        text-align: center;
+        pointer-events: none; /* Prevent interference with card clicks */
+    }
+
+    .service-card-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    /* White theme adjustments for mobile */
+    body.white-theme .service-card-title {
+        text-shadow:
+                2px 2px 4px rgba(255, 255, 255, 0.9),
+                -1px -1px 2px rgba(255, 255, 255, 0.7),
+                1px 1px 3px rgba(255, 255, 255, 0.8);
+        color: black;
     }
 
     .carousel-arrow {
