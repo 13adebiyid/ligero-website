@@ -532,6 +532,8 @@ function testCarouselReach() {
 
 // Apply theme on page load
 document.addEventListener('DOMContentLoaded', () => {
+    document.body.style.opacity = '';
+    isNavigating = false;
     // Initialize page transitions first
     initPageLoad();
     setupPageTransitions();
