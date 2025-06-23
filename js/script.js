@@ -51,6 +51,99 @@ function setTheme(theme) {
     }
 }
 
+// Reset page state when navigating back/forward
+function resetPageState() {
+    // Reset navigation flag
+    isNavigating = false;
+
+    // Remove any inline opacity styles
+    document.body.style.opacity = '';
+
+    // Remove any leftover transition overlays
+    const existingOverlays = document.querySelectorAll('.page-transition');
+    existingOverlays.forEach(overlay => {
+        if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+        }
+    });
+
+    // Reset body classes to ensure proper state
+    document.body.classList.add('page-loaded');
+    document.body.classList.add('content-loaded');
+
+    // Re-enable body scroll
+    document.body.style.overflow = '';
+
+    // Close mobile menu if open
+    closeMobileMenu();
+
+    console.log('Page state reset for back/forward navigation');
+}
+
+// Listen for browser back/forward navigation
+window.addEventListener('pageshow', function(event) {
+    // This fires when page is shown, including back/forward navigation
+    if (event.persisted) {
+        // Page was restored from cache (back/forward navigation)
+        console.log('Page restored from cache - resetting state');
+        resetPageState();
+
+        // Reinitialize page-specific functionality
+        setTimeout(() => {
+            initPageSpecificFeatures();
+        }, 50);
+    }
+});
+
+// Also listen for popstate (back/forward button)
+window.addEventListener('popstate', function(event) {
+    console.log('Popstate event - resetting state');
+    resetPageState();
+});
+
+// Function to reinitialize page-specific features after back navigation
+function initPageSpecificFeatures() {
+    // Reset carousel if on services page
+    const carousel = document.getElementById('carousel');
+    if (carousel && !isMobile()) {
+        resetCarousel();
+        // Re-test carousel reach
+        setTimeout(() => {
+            testCarouselReach();
+        }, 100);
+    }
+
+    // Ensure theme is applied correctly
+    try {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'white') {
+            document.body.classList.add('white-theme');
+        } else {
+            document.body.classList.remove('white-theme');
+        }
+    } catch (e) {
+        // localStorage not available
+    }
+}
+
+// Modify your existing handleSimplePageTransition function
+function handleSimplePageTransition(url) {
+    if (isNavigating) return;
+    isNavigating = true;
+
+    // Just fade out and navigate - no overlay
+    document.body.style.opacity = '0.3';
+    setTimeout(() => {
+        window.location.href = url;
+    }, 150);
+}
+
+// Add beforeunload listener to clean up state
+window.addEventListener('beforeunload', function() {
+    // Reset state before leaving page
+    resetPageState();
+});
+
 // Mobile menu toggle functionality
 function toggleMobileMenu() {
     const hamburger = document.querySelector('.hamburger-menu');
@@ -532,8 +625,7 @@ function testCarouselReach() {
 
 // Apply theme on page load
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.style.opacity = '';
-    isNavigating = false;
+    resetPageState();
     // Initialize page transitions first
     initPageLoad();
     setupPageTransitions();
