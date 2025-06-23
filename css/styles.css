@@ -890,53 +890,55 @@ body.white-theme .contact-button:hover {
     }
 
     .carousel-container {
-        position: relative;
-        width: 100%;
-        height: auto;
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 10px 0;
-        margin: 10px 0 0;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        margin-top: 20px !important; /* Ensure space below title */
     }
 
     .carousel {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 0;
-        width: 100%;
-        height: auto;
-        align-items: stretch;
-        position: static;
-        margin: 0;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
         transform: none !important;
         transition: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .service-card {
-        width: 100%;           /* Full width on mobile */
-        height: 200px;         /* Fixed height on mobile */
-        min-width: auto;
-        max-width: none;
-        min-height: 180px;
-        max-height: 220px;
-        margin: 0;
-        flex-shrink: 0;
-        font-size: 1.2rem;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .service-card-content {
-        position: absolute; /* Changed from relative to absolute */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* Center both horizontally and vertically */
-        z-index: 2;
-        padding: 20px;
-        border-radius: 8px;
-        width: 100%;
-        text-align: center;
-        pointer-events: none; /* Prevent interference with card clicks */
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 2 !important;
+        text-align: center !important;
+        width: auto !important;
+        pointer-events: none !important;
     }
 
     .service-card-video {
@@ -947,6 +949,15 @@ body.white-theme .contact-button:hover {
         height: 100%;
         object-fit: cover;
         z-index: 1;
+    }
+
+    .service-card-title {
+        margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     /* White theme adjustments for mobile */
