@@ -53,10 +53,7 @@ function setTheme(theme) {
 
 // Reset page state when navigating back/forward
 function resetPageState() {
-    // Reset navigation flag
     isNavigating = false;
-
-    // Remove any inline opacity styles
     document.body.style.opacity = '';
 
     // Remove any leftover transition overlays
@@ -67,15 +64,14 @@ function resetPageState() {
         }
     });
 
-    // Reset body classes to ensure proper state
     document.body.classList.add('page-loaded');
     document.body.classList.add('content-loaded');
-
-    // Re-enable body scroll
     document.body.style.overflow = '';
 
-    // Close mobile menu if open
     closeMobileMenu();
+
+    // IMPORTANT: Reset carousel positioning
+    resetCarousel();
 
     console.log('Page state reset for back/forward navigation');
 }
@@ -244,8 +240,9 @@ function setupCarouselKeyboardNavigation() {
 
 // DYNAMIC: Improved carousel sliding logic - works with any card size
 function slideCarousel(direction) {
-    // Don't slide on mobile - it's now a vertical scroll
+    // Immediately return on mobile - no carousel sliding
     if (isMobile()) {
+        console.log('Carousel sliding disabled on mobile');
         return;
     }
 
@@ -255,6 +252,7 @@ function slideCarousel(direction) {
         return;
     }
 
+    // Rest of your existing slideCarousel logic...
     const cards = carousel.querySelectorAll('.service-card');
     const totalCards = cards.length;
 
@@ -263,24 +261,15 @@ function slideCarousel(direction) {
         return;
     }
 
-    // Get dynamic settings based on actual rendered card size
     const settings = getCarouselSettings();
     const { cardWidth, cardGap, containerPadding } = settings;
-
-    // Calculate the available width for displaying cards
     const containerWidth = window.innerWidth - containerPadding;
-
-    // Calculate how many complete cards can fit in the visible area
     const cardWithGap = cardWidth + cardGap;
     const cardsVisible = Math.max(1, Math.floor(containerWidth / cardWithGap));
-
-    // Calculate maximum slide position
     const maxSlide = Math.max(0, totalCards - cardsVisible);
 
-    // Update current slide position
     currentSlide += direction;
 
-    // Keep within bounds
     if (currentSlide < 0) {
         currentSlide = 0;
     }
@@ -288,14 +277,11 @@ function slideCarousel(direction) {
         currentSlide = maxSlide;
     }
 
-    // Calculate translation
     let translateX;
 
     if (currentSlide === 0) {
-        // First position
         translateX = 0;
     } else if (currentSlide >= maxSlide) {
-        // Last position - ensure the last cards are fully visible
         const totalContentWidth = (totalCards * cardWidth) + ((totalCards - 1) * cardGap);
         const availableContentWidth = containerWidth;
 
@@ -305,45 +291,45 @@ function slideCarousel(direction) {
             translateX = 0;
         }
     } else {
-        // Middle positions
         translateX = -(currentSlide * cardWithGap);
     }
 
-    // Apply the transformation
     carousel.style.transform = `translateX(${translateX}px)`;
-
-    // Enhanced debugging
-    console.log('=== DYNAMIC CAROUSEL DEBUG ===');
-    console.log(`Screen width: ${window.innerWidth}px`);
-    console.log(`Container width: ${containerWidth}px`);
-    console.log(`Card width: ${cardWidth.toFixed(1)}px (${((cardWidth/window.innerWidth)*100).toFixed(1)}% of screen)`);
-    console.log(`Gap: ${cardGap.toFixed(1)}px`);
-    console.log(`Card with gap: ${cardWithGap.toFixed(1)}px`);
-    console.log(`Total cards: ${totalCards}, Cards visible: ${cardsVisible}`);
-    console.log(`Current slide: ${currentSlide}/${maxSlide}`);
-    console.log(`Translation: ${translateX.toFixed(1)}px`);
-
-    // Log which cards should be visible
-    const startCard = currentSlide;
-    const endCard = Math.min(startCard + cardsVisible - 1, totalCards - 1);
-    console.log(`Visible cards: ${startCard + 1} to ${endCard + 1}`);
-
-    // List all card titles for reference
-    cards.forEach((card, index) => {
-        const title = card.querySelector('.service-card-title')?.textContent || `Card ${index + 1}`;
-        const isVisible = index >= startCard && index <= endCard;
-        console.log(`${index + 1}. ${title} ${isVisible ? '(VISIBLE)' : ''}`);
-    });
-    console.log('===============================');
 }
 
 // Reset carousel when window is resized
 function resetCarousel() {
     currentSlide = 0;
     const carousel = document.getElementById('carousel');
-    if (carousel && !isMobile()) {
-        carousel.style.transform = 'translateX(0px)';
-        console.log('Carousel reset to initial position');
+    if (carousel) {
+        if (!isMobile()) {
+            // Desktop: apply normal transform
+            carousel.style.transform = 'translateX(0px)';
+            carousel.style.transition = 'transform 0.3s ease';
+            console.log('Carousel reset to initial position (desktop)');
+        } else {
+            // Mobile: completely remove all transforms and positioning
+            carousel.style.transform = 'none';
+            carousel.style.transition = 'none';
+            carousel.style.position = 'static';
+            carousel.style.top = 'auto';
+            carousel.style.left = 'auto';
+            carousel.style.right = 'auto';
+            carousel.style.bottom = 'auto';
+
+            // Also reset any positioning on individual cards
+            const cards = carousel.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                card.style.transform = 'none';
+                card.style.position = 'relative';
+                card.style.top = 'auto';
+                card.style.left = 'auto';
+                card.style.right = 'auto';
+                card.style.bottom = 'auto';
+            });
+
+            console.log('Carousel reset for mobile (all transforms removed)');
+        }
     }
 }
 
@@ -352,6 +338,7 @@ let resizeTimeout;
 function handleResize() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+        // Always reset carousel when resizing
         resetCarousel();
 
         // Close mobile menu if screen becomes large
@@ -359,7 +346,7 @@ function handleResize() {
             closeMobileMenu();
         }
 
-        // Re-test carousel after resize
+        // Re-test carousel after resize (desktop only)
         if (!isMobile()) {
             setTimeout(() => {
                 testCarouselReach();
@@ -625,12 +612,14 @@ function testCarouselReach() {
 
 // Apply theme on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // FIRST: Reset any problematic states
     resetPageState();
-    // Initialize page transitions first
+
+    // Initialize page transitions
     initPageLoad();
     setupPageTransitions();
 
-    // Try to load saved theme
+    // Apply theme
     try {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'white') {
@@ -642,31 +631,32 @@ document.addEventListener('DOMContentLoaded', () => {
         // localStorage not available, use default theme
     }
 
-    // Initialize carousel only if it exists on this page and not on mobile
+    // FIXED: Initialize carousel with proper mobile handling
     const carousel = document.getElementById('carousel');
     if (carousel) {
-        if (!isMobile()) {
-            carousel.style.transition = 'transform 0.3s ease';
-            console.log('🎠 Dynamic responsive carousel initialized for desktop');
+        // Always reset first
+        resetCarousel();
 
-            // Setup keyboard navigation
+        if (!isMobile()) {
+            // Desktop setup
+            console.log('🎠 Dynamic responsive carousel initialized for desktop');
             setupCarouselKeyboardNavigation();
 
-            // Add touch event listeners for desktop swiping
             carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
             carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
             carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-            // Test carousel reach after a short delay to ensure everything is loaded
             setTimeout(() => {
                 testCarouselReach();
             }, 200);
-
         } else {
-            // Reset any transform on mobile
-            carousel.style.transform = 'none';
-            carousel.style.transition = 'none';
-            console.log('📱 Mobile detected - carousel converted to vertical scroll');
+            // Mobile setup - ensure clean state
+            console.log('📱 Mobile detected - ensuring clean carousel state');
+
+            // Force clean mobile state
+            setTimeout(() => {
+                resetCarousel();
+            }, 100);
         }
     }
 
@@ -676,11 +666,10 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.addEventListener('click', toggleMobileMenu);
     }
 
-    // Setup mobile menu item click handlers (transitions handle the navigation)
+    // Setup mobile menu item click handlers
     const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
     mobileMenuItems.forEach(item => {
         item.addEventListener('click', () => {
-            // Close menu after transition starts
             setTimeout(() => {
                 closeMobileMenu();
             }, 100);
@@ -717,11 +706,6 @@ document.addEventListener('DOMContentLoaded', () => {
         policiesPage.style.display = 'block';
     }
 
-    // Reset carousel position for desktop
-    if (!isMobile()) {
-        resetCarousel();
-    }
-
     // Add window resize listener
     window.addEventListener('resize', handleResize);
 
@@ -737,11 +721,10 @@ document.addEventListener('DOMContentLoaded', () => {
         blackThemeCircle.onclick = () => setTheme('black');
     }
 
-    // Handle navigation clicks for mobile (transitions now handle this)
+    // Handle navigation clicks
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            // Add a small delay to prevent rapid clicking on mobile
             e.target.style.pointerEvents = 'none';
             setTimeout(() => {
                 e.target.style.pointerEvents = 'auto';
@@ -749,3 +732,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        console.log('Page restored from cache - resetting state');
+        resetPageState();
+
+        setTimeout(() => {
+            initPageSpecificFeatures();
+        }, 50);
+    }
+});
+
+window.addEventListener('popstate', function(event) {
+    console.log('Popstate event - resetting state');
+    resetPageState();
+});
+
+function initPageSpecificFeatures() {
+    // Reset carousel properly
+    resetCarousel();
+
+    if (!isMobile()) {
+        setTimeout(() => {
+            testCarouselReach();
+        }, 100);
+    }
+
+    // Ensure theme is applied correctly
+    try {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'white') {
+            document.body.classList.add('white-theme');
+        } else {
+            document.body.classList.remove('white-theme');
+        }
+    } catch (e) {
+        // localStorage not available
+    }
+}
