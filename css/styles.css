@@ -371,7 +371,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: scroll;
     margin-bottom: 40px;
 }
 
