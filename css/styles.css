@@ -218,11 +218,12 @@ nav {
     background: transparent;
     border: 2px solid white;
     color: white;
-    padding: 15px 50px;
+    padding: 15px 20px;
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s;
     letter-spacing: 2px;
+    text-align: center;
 }
 
 .choose-button:hover {
