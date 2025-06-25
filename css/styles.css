@@ -268,33 +268,41 @@ nav {
 
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
-    .video-controls {
-        position: fixed !important;
-        bottom: 10px !important;
-        right: 10px !important;
-        left: auto !important;
-        top: auto !important;
-        transform: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        z-index: 9999 !important;
+    @media screen and (max-width: 768px) {
+        .video-controls {
+            position: fixed !important;
+            bottom: 10px !important;
+            right: 10px !important;
+            left: auto !important;
+            top: auto !important;
 
-        /* Change display to inline-flex to prevent expansion */
-        display: inline-flex !important;
+            /* Ensure tight fit */
+            padding: 0 !important;
+            margin: 0 !important;
+            height: auto !important;
+            width: auto !important;
 
-        /* Force container to be only as big as content */
-        width: auto !important;
-        height: auto !important;
-        flex-wrap: nowrap !important;
-        align-items: center !important;
-        justify-content: flex-end !important;
+            display: flex !important;
+            align-items: flex-end !important;
+            justify-content: flex-end !important;
+            gap: 8px !important;
 
-        /* Small gap between buttons */
-        gap: 8px !important;
+            background: red !important; /* for debugging */
+            z-index: 9999 !important;
+        }
 
-        /* Remove the red background once confirmed working */
-        background: red !important;
+        .video-btn {
+            width: 40px !important;
+            height: 40px !important;
+            padding: 6px !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: #404040 !important;
+        }
     }
+
 
     .video-btn {
         width: 40px !important;
@@ -307,7 +315,7 @@ nav {
         flex-shrink: 0 !important;  /* Prevent buttons from shrinking */
         display: flex !important;
         align-items: center !important;
-        justify-content: flex-end !important;
+        justify-content: center !important;
     }
 
     .video-btn img {
