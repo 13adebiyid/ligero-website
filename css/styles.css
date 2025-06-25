@@ -230,7 +230,7 @@ nav {
 }
 
 .video-btn {
-    background: #404040;
+    background: rgba(128, 128, 128);
     border: none;
     padding: 8px;
     border-radius: 50%;
@@ -244,11 +244,12 @@ nav {
 }
 
 .video-btn:hover {
-    background: rgba(128, 128, 128);
+    background: rgba(145, 145, 145, 1);
     transform: scale(1.05);
 }
 
 .video-btn img {
+    filter: brightness(0) saturate(100%);
     width: 15px;
     height: 15px;
     transition: all 0.3s;
