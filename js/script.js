@@ -452,72 +452,59 @@ function handleHomePageTransition(url) {
 
     showNavigationTransition();
 
-    // Navigate after delay
-    setTimeout(() => {
-        window.location.href = url;
-    }, 400);
+    // Navigate immediately without delay
+    window.location.href = url;
 }
 
 function setupPageTransitions() {
-    // Logo clicks - special handling
-    const logoLinks = document.querySelectorAll('.logo');
-    logoLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
+    // Handle ALL links with href attributes that start with "/"
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest('a[href]');
+        if (!target) return;
 
+        const href = target.getAttribute('href');
+        if (!href || !href.startsWith('/') || href.startsWith('//')) return;
+
+        // Prevent default navigation
+        e.preventDefault();
+
+        // If navigating while already navigating, ignore
+        if (isNavigating) return;
+
+        // Check if it's a logo link
+        const isLogo = target.classList.contains('logo');
+
+        // Check if it's going to home page
+        const isGoingHome = href === '/' || href.endsWith('index.html') || href === '';
+
+        // Logo clicks - special handling
+        if (isLogo) {
             // If we're already on the home page, do nothing
-            if (isOnHomePage() && (href === '/' || href.endsWith('index.html') || href === '')) {
-                e.preventDefault();
+            if (isOnHomePage() && isGoingHome) {
                 console.log('Already on home page - no navigation needed');
                 return;
             }
 
             // If going to home page from another page, show transition
-            if (href && href.startsWith('/') && !href.startsWith('//')) {
-                e.preventDefault();
+            if (isGoingHome) {
                 handleHomePageTransition(href);
+                return;
             }
-        });
-    });
+        }
 
-    // Mobile home menu links
-    const mobileHomeLinks = document.querySelectorAll('.mobile-menu-item[href="/"], .mobile-menu-item[href*="index.html"]');
-    mobileHomeLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-
+        // Mobile home menu links
+        if (target.classList.contains('mobile-menu-item') && isGoingHome) {
             // If we're already on the home page, just close menu
-            if (isOnHomePage() && (href === '/' || href.endsWith('index.html') || href === '')) {
-                e.preventDefault();
+            if (isOnHomePage()) {
                 closeMobileMenu();
                 return;
             }
+            handleHomePageTransition(href);
+            return;
+        }
 
-            if (href && href.startsWith('/') && !href.startsWith('//')) {
-                e.preventDefault();
-                handleHomePageTransition(href);
-            }
-        });
-    });
-
-    // All other links get simple fade transition
-    const otherLinks = document.querySelectorAll(`
-        .nav-item,
-        .mobile-menu-item:not([href="/"]):not([href*="index.html"]),
-        .service-card,
-        .choose-button,
-        .back-link
-    `);
-
-    otherLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-
-            if (href && href.startsWith('/') && !href.startsWith('//')) {
-                e.preventDefault();
-                handleSimplePageTransition(href);
-            }
-        });
+        // All other navigation - simple fade
+        handleSimplePageTransition(href);
     });
 }
 
@@ -740,17 +727,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (blackThemeCircle) {
         blackThemeCircle.onclick = () => setTheme('black');
     }
-
-    // Handle navigation clicks
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.target.style.pointerEvents = 'none';
-            setTimeout(() => {
-                e.target.style.pointerEvents = 'auto';
-            }, 300);
-        });
-    });
 });
 
 window.addEventListener('pageshow', function(event) {
