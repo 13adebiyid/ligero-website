@@ -907,7 +907,8 @@ function initPageSpecificFeatures() {
         console.error('Error in page-specific features:', error);
     }
 }
-// Video controls functionality with custom images
+
+// Video controls functionality with mobile autoplay fix
 document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('bgVideo');
     const playPauseBtn = document.getElementById('playPauseBtn');
@@ -916,8 +917,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const muteIcon = document.getElementById('muteIcon');
 
     if (video && playPauseBtn && muteBtn) {
+
+        // Mobile autoplay fix - try to play on any user interaction
+        function tryAutoplay() {
+            video.play().then(() => {
+                console.log('Video started playing');
+                playPauseIcon.src = '/images/pause-icon.png';
+            }).catch((error) => {
+                console.log('Autoplay prevented:', error);
+                playPauseIcon.src = '/images/play-icon.png';
+            });
+        }
+
+        // Try autoplay on page load
+        setTimeout(tryAutoplay, 100);
+
+        // Also try on first user interaction
+        document.addEventListener('touchstart', tryAutoplay, { once: true });
+        document.addEventListener('click', tryAutoplay, { once: true });
+
         // Play/Pause functionality
-        playPauseBtn.addEventListener('click', () => {
+        playPauseBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering the autoplay listener
             if (video.paused) {
                 video.play();
                 playPauseIcon.src = '/images/pause-icon.png';
@@ -949,6 +970,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         video.addEventListener('pause', () => {
             playPauseIcon.src = '/images/play-icon.png';
+        });
+
+        // Handle when video can play
+        video.addEventListener('canplaythrough', () => {
+            tryAutoplay();
         });
     }
 });
