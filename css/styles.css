@@ -214,10 +214,11 @@ nav {
     z-index: -1;
 }
 
-/* FIXED: CHOOSE button - no border initially, transparent black border on hover */
+/* FIXED: CHOOSE button - just text, transparent black background on hover */
 .choose-button {
     background: transparent;
     border: none;
+    color: white;
     padding: 70px 190px;
     font-size: 1.5rem;
     cursor: pointer;
@@ -227,8 +228,9 @@ nav {
 }
 
 .choose-button:hover {
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
 }
 
 /* Shop Page */
