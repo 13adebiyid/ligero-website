@@ -122,18 +122,6 @@ function initPageSpecificFeatures() {
     }
 }
 
-// Modify your existing handleSimplePageTransition function
-function handleSimplePageTransition(url) {
-    if (isNavigating) return;
-    isNavigating = true;
-
-    // Just fade out and navigate - no overlay
-    document.body.style.opacity = '0.3';
-    setTimeout(() => {
-        window.location.href = url;
-    }, 150);
-}
-
 // Add beforeunload listener to clean up state
 window.addEventListener('beforeunload', function() {
     // Reset state before leaving page
@@ -173,6 +161,14 @@ function closeMobileMenu() {
 // Check if we're on mobile
 function isMobile() {
     return window.innerWidth <= 768;
+}
+
+// Check if we're currently on the home page
+function isOnHomePage() {
+    return window.location.pathname === '/' ||
+        window.location.pathname.endsWith('index.html') ||
+        window.location.pathname === '' ||
+        document.getElementById('home-page') !== null;
 }
 
 // DYNAMIC: Get carousel settings - automatically calculates card dimensions
@@ -420,7 +416,7 @@ function showInitialLoading() {
 }
 
 function showNavigationTransition() {
-    // Create overlay for navigation (only for home page)
+    // Create overlay for navigation to home page
     const overlay = createTransitionOverlay();
     overlay.classList.add('active');
 
@@ -437,16 +433,22 @@ function showNavigationTransition() {
     return overlay;
 }
 
-function handleHomePageTransition(url) {
+// Simple page transitions without overlays
+function handleSimplePageTransition(url) {
     if (isNavigating) return;
     isNavigating = true;
 
-    // Set flag to prevent double loading on destination page
-    try {
-        sessionStorage.setItem('internalNavigation', 'true');
-    } catch (e) {
-        // sessionStorage not available
-    }
+    // Just fade out and navigate - no overlay
+    document.body.style.opacity = '0.3';
+    setTimeout(() => {
+        window.location.href = url;
+    }, 150);
+}
+
+// Home page transition with overlay
+function handleHomePageTransition(url) {
+    if (isNavigating) return;
+    isNavigating = true;
 
     showNavigationTransition();
 
@@ -456,28 +458,47 @@ function handleHomePageTransition(url) {
     }, 400);
 }
 
-function handleSimplePageTransition(url) {
-    if (isNavigating) return;
-    isNavigating = true;
-
-    // Set flag to prevent double loading on destination page
-    try {
-        sessionStorage.setItem('internalNavigation', 'true');
-    } catch (e) {
-        // sessionStorage not available
-    }
-
-    // Just fade out and navigate - no overlay
-    document.body.style.opacity = '0.3';
-    setTimeout(() => {
-        window.location.href = url;
-    }, 150);
-}
-
 function setupPageTransitions() {
-    // Logo clicks and mobile home menu get the special overlay transition
+    // Logo clicks - special handling
     const logoLinks = document.querySelectorAll('.logo');
+    logoLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+
+            // If we're already on the home page, do nothing
+            if (isOnHomePage() && (href === '/' || href.endsWith('index.html') || href === '')) {
+                e.preventDefault();
+                console.log('Already on home page - no navigation needed');
+                return;
+            }
+
+            // If going to home page from another page, show transition
+            if (href && href.startsWith('/') && !href.startsWith('//')) {
+                e.preventDefault();
+                handleHomePageTransition(href);
+            }
+        });
+    });
+
+    // Mobile home menu links
     const mobileHomeLinks = document.querySelectorAll('.mobile-menu-item[href="/"], .mobile-menu-item[href*="index.html"]');
+    mobileHomeLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+
+            // If we're already on the home page, just close menu
+            if (isOnHomePage() && (href === '/' || href.endsWith('index.html') || href === '')) {
+                e.preventDefault();
+                closeMobileMenu();
+                return;
+            }
+
+            if (href && href.startsWith('/') && !href.startsWith('//')) {
+                e.preventDefault();
+                handleHomePageTransition(href);
+            }
+        });
+    });
 
     // All other links get simple fade transition
     const otherLinks = document.querySelectorAll(`
@@ -488,19 +509,6 @@ function setupPageTransitions() {
         .back-link
     `);
 
-    // Logo and mobile home clicks (with overlay)
-    [...logoLinks, ...mobileHomeLinks].forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-
-            if (href && href.startsWith('/') && !href.startsWith('//')) {
-                e.preventDefault();
-                handleHomePageTransition(href);
-            }
-        });
-    });
-
-    // All other page transitions (simple fade)
     otherLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -514,36 +522,10 @@ function setupPageTransitions() {
 }
 
 function initPageLoad() {
-    // Check if this is internal navigation
-    const isInternalNav = sessionStorage.getItem('internalNavigation') === 'true';
-
-    // Clear the flag immediately
-    try {
-        sessionStorage.removeItem('internalNavigation');
-    } catch (e) {
-        // sessionStorage not available
-    }
-
-    // If this is internal navigation, skip the loading screen
-    if (isInternalNav) {
-        console.log('Internal navigation detected - skipping loading screen');
-        // Just do quick animations
-        setTimeout(() => {
-            document.body.classList.add('page-loaded');
-        }, 100);
-
-        setTimeout(() => {
-            document.body.classList.add('content-loaded');
-        }, 300);
-        return;
-    }
-
     // Only show loading screen on the very first visit to the website
     // Check if user has visited before using sessionStorage
     const hasVisitedBefore = sessionStorage.getItem('hasVisited');
-    const isHomePage = window.location.pathname === '/' ||
-        window.location.pathname.endsWith('index.html') ||
-        window.location.pathname === '';
+    const isHomePage = isOnHomePage();
 
     // Show loading screen only if:
     // 1. User hasn't visited before AND it's the home page, OR
