@@ -441,6 +441,13 @@ function handleHomePageTransition(url) {
     if (isNavigating) return;
     isNavigating = true;
 
+    // Set flag to prevent double loading on destination page
+    try {
+        sessionStorage.setItem('internalNavigation', 'true');
+    } catch (e) {
+        // sessionStorage not available
+    }
+
     showNavigationTransition();
 
     // Navigate after delay
@@ -452,6 +459,13 @@ function handleHomePageTransition(url) {
 function handleSimplePageTransition(url) {
     if (isNavigating) return;
     isNavigating = true;
+
+    // Set flag to prevent double loading on destination page
+    try {
+        sessionStorage.setItem('internalNavigation', 'true');
+    } catch (e) {
+        // sessionStorage not available
+    }
 
     // Just fade out and navigate - no overlay
     document.body.style.opacity = '0.3';
@@ -500,6 +514,30 @@ function setupPageTransitions() {
 }
 
 function initPageLoad() {
+    // Check if this is internal navigation
+    const isInternalNav = sessionStorage.getItem('internalNavigation') === 'true';
+
+    // Clear the flag immediately
+    try {
+        sessionStorage.removeItem('internalNavigation');
+    } catch (e) {
+        // sessionStorage not available
+    }
+
+    // If this is internal navigation, skip the loading screen
+    if (isInternalNav) {
+        console.log('Internal navigation detected - skipping loading screen');
+        // Just do quick animations
+        setTimeout(() => {
+            document.body.classList.add('page-loaded');
+        }, 100);
+
+        setTimeout(() => {
+            document.body.classList.add('content-loaded');
+        }, 300);
+        return;
+    }
+
     // Only show loading screen on the very first visit to the website
     // Check if user has visited before using sessionStorage
     const hasVisitedBefore = sessionStorage.getItem('hasVisited');
