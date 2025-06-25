@@ -15,7 +15,7 @@
 }
 
 body {
-    font-family: "Madani";
+    font-family: "Madani", Arial, sans-serif;
     background: black;
     color: white;
     overflow-x: hidden;
@@ -228,7 +228,7 @@ nav {
 }
 
 .choose-button:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
     border: none;
     color: white;
 }
