@@ -40,9 +40,23 @@
 
 <!-- Home Page -->
 <div class="home-page" id="home-page">
-  <video class="background-video" autoplay muted loop>
+  <video
+          class="background-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          disablepictureinpicture
+          controlslist="nodownload nofullscreen noremoteplayback"
+          id="bgVideo">
     <source src="videos/test_video.mp4" type="video/mp4">
   </video>
+
+  <!-- Custom video controls -->
+  <div class="video-controls">
+    <button id="playPauseBtn" class="video-btn">⏸️</button>
+    <button id="muteBtn" class="video-btn">🔊</button>
+  </div>
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 5px; text-align: center;">
     <a href="/shop/" class="choose-button" style="text-decoration: none; display: inline-block;">ACCESS</a>
   </div>

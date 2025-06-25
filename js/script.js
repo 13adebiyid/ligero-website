@@ -907,3 +907,42 @@ function initPageSpecificFeatures() {
         console.error('Error in page-specific features:', error);
     }
 }
+// Video controls functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('bgVideo');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const muteBtn = document.getElementById('muteBtn');
+
+    if (video && playPauseBtn && muteBtn) {
+        // Play/Pause functionality
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.textContent = '⏸️';
+            } else {
+                video.pause();
+                playPauseBtn.textContent = '▶️';
+            }
+        });
+
+        // Mute/Unmute functionality
+        muteBtn.addEventListener('click', () => {
+            if (video.muted) {
+                video.muted = false;
+                muteBtn.textContent = '🔊';
+            } else {
+                video.muted = true;
+                muteBtn.textContent = '🔇';
+            }
+        });
+
+        // Handle video events
+        video.addEventListener('play', () => {
+            playPauseBtn.textContent = '⏸️';
+        });
+
+        video.addEventListener('pause', () => {
+            playPauseBtn.textContent = '▶️';
+        });
+    }
+});
