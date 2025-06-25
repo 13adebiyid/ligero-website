@@ -1,5 +1,7 @@
 let currentSlide = 0;
 let isNavigating = false;
+let navigationTimeout = null;
+let lastNavigationTime = 0;
 
 function showPage(page) {
     // For multi-page website, we don't need to hide/show pages
@@ -51,10 +53,25 @@ function setTheme(theme) {
     }
 }
 
+// ROBUST: Reset navigation state
+function resetNavigationState() {
+    isNavigating = false;
+    lastNavigationTime = 0;
+
+    if (navigationTimeout) {
+        clearTimeout(navigationTimeout);
+        navigationTimeout = null;
+    }
+
+    document.body.style.opacity = '';
+    document.body.style.pointerEvents = '';
+
+    console.log('Navigation state reset');
+}
+
 // Reset page state when navigating back/forward
 function resetPageState() {
-    isNavigating = false;
-    document.body.style.opacity = '';
+    resetNavigationState();
 
     // Remove any leftover transition overlays
     const existingOverlays = document.querySelectorAll('.page-transition');
@@ -122,10 +139,38 @@ function initPageSpecificFeatures() {
     }
 }
 
+// ROBUST: Emergency cleanup function
+function emergencyCleanup() {
+    console.log('Emergency cleanup triggered');
+    resetNavigationState();
+
+    // Remove all overlays
+    const overlays = document.querySelectorAll('.page-transition');
+    overlays.forEach(overlay => {
+        if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+        }
+    });
+
+    // Reset body state
+    document.body.style.opacity = '1';
+    document.body.style.pointerEvents = 'auto';
+    document.body.classList.add('page-loaded');
+    document.body.classList.add('content-loaded');
+}
+
+// Emergency cleanup if navigation gets stuck
+setInterval(() => {
+    if (isNavigating && Date.now() - lastNavigationTime > 5000) {
+        console.warn('Navigation appears stuck, cleaning up...');
+        emergencyCleanup();
+    }
+}, 1000);
+
 // Add beforeunload listener to clean up state
 window.addEventListener('beforeunload', function() {
     // Reset state before leaving page
-    resetPageState();
+    resetNavigationState();
 });
 
 // Mobile menu toggle functionality
@@ -293,8 +338,11 @@ function slideCarousel(direction) {
     carousel.style.transform = `translateX(${translateX}px)`;
 }
 
-// Reset carousel when window is resized
+// FIXED: Reset carousel when window is resized - don't reset during navigation
 function resetCarousel() {
+    // Don't reset carousel if we're currently navigating
+    if (isNavigating) return;
+
     currentSlide = 0;
     const carousel = document.getElementById('carousel');
     if (carousel) {
@@ -334,7 +382,7 @@ let resizeTimeout;
 function handleResize() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        // Always reset carousel when resizing
+        // Always reset carousel when resizing (but not during navigation)
         resetCarousel();
 
         // Close mobile menu if screen becomes large
@@ -433,117 +481,184 @@ function showNavigationTransition() {
     return overlay;
 }
 
-// Simple page transitions without overlays
+// ROBUST: Navigation functions with proper error handling
 function handleSimplePageTransition(url) {
-    if (isNavigating) return;
-    isNavigating = true;
+    // ROBUST: Prevent rapid navigation and race conditions
+    const now = Date.now();
+    if (isNavigating || (now - lastNavigationTime < 300)) {
+        console.log('Navigation blocked - too rapid or already navigating');
+        return;
+    }
 
-    // Just fade out and navigate - no overlay
-    document.body.style.opacity = '0.3';
-    setTimeout(() => {
-        window.location.href = url;
-    }, 150);
+    isNavigating = true;
+    lastNavigationTime = now;
+
+    console.log(`Simple transition to: ${url}`);
+
+    try {
+        // Just fade out and navigate - no overlay
+        document.body.style.opacity = '0.3';
+        document.body.style.pointerEvents = 'none';
+
+        navigationTimeout = setTimeout(() => {
+            window.location.href = url;
+        }, 150);
+
+    } catch (error) {
+        console.error('Error during simple transition:', error);
+        emergencyCleanup();
+    }
 }
 
-// Home page transition with overlay
 function handleHomePageTransition(url) {
-    if (isNavigating) return;
+    // ROBUST: Prevent rapid navigation and race conditions
+    const now = Date.now();
+    if (isNavigating || (now - lastNavigationTime < 300)) {
+        console.log('Home navigation blocked - too rapid or already navigating');
+        return;
+    }
+
     isNavigating = true;
+    lastNavigationTime = now;
 
-    showNavigationTransition();
+    console.log(`Home transition to: ${url}`);
 
-    // Navigate immediately without delay
-    window.location.href = url;
+    try {
+        // Show navigation overlay for home page
+        showNavigationTransition();
+        document.body.style.pointerEvents = 'none';
+
+        // Navigate with slight delay to show overlay
+        navigationTimeout = setTimeout(() => {
+            window.location.href = url;
+        }, 200);
+
+    } catch (error) {
+        console.error('Error during home transition:', error);
+        emergencyCleanup();
+    }
 }
 
+// ROBUST: Navigation setup with comprehensive error handling
 function setupPageTransitions() {
     // Handle ALL links with href attributes that start with "/"
     document.addEventListener('click', (e) => {
-        const target = e.target.closest('a[href]');
-        if (!target) return;
+        try {
+            const target = e.target.closest('a[href]');
+            if (!target) return;
 
-        const href = target.getAttribute('href');
-        if (!href || !href.startsWith('/') || href.startsWith('//')) return;
+            const href = target.getAttribute('href');
+            if (!href || !href.startsWith('/') || href.startsWith('//')) return;
 
-        // Prevent default navigation
-        e.preventDefault();
+            // FIXED: Don't prevent default for service cards initially - let us handle it
+            const isServiceCard = target.classList.contains('service-card');
 
-        // If navigating while already navigating, ignore
-        if (isNavigating) return;
+            // If it's a service card, don't reset carousel during navigation
+            if (isServiceCard) {
+                console.log('Service card clicked - preventing carousel reset');
+            }
 
-        // Check if it's a logo link
-        const isLogo = target.classList.contains('logo');
+            // Prevent default navigation
+            e.preventDefault();
+            e.stopPropagation();
 
-        // Check if it's going to home page
-        const isGoingHome = href === '/' || href.endsWith('index.html') || href === '';
-
-        // Logo clicks - special handling
-        if (isLogo) {
-            // If we're already on the home page, do nothing
-            if (isOnHomePage() && isGoingHome) {
-                console.log('Already on home page - no navigation needed');
+            // If navigating while already navigating, ignore
+            if (isNavigating) {
+                console.log('Already navigating - ignoring click');
                 return;
             }
 
-            // If going to home page from another page, show transition
-            if (isGoingHome) {
+            // Check if it's a logo link
+            const isLogo = target.classList.contains('logo');
+
+            // Check if it's going to home page
+            const isGoingHome = href === '/' || href.endsWith('index.html') || href === '';
+
+            // Logo clicks - special handling
+            if (isLogo) {
+                // If we're already on the home page, do nothing
+                if (isOnHomePage() && isGoingHome) {
+                    console.log('Already on home page - no navigation needed');
+                    return;
+                }
+
+                // If going to home page from another page, show transition
+                if (isGoingHome) {
+                    handleHomePageTransition(href);
+                    return;
+                }
+            }
+
+            // Mobile home menu links
+            if (target.classList.contains('mobile-menu-item') && isGoingHome) {
+                // If we're already on the home page, just close menu
+                if (isOnHomePage()) {
+                    closeMobileMenu();
+                    return;
+                }
                 handleHomePageTransition(href);
                 return;
             }
-        }
 
-        // Mobile home menu links
-        if (target.classList.contains('mobile-menu-item') && isGoingHome) {
-            // If we're already on the home page, just close menu
-            if (isOnHomePage()) {
-                closeMobileMenu();
+            // CHOOSE button - special handling for home navigation
+            if (target.classList.contains('choose-button') && isGoingHome) {
+                handleHomePageTransition(href);
                 return;
             }
-            handleHomePageTransition(href);
-            return;
-        }
 
-        // All other navigation - simple fade
-        handleSimplePageTransition(href);
+            // All other navigation - simple fade
+            handleSimplePageTransition(href);
+
+        } catch (error) {
+            console.error('Error in navigation click handler:', error);
+            emergencyCleanup();
+        }
     });
 }
 
 function initPageLoad() {
-    // Only show loading screen on the very first visit to the website
-    // Check if user has visited before using sessionStorage
-    const hasVisitedBefore = sessionStorage.getItem('hasVisited');
-    const isHomePage = isOnHomePage();
+    try {
+        // Only show loading screen on the very first visit to the website
+        // Check if user has visited before using sessionStorage
+        const hasVisitedBefore = sessionStorage.getItem('hasVisited');
+        const isHomePage = isOnHomePage();
 
-    // Show loading screen only if:
-    // 1. User hasn't visited before AND it's the home page, OR
-    // 2. User is coming from external site to any page
-    const shouldShowLoading = (!hasVisitedBefore && isHomePage) ||
-        (!document.referrer || !document.referrer.includes(window.location.hostname));
+        // Show loading screen only if:
+        // 1. User hasn't visited before AND it's the home page, OR
+        // 2. User is coming from external site to any page
+        const shouldShowLoading = (!hasVisitedBefore && isHomePage) ||
+            (!document.referrer || !document.referrer.includes(window.location.hostname));
 
-    if (shouldShowLoading && !document.querySelector('.page-transition')) {
-        // Mark that user has visited
-        sessionStorage.setItem('hasVisited', 'true');
+        if (shouldShowLoading && !document.querySelector('.page-transition')) {
+            // Mark that user has visited
+            sessionStorage.setItem('hasVisited', 'true');
 
-        // Show initial loading animation
-        showInitialLoading();
+            // Show initial loading animation
+            showInitialLoading();
 
-        // Start page content animations after overlay begins to fade
-        setTimeout(() => {
-            document.body.classList.add('page-loaded');
-        }, 1600);
+            // Start page content animations after overlay begins to fade
+            setTimeout(() => {
+                document.body.classList.add('page-loaded');
+            }, 1600);
 
-        setTimeout(() => {
-            document.body.classList.add('content-loaded');
-        }, 1900);
-    } else {
-        // For all other navigation, just do quick animations
-        setTimeout(() => {
-            document.body.classList.add('page-loaded');
-        }, 100);
+            setTimeout(() => {
+                document.body.classList.add('content-loaded');
+            }, 1900);
+        } else {
+            // For all other navigation, just do quick animations
+            setTimeout(() => {
+                document.body.classList.add('page-loaded');
+            }, 100);
 
-        setTimeout(() => {
-            document.body.classList.add('content-loaded');
-        }, 300);
+            setTimeout(() => {
+                document.body.classList.add('content-loaded');
+            }, 300);
+        }
+    } catch (error) {
+        console.error('Error in page load initialization:', error);
+        // Fallback - just show the page
+        document.body.classList.add('page-loaded');
+        document.body.classList.add('content-loaded');
     }
 }
 
@@ -617,115 +732,136 @@ function testCarouselReach() {
     console.log('================================');
 }
 
-// Apply theme on page load
+// ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {
-    // FIRST: Reset any problematic states
-    resetPageState();
-
-    // Initialize page transitions
-    initPageLoad();
-    setupPageTransitions();
-
-    // Apply theme
     try {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'white') {
-            document.body.classList.add('white-theme');
-        } else {
-            document.body.classList.remove('white-theme');
-        }
-    } catch (e) {
-        // localStorage not available, use default theme
-    }
+        console.log('🚀 Initializing Ligero website...');
 
-    // FIXED: Initialize carousel with proper mobile handling
-    const carousel = document.getElementById('carousel');
-    if (carousel) {
-        // Always reset first
-        resetCarousel();
+        // FIRST: Reset any problematic states
+        resetPageState();
 
-        if (!isMobile()) {
-            // Desktop setup
-            console.log('🎠 Dynamic responsive carousel initialized for desktop');
-            setupCarouselKeyboardNavigation();
+        // Initialize page transitions
+        initPageLoad();
+        setupPageTransitions();
 
-            carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-            carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-            carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-            setTimeout(() => {
-                testCarouselReach();
-            }, 200);
-        } else {
-            // Mobile setup - ensure clean state
-            console.log('📱 Mobile detected - ensuring clean carousel state');
-
-            // Force clean mobile state
-            setTimeout(() => {
-                resetCarousel();
-            }, 100);
-        }
-    }
-
-    // Setup hamburger menu functionality
-    const hamburger = document.querySelector('.hamburger-menu');
-    if (hamburger) {
-        hamburger.addEventListener('click', toggleMobileMenu);
-    }
-
-    // Setup mobile menu item click handlers
-    const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
-    mobileMenuItems.forEach(item => {
-        item.addEventListener('click', () => {
-            setTimeout(() => {
-                closeMobileMenu();
-            }, 100);
-        });
-    });
-
-    // Close mobile menu when clicking overlay
-    const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
-    if (mobileMenuOverlay) {
-        mobileMenuOverlay.addEventListener('click', (e) => {
-            if (e.target === mobileMenuOverlay) {
-                closeMobileMenu();
+        // Apply theme
+        try {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'white') {
+                document.body.classList.add('white-theme');
+            } else {
+                document.body.classList.remove('white-theme');
             }
+        } catch (e) {
+            // localStorage not available, use default theme
+        }
+
+        // FIXED: Initialize carousel with proper mobile handling
+        const carousel = document.getElementById('carousel');
+        if (carousel) {
+            // Always reset first
+            resetCarousel();
+
+            if (!isMobile()) {
+                // Desktop setup
+                console.log('🎠 Dynamic responsive carousel initialized for desktop');
+                setupCarouselKeyboardNavigation();
+
+                carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+                carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+                carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+                setTimeout(() => {
+                    testCarouselReach();
+                }, 200);
+            } else {
+                // Mobile setup - ensure clean state
+                console.log('📱 Mobile detected - ensuring clean carousel state');
+
+                // Force clean mobile state
+                setTimeout(() => {
+                    resetCarousel();
+                }, 100);
+            }
+        }
+
+        // Setup hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger-menu');
+        if (hamburger) {
+            hamburger.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Setup mobile menu item click handlers
+        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+        mobileMenuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                setTimeout(() => {
+                    closeMobileMenu();
+                }, 100);
+            });
         });
-    }
 
-    // Ensure the current page content is visible
-    const homePage = document.getElementById('home-page');
-    const servicesPage = document.getElementById('services-page');
-    const shopPage = document.querySelector('.shop-page');
-    const policiesPage = document.getElementById('policies-page');
+        // Close mobile menu when clicking overlay
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', (e) => {
+                if (e.target === mobileMenuOverlay) {
+                    closeMobileMenu();
+                }
+            });
+        }
 
-    if (homePage) {
-        homePage.style.display = 'flex';
-    }
-    if (servicesPage) {
-        servicesPage.style.display = 'block';
-        servicesPage.classList.add('active');
-    }
-    if (shopPage) {
-        shopPage.style.display = 'block';
-    }
-    if (policiesPage) {
-        policiesPage.style.display = 'block';
-    }
+        // Ensure the current page content is visible
+        const homePage = document.getElementById('home-page');
+        const servicesPage = document.getElementById('services-page');
+        const shopPage = document.querySelector('.shop-page');
+        const policiesPage = document.getElementById('policies-page');
 
-    // Add window resize listener
-    window.addEventListener('resize', handleResize);
+        if (homePage) {
+            homePage.style.display = 'flex';
+        }
+        if (servicesPage) {
+            servicesPage.style.display = 'block';
+            servicesPage.classList.add('active');
+        }
+        if (shopPage) {
+            shopPage.style.display = 'block';
+        }
+        if (policiesPage) {
+            policiesPage.style.display = 'block';
+        }
 
-    // Setup theme switcher event listeners
-    const whiteThemeCircle = document.querySelector('.theme-circle.white');
-    const blackThemeCircle = document.querySelector('.theme-circle.black');
+        // Add window resize listener
+        window.addEventListener('resize', handleResize);
 
-    if (whiteThemeCircle) {
-        whiteThemeCircle.onclick = () => setTheme('white');
+        // Setup theme switcher event listeners
+        const whiteThemeCircle = document.querySelector('.theme-circle.white');
+        const blackThemeCircle = document.querySelector('.theme-circle.black');
+
+        if (whiteThemeCircle) {
+            whiteThemeCircle.onclick = () => setTheme('white');
+        }
+
+        if (blackThemeCircle) {
+            blackThemeCircle.onclick = () => setTheme('black');
+        }
+
+        console.log('✅ Ligero website initialized successfully');
+
+    } catch (error) {
+        console.error('Error during initialization:', error);
+        emergencyCleanup();
     }
+});
 
-    if (blackThemeCircle) {
-        blackThemeCircle.onclick = () => setTheme('black');
+// ROBUST: Handle page visibility changes
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        // Page became visible again, ensure clean state
+        if (isNavigating && Date.now() - lastNavigationTime > 3000) {
+            console.log('Page visible - cleaning up stuck navigation');
+            emergencyCleanup();
+        }
     }
 });
 
@@ -746,24 +882,28 @@ window.addEventListener('popstate', function(event) {
 });
 
 function initPageSpecificFeatures() {
-    // Reset carousel properly
-    resetCarousel();
-
-    if (!isMobile()) {
-        setTimeout(() => {
-            testCarouselReach();
-        }, 100);
-    }
-
-    // Ensure theme is applied correctly
     try {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'white') {
-            document.body.classList.add('white-theme');
-        } else {
-            document.body.classList.remove('white-theme');
+        // Reset carousel properly
+        resetCarousel();
+
+        if (!isMobile()) {
+            setTimeout(() => {
+                testCarouselReach();
+            }, 100);
         }
-    } catch (e) {
-        // localStorage not available
+
+        // Ensure theme is applied correctly
+        try {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'white') {
+                document.body.classList.add('white-theme');
+            } else {
+                document.body.classList.remove('white-theme');
+            }
+        } catch (e) {
+            // localStorage not available
+        }
+    } catch (error) {
+        console.error('Error in page-specific features:', error);
     }
 }
