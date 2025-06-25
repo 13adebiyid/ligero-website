@@ -214,9 +214,10 @@ nav {
     z-index: -1;
 }
 
+/* FIXED: CHOOSE button - no border initially, border appears on hover */
 .choose-button {
     background: transparent;
-    border: 1px solid white;
+    border: 1px solid transparent;  /* Transparent border to maintain size */
     color: white;
     padding: 70px 190px;
     font-size: 1.5rem;
@@ -227,8 +228,9 @@ nav {
 }
 
 .choose-button:hover {
-    background: white;
-    color: black;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
 }
 
 /* Shop Page */
@@ -600,14 +602,16 @@ body.white-theme .mobile-menu-item {
     color: black;
 }
 
+/* White theme CHOOSE button */
 body.white-theme .choose-button {
-    border-color: black;
+    border: 1px solid transparent;
     color: black;
 }
 
 body.white-theme .choose-button:hover {
-    background: black;
-    color: white;
+    background: transparent;
+    border: 1px solid black;
+    color: black;
 }
 
 body.white-theme .buy-button {
