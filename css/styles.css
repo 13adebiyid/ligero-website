@@ -22,13 +22,6 @@ body {
     overflow-x: hidden;
 }
 
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 100vh;
-    overflow-x: hidden;
-}
-
 .number {
     font-family: Cascadia Code ExtraLight !important;
 }
@@ -229,8 +222,6 @@ nav {
 /* Video controls styling */
 .video-controls {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
     display: flex;
     gap: 10px;
     z-index: 1000;
@@ -271,7 +262,7 @@ nav {
     .video-controls {
         position: fixed !important;
         bottom: 10px !important;
-        right: 10px !important;
+        right: 1px !important;
 
         display: flex !important;
         flex-direction: row !important;
@@ -905,7 +896,7 @@ body.white-theme .contact-button:hover {
 
     /* Home Page Mobile */
     .home-page div {
-        padding: 10px 20px !important;
+        padding: 10px 10px !important;
     }
 
     .choose-button {
