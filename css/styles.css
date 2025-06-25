@@ -272,43 +272,41 @@ nav {
         position: fixed !important;
         bottom: 10px !important;
         right: 10px !important;
-        left: auto !important;
-        top: auto !important;
 
         display: flex !important;
         flex-direction: row !important;
 
-        align-items: flex-end !important; /* CRITICAL */
-        justify-content: flex-end !important;
+        /* Ensures buttons align to bottom edge of container */
+        align-items: flex-end !important;
 
-        width: auto !important;
+        background: red !important; /* keep for debug */
         height: auto !important;
         padding: 0 !important;
         margin: 0 !important;
-
-        background: red !important; /* for debugging */
-        z-index: 9999 !important;
     }
 
     .video-btn {
         width: 40px !important;
         height: 40px !important;
-        padding: 6px !important;
-        background: #404040 !important;
-        border-radius: 50% !important;
-        border: none !important;
+        padding: 0 !important;
         margin: 0 !important;
 
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        background: green !important; /* debug */
     }
 
     .video-btn img {
         width: 16px !important;
         height: 16px !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
+
 
 /* ACCESS button - just text, transparent black background on hover */
 .choose-button {
