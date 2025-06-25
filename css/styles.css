@@ -15,10 +15,14 @@
 }
 
 body {
-    font-family: "Madani", Arial, sans-serif;
+    font-family: "Madani";
     background: black;
     color: white;
     overflow-x: hidden;
+}
+
+.number {
+    font-family: Arial, sans-serif !important;
 }
 
 /* Page Transitions */
