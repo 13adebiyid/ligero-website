@@ -269,6 +269,7 @@ nav {
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
     .video-controls {
+        background: red !important;
         position: fixed !important;
         bottom: 0vh !important;  /* Use viewport height */
         right: 0vw !important;   /* Use viewport width */
