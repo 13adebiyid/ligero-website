@@ -15,14 +15,14 @@
 }
 
 body {
-    font-family: "Madani";
+    font-family: "Madani", monospace;
     background: black;
     color: white;
     overflow-x: hidden;
 }
 
 .number {
-    font-family: Arial, sans-serif !important;
+    font-family: Cascadia Code ExtraLight, serif !important;
 }
 
 /* Page Transitions */
