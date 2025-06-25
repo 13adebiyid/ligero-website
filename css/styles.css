@@ -270,8 +270,8 @@ nav {
 @media screen and (max-width: 768px) {
     .video-controls {
         position: fixed !important;
-        bottom: 0px !important;
-        right: 0px !important;
+        bottom: 0vh !important;  /* Use viewport height */
+        right: 0vw !important;   /* Use viewport width */
         left: auto !important;
         top: auto !important;
         transform: none !important;
