@@ -7,6 +7,7 @@
 @font-face {
     font-family: 'Suissnord';
     src: url('../fonts/suissnord.regular.woff') format('woff');
+
 }
 
 @font-face {
@@ -19,6 +20,17 @@ body {
     background: black;
     color: white;
     overflow-x: hidden;
+}
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.number {
+    font-family: Cascadia Code ExtraLight !important;
 }
 
 /* Page Transitions */
@@ -214,12 +226,102 @@ nav {
     z-index: -1;
 }
 
-/* FIXED: CHOOSE button - remove existing background, add hover effect */
+/* Video controls styling */
+.video-controls {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.video-btn {
+    background: rgba(128, 128, 128);
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.video-btn:hover {
+    background: rgba(145, 145, 145, 1);
+    transform: scale(1.05);
+}
+
+.video-btn img {
+    filter: brightness(0) saturate(100%);
+    width: 15px;
+    height: 15px;
+    transition: all 0.3s;
+}
+
+.video-btn:hover img {
+    opacity: 0.9;
+}
+
+/* Hide on mobile if preferred */
+@media screen and (max-width: 768px) {
+    .video-controls {
+        position: fixed !important;
+        bottom: 10px !important;
+        right: 10px !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 9999 !important;
+
+        /* Change display to inline-flex to prevent expansion */
+        display: inline-flex !important;
+
+        /* Force container to be only as big as content */
+        width: auto !important;
+        height: auto !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+
+        /* Small gap between buttons */
+        gap: 8px !important;
+
+        /* Remove the red background once confirmed working */
+        background: red !important;
+    }
+
+    .video-btn {
+        width: 40px !important;
+        height: 40px !important;
+        padding: 6px !important;
+        background: #404040 !important;
+        border: none !important;
+        border-radius: 50% !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;  /* Prevent buttons from shrinking */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .video-btn img {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
+
+/* ACCESS button - just text, transparent black background on hover */
 .choose-button {
     background: transparent;
     border: none;
     color: white;
-    padding: 70px 190px;
+    padding: 20px 50px;
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s;
@@ -228,14 +330,9 @@ nav {
 }
 
 .choose-button:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
     border: none;
     color: white;
-}
-
-/* Remove the existing black background from the container */
-.home-page div[style*="background: rgba(0,0,0,0.5)"] {
-    background: transparent !important;
 }
 
 /* Shop Page */
