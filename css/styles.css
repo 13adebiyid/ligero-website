@@ -7,7 +7,6 @@
 @font-face {
     font-family: 'Suissnord';
     src: url('../fonts/suissnord.regular.woff') format('woff');
-
 }
 
 @font-face {
@@ -20,17 +19,6 @@ body {
     background: black;
     color: white;
     overflow-x: hidden;
-}
-
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 100vh;
-    overflow-x: hidden;
-}
-
-.number {
-    font-family: Cascadia Code ExtraLight !important;
 }
 
 /* Page Transitions */
@@ -226,100 +214,12 @@ nav {
     z-index: -1;
 }
 
-/* Video controls styling */
-.video-controls {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
-
-.video-btn {
-    background: rgba(128, 128, 128);
-    border: none;
-    padding: 8px;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-}
-
-.video-btn:hover {
-    background: rgba(145, 145, 145, 1);
-    transform: scale(1.05);
-}
-
-.video-btn img {
-    filter: brightness(0) saturate(100%);
-    width: 15px;
-    height: 15px;
-    transition: all 0.3s;
-}
-
-.video-btn:hover img {
-    opacity: 0.9;
-}
-
-/* Hide on mobile if preferred */
-@media screen and (max-width: 768px) {
-    .video-controls {
-        position: fixed !important;
-        bottom: 10px !important;
-        right: 10px !important;
-        left: auto !important;
-        top: auto !important;
-        transform: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        z-index: 9999 !important;
-
-        /* Make container only as big as its content */
-        width: auto !important;
-        height: auto !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
-        max-width: none !important;
-        max-height: none !important;
-
-        /* Remove any inherited flex properties that might be expanding it */
-        flex: none !important;
-        flex-grow: 0 !important;
-        flex-shrink: 0 !important;
-
-        /* Keep the gap between buttons small */
-        gap: 10px !important;
-
-        /* Remove the red background once you confirm this works */
-        background: red !important;
-    }
-
-    .video-btn {
-        width: 40px !important;
-        height: 40px !important;
-        padding: 6px !important;
-        background: #404040 !important;
-        margin: 0 !important;
-        flex: none !important;
-    }
-
-    .video-btn img {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-/* ACCESS button - just text, transparent black background on hover */
+/* FIXED: CHOOSE button - remove existing background, add hover effect */
 .choose-button {
     background: transparent;
     border: none;
     color: white;
-    padding: 20px 50px;
+    padding: 70px 190px;
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s;
@@ -328,9 +228,14 @@ nav {
 }
 
 .choose-button:hover {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
     border: none;
     color: white;
+}
+
+/* Remove the existing black background from the container */
+.home-page div[style*="background: rgba(0,0,0,0.5)"] {
+    background: transparent !important;
 }
 
 /* Shop Page */
