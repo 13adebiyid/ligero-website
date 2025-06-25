@@ -264,7 +264,7 @@ nav {
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
     .video-controls {
-        bottom: 50px;
+        bottom: 80px;
         right: 20px;
     }
 
