@@ -279,7 +279,6 @@ nav {
         /* Ensures buttons align to bottom edge of container */
         align-items: flex-end !important;
 
-        background: red !important; /* keep for debug */
         height: auto !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -294,7 +293,6 @@ nav {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        background: green !important; /* debug */
     }
 
     .video-btn img {
