@@ -269,23 +269,43 @@ nav {
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
     .video-controls {
-        background: red !important;
         position: fixed !important;
-        bottom: 0vh !important;  /* Use viewport height */
-        right: 0vw !important;   /* Use viewport width */
+        bottom: 10px !important;
+        right: 10px !important;
         left: auto !important;
         top: auto !important;
         transform: none !important;
         margin: 0 !important;
-        padding: 10px !important;
+        padding: 0 !important;
         z-index: 9999 !important;
+
+        /* Make container only as big as its content */
+        width: auto !important;
+        height: auto !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: none !important;
+        max-height: none !important;
+
+        /* Remove any inherited flex properties that might be expanding it */
+        flex: none !important;
+        flex-grow: 0 !important;
+        flex-shrink: 0 !important;
+
+        /* Keep the gap between buttons small */
+        gap: 10px !important;
+
+        /* Remove the red background once you confirm this works */
+        background: red !important;
     }
 
     .video-btn {
-        width: 40px;
-        height: 40px;
-        padding: 6px;
-        background: #404040;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 6px !important;
+        background: #404040 !important;
+        margin: 0 !important;
+        flex: none !important;
     }
 
     .video-btn img {
