@@ -907,21 +907,25 @@ function initPageSpecificFeatures() {
         console.error('Error in page-specific features:', error);
     }
 }
-// Video controls functionality
+// Video controls functionality with custom images
 document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('bgVideo');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const muteBtn = document.getElementById('muteBtn');
+    const playPauseIcon = document.getElementById('playPauseIcon');
+    const muteIcon = document.getElementById('muteIcon');
 
     if (video && playPauseBtn && muteBtn) {
         // Play/Pause functionality
         playPauseBtn.addEventListener('click', () => {
             if (video.paused) {
                 video.play();
-                playPauseBtn.textContent = '⏸️';
+                playPauseIcon.src = '/images/pause-icon.png';
+                playPauseIcon.alt = 'Pause';
             } else {
                 video.pause();
-                playPauseBtn.textContent = '▶️';
+                playPauseIcon.src = '/images/play-icon.png';
+                playPauseIcon.alt = 'Play';
             }
         });
 
@@ -929,20 +933,22 @@ document.addEventListener('DOMContentLoaded', () => {
         muteBtn.addEventListener('click', () => {
             if (video.muted) {
                 video.muted = false;
-                muteBtn.textContent = '🔊';
+                muteIcon.src = '/images/sound-on-icon.png';
+                muteIcon.alt = 'Sound On';
             } else {
                 video.muted = true;
-                muteBtn.textContent = '🔇';
+                muteIcon.src = '/images/sound-off-icon.png';
+                muteIcon.alt = 'Sound Off';
             }
         });
 
         // Handle video events
         video.addEventListener('play', () => {
-            playPauseBtn.textContent = '⏸️';
+            playPauseIcon.src = '/images/pause-icon.png';
         });
 
         video.addEventListener('pause', () => {
-            playPauseBtn.textContent = '▶️';
+            playPauseIcon.src = '/images/play-icon.png';
         });
     }
 });
