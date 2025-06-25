@@ -371,7 +371,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: auto;
+    overflow: hidden;
     margin-bottom: 40px;
 }
 
@@ -898,6 +898,7 @@ body.white-theme .contact-button:hover {
         transform: none !important;
         width: 100% !important;
         margin-top: 20px !important; /* Ensure space below title */
+        overflow: auto !important;
     }
 
     .carousel {
