@@ -225,6 +225,8 @@ nav {
     display: flex;
     gap: 10px;
     z-index: 1000;
+    bottom: 30px;
+    right: 30px;
 }
 
 .video-btn {
