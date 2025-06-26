@@ -322,8 +322,8 @@ nav {
 
 @keyframes subtle-pulse {
     0%, 100% {
-        opacity: 0.9;
-        filter: brightness(1);
+        opacity: 0.6;
+        filter: brightness(0.9);
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
     }
     50% {
