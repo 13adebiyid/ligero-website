@@ -1338,7 +1338,7 @@ body.white-theme .contact-button:hover {
 }
 
 .contact-title {
-    font-family: 'Suissnord', sans-serif;
+    font-family: 'Madani', sans-serif;
     font-size: 3rem;
     font-weight: 300;
     text-align: center;
@@ -1441,6 +1441,7 @@ body.white-theme .contact-button:hover {
     transition: all 0.3s;
     letter-spacing: 1px;
     font-family: 'Madani', sans-serif;
+    align-items: center;
 }
 
 .submit-button:hover {
@@ -1488,7 +1489,7 @@ body.white-theme .contact-button:hover {
 }
 
 .thank-you-title {
-    font-family: 'Suissnord', sans-serif;
+    font-family: 'Madani', sans-serif;
     font-size: 3.5rem;
     font-weight: 300;
     margin-bottom: 30px;
@@ -1692,7 +1693,7 @@ body.white-theme .home-link:hover {
 }
 
 .coming-soon-title {
-    font-family: 'Suissnord', sans-serif;
+    font-family: 'Madani', sans-serif;
     font-size: 4rem;
     font-weight: 300;
     margin-bottom: 20px;
