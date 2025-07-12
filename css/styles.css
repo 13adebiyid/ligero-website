@@ -17,7 +17,7 @@
 
 @font-face {
     font-family: 'Madani2';
-    src: url('../fonts/MadaniDEMO-Thin-NumericFixed.woff') format('woff');
+    src: url('../fonts/MadaniDEMO-Thin-CustomDigits.woff') format('woff');
 }
 
 body {
