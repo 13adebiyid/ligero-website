@@ -1398,7 +1398,7 @@ body.white-theme .contact-button:hover {
     border-radius: 5px;
     color: white;
     font-size: 1rem;
-    font-family:  sans-serif;
+    font-family:  'Madani2', sans-serif;
     transition: all 0.3s;
 }
 
@@ -1446,7 +1446,7 @@ body.white-theme .contact-button:hover {
     cursor: pointer;
     transition: all 0.3s;
     letter-spacing: 1px;
-    font-family: 'Madani2', sans-serif;
+    font-family: 'Madani', sans-serif;
     align-items: center;
 }
 
