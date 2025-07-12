@@ -979,6 +979,157 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ================== CONTACT PAGE FUNCTIONALITY ==================
+
+// Initialize contact page functionality
+function initContactPage() {
+    const contactForm = document.getElementById('contactForm');
+    const contactFormSection = document.getElementById('contactFormSection');
+    const thankYouSection = document.getElementById('thankYouSection');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    // Pre-fill service field if coming from a specific service page
+    preSelectService();
+}
+
+// Handle contact form submission
+function handleContactFormSubmission(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const submitButton = form.querySelector('.submit-button');
+    const formData = new FormData(form);
+
+    // Validate required fields
+    if (!validateContactForm(form)) {
+        return;
+    }
+
+    // Disable submit button and show loading state
+    submitButton.disabled = true;
+    submitButton.textContent = 'SENDING...';
+
+    // Simulate form submission (replace with your actual form handling)
+    setTimeout(() => {
+        // Here you would typically send the form data to your server
+        // For now, we'll just show the thank you message
+        showThankYouMessage();
+
+        // Reset form state
+        submitButton.disabled = false;
+        submitButton.textContent = 'SEND MESSAGE';
+        form.reset();
+
+        console.log('Contact form submitted:', Object.fromEntries(formData));
+    }, 1000);
+}
+
+// Validate contact form
+function validateContactForm(form) {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = '#ff6b6b';
+            field.addEventListener('input', () => {
+                field.style.borderColor = '';
+            }, { once: true });
+        }
+    });
+
+    // Validate email format
+    const emailField = form.querySelector('#email');
+    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
+        isValid = false;
+        emailField.style.borderColor = '#ff6b6b';
+        emailField.addEventListener('input', () => {
+            emailField.style.borderColor = '';
+        }, { once: true });
+    }
+
+    if (!isValid) {
+        alert('Please fill in all required fields with valid information.');
+    }
+
+    return isValid;
+}
+
+// Show thank you message
+function showThankYouMessage() {
+    const contactFormSection = document.getElementById('contactFormSection');
+    const thankYouSection = document.getElementById('thankYouSection');
+
+    if (contactFormSection && thankYouSection) {
+        // Hide form section with fade out
+        contactFormSection.style.opacity = '0';
+        contactFormSection.style.transform = 'translateY(-30px)';
+
+        setTimeout(() => {
+            contactFormSection.style.display = 'none';
+            thankYouSection.style.display = 'flex';
+
+            // Show thank you section with fade in
+            setTimeout(() => {
+                thankYouSection.classList.add('show');
+            }, 50);
+        }, 300);
+
+        // Scroll to top smoothly
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+}
+
+// Pre-select service based on URL parameters or referrer
+function preSelectService() {
+    const serviceSelect = document.getElementById('service');
+    if (!serviceSelect) return;
+
+    // Check URL parameters first
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+
+    if (serviceParam) {
+        serviceSelect.value = serviceParam;
+        return;
+    }
+
+    // Check referrer to auto-select service
+    const referrer = document.referrer;
+    if (referrer) {
+        if (referrer.includes('/services/styling')) {
+            serviceSelect.value = 'styling';
+        } else if (referrer.includes('/services/creative-directing')) {
+            serviceSelect.value = 'creative-directing';
+        } else if (referrer.includes('/services/shoots')) {
+            serviceSelect.value = 'shoots';
+        } else if (referrer.includes('/services/set-designing')) {
+            serviceSelect.value = 'set-designing';
+        } else if (referrer.includes('/services/models')) {
+            serviceSelect.value = 'models';
+        } else if (referrer.includes('/services/music')) {
+            serviceSelect.value = 'music';
+        }
+    }
+}
+
+// Add to your existing DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing initialization code...
+
+    // Initialize contact page if we're on that page
+    if (document.querySelector('.contact-page')) {
+        initContactPage();
+    }
+});
+
 // ================== COMING SOON PAGE FUNCTIONALITY ==================
 
 // Notification form functions
