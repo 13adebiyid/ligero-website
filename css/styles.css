@@ -7,12 +7,16 @@
 @font-face {
     font-family: 'Suissnord';
     src: url('../fonts/suissnord.regular.woff') format('woff');
-
 }
 
 @font-face {
     font-family: 'Madani';
     src: url('../fonts/MadaniDEMO-Thin.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Numbers';
+    src: url('../fonts/SLABSTHIN.woff') format('woff');
 }
 
 body {
@@ -1393,7 +1397,7 @@ body.white-theme .contact-button:hover {
     border-radius: 5px;
     color: white;
     font-size: 1rem;
-    font-family:  'Madani', sans-serif;
+    font-family:  'Numbers', sans-serif;
     transition: all 0.3s;
 }
 
