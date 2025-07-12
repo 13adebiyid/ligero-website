@@ -978,3 +978,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// ================== COMING SOON PAGE FUNCTIONALITY ==================
+
+// Notification form functions
+function showNotifyForm() {
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        // Prevent body scroll when form is open
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function hideNotifyForm() {
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+}
+
+// Initialize coming soon page functionality
+function initComingSoonPage() {
+    const form = document.getElementById('notifyForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = form.querySelector('input[type="email"]');
+            const email = emailInput.value;
+
+            // Basic email validation
+            if (email && isValidEmail(email)) {
+                // Here you would typically send the email to your backend
+                // For now, we'll just show a success message
+                alert('Thank you! We\'ll notify you when our products launch.');
+                hideNotifyForm();
+                form.reset();
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+    }
+
+    // Close overlay when clicking outside the form
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                hideNotifyForm();
+            }
+        });
+    }
+
+    // Close form with escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideNotifyForm();
+        }
+    });
+}
+
+// Simple email validation function
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Add to your existing DOMContentLoaded event listener
+// or create a new one if you don't have one
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing initialization code...
+
+    // Initialize coming soon page if we're on that page
+    if (document.querySelector('.coming-soon-page')) {
+        initComingSoonPage();
+    }
+});

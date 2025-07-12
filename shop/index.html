@@ -1,64 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
-    <link rel="stylesheet" href="/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon - Ligero</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
 <!-- Navigation -->
 <nav>
-    <!-- Hamburger Menu for Mobile -->
-    <div class="hamburger-menu">
-        <div class="hamburger-line"></div>
-        <div class="hamburger-line"></div>
-        <div class="hamburger-line"></div>
-    </div>
+  <!-- Hamburger Menu for Mobile -->
+  <div class="hamburger-menu">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
 
-    <!-- Logo (centered on mobile) -->
-    <a href="/" class="logo">LIGERO</a>
+  <!-- Logo (centered on mobile) -->
+  <a href="/" class="logo">LIGERO</a>
 
-    <!-- Desktop Navigation Menu -->
-    <div class="nav-menu">
-        <a href="/shop/" class="nav-item">Shop</a>
-        <span class="nav-separator">|</span>
-        <a href="/services/" class="nav-item">Services</a>
-        <span class="nav-separator">|</span>
-        <a href="/policies/" class="nav-item">Policies</a>
-    </div>
+  <!-- Desktop Navigation Menu -->
+  <div class="nav-menu">
+    <a href="/shop/" class="nav-item">Shop</a>
+    <span class="nav-separator">|</span>
+    <a href="/services/" class="nav-item">Services</a>
+    <span class="nav-separator">|</span>
+    <a href="/policies/" class="nav-item">Policies</a>
+  </div>
 </nav>
 
 <!-- Mobile menu overlay -->
 <div class="mobile-menu-overlay">
-    <a href="/" class="mobile-menu-item">HOME</a>
-    <a href="/shop/" class="mobile-menu-item">SHOP</a>
-    <a href="/services/" class="mobile-menu-item">SERVICES</a>
-    <a href="/policies/" class="mobile-menu-item">POLICIES</a>
+  <a href="/" class="mobile-menu-item">HOME</a>
+  <a href="/shop/" class="mobile-menu-item">SHOP</a>
+  <a href="/services/" class="mobile-menu-item">SERVICES</a>
+  <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<!-- Shop Page -->
-<div class="shop-page">
-    <div class="theme-switcher">
-        <div class="theme-circle black" onclick="setTheme('black')"></div>
-        <div class="theme-circle white" onclick="setTheme('white')"></div>
-    </div>
+<!-- Coming Soon Page -->
+<div class="coming-soon-page">
+  <div class="theme-switcher">
+    <div class="theme-circle black" onclick="setTheme('black')"></div>
+    <div class="theme-circle white" onclick="setTheme('white')"></div>
+  </div>
 
-    <div class="product-container">
-        <div class="product-image">
-            PRODUCT IMAGE
-        </div>
-        <div class="product-info">
-            <h1 class="product-title">Premium T-Shirt</h1>
-            <p class="product-price">$<span class="number">89</span></p>
-            <p class="product-description">
-                Crafted from the finest organic cotton, this minimalist piece embodies our commitment to sustainable luxury. Clean lines meet exceptional comfort in this timeless design that transcends seasons.
-            </p>
-            <button class="buy-button">BUY</button>
-            <button class="info-button">INFO</button>
-        </div>
+  <div class="coming-soon-container">
+    <div class="coming-soon-content">
+      <h1 class="coming-soon-title">COMING SOON</h1>
+      <div class="coming-soon-subtitle">Our products are currently in development</div>
+      <p class="coming-soon-description">
+        We're crafting something extraordinary. Our curated collection of premium pieces
+        will embody the same attention to detail and aesthetic excellence you'll find in our services.
+      </p>
+      <p class="coming-soon-description">
+        In the meantime, explore our comprehensive service offerings to see how we can
+        bring your creative vision to life.
+      </p>
+      <div class="coming-soon-actions">
+        <a href="/services/" class="services-button">EXPLORE OUR SERVICES</a>
+        <button class="notify-button" onclick="showNotifyForm()">GET NOTIFIED</button>
+      </div>
     </div>
+  </div>
+
+  <!-- Notification signup form (initially hidden) -->
+  <div class="notify-form-overlay" id="notifyFormOverlay">
+    <div class="notify-form">
+      <h3>Stay Updated</h3>
+      <p>Be the first to know when our products launch</p>
+      <form id="notifyForm">
+        <input type="email" placeholder="Enter your email address" required>
+        <div class="form-buttons">
+          <button type="submit">NOTIFY ME</button>
+          <button type="button" onclick="hideNotifyForm()">CANCEL</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script src="/js/script.js"></script>
