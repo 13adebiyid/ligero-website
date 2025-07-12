@@ -15,11 +15,6 @@
     src: url('../fonts/MadaniDEMO-Thin.woff') format('woff');
 }
 
-@font-face {
-    font-family: 'Madani2';
-    src: url('../fonts/MadaniDEMO-Thin-CustomDigits.woff') format('woff');
-}
-
 body {
     font-family: "Madani";
     background: black;
@@ -1344,7 +1339,7 @@ body.white-theme .contact-button:hover {
 }
 
 .contact-title {
-    font-family: 'Madani2', sans-serif;
+    font-family: 'Madani', sans-serif;
     font-size: 3rem;
     font-weight: 300;
     text-align: center;
@@ -1398,7 +1393,7 @@ body.white-theme .contact-button:hover {
     border-radius: 5px;
     color: white;
     font-size: 1rem;
-    font-family:  'Madani2', sans-serif;
+    font-family:  'Madani', sans-serif;
     transition: all 0.3s;
 }
 
