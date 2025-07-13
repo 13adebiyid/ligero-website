@@ -33,122 +33,65 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<div class="set-design-page">
+<div class="cmnppl-page">
     <div class="theme-switcher">
         <div class="theme-circle black" onclick="setTheme('black')"></div>
         <div class="theme-circle white" onclick="setTheme('white')"></div>
     </div>
 
     <div class="page-header">
-        <h1 class="page-title">SET DESIGNING</h1>
-        <a href="/services/" class="back-link">← Back to Services</a>
+        <div class="nav-breadcrumb">
+            <a href="/services/" class="breadcrumb-link">SERVICES</a>
+            <span class="breadcrumb-separator">–––</span>
+            <span class="current-page">SET DESIGNING</span>
+        </div>
     </div>
 
-    <!-- Work Feed -->
+    <!-- Work Feed (CMNPPL Style) -->
     <div class="work-feed">
-        <!-- Project Entry -->
-        <div class="work-entry" data-video="/videos/set-design-work.mp4" data-title="Creative Set Design" data-brand="Fashion Campaign" data-director="Ifeoluwa Segun-Oludimu">
-            <div class="work-video-container">
-                <video class="work-video" muted loop preload="metadata">
+        <!-- Project 1 -->
+        <div class="work-item" data-video="/videos/set-design-work.mp4" data-title="Creative Set Design" data-brand="Fashion Campaign">
+            <div class="work-video-wrapper">
+                <video class="feed-video" muted loop preload="metadata">
                     <source src="/videos/set-design-work.mp4" type="video/mp4">
                 </video>
-                <div class="play-overlay">
-                    <div class="play-icon">▶</div>
+                <div class="video-overlay">
+                    <div class="play-button">▶</div>
                 </div>
             </div>
-            <div class="work-info">
-                <div class="work-meta">
+            <div class="work-details">
+                <div class="brand-line">
                     <span class="brand-name">Fashion Campaign</span>
-                    <span class="work-separator">–––––––</span>
                 </div>
-                <h3 class="work-title">Creative Set Design</h3>
-                <div class="director-info">
-                    <span class="director-name">Ifeoluwa Segun-Oludimu</span>
+                <div class="title-line">
+                    <span class="work-title">Creative Set Design</span>
                 </div>
-            </div>
-        </div>
-
-        <!-- Add more work entries here as you get more projects -->
-    </div>
-
-    <!-- Director Showcase -->
-    <div class="director-showcase">
-        <div class="director-header">
-            <h2 class="showcase-title">FEATURED SET DESIGNER</h2>
-        </div>
-
-        <div class="director-card" onclick="openDirectorProfile('ifeoluwa')">
-            <div class="director-image">
-                <img src="/images/ifeoluwa-profile.jpg" alt="Ifeoluwa Segun-Oludimu">
-            </div>
-            <div class="director-details">
-                <h3 class="director-name">Ifeoluwa Segun-Oludimu</h3>
-                <p class="director-specialty">CREATIVE. INNOVATIVE. VISIONARY</p>
-                <div class="director-cta">
-                    <span>View Profile →</span>
+                <div class="director-line">
+                    <a href="/directors/ifeoluwa-segun-oludimu" class="director-name">Ifeoluwa Segun-Oludimu</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Call to Action -->
-    <div class="cta-section">
-        <div class="cta-content">
-            <h2 class="cta-title">Ready to Transform Your Vision?</h2>
-            <p class="cta-description">Let's create extraordinary sets that bring your creative projects to life</p>
-            <a href="/contact/?service=set-designing" class="cta-button">Start Your Project</a>
-        </div>
+        <!-- Add more work items as you get more projects -->
     </div>
 </div>
 
-<!-- Video Overlay -->
-<div class="video-overlay" id="videoOverlay">
-    <div class="overlay-content">
-        <button class="close-overlay" onclick="closeVideoOverlay()">×</button>
-        <div class="video-header">
-            <h2 class="overlay-title" id="overlayTitle">Creative Set Design</h2>
-            <span class="overlay-brand" id="overlayBrand">Fashion Campaign</span>
+<!-- Video Modal (CMNPPL Style) -->
+<div class="video-modal" id="videoModal">
+    <div class="modal-backdrop" onclick="closeVideoModal()"></div>
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeVideoModal()">×</button>
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Creative Set Design</h2>
+            <span class="modal-brand" id="modalBrand">Fashion Campaign</span>
         </div>
-        <div class="video-player-container">
-            <video class="overlay-video" id="overlayVideo" controls>
+        <div class="modal-video-container">
+            <video class="modal-video" id="modalVideo" controls>
                 <source src="" type="video/mp4">
             </video>
         </div>
-        <div class="video-footer">
-            <span class="overlay-director" id="overlayDirector">Ifeoluwa Segun-Oludimu</span>
-        </div>
-    </div>
-</div>
-
-<!-- Director Profile Overlay -->
-<div class="director-profile-overlay" id="directorProfileOverlay">
-    <div class="profile-content">
-        <button class="close-profile" onclick="closeDirectorProfile()">×</button>
-        <div class="profile-header">
-            <div class="profile-image">
-                <img src="/images/ifeoluwa-profile.jpg" alt="Ifeoluwa Segun-Oludimu">
-            </div>
-            <div class="profile-info">
-                <h2 class="profile-name">Ifeoluwa Segun-Oludimu</h2>
-                <p class="profile-specialty">CREATIVE. INNOVATIVE. VISIONARY</p>
-                <a href="https://instagram.com/sonicife" target="_blank" class="profile-social">@sonicife</a>
-            </div>
-        </div>
-        <div class="profile-bio">
-            <p>Ifeoluwa brings a fresh perspective to set design with her innovative approach to spatial storytelling. Her work seamlessly blends contemporary aesthetics with functional design, creating immersive environments that enhance every creative project.</p>
-            <p>With a keen eye for detail and a passion for pushing creative boundaries, she transforms concepts into tangible experiences that resonate with audiences and elevate the artistic vision of every collaboration.</p>
-        </div>
-        <div class="profile-work">
-            <h3>Featured Work</h3>
-            <div class="profile-work-grid">
-                <div class="work-thumbnail" onclick="openVideoFromProfile('/videos/set-design-work.mp4', 'Creative Set Design', 'Fashion Campaign')">
-                    <img src="/images/set-design-thumbnail.jpg" alt="Creative Set Design">
-                    <div class="work-overlay">
-                        <span>Creative Set Design</span>
-                    </div>
-                </div>
-                <!-- Add more work thumbnails as projects grow -->
-            </div>
+        <div class="modal-footer">
+            <span class="modal-director" id="modalDirector">Ifeoluwa Segun-Oludimu</span>
         </div>
     </div>
 </div>
