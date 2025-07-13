@@ -1208,6 +1208,302 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ================== ENHANCED IMAGE MODAL FUNCTIONALITY ==================
+
+// Enhanced setup for feed item clicks (UPDATE EXISTING FUNCTION)
+function setupFeedItemClicks() {
+    // Video items
+    const videoItems = document.querySelectorAll('.feed-item[data-video]');
+    videoItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const videoSrc = item.getAttribute('data-video');
+            const fallbackSrc = item.getAttribute('data-video-fallback');
+            const title = item.getAttribute('data-title');
+            const client = item.getAttribute('data-client');
+            const isHQ = item.hasAttribute('data-hq');
+            const format = item.getAttribute('data-format');
+
+            if (isHQ && format === 'prores') {
+                openProResVideoModal(videoSrc, fallbackSrc, title, client, item);
+            } else if (isHQ) {
+                openHQVideoModal(videoSrc, title, client, item);
+            } else {
+                openVideoModal(videoSrc, title, client);
+            }
+        });
+    });
+
+    // Enhanced image items with project information
+    const imageItems = document.querySelectorAll('.feed-item[data-image]');
+    imageItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const imageSrc = item.getAttribute('data-image');
+
+            // Get project information from nearby feed-info
+            const projectInfo = getImageProjectInfo(item);
+
+            openImageModal(imageSrc, projectInfo);
+        });
+    });
+}
+
+// Get project information for images
+function getImageProjectInfo(imageItem) {
+    // Look for the nearest feed-info element
+    let currentElement = imageItem;
+    let feedInfo = null;
+
+    // Search backwards and forwards for feed-info
+    while (currentElement) {
+        if (currentElement.classList.contains('feed-info')) {
+            feedInfo = currentElement;
+            break;
+        }
+        currentElement = currentElement.previousElementSibling || currentElement.nextElementSibling;
+    }
+
+    if (feedInfo) {
+        const clientName = feedInfo.querySelector('.client-name')?.textContent || '';
+        const projectTitle = feedInfo.querySelector('.project-title')?.textContent || '';
+
+        return {
+            title: projectTitle,
+            client: clientName
+        };
+    }
+
+    return {
+        title: 'Set Design Work',
+        client: 'Project'
+    };
+}
+
+// Enhanced open image modal
+function openImageModal(imageSrc, projectInfo = {}) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) return;
+
+    // Set image source
+    modalImage.src = imageSrc;
+
+    // Set project information
+    if (imageTitle && projectInfo.title) {
+        imageTitle.textContent = projectInfo.title;
+    }
+    if (imageProject && projectInfo.client) {
+        imageProject.textContent = projectInfo.client;
+    }
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Add keyboard navigation
+    setupImageKeyboardNavigation();
+
+    console.log('Image modal opened:', imageSrc);
+}
+
+// Close image modal (ENHANCED)
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Clear image source to stop loading
+    if (modalImage) {
+        modalImage.src = '';
+    }
+
+    // Remove keyboard navigation
+    removeImageKeyboardNavigation();
+
+    console.log('Image modal closed');
+}
+
+// Keyboard navigation for image modal
+function setupImageKeyboardNavigation() {
+    document.addEventListener('keydown', handleImageKeyboard);
+}
+
+function removeImageKeyboardNavigation() {
+    document.removeEventListener('keydown', handleImageKeyboard);
+}
+
+function handleImageKeyboard(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    } else if (e.key === 'ArrowLeft') {
+        navigateImage('prev');
+    } else if (e.key === 'ArrowRight') {
+        navigateImage('next');
+    }
+}
+
+// Navigate between images (optional enhancement)
+function navigateImage(direction) {
+    const currentModal = document.getElementById('imageModal');
+    if (!currentModal.classList.contains('active')) return;
+
+    const allImageItems = document.querySelectorAll('.feed-item[data-image]');
+    const currentImageSrc = document.getElementById('modalImage').src;
+
+    // Find current image index
+    let currentIndex = -1;
+    allImageItems.forEach((item, index) => {
+        if (currentImageSrc.includes(item.getAttribute('data-image'))) {
+            currentIndex = index;
+        }
+    });
+
+    if (currentIndex === -1) return;
+
+    // Calculate next index
+    let nextIndex;
+    if (direction === 'next') {
+        nextIndex = (currentIndex + 1) % allImageItems.length;
+    } else {
+        nextIndex = currentIndex === 0 ? allImageItems.length - 1 : currentIndex - 1;
+    }
+
+    // Open next image
+    const nextItem = allImageItems[nextIndex];
+    const nextImageSrc = nextItem.getAttribute('data-image');
+    const nextProjectInfo = getImageProjectInfo(nextItem);
+
+    // Update modal content
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    modalImage.src = nextImageSrc;
+    if (imageTitle) imageTitle.textContent = nextProjectInfo.title;
+    if (imageProject) imageProject.textContent = nextProjectInfo.client;
+}
+
+// Enhanced image loading with fade effect
+function setupImageLoading() {
+    const images = document.querySelectorAll('.feed-item img');
+
+    images.forEach(img => {
+        if (img.complete) {
+            img.classList.add('loaded');
+        } else {
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
+
+            img.addEventListener('error', () => {
+                console.log('Image failed to load:', img.src);
+                img.style.opacity = '0.3';
+                img.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+        }
+    });
+}
+
+// Enhanced modal functionality (UPDATE EXISTING FUNCTION)
+function setupModalFunctionality() {
+    // Click outside to close - Video modal
+    const videoModal = document.getElementById('videoModal');
+    const imageModal = document.getElementById('imageModal');
+
+    if (videoModal) {
+        const backdrop = videoModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeModal);
+        }
+    }
+
+    // Click outside to close - Image modal
+    if (imageModal) {
+        const backdrop = imageModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeImageModal);
+        }
+
+        // Prevent image click from closing modal
+        const imageContainer = imageModal.querySelector('.image-container');
+        if (imageContainer) {
+            imageContainer.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    }
+}
+
+// Enhanced keyboard controls (UPDATE EXISTING FUNCTION)
+function setupKeyboardControls() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const videoModal = document.getElementById('videoModal');
+            const imageModal = document.getElementById('imageModal');
+
+            if (videoModal && videoModal.classList.contains('active')) {
+                closeModal();
+            } else if (imageModal && imageModal.classList.contains('active')) {
+                closeImageModal();
+            }
+        }
+    });
+}
+
+// Enhanced CMNPPL initialization (UPDATE EXISTING FUNCTION)
+function initCMNPPLStyle() {
+    checkBrowserVideoSupport();
+    setupProgressiveVideoLoading();
+    setupFeedItemClicks();
+    setupModalFunctionality();
+    setupKeyboardControls();
+    setupImageLoading();
+    detectConnectionSpeed();
+    console.log('CMNPPL-style with enhanced image modals initialized');
+}
+
+// Add image modal navigation buttons (optional enhancement)
+function addImageNavigation() {
+    const imageModal = document.getElementById('imageModal');
+    if (!imageModal) return;
+
+    const imageContainer = imageModal.querySelector('.image-container');
+    if (!imageContainer) return;
+
+    // Create navigation buttons
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'image-nav prev';
+    prevBtn.innerHTML = '‹';
+    prevBtn.onclick = () => navigateImage('prev');
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'image-nav next';
+    nextBtn.innerHTML = '›';
+    nextBtn.onclick = () => navigateImage('next');
+
+    // Add to modal
+    imageModal.appendChild(prevBtn);
+    imageModal.appendChild(nextBtn);
+}
+
+// Initialize image navigation on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing initialization code...
+
+    // Initialize CMNPPL with enhanced image support
+    if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
+        initCMNPPLStyle();
+        addImageNavigation(); // Add this for image navigation arrows
+        manageVideoPreloading();
+    }
+});
+
 // ================== SET DESIGN PAGE FUNCTIONALITY ==================
 
 // Initialize CMNPPL-style pages

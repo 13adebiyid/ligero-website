@@ -1776,6 +1776,261 @@ body.white-theme .work-section-title {
     border-color: rgba(0, 0, 0, 0.1);
 }
 
+/* ================== ENHANCED IMAGE MODAL ================== */
+
+/* Image Modal */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.image-modal .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.image-modal .modal-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    z-index: 3002;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.image-modal .modal-close:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.image-container {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 3001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.image-info {
+    margin-top: 20px;
+    text-align: center;
+    max-width: 500px;
+}
+
+.image-title {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.image-project {
+    font-size: 1rem;
+    opacity: 0.7;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+/* Image hover effects in feed */
+.feed-item img {
+    transition: transform 0.3s ease;
+}
+
+.feed-item:hover img {
+    transform: scale(1.02);
+}
+
+/* Loading state for images */
+.feed-item img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.feed-item img.loaded {
+    opacity: 1;
+}
+
+/* Image overlay enhancement */
+.feed-item[data-image] .item-overlay {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.feed-item[data-image]:hover .item-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.feed-item[data-image] .play-indicator {
+    background: rgba(255, 255, 255, 0.9);
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+}
+
+.feed-item[data-image] .play-indicator::before {
+    content: '🔍';
+    font-size: 18px;
+    color: black;
+}
+
+.feed-item[data-image] .play-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent; /* Hide the ▶ symbol for images */
+}
+
+/* Navigation arrows for image modal (optional enhancement) */
+.image-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: all 0.3s;
+    z-index: 3002;
+}
+
+.image-nav:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.image-nav.prev {
+    left: 30px;
+}
+
+.image-nav.next {
+    right: 30px;
+}
+
+/* White theme for image modal */
+body.white-theme .image-modal .modal-backdrop {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+body.white-theme .image-modal .modal-close {
+    color: black;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+body.white-theme .image-modal .modal-close:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+body.white-theme .image-title,
+body.white-theme .image-project {
+    color: black;
+}
+
+body.white-theme .image-nav {
+    background: rgba(255, 255, 255, 0.5);
+    color: black;
+}
+
+body.white-theme .image-nav:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* Mobile responsive for image modal */
+@media screen and (max-width: 768px) {
+    .image-modal .modal-close {
+        top: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .image-container {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-image {
+        max-height: 75vh;
+    }
+
+    .image-info {
+        margin-top: 15px;
+        padding: 0 20px;
+    }
+
+    .image-title {
+        font-size: 1.2rem;
+    }
+
+    .image-project {
+        font-size: 0.9rem;
+    }
+
+    .image-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .image-nav.prev {
+        left: 20px;
+    }
+
+    .image-nav.next {
+        right: 20px;
+    }
+}
+
 /* ================== CONTACT PAGE STYLES ================== */
 
 .contact-page {

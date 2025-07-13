@@ -1,6 +1,5 @@
 # Netlify configuration - no publish directory needed
 
-# Clean URL redirects for pages
 [[redirects]]
 from = "/shop"
 to = "/shop/"
@@ -14,6 +13,11 @@ status = 301
 [[redirects]]
 from = "/policies"
 to = "/policies/"
+status = 301
+
+[[redirects]]
+from = "/contact"
+to = "/contact/"
 status = 301
 
 # Service sub-pages redirects
@@ -47,7 +51,8 @@ from = "/services/music"
 to = "/services/music.html"
 status = 200
 
+# Members profile routes
 [[redirects]]
-from = "/contact"
-to = "/contact/"
-status = 301
+from = "/members/ifeoluwa-segun-oludimu"
+to = "/members/ifeoluwa-segun-oludimu.html"
+status = 200
