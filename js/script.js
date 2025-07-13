@@ -1828,3 +1828,50 @@ function setupEnhancedFeedItemClicks() {
         item.style.cursor = 'pointer';
     });
 }
+
+// FORCE IMAGE LOADING AND DISPLAY
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🖼️ Forcing image display...');
+
+    const imageItems = document.querySelectorAll('.feed-item[data-image]');
+
+    imageItems.forEach((item, index) => {
+        const img = item.querySelector('img');
+        const imageSrc = item.getAttribute('data-image');
+
+        if (img) {
+            console.log(`📷 Processing image ${index + 1}: ${imageSrc}`);
+
+            // Force image to be visible
+            img.style.display = 'block';
+            img.style.opacity = '1';
+            img.style.visibility = 'visible';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+
+            // Force reload if needed
+            if (!img.complete || img.naturalWidth === 0) {
+                console.log(`🔄 Reloading image ${index + 1}`);
+                const currentSrc = img.src;
+                img.src = '';
+                img.src = currentSrc;
+            }
+
+            img.onload = () => {
+                console.log(`✅ Image ${index + 1} loaded and should be visible`);
+                img.style.opacity = '1';
+            };
+
+            img.onerror = () => {
+                console.error(`❌ Image ${index + 1} failed to load: ${imageSrc}`);
+            };
+        }
+
+        // Make sure container is visible
+        item.style.display = 'block';
+        item.style.visibility = 'visible';
+        item.style.minHeight = '200px';
+        item.style.background = '#111';
+    });
+});

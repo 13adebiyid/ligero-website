@@ -1729,6 +1729,41 @@ body.white-theme .designer-link {
     background: rgba(0, 0, 0, 0.3);
 }
 
+/*    force show images */
+
+/* FORCE IMAGES TO DISPLAY PROPERLY */
+.feed-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    background: transparent !important;
+}
+
+/* Ensure feed items have proper dimensions */
+.feed-item[data-image] {
+    display: block !important;
+    position: relative !important;
+    background: #111 !important;
+    min-height: 200px !important;
+}
+
+/* Remove any conflicting styles */
+.feed-item[data-image] img {
+    transition: opacity 0.3s ease !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+/* Force image containers to show */
+.image-small, .image-medium, .image-large {
+    background: #111 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important; /* Temporary debug border */
+}
+
 /* ================== DESIGNER PROFILE PAGE ================== */
 
 .designer-profile-page {
