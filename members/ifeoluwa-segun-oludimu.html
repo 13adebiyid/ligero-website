@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ifeoluwa Segun-Oludimu - Ligero</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+    <div class="hamburger-menu">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+    <a href="/" class="logo">LIGERO</a>
+    <div class="nav-menu">
+        <a href="/shop/" class="nav-item">Shop</a>
+        <span class="nav-separator">|</span>
+        <a href="/services/" class="nav-item">Services</a>
+        <span class="nav-separator">|</span>
+        <a href="/policies/" class="nav-item">Policies</a>
+    </div>
+</nav>
+
+<div class="mobile-menu-overlay">
+    <a href="/" class="mobile-menu-item">HOME</a>
+    <a href="/shop/" class="mobile-menu-item">SHOP</a>
+    <a href="/services/" class="mobile-menu-item">SERVICES</a>
+    <a href="/policies/" class="mobile-menu-item">POLICIES</a>
+</div>
+
+<div class="designer-profile-page">
+    <div class="theme-switcher">
+        <div class="theme-circle black" onclick="setTheme('black')"></div>
+        <div class="theme-circle white" onclick="setTheme('white')"></div>
+    </div>
+
+    <!-- Full-Width Hero Image -->
+    <div class="designer-hero">
+        <img src="/images/ifeoluwa-hero.png" alt="Ifeoluwa Segun-Oludimu" class="hero-image">
+        <div class="hero-overlay">
+            <h1 class="hero-title">Ifeoluwa Segun-Oludimu</h1>
+            <p class="hero-subtitle">CREATIVE. INNOVATIVE. VISIONARY</p>
+        </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+        <div class="profile-bio">
+            <p class="bio-text">
+                Ifeoluwa brings a fresh perspective to set design with her innovative approach to spatial storytelling.
+                Her work blends contemporary aesthetics with functional design, creating immersive environments
+                that enhance every project she touches.
+            </p>
+            <p class="bio-text">
+                With a keen eye for detail and a passion for pushing creative boundaries, she transforms concepts into
+                memorable experiences that resonate with audiences and elevate the artistic vision of every collaboration.
+            </p>
+            <p class="bio-text">
+                Her portfolio spans fashion campaigns, commercial videos, and feature films, each showcasing
+                her ability to create distinctive visual narratives through thoughtful set design and spatial composition.
+            </p>
+            <a href="https://instagram.com/sonicife" target="_blank" class="social-link">@sonicife</a>
+        </div>
+
+        <!-- Work Section -->
+        <h2 class="work-section-title">Featured Work</h2>
+
+        <!-- Work Feed for This Designer -->
+        <div class="feed-container">
+
+            <!-- A gift for a gift -->
+            <div class="feed-item large-video" data-video="/videos/gift.mp4" data-title="A Gift for a Gift" data-client="Anisah Myers-Grey">
+                <video class="feed-video" muted loop preload="metadata">
+                    <source src="/videos/gift.mp4" type="video/mp4">
+                </video>
+                <div class="item-overlay">
+                    <div class="play-indicator">▶</div>
+                </div>
+            </div>
+
+            <div class="feed-info">
+                <div class="Anisah Myers-Grey"></div>
+                <div class="project-title">A Gift for a Gift - Short Film</div>
+                <div class="separator">––––––––––––</div>
+            </div>
+
+            <div class="feed-item image-medium" data-image="/images/gift-still-4.png">
+                <img src="/images/gift-still-4.png" alt="Short Film Behind Scenes">
+            </div>
+
+            <div class="feed-item image-small" data-image="/images/gift-still-1.png">
+                <img src="/images/gift-still-1.png" alt="Short Film Set Details">
+            </div>
+
+            <div class="feed-item image-large" data-image="/images/gift-still-2.png">
+                <img src="/images/gift-still-2.png" alt="Short Film Set Details">
+            </div>
+
+            <div class="feed-item image-medium" data-image="/images/gift-still-3.png">
+                <img src="/images/gift-still-3.png" alt="Short Film Behind Scenes">
+            </div>
+
+            <!-- Fashion Campaign -->
+            <div class="feed-item medium-video" data-video="/videos/fashion.mp4" data-title="Fashion Campaign" data-client="Fashion Client">
+                <video class="feed-video" muted loop preload="metadata">
+                    <source src="/videos/fashion.mp4" type="video/mp4">
+                </video>
+                <div class="item-overlay">
+                    <div class="play-indicator">▶</div>
+                </div>
+            </div>
+
+            <div class="feed-info">
+                <div class="client-name">London Fashion Week</div>
+                <div class="project-title">Tolu Coker SS25 Collection- ‘Olapeju’</div>
+                <div class="separator">––––––––––––</div>
+            </div>
+
+            <div class="feed-item image-large" data-image="/images/fashion-still-1.png">
+                <img src="/images/fashion-still-1.png" alt="Fashion set">
+            </div>
+
+            <div class="feed-item image-medium" data-image="/images/fashion-still-2.png">
+                <img src="/images/fashion-still-2.png" alt="Fashion set">
+            </div>
+
+            <div class="feed-item image-small" data-image="/images/fashion-still-3.png">
+                <img src="/images/fashion-still-3.png" alt="Fashion set">
+            </div>
+
+            <div class="feed-item image-small" data-image="/images/fashion-still-4.png">
+                <img src="/images/fashion-still-4.png" alt="Fashion set">
+            </div>
+            <div class="feed-item medium-video" data-video="/videos/fashion.mp4" data-title="Fashion Campaign" data-client="Fashion Client">
+                <video class="feed-video" muted loop preload="metadata">
+                    <source src="/videos/fashion.mp4" type="video/mp4">
+                </video>
+                <div class="item-overlay">
+                    <div class="play-indicator">▶</div>
+                </div>
+            </div>
+
+            <!-- Premium Production (3GB video with poster) -->
+            <div class="feed-item xl-video" data-video="/videos/advert.mp4" data-title="Premium Production" data-client="Premium Brand">
+                <video class="feed-video" muted loop preload="none" poster="/images/premium-production-poster.png">
+                    <source src="/videos/advert.mp4" type="video/mp4">
+                </video>
+                <div class="item-overlay">
+                    <div class="play-indicator">▶</div>
+                    <div class="hq-badge">4K</div>
+                </div>
+            </div>
+
+            <div class="feed-info">
+                <div class="client-name">Johnnie Walker x Dankie Sounds</div>
+                <div class="project-title">A Seat at the Table - by Mara Lee</div>
+                <div class="separator">––––––––––––</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Video Modal -->
+<div class="video-modal" id="videoModal">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-container">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-client" id="modalClient"></div>
+        </div>
+        <div class="modal-video-wrap">
+            <video class="modal-video" id="modalVideo" controls>
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+        <div class="modal-footer">
+            <div class="modal-director">Ifeoluwa Segun-Oludimu</div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div class="image-modal" id="imageModal">
+    <div class="modal-backdrop" onclick="closeImageModal()"></div>
+    <button class="modal-close" onclick="closeImageModal()">×</button>
+    <img class="modal-image" id="modalImage" src="" alt="">
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

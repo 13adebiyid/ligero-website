@@ -1210,16 +1210,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ================== SET DESIGN PAGE FUNCTIONALITY ==================
 
-// ================== CMNPPL-STYLE PAGE FUNCTIONALITY ==================
-
-// Initialize CMNPPL-style page
-function initCMNPPLPage() {
+// Initialize CMNPPL-style pages
+function initCMNPPLStyle() {
     setupFeedVideoAutoplay();
-    setupWorkItemClicks();
-    setupModalControls();
+    setupFeedItemClicks();
+    setupModalFunctionality();
+    setupKeyboardControls();
+    console.log('CMNPPL-style layout initialized');
 }
 
-// Video autoplay on scroll (like CMNPPL)
+// Video autoplay on scroll (CMNPPL-style)
 function setupFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
 
@@ -1228,6 +1228,12 @@ function setupFeedVideoAutoplay() {
             const video = entry.target;
 
             if (entry.isIntersecting) {
+                // Check if it's a high-quality video (3GB issue)
+                if (video.hasAttribute('data-hq')) {
+                    // Don't autoplay large videos, just show poster
+                    return;
+                }
+
                 video.play().catch(err => {
                     console.log('Autoplay prevented:', err);
                 });
@@ -1237,13 +1243,13 @@ function setupFeedVideoAutoplay() {
             }
         });
     }, {
-        threshold: 0.3
+        threshold: 0.4
     });
 
     feedVideos.forEach(video => {
         videoObserver.observe(video);
 
-        // Loop short preview (first 3-5 seconds)
+        // Short loop for preview (3-4 seconds)
         video.addEventListener('loadedmetadata', () => {
             video.addEventListener('timeupdate', () => {
                 if (video.currentTime >= 4) {
@@ -1254,73 +1260,195 @@ function setupFeedVideoAutoplay() {
     });
 }
 
-// Work item clicks to open modal
-function setupWorkItemClicks() {
-    const workItems = document.querySelectorAll('.work-item');
-
-    workItems.forEach(item => {
+// Setup clicks for videos and images
+function setupFeedItemClicks() {
+    // Video items
+    const videoItems = document.querySelectorAll('.feed-item[data-video]');
+    videoItems.forEach(item => {
         item.addEventListener('click', () => {
             const videoSrc = item.getAttribute('data-video');
             const title = item.getAttribute('data-title');
-            const brand = item.getAttribute('data-brand');
+            const client = item.getAttribute('data-client');
+            openVideoModal(videoSrc, title, client);
+        });
+    });
 
-            openVideoModal(videoSrc, title, brand);
+    // Image items
+    const imageItems = document.querySelectorAll('.feed-item[data-image]');
+    imageItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const imageSrc = item.getAttribute('data-image');
+            openImageModal(imageSrc);
         });
     });
 }
 
 // Open video modal
-function openVideoModal(videoSrc, title, brand) {
+function openVideoModal(videoSrc, title, client) {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
     const modalTitle = document.getElementById('modalTitle');
-    const modalBrand = document.getElementById('modalBrand');
-    const modalDirector = document.getElementById('modalDirector');
+    const modalClient = document.getElementById('modalClient');
+
+    if (!modal || !modalVideo) return;
 
     // Set content
     modalVideo.src = videoSrc;
     modalTitle.textContent = title;
-    modalBrand.textContent = brand;
-    modalDirector.textContent = 'Ifeoluwa Segun-Oludimu';
+    modalClient.textContent = client;
 
     // Show modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // For large videos, show loading state
+    if (videoSrc.includes('high-quality')) {
+        modalVideo.addEventListener('loadstart', () => {
+            console.log('Loading high-quality video...');
+        });
+    }
 }
 
 // Close video modal
-function closeVideoModal() {
+function closeModal() {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
+
+    if (!modal || !modalVideo) return;
 
     modal.classList.remove('active');
     document.body.style.overflow = '';
 
-    // Stop video
+    // Stop and reset video
     modalVideo.pause();
     modalVideo.currentTime = 0;
     modalVideo.src = '';
 }
 
-// Modal controls
-function setupModalControls() {
-    // Escape key to close
+// Open image modal
+function openImageModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    if (!modal || !modalImage) return;
+
+    modalImage.src = imageSrc;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close image modal
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Keyboard controls
+function setupKeyboardControls() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            const modal = document.getElementById('videoModal');
-            if (modal && modal.classList.contains('active')) {
-                closeVideoModal();
+            const videoModal = document.getElementById('videoModal');
+            const imageModal = document.getElementById('imageModal');
+
+            if (videoModal && videoModal.classList.contains('active')) {
+                closeModal();
+            } else if (imageModal && imageModal.classList.contains('active')) {
+                closeImageModal();
             }
         }
     });
 }
 
+// Modal functionality
+function setupModalFunctionality() {
+    // Click outside to close
+    const videoModal = document.getElementById('videoModal');
+    const imageModal = document.getElementById('imageModal');
+
+    if (videoModal) {
+        const backdrop = videoModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeModal);
+        }
+    }
+
+    if (imageModal) {
+        const backdrop = imageModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeImageModal);
+        }
+    }
+}
+
+// Handle large video files (3GB solution)
+function handleLargeVideos() {
+    const largeVideos = document.querySelectorAll('video[data-hq="true"]');
+
+    largeVideos.forEach(video => {
+        // Add loading indicator
+        video.addEventListener('loadstart', () => {
+            const loader = document.createElement('div');
+            loader.className = 'video-loader';
+            loader.innerHTML = 'Loading...';
+            video.parentNode.appendChild(loader);
+        });
+
+        video.addEventListener('canplay', () => {
+            const loader = video.parentNode.querySelector('.video-loader');
+            if (loader) loader.remove();
+        });
+
+        // Error handling for large files
+        video.addEventListener('error', (e) => {
+            console.log('Video error:', e);
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'video-error';
+            errorMsg.innerHTML = 'Video temporarily unavailable';
+            video.parentNode.appendChild(errorMsg);
+        });
+    });
+}
+
+// Optimized scroll performance
+function optimizeScrollPerformance() {
+    let ticking = false;
+
+    function updateScrollElements() {
+        // Any scroll-based animations or updates
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateScrollElements);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', requestTick);
+}
+
 // Add to existing DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Your existing code...
+    // Your existing initialization code...
 
-    // Initialize CMNPPL page if present
-    if (document.querySelector('.cmnppl-page')) {
-        initCMNPPLPage();
+    // Initialize CMNPPL-style pages
+    if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
+        initCMNPPLStyle();
+        handleLargeVideos();
+        optimizeScrollPerformance();
     }
+});
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+    });
 });

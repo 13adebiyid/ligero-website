@@ -14,9 +14,7 @@
         <div class="hamburger-line"></div>
         <div class="hamburger-line"></div>
     </div>
-
     <a href="/" class="logo">LIGERO</a>
-
     <div class="nav-menu">
         <a href="/shop/" class="nav-item">Shop</a>
         <span class="nav-separator">|</span>
@@ -33,67 +31,113 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<div class="cmnppl-page">
+<div class="set-design-feed">
     <div class="theme-switcher">
         <div class="theme-circle black" onclick="setTheme('black')"></div>
         <div class="theme-circle white" onclick="setTheme('white')"></div>
     </div>
 
-    <div class="page-header">
-        <div class="nav-breadcrumb">
-            <a href="/services/" class="breadcrumb-link">SERVICES</a>
-            <span class="breadcrumb-separator">–––</span>
-            <span class="current-page">SET DESIGNING</span>
-        </div>
-    </div>
+    <!-- Asymmetrical Feed Layout -->
+    <div class="feed-container">
 
-    <!-- Work Feed (CMNPPL Style) -->
-    <div class="work-feed">
-        <!-- Project 1 -->
-        <div class="work-item" data-video="/videos/set-design-work.mp4" data-title="Creative Set Design" data-brand="Fashion Campaign">
-            <div class="work-video-wrapper">
-                <video class="feed-video" muted loop preload="metadata">
-                    <source src="/videos/set-design-work.mp4" type="video/mp4">
-                </video>
-                <div class="video-overlay">
-                    <div class="play-button">▶</div>
-                </div>
-            </div>
-            <div class="work-details">
-                <div class="brand-line">
-                    <span class="brand-name">Fashion Campaign</span>
-                </div>
-                <div class="title-line">
-                    <span class="work-title">Creative Set Design</span>
-                </div>
-                <div class="director-line">
-                    <a href="/directors/ifeoluwa-segun-oludimu" class="director-name">Ifeoluwa Segun-Oludimu</a>
-                </div>
+        <!-- Project 1: Fashion Campaign -->
+        <div class="feed-item large-video" data-video="/videos/fashion-campaign.mp4" data-title="Fashion Campaign Set" data-client="Fashion Brand">
+            <video class="feed-video" muted loop preload="metadata">
+                <source src="/videos/fashion-campaign.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+                <div class="play-indicator">▶</div>
             </div>
         </div>
 
-        <!-- Add more work items as you get more projects -->
+        <div class="feed-info">
+            <div class="client-name">Fashion Brand</div>
+            <div class="project-title">Fashion Campaign Set</div>
+            <a href="/designers/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
+            <div class="separator">––––––––––––</div>
+        </div>
+
+        <!-- Project 1 Images (unaligned) -->
+        <div class="feed-item image-small" data-image="/images/fashion-campaign-1.jpg">
+            <img src="/images/fashion-campaign-1.jpg" alt="Fashion Campaign Behind Scenes">
+        </div>
+
+        <div class="feed-item image-medium" data-image="/images/fashion-campaign-2.jpg">
+            <img src="/images/fashion-campaign-2.jpg" alt="Fashion Campaign Set Details">
+        </div>
+
+        <!-- Project 2: Music Video -->
+        <div class="feed-item medium-video" data-video="/videos/music-video-set.mp4" data-title="Music Video Production" data-client="Music Label">
+            <video class="feed-video" muted loop preload="metadata">
+                <source src="/videos/music-video-set.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+                <div class="play-indicator">▶</div>
+            </div>
+        </div>
+
+        <div class="feed-info">
+            <div class="client-name">Music Label</div>
+            <div class="project-title">Music Video Production</div>
+            <a href="/designers/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
+            <div class="separator">––––––––––––</div>
+        </div>
+
+        <!-- Project 2 Images -->
+        <div class="feed-item image-large" data-image="/images/music-video-1.jpg">
+            <img src="/images/music-video-1.jpg" alt="Music Video Set">
+        </div>
+
+        <div class="feed-item image-small" data-image="/images/music-video-2.jpg">
+            <img src="/images/music-video-2.jpg" alt="Music Video Details">
+        </div>
+
+        <!-- Project 3: High Quality Video (3GB - use poster) -->
+        <div class="feed-item xl-video" data-video="/videos/high-quality-production.mp4" data-title="Premium Production" data-client="Premium Brand">
+            <video class="feed-video" muted loop preload="none" poster="/images/premium-production-poster.jpg">
+                <source src="/videos/high-quality-production.mp4" type="video/mp4">
+            </video>
+            <div class="item-overlay">
+                <div class="play-indicator">▶</div>
+                <div class="hq-badge">4K</div>
+            </div>
+        </div>
+
+        <div class="feed-info">
+            <div class="client-name">Premium Brand</div>
+            <div class="project-title">Premium Production</div>
+            <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
+            <div class="separator">––––––––––––</div>
+        </div>
+
     </div>
 </div>
 
-<!-- Video Modal (CMNPPL Style) -->
+<!-- Video Modal -->
 <div class="video-modal" id="videoModal">
-    <div class="modal-backdrop" onclick="closeVideoModal()"></div>
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeVideoModal()">×</button>
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-container">
+        <button class="modal-close" onclick="closeModal()">×</button>
         <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle">Creative Set Design</h2>
-            <span class="modal-brand" id="modalBrand">Fashion Campaign</span>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-client" id="modalClient"></div>
         </div>
-        <div class="modal-video-container">
+        <div class="modal-video-wrap">
             <video class="modal-video" id="modalVideo" controls>
                 <source src="" type="video/mp4">
             </video>
         </div>
         <div class="modal-footer">
-            <span class="modal-director" id="modalDirector">Ifeoluwa Segun-Oludimu</span>
+            <div class="modal-director">Ifeoluwa Segun-Oludimu</div>
         </div>
     </div>
+</div>
+
+<!-- Image Modal -->
+<div class="image-modal" id="imageModal">
+    <div class="modal-backdrop" onclick="closeImageModal()"></div>
+    <button class="modal-close" onclick="closeImageModal()">×</button>
+    <img class="modal-image" id="modalImage" src="" alt="">
 </div>
 
 <script src="/js/script.js"></script>

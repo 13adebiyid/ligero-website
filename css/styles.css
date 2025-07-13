@@ -1322,87 +1322,86 @@ body.white-theme .contact-button:hover {
     }
 }
 
-/* ================== CMNPPL-STYLE PAGE ================== */
+/* ================== TRUE CMNPPL-STYLE SET DESIGN PAGE ================== */
 
-.cmnppl-page {
-    min-height: 100vh;
-    padding: 120px 60px 60px;
-    max-width: 1400px;
+.set-design-feed {
+    padding: 100px 60px 80px;
+    max-width: 1600px;
     margin: 0 auto;
 }
 
-/* Page Header */
-.page-header {
-    margin-bottom: 80px;
+/* Asymmetrical Feed Container */
+.feed-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px 40px;
+    align-items: start;
 }
 
-.nav-breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
-.breadcrumb-link {
-    color: white;
-    text-decoration: none;
-    opacity: 0.6;
-    transition: opacity 0.3s;
-}
-
-.breadcrumb-link:hover {
-    opacity: 1;
-}
-
-.breadcrumb-separator {
-    opacity: 0.3;
-    font-size: 0.7rem;
-}
-
-.current-page {
-    opacity: 0.9;
-}
-
-/* Work Feed */
-.work-feed {
-    display: flex;
-    flex-direction: column;
-    gap: 80px;
-}
-
-.work-item {
+/* Feed Items - Different Sizes for Artistic Layout */
+.feed-item {
+    position: relative;
     cursor: pointer;
     transition: opacity 0.3s ease;
-}
-
-.work-item:hover {
-    opacity: 0.8;
-}
-
-/* Video Wrapper */
-.work-video-wrapper {
-    position: relative;
-    width: 100%;
-    height: 70vh;
-    margin-bottom: 20px;
     overflow: hidden;
-    background: #111;
 }
 
-.feed-video {
+.feed-item:hover {
+    opacity: 0.85;
+}
+
+/* Video Sizes */
+.large-video {
+    grid-column: span 2;
+    height: 70vh;
+    min-height: 500px;
+}
+
+.medium-video {
+    height: 50vh;
+    min-height: 350px;
+}
+
+.xl-video {
+    grid-column: span 3;
+    height: 80vh;
+    min-height: 600px;
+}
+
+/* Image Sizes */
+.image-small {
+    height: 30vh;
+    min-height: 250px;
+}
+
+.image-medium {
+    height: 45vh;
+    min-height: 350px;
+}
+
+.image-large {
+    grid-column: span 2;
+    height: 60vh;
+    min-height: 450px;
+}
+
+/* Video and Image Styling */
+.feed-video,
+.feed-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
-.video-overlay {
+/* Item Overlay */
+.item-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1410,58 +1409,73 @@ body.white-theme .contact-button:hover {
     transition: opacity 0.3s;
 }
 
-.work-item:hover .video-overlay {
+.feed-item:hover .item-overlay {
     opacity: 1;
 }
 
-.play-button {
-    width: 70px;
-    height: 70px;
-    background: rgba(255, 255, 255, 0.9);
+.play-indicator {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 20px;
     color: black;
-    padding-left: 4px; /* Center the triangle */
+    padding-left: 3px;
 }
 
-/* Work Details */
-.work-details {
-    padding-left: 20px;
+.hq-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
 }
 
-.brand-line,
-.title-line,
-.director-line {
-    margin-bottom: 8px;
+/* Feed Info Styling */
+.feed-info {
+    padding: 20px 0;
+    line-height: 1.4;
 }
 
-.brand-name {
-    font-size: 0.9rem;
+.client-name {
+    font-size: 0.85rem;
     opacity: 0.6;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
 }
 
-.work-title {
-    font-size: 1.8rem;
+.project-title {
+    font-size: 1.6rem;
     font-weight: 300;
+    margin-bottom: 10px;
     line-height: 1.2;
 }
 
-.director-name {
+.designer-link {
     color: white;
     text-decoration: none;
     font-size: 1rem;
     opacity: 0.8;
     transition: opacity 0.3s;
+    display: inline-block;
+    margin-bottom: 15px;
 }
 
-.director-name:hover {
+.designer-link:hover {
     opacity: 1;
-    text-decoration: underline;
+}
+
+.separator {
+    font-size: 0.7rem;
+    opacity: 0.3;
+    letter-spacing: 1px;
 }
 
 /* Video Modal */
@@ -1491,7 +1505,7 @@ body.white-theme .contact-button:hover {
     backdrop-filter: blur(10px);
 }
 
-.modal-content {
+.modal-container {
     position: relative;
     max-width: 90vw;
     max-height: 90vh;
@@ -1518,24 +1532,22 @@ body.white-theme .contact-button:hover {
 
 .modal-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .modal-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 300;
     margin-bottom: 8px;
-    line-height: 1.2;
 }
 
-.modal-brand {
+.modal-client {
     font-size: 0.9rem;
     opacity: 0.6;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.modal-video-container {
+.modal-video-wrap {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
@@ -1549,7 +1561,7 @@ body.white-theme .contact-button:hover {
 
 .modal-footer {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 .modal-director {
@@ -1557,42 +1569,84 @@ body.white-theme .contact-button:hover {
     opacity: 0.8;
 }
 
+/* Image Modal */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal.active {
+    display: flex;
+}
+
+.modal-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    z-index: 3001;
+}
+
 /* White Theme */
-body.white-theme .breadcrumb-link {
+body.white-theme .designer-link {
     color: black;
-}
-
-body.white-theme .director-name {
-    color: black;
-}
-
-body.white-theme .work-video-wrapper {
-    background: #f5f5f5;
 }
 
 /* Mobile Responsive */
+@media screen and (max-width: 1200px) {
+    .feed-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px 30px;
+    }
+
+    .large-video,
+    .image-large {
+        grid-column: span 1;
+    }
+
+    .xl-video {
+        grid-column: span 2;
+        height: 60vh;
+    }
+}
+
 @media screen and (max-width: 768px) {
-    .cmnppl-page {
-        padding: 120px 20px 40px;
+    .set-design-feed {
+        padding: 120px 20px 60px;
     }
 
-    .work-feed {
-        gap: 60px;
+    .feed-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
-    .work-video-wrapper {
+    .large-video,
+    .medium-video,
+    .xl-video {
+        grid-column: span 1;
         height: 50vh;
+        min-height: 300px;
     }
 
-    .work-details {
-        padding-left: 10px;
+    .image-small,
+    .image-medium,
+    .image-large {
+        grid-column: span 1;
+        height: 40vh;
+        min-height: 250px;
     }
 
-    .work-title {
-        font-size: 1.4rem;
+    .project-title {
+        font-size: 1.3rem;
     }
 
-    .modal-content {
+    .modal-container {
         max-width: 95vw;
         max-height: 95vh;
     }
@@ -1601,34 +1655,125 @@ body.white-theme .work-video-wrapper {
         top: -40px;
         font-size: 1.5rem;
     }
+}
 
-    .modal-title {
-        font-size: 1.5rem;
+/* ================== DESIGNER PROFILE PAGE ================== */
+
+.designer-profile-page {
+    min-height: 100vh;
+}
+
+/* Full-Width Hero Image */
+.designer-hero {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    padding: 60px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Profile Content */
+.profile-content {
+    padding: 80px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.profile-bio {
+    margin-bottom: 60px;
+    line-height: 1.7;
+}
+
+.bio-text {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.social-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.social-link:hover {
+    opacity: 1;
+}
+
+.work-section-title {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Hero */
+@media screen and (max-width: 768px) {
+    .designer-hero {
+        height: 70vh;
     }
 
-    .play-button {
-        width: 60px;
-        height: 60px;
-        font-size: 20px;
+    .hero-overlay {
+        padding: 40px 20px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .profile-content {
+        padding: 60px 20px;
+    }
+
+    .work-section-title {
+        font-size: 1.5rem;
     }
 }
 
-@media screen and (max-width: 576px) {
-    .work-video-wrapper {
-        height: 40vh;
-    }
+/* White Theme for Designer Profile */
+body.white-theme .social-link {
+    color: black;
+}
 
-    .work-title {
-        font-size: 1.2rem;
-    }
-
-    .modal-header {
-        margin-bottom: 20px;
-    }
-
-    .modal-footer {
-        margin-top: 20px;
-    }
+body.white-theme .work-section-title {
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* ================== CONTACT PAGE STYLES ================== */
