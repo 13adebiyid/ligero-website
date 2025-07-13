@@ -1207,3 +1207,235 @@ document.addEventListener('DOMContentLoaded', () => {
         initComingSoonPage();
     }
 });
+
+// ================== SET DESIGN PAGE FUNCTIONALITY ==================
+
+// Initialize set design page functionality
+function initSetDesignPage() {
+    setupVideoAutoplay();
+    setupWorkEntryClicks();
+    setupKeyboardControls();
+
+    console.log('Set design page initialized');
+}
+
+// Setup video autoplay on scroll (like CMNPPL)
+function setupVideoAutoplay() {
+    const workVideos = document.querySelectorAll('.work-video');
+
+    // Intersection Observer for video autoplay
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+
+            if (entry.isIntersecting) {
+                // Video is in view - start playing
+                video.play().catch(err => {
+                    console.log('Autoplay prevented:', err);
+                });
+            } else {
+                // Video is out of view - pause
+                video.pause();
+                video.currentTime = 0; // Reset to beginning
+            }
+        });
+    }, {
+        threshold: 0.5 // Start playing when 50% visible
+    });
+
+    // Observe all work videos
+    workVideos.forEach(video => {
+        videoObserver.observe(video);
+
+        // Set video to loop short clips (first 3 seconds)
+        video.addEventListener('loadedmetadata', () => {
+            video.addEventListener('timeupdate', () => {
+                if (video.currentTime >= 3) {
+                    video.currentTime = 0;
+                }
+            });
+        });
+    });
+}
+
+// Setup work entry clicks to open video overlay
+function setupWorkEntryClicks() {
+    const workEntries = document.querySelectorAll('.work-entry');
+
+    workEntries.forEach(entry => {
+        entry.addEventListener('click', () => {
+            const videoSrc = entry.getAttribute('data-video');
+            const title = entry.getAttribute('data-title');
+            const brand = entry.getAttribute('data-brand');
+            const director = entry.getAttribute('data-director');
+
+            openVideoOverlay(videoSrc, title, brand, director);
+        });
+    });
+}
+
+// Open video overlay
+function openVideoOverlay(videoSrc, title, brand, director) {
+    const overlay = document.getElementById('videoOverlay');
+    const overlayVideo = document.getElementById('overlayVideo');
+    const overlayTitle = document.getElementById('overlayTitle');
+    const overlayBrand = document.getElementById('overlayBrand');
+    const overlayDirector = document.getElementById('overlayDirector');
+
+    // Set content
+    overlayVideo.src = videoSrc;
+    overlayTitle.textContent = title;
+    overlayBrand.textContent = brand;
+    overlayDirector.textContent = director;
+
+    // Show overlay
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Focus for keyboard control
+    overlay.focus();
+}
+
+// Close video overlay
+function closeVideoOverlay() {
+    const overlay = document.getElementById('videoOverlay');
+    const overlayVideo = document.getElementById('overlayVideo');
+
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Pause and reset video
+    overlayVideo.pause();
+    overlayVideo.currentTime = 0;
+    overlayVideo.src = '';
+}
+
+// Open director profile overlay
+function openDirectorProfile(directorId) {
+    const profileOverlay = document.getElementById('directorProfileOverlay');
+
+    profileOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Smooth scroll to top of profile
+    profileOverlay.scrollTop = 0;
+}
+
+// Close director profile overlay
+function closeDirectorProfile() {
+    const profileOverlay = document.getElementById('directorProfileOverlay');
+
+    profileOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Open video from profile work grid
+function openVideoFromProfile(videoSrc, title, brand) {
+    // Close director profile first
+    closeDirectorProfile();
+
+    // Small delay to smooth transition
+    setTimeout(() => {
+        openVideoOverlay(videoSrc, title, brand, 'Ifeoluwa Segun-Oludimu');
+    }, 300);
+}
+
+// Setup keyboard controls for overlays
+function setupKeyboardControls() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const videoOverlay = document.getElementById('videoOverlay');
+            const profileOverlay = document.getElementById('directorProfileOverlay');
+
+            if (videoOverlay.classList.contains('active')) {
+                closeVideoOverlay();
+            } else if (profileOverlay.classList.contains('active')) {
+                closeDirectorProfile();
+            }
+        }
+    });
+
+    // Close overlay when clicking outside content
+    const videoOverlay = document.getElementById('videoOverlay');
+    const profileOverlay = document.getElementById('directorProfileOverlay');
+
+    if (videoOverlay) {
+        videoOverlay.addEventListener('click', (e) => {
+            if (e.target === videoOverlay) {
+                closeVideoOverlay();
+            }
+        });
+    }
+
+    if (profileOverlay) {
+        profileOverlay.addEventListener('click', (e) => {
+            if (e.target === profileOverlay) {
+                closeDirectorProfile();
+            }
+        });
+    }
+}
+
+// Handle video errors gracefully
+function handleVideoErrors() {
+    const allVideos = document.querySelectorAll('video');
+
+    allVideos.forEach(video => {
+        video.addEventListener('error', (e) => {
+            console.log('Video error:', e);
+            // Could show a placeholder image here
+            const container = video.closest('.work-video-container');
+            if (container) {
+                container.style.background = 'rgba(255, 255, 255, 0.1)';
+                container.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: rgba(255, 255, 255, 0.5);">Video temporarily unavailable</div>';
+            }
+        });
+    });
+}
+
+// Smooth scroll animations for work entries
+function setupScrollAnimations() {
+    const workEntries = document.querySelectorAll('.work-entry');
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    workEntries.forEach((entry, index) => {
+        // Initial state
+        entry.style.opacity = '0';
+        entry.style.transform = 'translateY(30px)';
+        entry.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+
+        scrollObserver.observe(entry);
+    });
+}
+
+// Add to your existing DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing initialization code...
+
+    // Initialize set design page if we're on that page
+    if (document.querySelector('.set-design-page')) {
+        initSetDesignPage();
+        handleVideoErrors();
+        setupScrollAnimations();
+    }
+});
+
+// Cleanup when leaving page
+window.addEventListener('beforeunload', () => {
+    // Pause all videos to prevent background playing
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+    });
+});
