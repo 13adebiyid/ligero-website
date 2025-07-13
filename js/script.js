@@ -1748,3 +1748,83 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
+
+// Enhanced CMNPPL initialization with better error handling
+function initCMNPPLStyle() {
+    console.log('🎬 Initializing CMNPPL-style with enhanced video support...');
+
+    checkVideoFiles();
+    setupEnhancedFeedVideoAutoplay();
+    setupEnhancedFeedItemClicks();
+    setupModalFunctionality();
+    setupKeyboardControls();
+    setupImageLoading();
+
+    console.log('✅ CMNPPL-style initialization complete');
+}
+
+// Check if video files exist and are loadable
+function checkVideoFiles() {
+    const videoItems = document.querySelectorAll('.feed-item[data-video]');
+
+    videoItems.forEach((item, index) => {
+        const videoSrc = item.getAttribute('data-video');
+        const video = item.querySelector('.feed-video');
+
+        console.log(`📹 Checking video ${index + 1}: ${videoSrc}`);
+
+        if (video) {
+            video.addEventListener('loadeddata', () => {
+                console.log(`✅ Video ${index + 1} loaded successfully`);
+                video.classList.add('loaded');
+            });
+
+            video.addEventListener('error', (e) => {
+                console.error(`❌ Video ${index + 1} failed to load:`, e);
+            });
+
+            video.load();
+        }
+    });
+}
+
+// Enhanced feed item clicks with better debugging
+function setupEnhancedFeedItemClicks() {
+    console.log('🖱️ Setting up enhanced feed item clicks...');
+
+    // Enhanced video items
+    const videoItems = document.querySelectorAll('.feed-item[data-video]');
+    console.log(`🎬 Found ${videoItems.length} video items`);
+
+    videoItems.forEach((item, index) => {
+        const videoSrc = item.getAttribute('data-video');
+        const title = item.getAttribute('data-title') || `Video ${index + 1}`;
+        const client = item.getAttribute('data-client') || 'Client';
+
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log(`🖱️ Video clicked: ${title}`);
+            openVideoModal(videoSrc, title, client);
+        });
+
+        item.style.cursor = 'pointer';
+    });
+
+    // Enhanced image items
+    const imageItems = document.querySelectorAll('.feed-item[data-image]');
+    console.log(`🖼️ Found ${imageItems.length} image items`);
+
+    imageItems.forEach((item, index) => {
+        const imageSrc = item.getAttribute('data-image');
+
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log(`🖱️ Image clicked: ${imageSrc?.split('/').pop()}`);
+
+            const projectInfo = getImageProjectInfo(item);
+            openImageModal(imageSrc, projectInfo);
+        });
+
+        item.style.cursor = 'pointer';
+    });
+}
