@@ -265,40 +265,115 @@ nav {
 
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
-    .video-controls {
-        position: fixed !important;
-        bottom: 10px !important;
-        right: 1px !important;
 
-        display: flex !important;
-        flex-direction: row !important;
-
-        /* Ensures buttons align to bottom edge of container */
-        align-items: flex-end !important;
-
-        height: auto !important;
-        padding: 0 !important;
-        margin: 0 !important;
+    /* Fix 1: Remove greyish background from video containers */
+    .video-container-main {
+        background: transparent !important; /* Remove gray background */
+        min-height: auto !important; /* Let video determine height */
+        max-height: none !important; /* Remove height constraints */
+        overflow: hidden;
     }
 
-    .video-btn {
-        width: 30px !important;
-        height: 30px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    .video-btn img {
-        width: 16px !important;
-        height: 16px !important;
-        object-fit: contain !important;
+    /* Ensure videos fill container properly without gray bars */
+    .feed-video,
+    .video-container-main video {
+        width: 100% !important;
+        height: auto !important; /* Let aspect ratio determine height */
+        object-fit: cover !important;
+        object-position: center !important;
         display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        border-radius: 12px;
+        background: transparent !important;
+    }
+
+    /* Fix 2: Hide ALL overlays, buttons, and badges on mobile */
+    .video-overlay,
+    .play-indicator,
+    .hq-badge,
+    .item-overlay {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* Ensure no hover effects on mobile */
+    .video-container-main:hover .video-overlay,
+    .feed-item:hover .item-overlay {
+        display: none !important;
+        opacity: 0 !important;
+    }
+
+    /* Remove pointer cursor on mobile since no interaction */
+    .video-container-main,
+    .feed-item[data-image] {
+        cursor: default !important;
+    }
+
+    /* Ensure video sections have proper spacing without background issues */
+    .video-section {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 40px;
+    }
+
+    /* Fix video metadata positioning on mobile */
+    .video-metadata {
+        background: transparent;
+        padding: 15px 0;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    /* This targets touch devices specifically */
+
+    .video-overlay,
+    .play-indicator,
+    .hq-badge,
+    .item-overlay {
+        display: none !important;
+    }
+
+    /* Remove any hover states on touch devices */
+    .video-container-main:hover .video-overlay,
+    .feed-item:hover .item-overlay {
+        display: none !important;
+        opacity: 0 !important;
+    }
+
+    /* Disable pointer cursor on touch devices */
+    .video-container-main,
+    .feed-item[data-image] {
+        cursor: default;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Ensure feed containers don't have background issues */
+    .feed-container {
+        background: transparent;
+        padding: 0;
+    }
+
+    /* Make sure image items also don't show overlays */
+    .feed-item[data-image] .item-overlay {
+        display: none !important;
+    }
+
+    /* Remove any background from image containers */
+    .feed-item[data-image] {
+        background: transparent !important;
+    }
+
+    /* Ensure images also fill properly */
+    .feed-item img {
+        background: transparent !important;
+    }
+
+    /* Video container should take natural video aspect ratio */
+    .video-container-main {
+        aspect-ratio: unset !important; /* Let video determine ratio */
+        height: auto !important;
     }
 }
 
