@@ -1035,7 +1035,7 @@ body.white-theme .contact-button:hover {
     cursor: pointer;
     transition: transform 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 0;
     background: #111;
 }
 
@@ -1117,7 +1117,7 @@ body.white-theme .contact-button:hover {
     justify-content: center;
     opacity: 0;
     transition: all 0.3s ease;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 
@@ -1447,7 +1447,7 @@ body.white-theme .modal-loading p {
     cursor: pointer;
     transition: opacity 0.3s ease;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 .feed-item:hover {

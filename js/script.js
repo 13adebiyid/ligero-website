@@ -1656,7 +1656,7 @@ window.addEventListener('beforeunload', () => {
 });
 
 // =============================================================================
-// DIRECT VIDEO LOOPING FIX - ADD THIS TO THE VERY END OF YOUR SCRIPT.JS FILE
+// DIRECT VIDEO LOOPING
 // =============================================================================
 
 // Individual video looping functionality
