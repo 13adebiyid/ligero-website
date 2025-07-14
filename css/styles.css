@@ -2299,13 +2299,17 @@ body.white-theme .form-buttons button:hover {
 
         margin: 0 20px;
     }
+    .designer-profile-page{
+        max-width: none;
+        margin: 0;
+        width: 100%;
+    }
 
     .video-section{
         max-width: none;
         margin: 0;
         width: 100%;
     }
-
 
     .video-metadata .project-title {
         font-size: 2.5rem;
