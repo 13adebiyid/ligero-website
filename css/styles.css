@@ -1703,7 +1703,6 @@ body.white-theme .modal-loading p {
     transition: opacity 0.3s ease;
     overflow: hidden;
     border-radius: 8px;
-    border-color: white;
 }
 
 .feed-item:hover {
