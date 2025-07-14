@@ -1466,7 +1466,6 @@ body.white-theme .contact-button:hover {
     transition: opacity 0.3s;
     display: inline-block;
     margin-bottom: 15px;
-    font-weight: bold;
     animation: designer-pulse 3s ease-in-out infinite;
 }
 
