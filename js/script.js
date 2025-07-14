@@ -1567,3 +1567,31 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
+// ENHANCED: Image modal with better debugging
+function openImageModalFixed(imageSrc, projectInfo) {
+    console.log(`🖼️ Opening image modal: ${projectInfo.title} with src: ${imageSrc}`);
+
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) {
+        console.error('❌ Image modal elements not found');
+        return;
+    }
+
+    // Set image source
+    modalImage.src = imageSrc;
+    modalImage.alt = projectInfo.title || 'Project Image';
+
+    // Set project info if elements exist
+    if (imageTitle) imageTitle.textContent = projectInfo.title || 'Project Image';
+    if (imageProject) imageProject.textContent = projectInfo.client || 'Ligero';
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    console.log(`✅ Image modal opened for: ${imageSrc}`);
+}
