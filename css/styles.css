@@ -1657,7 +1657,7 @@ body.white-theme .modal-loading p {
 
 .profile-bio {
     max-width: 1000px;
-    margin: 0 auto 60px;
+    margin: 0 0 60px 0;
     line-height: 1.7;
 }
 
@@ -2357,8 +2357,7 @@ body.white-theme .form-buttons button:hover {
 
     /* Profile bio can be wider but not too wide for readability */
     .profile-bio {
-        max-width: 1000px; /* Prevent text from being too wide */
-        margin: 0 auto 60px;
+        margin: 0 0 60px 0;
     }
 }
 

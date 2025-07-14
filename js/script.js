@@ -967,76 +967,54 @@ function setupEnhancedFeedItemClicks() {
     });
 }
 
-// ENHANCED: Video modal with better debugging
-function openVideoModalFixed(videoSrc, title, client) {
-    console.log(`🎬 Opening video modal: ${title} with src: ${videoSrc}`);
-
+// Video modal
+function openVideoModal(videoSrc, title, client) {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
     const modalTitle = document.getElementById('modalTitle');
     const modalClient = document.getElementById('modalClient');
 
     if (!modal || !modalVideo) {
-        console.error('❌ Video modal elements not found');
-        return; // Remove the alert here
+        console.error('Video modal elements not found');
+        return;
     }
 
     // Set content
-    if (modalTitle) modalTitle.textContent = title;
-    if (modalClient) modalClient.textContent = client;
+    if (modalTitle) modalTitle.textContent = title || 'Video';
+    if (modalClient) modalClient.textContent = client || 'Client';
 
-    // Show modal first
+    // Show modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Clear any existing source
-    modalVideo.src = '';
-    modalVideo.load();
-
-    // Set new source with error handling (no alerts)
-    modalVideo.addEventListener('loadeddata', () => {
-        console.log(`✅ Video loaded successfully: ${videoSrc}`);
-    }, { once: true });
-
-    modalVideo.addEventListener('error', (e) => {
-        console.error(`❌ Video failed to load: ${videoSrc}`, e);
-        // Remove the alert - just log the error
-    }, { once: true });
-
-    // Set the source
+    // Set video source
     modalVideo.src = videoSrc;
     modalVideo.load();
-
-    console.log(`✅ Video modal opened for: ${title}`);
 }
 
-// ENHANCED: Image modal with better debugging
-function openImageModalFixed(imageSrc, projectInfo) {
-    console.log(`🖼️ Opening image modal: ${projectInfo.title} with src: ${imageSrc}`);
-
+// Image modal
+function openImageModal(imageSrc, title, client) {
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
     const imageTitle = document.getElementById('imageTitle');
     const imageProject = document.getElementById('imageProject');
 
     if (!modal || !modalImage) {
-        console.error('❌ Image modal elements not found');
+        console.error('Image modal elements not found');
         return;
     }
 
-    // Set image source
+    // Set image
     modalImage.src = imageSrc;
-    modalImage.alt = projectInfo.title || 'Project Image';
+    modalImage.alt = title || 'Image';
 
-    // Set project info if elements exist
-    if (imageTitle) imageTitle.textContent = projectInfo.title || 'Project Image';
-    if (imageProject) imageProject.textContent = projectInfo.client || 'Ligero';
+    // Set metadata if elements exist
+    if (imageTitle) imageTitle.textContent = title || 'Project Image';
+    if (imageProject) imageProject.textContent = client || 'Ligero';
 
     // Show modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-
-    console.log(`✅ Image modal opened for: ${imageSrc}`);
 }
 
 // FIXED: Image modal that works
@@ -1104,37 +1082,36 @@ function getImageProjectInfo(imageItem) {
 
 // Close video modal
 function closeModal() {
-    const modal = document.getElementById('videoModal');
+    const videoModal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
 
-    if (!modal || !modalVideo) return;
+    if (videoModal) {
+        videoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-
-    // Stop and reset video
-    modalVideo.pause();
-    modalVideo.currentTime = 0;
-    modalVideo.src = '';
+    if (modalVideo) {
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+        modalVideo.src = '';
+    }
 }
 
 // Close image modal
 function closeImageModal() {
-    const modal = document.getElementById('imageModal');
+    const imageModal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
 
-    if (!modal) return;
+    if (imageModal) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-
-    // Clear image source to stop loading
     if (modalImage) {
         modalImage.src = '';
     }
-
-    console.log('Image modal closed');
 }
+
 
 // Modal functionality
 function setupModalFunctionality() {
