@@ -1092,7 +1092,7 @@ body.white-theme .contact-button:hover {
     display: block !important;
     transition: transform 0.3s ease, opacity 0.5s ease;
     opacity: 0;
-    border-radius: 0; !important;
+    border-radius: 0 !important;
 }
 
 .feed-item img.loaded,
@@ -1768,7 +1768,7 @@ body.white-theme .work-section-title {
     max-width: 100%;
     max-height: 80vh;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 0 !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
