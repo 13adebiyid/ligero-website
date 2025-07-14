@@ -2300,7 +2300,11 @@ body.white-theme .form-buttons button:hover {
         margin: 0 20px;
     }
 
-
+    .video-section{
+        max-width: none;
+        margin: 0;
+        width: 100%;
+    }
 
 
     .video-metadata .project-title {
