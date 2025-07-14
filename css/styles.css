@@ -2299,10 +2299,11 @@ body.white-theme .form-buttons button:hover {
 
         margin: 0 20px;
     }
-    .designer-profile-page .video-section .image-grid{
+    .designer-profile-page .feed-container .video-section .image-grid{
         max-width: none;
         margin: 0;
         width: 100%;
+        padding: 0;
     }
 
     .video-section, .image-grid{
