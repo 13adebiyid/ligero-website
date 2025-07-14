@@ -863,7 +863,8 @@ body.white-theme .contact-button:hover {
 /* Feed Container - New Structure */
 .feed-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 60px;
     align-items: center;
     width: 100%;
@@ -997,7 +998,7 @@ body.white-theme .contact-button:hover {
     opacity: 0.8;
     transition: opacity 0.3s;
     display: inline-block;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 8px 0;
     animation: designer-pulse 3s ease-in-out infinite;
 }
