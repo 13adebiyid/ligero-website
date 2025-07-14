@@ -221,7 +221,13 @@
 <div class="image-modal" id="imageModal">
     <div class="modal-backdrop" onclick="closeImageModal()"></div>
     <button class="modal-close" onclick="closeImageModal()">×</button>
-    <img class="modal-image" id="modalImage" src="" alt="">
+    <div class="image-container">
+        <img class="modal-image" id="modalImage" src="" alt="" loading="lazy">
+        <div class="image-info" id="imageInfo">
+            <div class="image-title" id="imageTitle">Image Title</div>
+            <div class="image-project" id="imageProject">Project Name</div>
+        </div>
+    </div>
 </div>
 
 <script src="/js/script.js"></script>
