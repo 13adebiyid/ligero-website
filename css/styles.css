@@ -2294,27 +2294,98 @@ body.white-theme .form-buttons button:hover {
 
 /* Large screens - use more width */
 @media screen and (min-width: 1200px) {
+    /* Main container styling - consistent for both set design and member pages */
     .set-design-feed,
     .designer-profile-page .profile-content {
-
-        margin: 0 20px;
+        padding: 100px 3vw 80px; /* Reduced side padding for more content width */
+        max-width: 94vw; /* Slightly more width */
+        margin: 0 auto;
     }
-    .designer-profile-page .feed-container .video-section .image-grid{
-        max-width: none;
-        margin: 0;
+
+    /* Feed container - make it use full available width */
+    .feed-container {
+        max-width: 100%; /* Use full container width */
         width: 100%;
-        padding: 0;
+        margin: 0 auto;
     }
 
-    .video-section, .image-grid{
-        max-width: none;
-        margin: 0;
+    /* Video sections - expand to full width with proper spacing */
+    .video-section {
+        max-width: 100%;
         width: 100%;
+        margin: 0 auto;
+        gap: 40px; /* Maintain spacing between video and metadata */
     }
 
+    /* Images grid - expand but maintain some margin for readability */
+    .images-grid {
+        max-width: 100%;
+        width: 100%;
+        margin: 40px auto 0;
+        padding: 0; /* Remove any extra padding */
+    }
+
+    /* Ensure video containers fill their allocated space */
+    .video-container-main {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Keep metadata at proper size */
+    .video-metadata {
+        min-width: 280px;
+        max-width: 350px; /* Prevent metadata from getting too wide */
+    }
+
+    /* Larger project titles on big screens */
     .video-metadata .project-title {
         font-size: 2.5rem;
     }
+
+    /* Ensure member page specific elements also expand */
+    .designer-profile-page .feed-container {
+        max-width: 100%;
+        gap: 60px;
+    }
+
+    /* Profile bio can be wider but not too wide for readability */
+    .profile-bio {
+        max-width: 1000px; /* Prevent text from being too wide */
+        margin: 0 auto 60px;
+    }
+}
+
+/* Additional fix for consistent spacing across all screen sizes */
+.feed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+    max-width: 90vw;
+    margin: 0 auto;
+}
+
+/* Ensure images grid doesn't break layout */
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+/* Make sure image sizes work properly in the grid */
+.image-large {
+    grid-column: span 2;
+    height: 500px;
+}
+
+.image-medium {
+    height: 400px;
+}
+
+.image-small {
+    height: 300px;
 }
 
 /* Tablet Styles (769px - 1024px) */
