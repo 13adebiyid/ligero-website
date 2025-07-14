@@ -732,18 +732,8 @@ function testCarouselReach() {
     console.log('================================');
 }
 
-// NEW: Service Card Hover Video Preview (for Set Designing card)
-// Enhanced video preview system that works for both service cards and individual videos
-function setupEnhancedVideoHoverPreviews() {
-    // Service card preview (original functionality)
-    setupServiceCardPreview();
-
-    // Individual video previews by ID
-    setupIndividualVideopreviews();
-}
-
-// Original service card preview function
-function setupServiceCardPreview() {
+// ORIGINAL: Service Card Hover Video Preview (for Set Designing card) - RESTORED
+function setupServiceCardHoverPreviews() {
     const setDesignCard = document.querySelector('a[href="/services/set-designing"]');
     if (!setDesignCard) return;
 
@@ -755,147 +745,77 @@ function setupServiceCardPreview() {
         { src: '/videos/fashion.mp4', start: 10, duration: 3 },
         { src: '/videos/brand.mp4', start: 3, duration: 3 }
     ];
-
-    setupVideoPreview(video, setDesignCard, clips);
-}
-
-// New function to setup individual video previews by ID
-function setupIndividualVideoreviews() {
-    // Define video configurations by ID
-    const videoConfigs = {
-        'gift-video': {
-            clips: [{ src: '/videos/gift.mp4', start: 6, duration: 3 }],
-            originalSrc: '/videos/gift.mp4'
-        },
-        'fashion-video': {
-            clips: [{ src: '/videos/fashion.mp4', start: 10, duration: 3 }],
-            originalSrc: '/videos/fashion.mp4'
-        },
-        'brand-video': {
-            clips: [{ src: '/videos/brand.mp4', start: 3, duration: 3 }],
-            originalSrc: '/videos/brand.mp4'
-        }
-    };
-
-    // Set up hover previews for each configured video
-    Object.keys(videoConfigs).forEach(videoId => {
-        const video = document.getElementById(videoId);
-        if (!video) return;
-
-        const config = videoConfigs[videoId];
-        const container = video.closest('.video-container-main') || video.closest('.feed-item') || video.parentElement;
-
-        if (container) {
-            setupVideoPreview(video, container, config.clips, config.originalSrc);
-        }
-    });
-}
-
-// Generic function to setup video preview for any video element
-function setupVideoPreview(video, hoverTarget, clips, originalSrc = null) {
     let currentClipIndex = 0;
     let hoverInterval;
-    let originalVideoSrc = originalSrc || video.src || video.querySelector('source')?.src;
 
     function playClip(index) {
         const clip = clips[index];
-
-        // Only change source if it's different
-        if (video.src !== clip.src) {
-            video.src = clip.src;
-        }
-
+        video.src = clip.src;
         video.currentTime = clip.start;
 
         video.play().catch(err => {
             console.error('Autoplay prevented:', err);
         });
 
-        // Set up next clip if there are multiple clips
-        if (clips.length > 1) {
-            hoverInterval = setTimeout(() => {
-                currentClipIndex = (currentClipIndex + 1) % clips.length;
-                playClip(currentClipIndex);
-            }, clip.duration * 1000);
-        } else {
-            // For single clips, loop the same clip
-            hoverInterval = setTimeout(() => {
-                video.currentTime = clip.start;
-            }, clip.duration * 1000);
-        }
+        hoverInterval = setTimeout(() => {
+            currentClipIndex = (currentClipIndex + 1) % clips.length;
+            playClip(currentClipIndex);
+        }, clip.duration * 1000);
     }
 
-    function resetVideo() {
+    setDesignCard.addEventListener('mouseenter', () => {
         clearTimeout(hoverInterval);
-        video.pause();
-
-        // Restore original source if different
-        if (originalVideoSrc && video.src !== originalVideoSrc) {
-            video.src = originalVideoSrc;
-        }
-
-        video.currentTime = 0;
-    }
-
-    hoverTarget.addEventListener('mouseenter', () => {
-        clearTimeout(hoverInterval);
-        currentClipIndex = 0;
+        currentClipIndex = 0; // Reset to the first clip
         playClip(currentClipIndex);
     });
 
-    hoverTarget.addEventListener('mouseleave', resetVideo);
+    setDesignCard.addEventListener('mouseleave', () => {
+        clearTimeout(hoverInterval);
+        video.pause();
+        video.currentTime = 0;
+        video.src = ''; // Clear the video source
+    });
 }
 
-// Updated main setup function - replace your existing setupServiceCardHoverPreviews
-function setupServiceCardHoverPreviews() {
-    console.log('🎬 Setting up enhanced video hover previews...');
-    setupEnhancedVideoHoverPreviews();
-}
+// NEW: Individual video looping functionality
+function setupIndividualVideoLooping() {
+    console.log('🎬 Setting up individual video looping...');
 
-// Alternative: More flexible configuration system
-function setupAdvancedVideoHoverPreviews() {
-    // Advanced configuration with more options
-    const advancedConfigs = [
-        {
-            selector: '#gift-video',
-            clips: [
-                { src: '/videos/gift.mp4', start: 6, duration: 3 },
-                { src: '/videos/gift.mp4', start: 15, duration: 3 } // Multiple clips from same video
-            ],
-            originalSrc: '/videos/gift.mp4'
-        },
-        {
-            selector: '#fashion-video',
-            clips: [{ src: '/videos/fashion.mp4', start: 10, duration: 4 }],
-            originalSrc: '/videos/fashion.mp4'
-        },
-        {
-            selector: '#brand-video',
-            clips: [{ src: '/videos/brand.mp4', start: 3, duration: 3 }],
-            originalSrc: '/videos/brand.mp4'
-        },
-        {
-            selector: 'a[href="/services/set-designing"] .service-card-video',
-            clips: [
-                { src: '/videos/gift.mp4', start: 6, duration: 3 },
-                { src: '/videos/fashion.mp4', start: 10, duration: 3 },
-                { src: '/videos/brand.mp4', start: 3, duration: 3 }
-            ]
+    // Video configurations by ID
+    const videoSettings = {
+        'gift-video': { start: 6, duration: 3 },
+        'fashion-video': { start: 10, duration: 3 },
+        'brand-video': { start: 3, duration: 3 }
+    };
+
+    // Apply settings to each video
+    Object.keys(videoSettings).forEach(videoId => {
+        const video = document.getElementById(videoId);
+        if (!video) {
+            console.log(`Video with ID '${videoId}' not found`);
+            return;
         }
-    ];
 
-    advancedConfigs.forEach(config => {
-        const video = document.querySelector(config.selector);
-        if (!video) return;
+        const settings = videoSettings[videoId];
+        console.log(`Setting up ${videoId}: start=${settings.start}s, duration=${settings.duration}s`);
 
-        const container = video.closest('.video-container-main') ||
-            video.closest('.feed-item') ||
-            video.closest('.service-card') ||
-            video.parentElement;
+        // Set initial time when video loads
+        video.addEventListener('loadedmetadata', () => {
+            video.currentTime = settings.start;
+            console.log(`${videoId} metadata loaded, set to ${settings.start}s`);
+        });
 
-        if (container) {
-            setupVideoPreview(video, container, config.clips, config.originalSrc);
-            console.log(`✅ Video preview set up for: ${config.selector}`);
+        // Handle looping within the specified duration
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= settings.start + settings.duration) {
+                video.currentTime = settings.start;
+            }
+        });
+
+        // Set initial time immediately if already loaded
+        if (video.readyState >= 1) {
+            video.currentTime = settings.start;
+            console.log(`${videoId} already loaded, set to ${settings.start}s`);
         }
     });
 }
@@ -1076,6 +996,35 @@ function openVideoModalFixed(videoSrc, title, client) {
     modalVideo.load();
 
     console.log(`✅ Video modal opened for: ${title}`);
+}
+
+// ENHANCED: Image modal with better debugging
+function openImageModalFixed(imageSrc, projectInfo) {
+    console.log(`🖼️ Opening image modal: ${projectInfo.title} with src: ${imageSrc}`);
+
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) {
+        console.error('❌ Image modal elements not found');
+        return;
+    }
+
+    // Set image source
+    modalImage.src = imageSrc;
+    modalImage.alt = projectInfo.title || 'Project Image';
+
+    // Set project info if elements exist
+    if (imageTitle) imageTitle.textContent = projectInfo.title || 'Project Image';
+    if (imageProject) imageProject.textContent = projectInfo.client || 'Ligero';
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    console.log(`✅ Image modal opened for: ${imageSrc}`);
 }
 
 // FIXED: Image modal that works
@@ -1260,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
                 carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-                // Setup hover previews for service cards
+                // Setup hover previews for service cards (ORIGINAL FUNCTION)
                 setupServiceCardHoverPreviews();
 
                 setTimeout(() => {
@@ -1276,6 +1225,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 100);
             }
         }
+
+        // NEW: Setup individual video looping
+        setupIndividualVideoLooping();
 
         // Setup hamburger menu functionality
         const hamburger = document.querySelector('.hamburger-menu');
@@ -1690,31 +1642,3 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
-// ENHANCED: Image modal with better debugging
-function openImageModalFixed(imageSrc, projectInfo) {
-    console.log(`🖼️ Opening image modal: ${projectInfo.title} with src: ${imageSrc}`);
-
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
-
-    if (!modal || !modalImage) {
-        console.error('❌ Image modal elements not found');
-        return;
-    }
-
-    // Set image source
-    modalImage.src = imageSrc;
-    modalImage.alt = projectInfo.title || 'Project Image';
-
-    // Set project info if elements exist
-    if (imageTitle) imageTitle.textContent = projectInfo.title || 'Project Image';
-    if (imageProject) imageProject.textContent = projectInfo.client || 'Ligero';
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    console.log(`✅ Image modal opened for: ${imageSrc}`);
-}
