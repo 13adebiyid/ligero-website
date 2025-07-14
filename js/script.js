@@ -740,44 +740,40 @@ function setupServiceCardHoverPreviews() {
     const video = setDesignCard.querySelector('.service-card-video');
     if (!video) return;
 
-    let previewInterval;
     const clips = [
-        { src: '/videos/gift.mp4', start: 0, duration: 3 },
-        { src: '/videos/fashion.mp4', start: 0, duration: 3 },
-        { src: '/videos/commercial.mp4', start: 0, duration: 3 }
+        { src: '/videos/gift.mp4', start: 3, duration: 6 },
+        { src: '/videos/fashion.mp4', start: 3, duration: 6 },
+        { src: '/videos/brand.mp4', start: 3, duration: 6 }
     ];
     let currentClipIndex = 0;
+    let hoverInterval;
 
-    function playNextClip() {
-        const clip = clips[currentClipIndex];
+    function playClip(index) {
+        const clip = clips[index];
         video.src = clip.src;
         video.currentTime = clip.start;
 
-        video.play().then(() => {
-            console.log(`Playing clip ${currentClipIndex + 1}: ${clip.src}`);
-
-            // Switch to next clip after 3 seconds
-            setTimeout(() => {
-                currentClipIndex = (currentClipIndex + 1) % clips.length;
-                playNextClip();
-            }, clip.duration * 1000);
-        }).catch(err => {
-            console.log('Preview autoplay prevented:', err);
+        video.play().catch(err => {
+            console.error('Autoplay prevented:', err);
         });
+
+        hoverInterval = setTimeout(() => {
+            currentClipIndex = (currentClipIndex + 1) % clips.length;
+            playClip(currentClipIndex);
+        }, clip.duration * 1000);
     }
 
     setDesignCard.addEventListener('mouseenter', () => {
-        console.log('Set design card hovered - starting preview loop');
-        playNextClip();
+        clearTimeout(hoverInterval);
+        currentClipIndex = 0; // Reset to the first clip
+        playClip(currentClipIndex);
     });
 
     setDesignCard.addEventListener('mouseleave', () => {
-        console.log('Set design card unhovered - stopping preview');
+        clearTimeout(hoverInterval);
         video.pause();
         video.currentTime = 0;
-        // Reset to original video
-        video.src = '/videos/set-designing-video.mp4';
-        clearTimeout(previewInterval);
+        video.src = ''; // Clear the video source
     });
 }
 

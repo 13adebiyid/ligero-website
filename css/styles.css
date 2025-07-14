@@ -888,7 +888,7 @@ body.white-theme .contact-button:hover {
 
 /* Video Container - Now fills properly */
 .video-container-main {
-    flex: 2;
+    flex: 4;
     min-height: 60vh;
     max-height: 70vh;
     position: relative;
@@ -968,6 +968,7 @@ body.white-theme .contact-button:hover {
     font-weight: bold;
     border-radius: 6px;
     letter-spacing: 1px;
+    align-items: center;
 }
 
 /* Enhanced Metadata Styling */
@@ -1088,23 +1089,6 @@ body.white-theme .contact-button:hover {
     border-radius: 8px;
 }
 
-.feed-item[data-image]:hover .item-overlay {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.4);
-}
-
-.feed-item[data-image] .play-indicator {
-    width: 50px;
-    height: 50px;
-    font-size: 0; /* Hide the play symbol */
-    background: rgba(255, 255, 255, 0.9);
-}
-
-.feed-item[data-image] .play-indicator::before {
-    content: '🔍';
-    font-size: 18px;
-    color: black;
-}
 
 /* ================== MEMBER PAGE SPECIFIC ================== */
 
