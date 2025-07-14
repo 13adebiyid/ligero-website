@@ -1665,9 +1665,9 @@ function setupIndividualVideoLooping() {
 
     // Video configurations by ID
     const videoSettings = {
-        'gift-video': { start: 6, duration: 6 },
-        'fashion-video': { start: 10, duration: 6 },
-        'brand-video': { start: 3, duration: 6 }
+        'gift-video': { start: 6, duration: 8 },
+        'fashion-video': { start: 10, duration: 8 },
+        'brand-video': { start: 3, duration: 8 }
     };
 
     // Apply settings to each video
