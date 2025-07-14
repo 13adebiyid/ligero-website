@@ -2296,8 +2296,8 @@ body.white-theme .form-buttons button:hover {
 @media screen and (min-width: 1200px) {
     .set-design-feed,
     .designer-profile-page .profile-content {
-        padding: 100px 1vw 80px !important;
-        max-width: 95vw;
+
+        margin: 0 20px;
     }
 
     .feed-container {
