@@ -889,13 +889,15 @@ body.white-theme .contact-button:hover {
 /* Video Container - Now fills properly */
 .video-container-main {
     flex: 4;
-    min-height: 60vh;
-    max-height: 70vh;
     position: relative;
     overflow: hidden;
-    border-radius: 12px; /* Now visible since video fills container */
+    border-radius: 12px;
     background: #111;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
 }
 
 /* Video Metadata Sidebar */
@@ -913,10 +915,10 @@ body.white-theme .contact-button:hover {
 .video-container-main video {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* Changed from contain to cover for consistent sizing */
+    object-fit: cover !important;
     object-position: center !important;
     display: block !important;
-    border-radius: 12px; /* Match container border radius */
+    border-radius: 12px;
 }
 
 /* Video overlay for play button */
@@ -1020,6 +1022,10 @@ body.white-theme .contact-button:hover {
     width: 100%;
     max-width: 1400px;
     margin: 40px auto 0;
+}
+
+.images-grid img{
+    border-radius: 0 !important;
 }
 
 /* Image Items - Updated sizing */
