@@ -868,37 +868,29 @@ function setupEnhancedFeedVideoAutoplay() {
 
 // ENHANCED: Click handlers with better video modal debugging
 function setupEnhancedFeedItemClicks() {
-    console.log('🖱️ Setting up ENHANCED click handlers...');
+    console.log('🖱️ Setting up ENHANCED click handlers for new structure...');
 
-    // VIDEO CLICKS with debugging
-    const videoItems = document.querySelectorAll('.feed-item[data-video]');
-    console.log(`🎬 Found ${videoItems.length} video items`);
+    // VIDEO CLICKS - Updated for new structure
+    const videoContainers = document.querySelectorAll('.video-container-main[data-video]');
+    console.log(`🎬 Found ${videoContainers.length} video containers`);
 
-    videoItems.forEach((item, index) => {
-        const videoSrc = item.getAttribute('data-video');
-        const title = item.getAttribute('data-title') || `Video ${index + 1}`;
-        const client = item.getAttribute('data-client') || 'Client';
+    videoContainers.forEach((container, index) => {
+        const videoSrc = container.getAttribute('data-video');
+        const title = container.getAttribute('data-title') || `Video ${index + 1}`;
+        const client = container.getAttribute('data-client') || 'Client';
 
-        console.log(`🎯 Setting up video click ${index + 1}: ${title} - ${videoSrc}`);
+        container.style.cursor = 'pointer';
 
-        item.style.cursor = 'pointer';
-
-        item.addEventListener('click', function(e) {
+        container.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log(`🖱️ VIDEO CLICKED: ${title} - Attempting to open: ${videoSrc}`);
+            console.log(`🖱️ VIDEO CLICKED: ${title}`);
 
-            // Debug the modal elements before opening
             const modal = document.getElementById('videoModal');
             const modalVideo = document.getElementById('modalVideo');
-            console.log('Modal exists:', !!modal);
-            console.log('Modal video exists:', !!modalVideo);
 
             if (modal && modalVideo) {
                 openVideoModalFixed(videoSrc, title, client);
-            } else {
-                console.error('❌ Video modal elements not found!');
-                alert(`Video modal not available. Tried to play: ${title}`);
             }
         });
     });
@@ -910,8 +902,6 @@ function setupEnhancedFeedItemClicks() {
     imageItems.forEach((item, index) => {
         const imageSrc = item.getAttribute('data-image');
 
-        console.log(`🎯 Setting up image click ${index + 1}: ${imageSrc?.split('/').pop()}`);
-
         item.style.cursor = 'pointer';
 
         item.addEventListener('click', function(e) {
@@ -920,6 +910,7 @@ function setupEnhancedFeedItemClicks() {
             console.log(`🖱️ IMAGE CLICKED: ${imageSrc?.split('/').pop()}`);
 
             const projectInfo = getImageProjectInfo(item);
+            console.log('📋 Project info found:', projectInfo);
             openImageModalFixed(imageSrc, projectInfo);
         });
     });
@@ -936,8 +927,7 @@ function openVideoModalFixed(videoSrc, title, client) {
 
     if (!modal || !modalVideo) {
         console.error('❌ Video modal elements not found');
-        alert('Video modal not found - check HTML structure');
-        return;
+        return; // Remove the alert here
     }
 
     // Set content
@@ -952,14 +942,14 @@ function openVideoModalFixed(videoSrc, title, client) {
     modalVideo.src = '';
     modalVideo.load();
 
-    // Set new source with error handling
+    // Set new source with error handling (no alerts)
     modalVideo.addEventListener('loadeddata', () => {
         console.log(`✅ Video loaded successfully: ${videoSrc}`);
     }, { once: true });
 
     modalVideo.addEventListener('error', (e) => {
         console.error(`❌ Video failed to load: ${videoSrc}`, e);
-        alert(`Failed to load video: ${videoSrc.split('/').pop()}`);
+        // Remove the alert - just log the error
     }, { once: true });
 
     // Set the source
@@ -970,50 +960,48 @@ function openVideoModalFixed(videoSrc, title, client) {
 }
 
 // FIXED: Image modal that works
-function openImageModalFixed(imageSrc, projectInfo = {}) {
-    console.log(`🖼️ Opening image modal: ${imageSrc?.split('/').pop()}`);
-
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
-
-    if (!modal || !modalImage) {
-        console.error('❌ Image modal elements not found');
-        alert('Image modal not found - check HTML structure');
-        return;
-    }
-
-    // Set content
-    modalImage.src = imageSrc;
-
-    if (imageTitle && projectInfo.title) {
-        imageTitle.textContent = projectInfo.title;
-    }
-    if (imageProject && projectInfo.client) {
-        imageProject.textContent = projectInfo.client;
-    }
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    console.log(`✅ Image modal opened`);
-}
-
-// Get project info (keep existing function)
 function getImageProjectInfo(imageItem) {
-    let feedInfo = null;
-    const container = imageItem.closest('.feed-container');
-    if (container) {
-        const allItems = Array.from(container.children);
-        const itemIndex = allItems.indexOf(imageItem);
-
-        for (let i = itemIndex - 1; i >= 0; i--) {
-            if (allItems[i].classList.contains('feed-info')) {
-                feedInfo = allItems[i];
-                break;
+    // First, try to find metadata in the new structure
+    // Look for the nearest video-section that contains metadata
+    let videoSection = imageItem.closest('.video-section');
+    if (!videoSection) {
+        // Look for the previous video-section before this images-grid
+        const imagesGrid = imageItem.closest('.images-grid');
+        if (imagesGrid) {
+            let currentElement = imagesGrid.previousElementSibling;
+            while (currentElement) {
+                if (currentElement.classList.contains('video-section')) {
+                    videoSection = currentElement;
+                    break;
+                }
+                currentElement = currentElement.previousElementSibling;
             }
+        }
+    }
+
+    if (videoSection) {
+        const metadata = videoSection.querySelector('.video-metadata');
+        if (metadata) {
+            const clientName = metadata.querySelector('.client-name')?.textContent || '';
+            const projectTitle = metadata.querySelector('.project-title')?.textContent || '';
+
+            return {
+                title: projectTitle,
+                client: clientName
+            };
+        }
+    }
+
+    // Try legacy method - look for feed-info elements
+    let currentElement = imageItem;
+    let feedInfo = null;
+
+    // Look backwards through siblings to find feed-info
+    while (currentElement.previousElementSibling) {
+        currentElement = currentElement.previousElementSibling;
+        if (currentElement.classList.contains('feed-info')) {
+            feedInfo = currentElement;
+            break;
         }
     }
 
@@ -1027,9 +1015,10 @@ function getImageProjectInfo(imageItem) {
         };
     }
 
+    // Final fallback
     return {
-        title: 'Set Design Work',
-        client: 'Project'
+        title: 'Project Image',
+        client: 'Ligero'
     };
 }
 
