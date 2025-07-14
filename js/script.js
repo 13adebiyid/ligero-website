@@ -741,9 +741,9 @@ function setupServiceCardHoverPreviews() {
     if (!video) return;
 
     const clips = [
-        { src: '/videos/gift.mp4', start: 3, duration: 6 },
-        { src: '/videos/fashion.mp4', start: 6, duration: 9 },
-        { src: '/videos/brand.mp4', start: 3, duration: 6 }
+        { src: '/videos/gift.mp4', start: 6, duration: 3 },
+        { src: '/videos/fashion.mp4', start: 10, duration: 3 },
+        { src: '/videos/brand.mp4', start: 3, duration: 3 }
     ];
     let currentClipIndex = 0;
     let hoverInterval;
