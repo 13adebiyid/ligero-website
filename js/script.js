@@ -846,6 +846,25 @@ document.addEventListener('DOMContentLoaded', () => {
             blackThemeCircle.onclick = () => setTheme('black');
         }
 
+        // Initialize CMNPPL-style pages with FIXED version
+        if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
+            console.log('🎯 CMNPPL page detected, initializing FIXED version...');
+
+            setTimeout(() => {
+                initCMNPPLStyleFixed();
+            }, 100);
+        }
+
+        // Initialize contact page if we're on that page
+        if (document.querySelector('.contact-page')) {
+            initContactPage();
+        }
+
+        // Initialize coming soon page if we're on that page
+        if (document.querySelector('.coming-soon-page')) {
+            initComingSoonPage();
+        }
+
         console.log('✅ Ligero website initialized successfully');
 
     } catch (error) {
@@ -880,33 +899,6 @@ window.addEventListener('popstate', function(event) {
     console.log('Popstate event - resetting state');
     resetPageState();
 });
-
-function initPageSpecificFeatures() {
-    try {
-        // Reset carousel properly
-        resetCarousel();
-
-        if (!isMobile()) {
-            setTimeout(() => {
-                testCarouselReach();
-            }, 100);
-        }
-
-        // Ensure theme is applied correctly
-        try {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'white') {
-                document.body.classList.add('white-theme');
-            } else {
-                document.body.classList.remove('white-theme');
-            }
-        } catch (e) {
-            // localStorage not available
-        }
-    } catch (error) {
-        console.error('Error in page-specific features:', error);
-    }
-}
 
 // Video controls functionality with mobile autoplay fix
 document.addEventListener('DOMContentLoaded', () => {
@@ -1120,16 +1112,6 @@ function preSelectService() {
     }
 }
 
-// Add to your existing DOMContentLoaded event listener
-document.addEventListener('DOMContentLoaded', () => {
-    // Your existing initialization code...
-
-    // Initialize contact page if we're on that page
-    if (document.querySelector('.contact-page')) {
-        initContactPage();
-    }
-});
-
 // ================== COMING SOON PAGE FUNCTIONALITY ==================
 
 // Notification form functions
@@ -1197,69 +1179,193 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Add to your existing DOMContentLoaded event listener
-// or create a new one if you don't have one
-document.addEventListener('DOMContentLoaded', () => {
-    // Your existing initialization code...
+// ================== FIXED CMNPPL-STYLE FUNCTIONALITY ==================
 
-    // Initialize coming soon page if we're on that page
-    if (document.querySelector('.coming-soon-page')) {
-        initComingSoonPage();
-    }
-});
+// Enhanced CMNPPL initialization - FIXED VERSION
+function initCMNPPLStyleFixed() {
+    console.log('🎬 Initializing CMNPPL-style (FIXED VERSION)...');
 
-// ================== ENHANCED IMAGE MODAL FUNCTIONALITY ==================
+    setupFixedFeedVideoAutoplay();
+    setupFixedFeedItemClicks();
+    setupModalFunctionality();
+    setupKeyboardControls();
 
-// Enhanced setup for feed item clicks (UPDATE EXISTING FUNCTION)
-function setupFeedItemClicks() {
-    // Video items
-    const videoItems = document.querySelectorAll('.feed-item[data-video]');
-    videoItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const videoSrc = item.getAttribute('data-video');
-            const fallbackSrc = item.getAttribute('data-video-fallback');
-            const title = item.getAttribute('data-title');
-            const client = item.getAttribute('data-client');
-            const isHQ = item.hasAttribute('data-hq');
-            const format = item.getAttribute('data-format');
+    console.log('✅ CMNPPL-style initialization complete');
+}
 
-            if (isHQ && format === 'prores') {
-                openProResVideoModal(videoSrc, fallbackSrc, title, client, item);
-            } else if (isHQ) {
-                openHQVideoModal(videoSrc, title, client, item);
+// FIXED: Video autoplay functionality
+function setupFixedFeedVideoAutoplay() {
+    const feedVideos = document.querySelectorAll('.feed-video');
+    console.log(`🎥 Setting up autoplay for ${feedVideos.length} videos`);
+
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+
+            if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+                // Only try to play if video is loaded
+                if (video.readyState >= 2) {
+                    video.play().then(() => {
+                        console.log(`▶️ Playing video: ${video.src?.split('/').pop()}`);
+                    }).catch(err => {
+                        console.log(`⏸️ Autoplay prevented: ${err.message}`);
+                    });
+                }
             } else {
-                openVideoModal(videoSrc, title, client);
+                video.pause();
+                video.currentTime = 0;
             }
+        });
+    }, {
+        threshold: 0.4,
+        rootMargin: '50px'
+    });
+
+    feedVideos.forEach((video, index) => {
+        videoObserver.observe(video);
+
+        // Enhanced loop handling
+        video.addEventListener('loadedmetadata', () => {
+            console.log(`📊 Video ${index + 1} metadata loaded`);
+
+            video.addEventListener('timeupdate', () => {
+                // Loop after 4 seconds or full duration if shorter
+                const loopTime = Math.min(4, video.duration - 0.5);
+                if (video.currentTime >= loopTime) {
+                    video.currentTime = 0;
+                }
+            });
+        });
+
+        // Ensure video loads
+        video.load();
+    });
+}
+
+// FIXED: Click handlers that actually work
+function setupFixedFeedItemClicks() {
+    console.log('🖱️ Setting up FIXED click handlers...');
+
+    // VIDEO CLICKS
+    const videoItems = document.querySelectorAll('.feed-item[data-video]');
+    console.log(`🎬 Found ${videoItems.length} video items`);
+
+    videoItems.forEach((item, index) => {
+        const videoSrc = item.getAttribute('data-video');
+        const title = item.getAttribute('data-title') || `Video ${index + 1}`;
+        const client = item.getAttribute('data-client') || 'Client';
+
+        console.log(`🎯 Setting up video click ${index + 1}: ${title}`);
+
+        // Remove any existing listeners and add fresh one
+        item.style.cursor = 'pointer';
+
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log(`🖱️ VIDEO CLICKED: ${title}`);
+            openVideoModalFixed(videoSrc, title, client);
         });
     });
 
-    // Enhanced image items with project information
+    // IMAGE CLICKS
     const imageItems = document.querySelectorAll('.feed-item[data-image]');
-    imageItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const imageSrc = item.getAttribute('data-image');
+    console.log(`🖼️ Found ${imageItems.length} image items`);
 
-            // Get project information from nearby feed-info
+    imageItems.forEach((item, index) => {
+        const imageSrc = item.getAttribute('data-image');
+
+        console.log(`🎯 Setting up image click ${index + 1}: ${imageSrc?.split('/').pop()}`);
+
+        item.style.cursor = 'pointer';
+
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log(`🖱️ IMAGE CLICKED: ${imageSrc?.split('/').pop()}`);
+
             const projectInfo = getImageProjectInfo(item);
-
-            openImageModal(imageSrc, projectInfo);
+            openImageModalFixed(imageSrc, projectInfo);
         });
     });
 }
 
-// Get project information for images
-function getImageProjectInfo(imageItem) {
-    // Look for the nearest feed-info element
-    let currentElement = imageItem;
-    let feedInfo = null;
+// FIXED: Video modal that works
+function openVideoModalFixed(videoSrc, title, client) {
+    console.log(`🎬 Opening video modal: ${title}`);
 
-    // Search backwards and forwards for feed-info
-    while (currentElement) {
-        if (currentElement.classList.contains('feed-info')) {
-            feedInfo = currentElement;
-            break;
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+
+    if (!modal || !modalVideo) {
+        console.error('❌ Video modal elements not found');
+        alert('Video modal not found - check HTML structure');
+        return;
+    }
+
+    // Set content
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalClient) modalClient.textContent = client;
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Set video source and try to play
+    modalVideo.src = videoSrc;
+    modalVideo.load();
+
+    console.log(`✅ Video modal opened for: ${title}`);
+}
+
+// FIXED: Image modal that works
+function openImageModalFixed(imageSrc, projectInfo = {}) {
+    console.log(`🖼️ Opening image modal: ${imageSrc?.split('/').pop()}`);
+
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) {
+        console.error('❌ Image modal elements not found');
+        alert('Image modal not found - check HTML structure');
+        return;
+    }
+
+    // Set content
+    modalImage.src = imageSrc;
+
+    if (imageTitle && projectInfo.title) {
+        imageTitle.textContent = projectInfo.title;
+    }
+    if (imageProject && projectInfo.client) {
+        imageProject.textContent = projectInfo.client;
+    }
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    console.log(`✅ Image modal opened`);
+}
+
+// Get project info (keep existing function)
+function getImageProjectInfo(imageItem) {
+    let feedInfo = null;
+    const container = imageItem.closest('.feed-container');
+    if (container) {
+        const allItems = Array.from(container.children);
+        const itemIndex = allItems.indexOf(imageItem);
+
+        for (let i = itemIndex - 1; i >= 0; i--) {
+            if (allItems[i].classList.contains('feed-info')) {
+                feedInfo = allItems[i];
+                break;
+            }
         }
-        currentElement = currentElement.previousElementSibling || currentElement.nextElementSibling;
     }
 
     if (feedInfo) {
@@ -1278,37 +1384,23 @@ function getImageProjectInfo(imageItem) {
     };
 }
 
-// Enhanced open image modal
-function openImageModal(imageSrc, projectInfo = {}) {
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
+// Close video modal
+function closeModal() {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
 
-    if (!modal || !modalImage) return;
+    if (!modal || !modalVideo) return;
 
-    // Set image source
-    modalImage.src = imageSrc;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
 
-    // Set project information
-    if (imageTitle && projectInfo.title) {
-        imageTitle.textContent = projectInfo.title;
-    }
-    if (imageProject && projectInfo.client) {
-        imageProject.textContent = projectInfo.client;
-    }
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Add keyboard navigation
-    setupImageKeyboardNavigation();
-
-    console.log('Image modal opened:', imageSrc);
+    // Stop and reset video
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    modalVideo.src = '';
 }
 
-// Close image modal (ENHANCED)
+// Close image modal
 function closeImageModal() {
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
@@ -1323,94 +1415,10 @@ function closeImageModal() {
         modalImage.src = '';
     }
 
-    // Remove keyboard navigation
-    removeImageKeyboardNavigation();
-
     console.log('Image modal closed');
 }
 
-// Keyboard navigation for image modal
-function setupImageKeyboardNavigation() {
-    document.addEventListener('keydown', handleImageKeyboard);
-}
-
-function removeImageKeyboardNavigation() {
-    document.removeEventListener('keydown', handleImageKeyboard);
-}
-
-function handleImageKeyboard(e) {
-    if (e.key === 'Escape') {
-        closeImageModal();
-    } else if (e.key === 'ArrowLeft') {
-        navigateImage('prev');
-    } else if (e.key === 'ArrowRight') {
-        navigateImage('next');
-    }
-}
-
-// Navigate between images (optional enhancement)
-function navigateImage(direction) {
-    const currentModal = document.getElementById('imageModal');
-    if (!currentModal.classList.contains('active')) return;
-
-    const allImageItems = document.querySelectorAll('.feed-item[data-image]');
-    const currentImageSrc = document.getElementById('modalImage').src;
-
-    // Find current image index
-    let currentIndex = -1;
-    allImageItems.forEach((item, index) => {
-        if (currentImageSrc.includes(item.getAttribute('data-image'))) {
-            currentIndex = index;
-        }
-    });
-
-    if (currentIndex === -1) return;
-
-    // Calculate next index
-    let nextIndex;
-    if (direction === 'next') {
-        nextIndex = (currentIndex + 1) % allImageItems.length;
-    } else {
-        nextIndex = currentIndex === 0 ? allImageItems.length - 1 : currentIndex - 1;
-    }
-
-    // Open next image
-    const nextItem = allImageItems[nextIndex];
-    const nextImageSrc = nextItem.getAttribute('data-image');
-    const nextProjectInfo = getImageProjectInfo(nextItem);
-
-    // Update modal content
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
-
-    modalImage.src = nextImageSrc;
-    if (imageTitle) imageTitle.textContent = nextProjectInfo.title;
-    if (imageProject) imageProject.textContent = nextProjectInfo.client;
-}
-
-// Enhanced image loading with fade effect
-function setupImageLoading() {
-    const images = document.querySelectorAll('.feed-item img');
-
-    images.forEach(img => {
-        if (img.complete) {
-            img.classList.add('loaded');
-        } else {
-            img.addEventListener('load', () => {
-                img.classList.add('loaded');
-            });
-
-            img.addEventListener('error', () => {
-                console.log('Image failed to load:', img.src);
-                img.style.opacity = '0.3';
-                img.style.background = 'rgba(255, 255, 255, 0.1)';
-            });
-        }
-    });
-}
-
-// Enhanced modal functionality (UPDATE EXISTING FUNCTION)
+// Modal functionality
 function setupModalFunctionality() {
     // Click outside to close - Video modal
     const videoModal = document.getElementById('videoModal');
@@ -1440,209 +1448,6 @@ function setupModalFunctionality() {
     }
 }
 
-// Enhanced keyboard controls (UPDATE EXISTING FUNCTION)
-function setupKeyboardControls() {
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const videoModal = document.getElementById('videoModal');
-            const imageModal = document.getElementById('imageModal');
-
-            if (videoModal && videoModal.classList.contains('active')) {
-                closeModal();
-            } else if (imageModal && imageModal.classList.contains('active')) {
-                closeImageModal();
-            }
-        }
-    });
-}
-
-// Enhanced CMNPPL initialization (UPDATE EXISTING FUNCTION)
-function initCMNPPLStyle() {
-    checkBrowserVideoSupport();
-    setupProgressiveVideoLoading();
-    setupFeedItemClicks();
-    setupModalFunctionality();
-    setupKeyboardControls();
-    setupImageLoading();
-    detectConnectionSpeed();
-    console.log('CMNPPL-style with enhanced image modals initialized');
-}
-
-// Add image modal navigation buttons (optional enhancement)
-function addImageNavigation() {
-    const imageModal = document.getElementById('imageModal');
-    if (!imageModal) return;
-
-    const imageContainer = imageModal.querySelector('.image-container');
-    if (!imageContainer) return;
-
-    // Create navigation buttons
-    const prevBtn = document.createElement('button');
-    prevBtn.className = 'image-nav prev';
-    prevBtn.innerHTML = '‹';
-    prevBtn.onclick = () => navigateImage('prev');
-
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'image-nav next';
-    nextBtn.innerHTML = '›';
-    nextBtn.onclick = () => navigateImage('next');
-
-    // Add to modal
-    imageModal.appendChild(prevBtn);
-    imageModal.appendChild(nextBtn);
-}
-
-// Initialize image navigation on page load
-document.addEventListener('DOMContentLoaded', () => {
-    // Your existing initialization code...
-
-    // Initialize CMNPPL with enhanced image support
-    if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
-        initCMNPPLStyle();
-        addImageNavigation(); // Add this for image navigation arrows
-        manageVideoPreloading();
-    }
-});
-
-// ================== SET DESIGN PAGE FUNCTIONALITY ==================
-
-// Initialize CMNPPL-style pages
-function initCMNPPLStyle() {
-    setupFeedVideoAutoplay();
-    setupFeedItemClicks();
-    setupModalFunctionality();
-    setupKeyboardControls();
-    console.log('CMNPPL-style layout initialized');
-}
-
-// Video autoplay on scroll (CMNPPL-style)
-function setupFeedVideoAutoplay() {
-    const feedVideos = document.querySelectorAll('.feed-video');
-
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-
-            if (entry.isIntersecting) {
-                // Check if it's a high-quality video (3GB issue)
-                if (video.hasAttribute('data-hq')) {
-                    // Don't autoplay large videos, just show poster
-                    return;
-                }
-
-                video.play().catch(err => {
-                    console.log('Autoplay prevented:', err);
-                });
-            } else {
-                video.pause();
-                video.currentTime = 0;
-            }
-        });
-    }, {
-        threshold: 0.4
-    });
-
-    feedVideos.forEach(video => {
-        videoObserver.observe(video);
-
-        // Short loop for preview (3-4 seconds)
-        video.addEventListener('loadedmetadata', () => {
-            video.addEventListener('timeupdate', () => {
-                if (video.currentTime >= 4) {
-                    video.currentTime = 0;
-                }
-            });
-        });
-    });
-}
-
-// Setup clicks for videos and images
-function setupFeedItemClicks() {
-    // Video items
-    const videoItems = document.querySelectorAll('.feed-item[data-video]');
-    videoItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const videoSrc = item.getAttribute('data-video');
-            const title = item.getAttribute('data-title');
-            const client = item.getAttribute('data-client');
-            openVideoModal(videoSrc, title, client);
-        });
-    });
-
-    // Image items
-    const imageItems = document.querySelectorAll('.feed-item[data-image]');
-    imageItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const imageSrc = item.getAttribute('data-image');
-            openImageModal(imageSrc);
-        });
-    });
-}
-
-// Open video modal
-function openVideoModal(videoSrc, title, client) {
-    const modal = document.getElementById('videoModal');
-    const modalVideo = document.getElementById('modalVideo');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalClient = document.getElementById('modalClient');
-
-    if (!modal || !modalVideo) return;
-
-    // Set content
-    modalVideo.src = videoSrc;
-    modalTitle.textContent = title;
-    modalClient.textContent = client;
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // For large videos, show loading state
-    if (videoSrc.includes('high-quality')) {
-        modalVideo.addEventListener('loadstart', () => {
-            console.log('Loading high-quality video...');
-        });
-    }
-}
-
-// Close video modal
-function closeModal() {
-    const modal = document.getElementById('videoModal');
-    const modalVideo = document.getElementById('modalVideo');
-
-    if (!modal || !modalVideo) return;
-
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-
-    // Stop and reset video
-    modalVideo.pause();
-    modalVideo.currentTime = 0;
-    modalVideo.src = '';
-}
-
-// Open image modal
-function openImageModal(imageSrc) {
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-
-    if (!modal || !modalImage) return;
-
-    modalImage.src = imageSrc;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-// Close image modal
-function closeImageModal() {
-    const modal = document.getElementById('imageModal');
-
-    if (!modal) return;
-
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
 // Keyboard controls
 function setupKeyboardControls() {
     document.addEventListener('keydown', (e) => {
@@ -1659,219 +1464,11 @@ function setupKeyboardControls() {
     });
 }
 
-// Modal functionality
-function setupModalFunctionality() {
-    // Click outside to close
-    const videoModal = document.getElementById('videoModal');
-    const imageModal = document.getElementById('imageModal');
-
-    if (videoModal) {
-        const backdrop = videoModal.querySelector('.modal-backdrop');
-        if (backdrop) {
-            backdrop.addEventListener('click', closeModal);
-        }
-    }
-
-    if (imageModal) {
-        const backdrop = imageModal.querySelector('.modal-backdrop');
-        if (backdrop) {
-            backdrop.addEventListener('click', closeImageModal);
-        }
-    }
-}
-
-// Handle large video files (3GB solution)
-function handleLargeVideos() {
-    const largeVideos = document.querySelectorAll('video[data-hq="true"]');
-
-    largeVideos.forEach(video => {
-        // Add loading indicator
-        video.addEventListener('loadstart', () => {
-            const loader = document.createElement('div');
-            loader.className = 'video-loader';
-            loader.innerHTML = 'Loading...';
-            video.parentNode.appendChild(loader);
-        });
-
-        video.addEventListener('canplay', () => {
-            const loader = video.parentNode.querySelector('.video-loader');
-            if (loader) loader.remove();
-        });
-
-        // Error handling for large files
-        video.addEventListener('error', (e) => {
-            console.log('Video error:', e);
-            const errorMsg = document.createElement('div');
-            errorMsg.className = 'video-error';
-            errorMsg.innerHTML = 'Video temporarily unavailable';
-            video.parentNode.appendChild(errorMsg);
-        });
-    });
-}
-
-// Optimized scroll performance
-function optimizeScrollPerformance() {
-    let ticking = false;
-
-    function updateScrollElements() {
-        // Any scroll-based animations or updates
-        ticking = false;
-    }
-
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(updateScrollElements);
-            ticking = true;
-        }
-    }
-
-    window.addEventListener('scroll', requestTick);
-}
-
-// Add to existing DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Your existing initialization code...
-
-    // Initialize CMNPPL-style pages
-    if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
-        initCMNPPLStyle();
-        handleLargeVideos();
-        optimizeScrollPerformance();
-    }
-});
-
 // Cleanup on page unload
 window.addEventListener('beforeunload', () => {
     const allVideos = document.querySelectorAll('video');
     allVideos.forEach(video => {
         video.pause();
         video.currentTime = 0;
-    });
-});
-
-// Enhanced CMNPPL initialization with better error handling
-function initCMNPPLStyle() {
-    console.log('🎬 Initializing CMNPPL-style with enhanced video support...');
-
-    checkVideoFiles();
-    setupEnhancedFeedVideoAutoplay();
-    setupEnhancedFeedItemClicks();
-    setupModalFunctionality();
-    setupKeyboardControls();
-    setupImageLoading();
-
-    console.log('✅ CMNPPL-style initialization complete');
-}
-
-// Check if video files exist and are loadable
-function checkVideoFiles() {
-    const videoItems = document.querySelectorAll('.feed-item[data-video]');
-
-    videoItems.forEach((item, index) => {
-        const videoSrc = item.getAttribute('data-video');
-        const video = item.querySelector('.feed-video');
-
-        console.log(`📹 Checking video ${index + 1}: ${videoSrc}`);
-
-        if (video) {
-            video.addEventListener('loadeddata', () => {
-                console.log(`✅ Video ${index + 1} loaded successfully`);
-                video.classList.add('loaded');
-            });
-
-            video.addEventListener('error', (e) => {
-                console.error(`❌ Video ${index + 1} failed to load:`, e);
-            });
-
-            video.load();
-        }
-    });
-}
-
-// Enhanced feed item clicks with better debugging
-function setupEnhancedFeedItemClicks() {
-    console.log('🖱️ Setting up enhanced feed item clicks...');
-
-    // Enhanced video items
-    const videoItems = document.querySelectorAll('.feed-item[data-video]');
-    console.log(`🎬 Found ${videoItems.length} video items`);
-
-    videoItems.forEach((item, index) => {
-        const videoSrc = item.getAttribute('data-video');
-        const title = item.getAttribute('data-title') || `Video ${index + 1}`;
-        const client = item.getAttribute('data-client') || 'Client';
-
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log(`🖱️ Video clicked: ${title}`);
-            openVideoModal(videoSrc, title, client);
-        });
-
-        item.style.cursor = 'pointer';
-    });
-
-    // Enhanced image items
-    const imageItems = document.querySelectorAll('.feed-item[data-image]');
-    console.log(`🖼️ Found ${imageItems.length} image items`);
-
-    imageItems.forEach((item, index) => {
-        const imageSrc = item.getAttribute('data-image');
-
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log(`🖱️ Image clicked: ${imageSrc?.split('/').pop()}`);
-
-            const projectInfo = getImageProjectInfo(item);
-            openImageModal(imageSrc, projectInfo);
-        });
-
-        item.style.cursor = 'pointer';
-    });
-}
-
-// FORCE IMAGE LOADING AND DISPLAY
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🖼️ Forcing image display...');
-
-    const imageItems = document.querySelectorAll('.feed-item[data-image]');
-
-    imageItems.forEach((item, index) => {
-        const img = item.querySelector('img');
-        const imageSrc = item.getAttribute('data-image');
-
-        if (img) {
-            console.log(`📷 Processing image ${index + 1}: ${imageSrc}`);
-
-            // Force image to be visible
-            img.style.display = 'block';
-            img.style.opacity = '1';
-            img.style.visibility = 'visible';
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-
-            // Force reload if needed
-            if (!img.complete || img.naturalWidth === 0) {
-                console.log(`🔄 Reloading image ${index + 1}`);
-                const currentSrc = img.src;
-                img.src = '';
-                img.src = currentSrc;
-            }
-
-            img.onload = () => {
-                console.log(`✅ Image ${index + 1} loaded and should be visible`);
-                img.style.opacity = '1';
-            };
-
-            img.onerror = () => {
-                console.error(`❌ Image ${index + 1} failed to load: ${imageSrc}`);
-            };
-        }
-
-        // Make sure container is visible
-        item.style.display = 'block';
-        item.style.visibility = 'visible';
-        item.style.minHeight = '200px';
-        item.style.background = '#111';
     });
 });
