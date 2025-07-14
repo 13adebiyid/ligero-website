@@ -863,12 +863,11 @@ body.white-theme .contact-button:hover {
 /* Feed Container - New Structure */
 .feed-container {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 60px;
     align-items: center;
     width: 100%;
-    max-width: 90vw; /* Use 90% of viewport width */
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -879,15 +878,15 @@ body.white-theme .contact-button:hover {
     align-items: flex-start;
     gap: 40px;
     width: 100%;
-    max-width: 1400px;
+    max-width: none;
     margin: 0 auto;
 }
 
 .video-section.reverse {
-    flex-direction: row-reverse; /* Alternate sides */
+    flex-direction: row-reverse;
 }
 
-/* Video Container - Now fills properly */
+/* Video Container */
 .video-container-main {
     flex: 4;
     position: relative;
@@ -899,6 +898,7 @@ body.white-theme .contact-button:hover {
     align-items: center;
     justify-content: center;
     height: auto;
+    width: 100%;
 }
 
 /* Video Metadata Sidebar */
@@ -1021,7 +1021,7 @@ body.white-theme .contact-button:hover {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     width: 100%;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 40px auto 0;
 }
 
