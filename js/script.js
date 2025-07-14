@@ -848,16 +848,20 @@ function setupImageLoading() {
 }
 
 // ENHANCED: Video autoplay functionality with immediate start
+// FIXED: Enhanced autoplay that respects individual video settings
 function setupEnhancedFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
     console.log(`🎥 Setting up enhanced autoplay for ${feedVideos.length} videos`);
+
+    // Videos with custom settings (skip enhanced autoplay for these)
+    const customVideoIds = ['gift-video', 'fashion-video', 'brand-video'];
 
     // More aggressive intersection observer for immediate playback
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const video = entry.target;
 
-            if (entry.isIntersecting && entry.intersectionRatio > 0.1) { // Lower threshold
+            if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
                 // Try to play immediately
                 video.play().then(() => {
                     console.log(`▶️ Playing video: ${video.src?.split('/').pop()}`);
@@ -866,20 +870,28 @@ function setupEnhancedFeedVideoAutoplay() {
                 });
             } else {
                 video.pause();
-                video.currentTime = 0;
+                // Only reset to 0 if it's NOT a custom video
+                if (!video.id || !customVideoIds.includes(video.id)) {
+                    video.currentTime = 0;
+                }
             }
         });
     }, {
-        threshold: 0.1, // Much lower threshold for immediate trigger
-        rootMargin: '100px' // Larger margin to trigger earlier
+        threshold: 0.1,
+        rootMargin: '100px'
     });
 
     feedVideos.forEach((video, index) => {
         videoObserver.observe(video);
 
-        // Enhanced loop handling
+        // Enhanced loop handling - SKIP if this video has custom settings
+        if (video.id && customVideoIds.includes(video.id)) {
+            console.log(`⚠️ Skipping enhanced autoplay for ${video.id} (using custom settings)`);
+            return; // Skip the rest of the setup for this video
+        }
+
         video.addEventListener('loadedmetadata', () => {
-            console.log(`📊 Video ${index + 1} metadata loaded`);
+            console.log(`📊 Video ${index + 1} metadata loaded (enhanced autoplay)`);
 
             video.addEventListener('timeupdate', () => {
                 // Loop after 4 seconds or full duration if shorter
