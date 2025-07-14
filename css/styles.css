@@ -2374,7 +2374,7 @@ body.white-theme .form-buttons button:hover {
     }
 
     .video-metadata .project-title {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
     .images-grid {
@@ -3058,6 +3058,7 @@ body.white-theme .form-buttons button:hover {
         padding: 4px 8px;
         font-size: 10px;
         align-items: center;
+        opacity: 0.9;
     }
 
     .contact-title {
