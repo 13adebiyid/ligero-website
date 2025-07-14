@@ -742,7 +742,7 @@ function setupServiceCardHoverPreviews() {
 
     const clips = [
         { src: '/videos/gift.mp4', start: 3, duration: 6 },
-        { src: '/videos/fashion.mp4', start: 3, duration: 6 },
+        { src: '/videos/fashion.mp4', start: 6, duration: 9 },
         { src: '/videos/brand.mp4', start: 3, duration: 6 }
     ];
     let currentClipIndex = 0;

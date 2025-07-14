@@ -997,7 +997,6 @@ body.white-theme .contact-button:hover {
     display: inline-block;
     margin-bottom: 20px;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     animation: designer-pulse 3s ease-in-out infinite;
 }
 
@@ -1031,6 +1030,31 @@ body.white-theme .contact-button:hover {
     overflow: hidden;
     border-radius: 8px;
     background: #111;
+}
+
+.feed-item[data-image] .play-indicator::before {
+    display: none !important;
+}
+
+.feed-item[data-image] .play-indicator {
+    display: none !important;
+}
+
+.feed-item[data-image] .item-overlay {
+    background: transparent !important; /* Remove overlay background */
+}
+
+.feed-item[data-image] .item-overlay .play-indicator {
+    display: none !important;
+}
+
+/* Remove all play indicators from images */
+.images-grid .feed-item .item-overlay {
+    display: none !important;
+}
+
+.images-grid .feed-item .play-indicator {
+    display: none !important;
 }
 
 .feed-item[data-image]:hover {
