@@ -2300,13 +2300,8 @@ body.white-theme .form-buttons button:hover {
         margin: 0 20px;
     }
 
-    .feed-container {
-        max-width: 85vw;
-    }
 
-    .video-section {
-        max-width: 1600px;
-    }
+
 
     .video-metadata .project-title {
         font-size: 2.5rem;
