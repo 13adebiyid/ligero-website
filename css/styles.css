@@ -2530,16 +2530,6 @@ body.white-theme .form-buttons button:hover {
         pointer-events: none !important;
     }
 
-    .service-card-video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 1;
-    }
-
     .service-card-title {
         margin: 0 !important;
         padding: 0 !important;
@@ -3067,6 +3057,7 @@ body.white-theme .form-buttons button:hover {
         right: 15px;
         padding: 4px 8px;
         font-size: 10px;
+        align-items: center;
     }
 
     .contact-title {
