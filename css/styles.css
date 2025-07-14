@@ -2292,7 +2292,7 @@ body.white-theme .form-buttons button:hover {
 
 /* ================== RESPONSIVE DESIGN ================== */
 
-/* Large screens - use more width */
+/* Replace the existing large screen media query with this improved version */
 @media screen and (min-width: 1200px) {
     /* Main container styling - consistent for both set design and member pages */
     .set-design-feed,
@@ -2311,10 +2311,16 @@ body.white-theme .form-buttons button:hover {
 
     /* Video sections - expand to full width with proper spacing */
     .video-section {
-        max-width: 100%;
+        max-width: none !important; /* Remove the 1400px constraint */
         width: 100%;
         margin: 0 auto;
         gap: 40px; /* Maintain spacing between video and metadata */
+    }
+
+    /* Specifically target the video sections in member pages */
+    .designer-profile-page .video-section {
+        max-width: none !important;
+        width: 100%;
     }
 
     /* Images grid - expand but maintain some margin for readability */
@@ -2366,6 +2372,19 @@ body.white-theme .form-buttons button:hover {
     margin: 0 auto;
 }
 
+/* Override the base video section max-width constraint */
+.video-section {
+    max-width: none; /* Remove the 1400px limit from the base styles */
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Ensure video containers expand properly */
+.video-container-main {
+    width: 100%;
+    flex: 4; /* Take up most of the horizontal space */
+}
+
 /* Ensure images grid doesn't break layout */
 .images-grid {
     display: grid;
@@ -2386,6 +2405,14 @@ body.white-theme .form-buttons button:hover {
 
 .image-small {
     height: 300px;
+}
+
+/* Responsive adjustments for the image grid */
+@media screen and (max-width: 900px) {
+    .image-large {
+        grid-column: span 1; /* Single column on smaller screens */
+        height: 400px;
+    }
 }
 
 /* Tablet Styles (769px - 1024px) */
