@@ -783,39 +783,40 @@ function setupIndividualVideoLooping() {
 
     // Video configurations by ID
     const videoSettings = {
-        'gift-video': { start: 6, duration: 3 },
-        'fashion-video': { start: 10, duration: 3 },
-        'brand-video': { start: 3, duration: 3 }
+        'gift-video': { start: 6, duration: 8 },
+        'fashion-video': { start: 10, duration: 8 },
+        'brand-video': { start: 3, duration: 8 }
     };
 
     // Apply settings to each video
     Object.keys(videoSettings).forEach(videoId => {
         const video = document.getElementById(videoId);
         if (!video) {
-            console.log(`Video with ID '${videoId}' not found`);
+            console.log(`❌ Video with ID '${videoId}' not found`);
             return;
         }
 
         const settings = videoSettings[videoId];
-        console.log(`Setting up ${videoId}: start=${settings.start}s, duration=${settings.duration}s`);
+        console.log(`✅ Setting up ${videoId}: start=${settings.start}s, duration=${settings.duration}s`);
 
         // Set initial time when video loads
         video.addEventListener('loadedmetadata', () => {
             video.currentTime = settings.start;
-            console.log(`${videoId} metadata loaded, set to ${settings.start}s`);
+            console.log(`📊 ${videoId} metadata loaded, set to ${settings.start}s`);
         });
 
         // Handle looping within the specified duration
         video.addEventListener('timeupdate', () => {
             if (video.currentTime >= settings.start + settings.duration) {
                 video.currentTime = settings.start;
+                console.log(`🔄 ${videoId} looped back to ${settings.start}s`);
             }
         });
 
         // Set initial time immediately if already loaded
         if (video.readyState >= 1) {
             video.currentTime = settings.start;
-            console.log(`${videoId} already loaded, set to ${settings.start}s`);
+            console.log(`⚡ ${videoId} already loaded, set to ${settings.start}s immediately`);
         }
     });
 }
@@ -917,57 +918,9 @@ function setupEnhancedFeedVideoAutoplay() {
     });
 }
 
-// ENHANCED: Click handlers with better video modal debugging
-function setupEnhancedFeedItemClicks() {
-    console.log('🖱️ Setting up ENHANCED click handlers for new structure...');
+// =================== FIXED MODAL FUNCTIONS ===================
 
-    // VIDEO CLICKS - Updated for new structure
-    const videoContainers = document.querySelectorAll('.video-container-main[data-video]');
-    console.log(`🎬 Found ${videoContainers.length} video containers`);
-
-    videoContainers.forEach((container, index) => {
-        const videoSrc = container.getAttribute('data-video');
-        const title = container.getAttribute('data-title') || `Video ${index + 1}`;
-        const client = container.getAttribute('data-client') || 'Client';
-
-        container.style.cursor = 'pointer';
-
-        container.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log(`🖱️ VIDEO CLICKED: ${title}`);
-
-            const modal = document.getElementById('videoModal');
-            const modalVideo = document.getElementById('modalVideo');
-
-            if (modal && modalVideo) {
-                openVideoModalFixed(videoSrc, title, client);
-            }
-        });
-    });
-
-    // IMAGE CLICKS
-    const imageItems = document.querySelectorAll('.feed-item[data-image]');
-    console.log(`🖼️ Found ${imageItems.length} image items`);
-
-    imageItems.forEach((item, index) => {
-        const imageSrc = item.getAttribute('data-image');
-
-        item.style.cursor = 'pointer';
-
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log(`🖱️ IMAGE CLICKED: ${imageSrc?.split('/').pop()}`);
-
-            const projectInfo = getImageProjectInfo(item);
-            console.log('📋 Project info found:', projectInfo);
-            openImageModalFixed(imageSrc, projectInfo);
-        });
-    });
-}
-
-// Video modal
+// Simple Modal Functions
 function openVideoModal(videoSrc, title, client) {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
@@ -992,7 +945,6 @@ function openVideoModal(videoSrc, title, client) {
     modalVideo.load();
 }
 
-// Image modal
 function openImageModal(imageSrc, title, client) {
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
@@ -1017,70 +969,6 @@ function openImageModal(imageSrc, title, client) {
     document.body.style.overflow = 'hidden';
 }
 
-// FIXED: Image modal that works
-function getImageProjectInfo(imageItem) {
-    // First, try to find metadata in the new structure
-    // Look for the nearest video-section that contains metadata
-    let videoSection = imageItem.closest('.video-section');
-    if (!videoSection) {
-        // Look for the previous video-section before this images-grid
-        const imagesGrid = imageItem.closest('.images-grid');
-        if (imagesGrid) {
-            let currentElement = imagesGrid.previousElementSibling;
-            while (currentElement) {
-                if (currentElement.classList.contains('video-section')) {
-                    videoSection = currentElement;
-                    break;
-                }
-                currentElement = currentElement.previousElementSibling;
-            }
-        }
-    }
-
-    if (videoSection) {
-        const metadata = videoSection.querySelector('.video-metadata');
-        if (metadata) {
-            const clientName = metadata.querySelector('.client-name')?.textContent || '';
-            const projectTitle = metadata.querySelector('.project-title')?.textContent || '';
-
-            return {
-                title: projectTitle,
-                client: clientName
-            };
-        }
-    }
-
-    // Try legacy method - look for feed-info elements
-    let currentElement = imageItem;
-    let feedInfo = null;
-
-    // Look backwards through siblings to find feed-info
-    while (currentElement.previousElementSibling) {
-        currentElement = currentElement.previousElementSibling;
-        if (currentElement.classList.contains('feed-info')) {
-            feedInfo = currentElement;
-            break;
-        }
-    }
-
-    if (feedInfo) {
-        const clientName = feedInfo.querySelector('.client-name')?.textContent || '';
-        const projectTitle = feedInfo.querySelector('.project-title')?.textContent || '';
-
-        return {
-            title: projectTitle,
-            client: clientName
-        };
-    }
-
-    // Final fallback
-    return {
-        title: 'Project Image',
-        client: 'Ligero'
-    };
-}
-
-// Close video modal
 function closeModal() {
     const videoModal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
@@ -1097,7 +985,6 @@ function closeModal() {
     }
 }
 
-// Close image modal
 function closeImageModal() {
     const imageModal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
@@ -1112,10 +999,98 @@ function closeImageModal() {
     }
 }
 
+// Get project info from the page structure
+function getProjectInfo(clickedElement) {
+    // Look for video metadata in the same video-section
+    let videoSection = clickedElement.closest('.video-section');
+    if (videoSection) {
+        const metadata = videoSection.querySelector('.video-metadata');
+        if (metadata) {
+            const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
+            const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
+            return { title: projectTitle, client: clientName };
+        }
+    }
 
-// Modal functionality
-function setupModalFunctionality() {
-    // Click outside to close - Video modal
+    // Fallback - look for any nearby metadata
+    const feedContainer = clickedElement.closest('.feed-container');
+    if (feedContainer) {
+        const clientName = feedContainer.querySelector('.client-name')?.textContent || 'Client';
+        const projectTitle = feedContainer.querySelector('.project-title')?.textContent || 'Project';
+        return { title: projectTitle, client: clientName };
+    }
+
+    return { title: 'Project', client: 'Ligero' };
+}
+
+// Setup click handlers
+function setupModalClicks() {
+    // Video clicks
+    const videoContainers = document.querySelectorAll('.video-container-main');
+    videoContainers.forEach(container => {
+        container.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Get video source from data attribute or video element
+            let videoSrc = container.getAttribute('data-video');
+            if (!videoSrc) {
+                const videoElement = container.querySelector('video source');
+                if (videoElement) {
+                    videoSrc = videoElement.getAttribute('src');
+                }
+            }
+
+            if (videoSrc) {
+                const projectInfo = getProjectInfo(container);
+                openVideoModal(videoSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+
+    // Image clicks
+    const imageItems = document.querySelectorAll('.feed-item img');
+    imageItems.forEach(img => {
+        img.parentElement.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const imageSrc = img.getAttribute('src');
+            if (imageSrc) {
+                const projectInfo = getProjectInfo(img);
+                openImageModal(imageSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+
+    // Alternative: if images have data-image attribute on parent
+    const imageContainers = document.querySelectorAll('[data-image]');
+    imageContainers.forEach(container => {
+        container.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const imageSrc = container.getAttribute('data-image');
+            if (imageSrc) {
+                const projectInfo = getProjectInfo(container);
+                openImageModal(imageSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+}
+
+// Setup modal close handlers
+function setupModalCloseHandlers() {
+    // Close buttons
+    const videoCloseBtn = document.querySelector('#videoModal .modal-close');
+    const imageCloseBtn = document.querySelector('#imageModal .modal-close');
+
+    if (videoCloseBtn) {
+        videoCloseBtn.addEventListener('click', closeModal);
+    }
+
+    if (imageCloseBtn) {
+        imageCloseBtn.addEventListener('click', closeImageModal);
+    }
+
+    // Click outside to close
     const videoModal = document.getElementById('videoModal');
     const imageModal = document.getElementById('imageModal');
 
@@ -1126,37 +1101,27 @@ function setupModalFunctionality() {
         }
     }
 
-    // Click outside to close - Image modal
     if (imageModal) {
         const backdrop = imageModal.querySelector('.modal-backdrop');
         if (backdrop) {
             backdrop.addEventListener('click', closeImageModal);
         }
-
-        // Prevent image click from closing modal
-        const imageContainer = imageModal.querySelector('.image-container');
-        if (imageContainer) {
-            imageContainer.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        }
     }
-}
 
-// Keyboard controls
-function setupKeyboardControls() {
-    document.addEventListener('keydown', (e) => {
+    // Escape key
+    document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const videoModal = document.getElementById('videoModal');
-            const imageModal = document.getElementById('imageModal');
-
-            if (videoModal && videoModal.classList.contains('active')) {
-                closeModal();
-            } else if (imageModal && imageModal.classList.contains('active')) {
-                closeImageModal();
-            }
+            closeModal();
+            closeImageModal();
         }
     });
+}
+
+// Initialize modals when page loads
+function initializeModals() {
+    setupModalClicks();
+    setupModalCloseHandlers();
+    console.log('✅ Modals initialized');
 }
 
 // ROBUST: Apply theme and initialize everything
@@ -1279,9 +1244,9 @@ document.addEventListener('DOMContentLoaded', () => {
             blackThemeCircle.onclick = () => setTheme('black');
         }
 
-        // Initialize CMNPPL-style pages with ENHANCED version
+        // Initialize CMNPPL-style pages with FIXED modal version
         if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
-            console.log('🎯 CMNPPL page detected, initializing ENHANCED version...');
+            console.log('🎯 CMNPPL page detected, initializing with FIXED modals...');
 
             setTimeout(() => {
                 // Setup image loading first
@@ -1290,12 +1255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Setup enhanced video autoplay
                 setupEnhancedFeedVideoAutoplay();
 
-                // Setup enhanced click handlers
-                setupEnhancedFeedItemClicks();
-
-                // Setup modals
-                setupModalFunctionality();
-                setupKeyboardControls();
+                // Setup FIXED modals
+                initializeModals();
             }, 100);
         }
 
@@ -1631,69 +1592,3 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
-
-// =============================================================================
-// DIRECT VIDEO LOOPING
-// =============================================================================
-
-// Individual video looping functionality
-function setupIndividualVideoLooping() {
-    console.log('🎬 Setting up individual video looping...');
-
-    // Video configurations by ID
-    const videoSettings = {
-        'gift-video': { start: 6, duration: 8 },
-        'fashion-video': { start: 10, duration: 8 },
-        'brand-video': { start: 3, duration: 8 }
-    };
-
-    // Apply settings to each video
-    Object.keys(videoSettings).forEach(videoId => {
-        const video = document.getElementById(videoId);
-        if (!video) {
-            console.log(`❌ Video with ID '${videoId}' not found`);
-            return;
-        }
-
-        const settings = videoSettings[videoId];
-        console.log(`✅ Setting up ${videoId}: start=${settings.start}s, duration=${settings.duration}s`);
-
-        // Set initial time when video loads
-        video.addEventListener('loadedmetadata', () => {
-            video.currentTime = settings.start;
-            console.log(`📊 ${videoId} metadata loaded, set to ${settings.start}s`);
-        });
-
-        // Handle looping within the specified duration
-        video.addEventListener('timeupdate', () => {
-            if (video.currentTime >= settings.start + settings.duration) {
-                video.currentTime = settings.start;
-                console.log(`🔄 ${videoId} looped back to ${settings.start}s`);
-            }
-        });
-
-        // Set initial time immediately if already loaded
-        if (video.readyState >= 1) {
-            video.currentTime = settings.start;
-            console.log(`⚡ ${videoId} already loaded, set to ${settings.start}s immediately`);
-        }
-    });
-}
-
-// Call the function immediately when this script loads
-console.log('🚀 Starting video loop setup...');
-setupIndividualVideoLooping();
-
-// Also call it when DOM is ready (backup)
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupIndividualVideoLooping);
-} else {
-    // DOM is already ready, call it now
-    setTimeout(setupIndividualVideoLooping, 100);
-}
-
-// Also call it after a short delay to catch any late-loading videos
-setTimeout(() => {
-    console.log('🔄 Running video setup again after delay...');
-    setupIndividualVideoLooping();
-}, 1000);
