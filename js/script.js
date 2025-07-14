@@ -1642,3 +1642,69 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
+
+// =============================================================================
+// DIRECT VIDEO LOOPING FIX - ADD THIS TO THE VERY END OF YOUR SCRIPT.JS FILE
+// =============================================================================
+
+// Individual video looping functionality
+function setupIndividualVideoLooping() {
+    console.log('🎬 Setting up individual video looping...');
+
+    // Video configurations by ID
+    const videoSettings = {
+        'gift-video': { start: 6, duration: 3 },
+        'fashion-video': { start: 10, duration: 3 },
+        'brand-video': { start: 3, duration: 3 }
+    };
+
+    // Apply settings to each video
+    Object.keys(videoSettings).forEach(videoId => {
+        const video = document.getElementById(videoId);
+        if (!video) {
+            console.log(`❌ Video with ID '${videoId}' not found`);
+            return;
+        }
+
+        const settings = videoSettings[videoId];
+        console.log(`✅ Setting up ${videoId}: start=${settings.start}s, duration=${settings.duration}s`);
+
+        // Set initial time when video loads
+        video.addEventListener('loadedmetadata', () => {
+            video.currentTime = settings.start;
+            console.log(`📊 ${videoId} metadata loaded, set to ${settings.start}s`);
+        });
+
+        // Handle looping within the specified duration
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= settings.start + settings.duration) {
+                video.currentTime = settings.start;
+                console.log(`🔄 ${videoId} looped back to ${settings.start}s`);
+            }
+        });
+
+        // Set initial time immediately if already loaded
+        if (video.readyState >= 1) {
+            video.currentTime = settings.start;
+            console.log(`⚡ ${videoId} already loaded, set to ${settings.start}s immediately`);
+        }
+    });
+}
+
+// Call the function immediately when this script loads
+console.log('🚀 Starting video loop setup...');
+setupIndividualVideoLooping();
+
+// Also call it when DOM is ready (backup)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupIndividualVideoLooping);
+} else {
+    // DOM is already ready, call it now
+    setTimeout(setupIndividualVideoLooping, 100);
+}
+
+// Also call it after a short delay to catch any late-loading videos
+setTimeout(() => {
+    console.log('🔄 Running video setup again after delay...');
+    setupIndividualVideoLooping();
+}, 1000);
