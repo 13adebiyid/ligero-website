@@ -910,7 +910,8 @@ body.white-theme .contact-button:hover {
 .electra-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Show full video without cropping */
+    object-position: center;
     transition: transform 0.3s ease;
 }
 
@@ -1743,19 +1744,38 @@ body.white-theme .modal-loading p {
 }
 
 /* Video and Image Styling */
-.feed-video,
+
 .feed-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    background: #111;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.feed-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Changed from 'cover' to 'contain' to show full video */
+    object-position: center;
     display: block;
 }
 
-/* FIXED: Image Loading with better initial state */
+.feed-video.cover-fit {
+    object-fit: cover; /* Use this class for videos that should crop */
+}
+
 .feed-item img {
     opacity: 0;
     transition: opacity 0.5s ease;
-    background: #111; /* Fallback background while loading */
+    background: #111;
+}
+
+.feed-item img.cover-fit {
+    object-fit: cover; /* Use this class for images that should crop */
 }
 
 .feed-item img.loaded {
@@ -1933,6 +1953,7 @@ body.white-theme .modal-loading p {
     width: 100%;
     height: auto;
     max-height: 70vh;
+    object-fit: contain;
 }
 
 .modal-footer {
@@ -1972,8 +1993,10 @@ body.white-theme .modal-loading p {
 /* Mobile Responsive */
 @media screen and (max-width: 1200px) {
     .feed-container {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px 40px;
+        align-items: start;
     }
 
     .large-video,
