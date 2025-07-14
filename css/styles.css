@@ -1394,6 +1394,22 @@ body.white-theme .contact-button:hover {
     display: block;
 }
 
+/* FIXED: Image Loading with better initial state */
+.feed-item img {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: #111; /* Fallback background while loading */
+}
+
+.feed-item img.loaded {
+    opacity: 1;
+}
+
+/* Ensure images show immediately if already cached */
+.feed-item img[src] {
+    opacity: 1;
+}
+
 /* Item Overlay */
 .item-overlay {
     position: absolute;
@@ -1753,14 +1769,13 @@ body.white-theme .designer-link {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/*    force show images */
-
-/* FORCE IMAGES TO DISPLAY PROPERLY */
+/* FORCE IMAGES TO DISPLAY PROPERLY - Enhanced */
 .feed-item img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    background: #111 !important; /* Fallback while loading */
 }
 
 /* Ensure feed items have proper dimensions */
@@ -1773,15 +1788,15 @@ body.white-theme .designer-link {
 
 /* Remove any conflicting styles */
 .feed-item[data-image] img {
-    transition: opacity 0.3s ease !important;
+    transition: opacity 0.5s ease !important;
     filter: none !important;
     transform: none !important;
 }
 
-/* Force image containers to show */
-.image-small, .image-medium, .image-large {
+/* Better loading state */
+.feed-item img:not(.loaded) {
     background: #111 !important;
-    border: 1px solid rgba(255,255,255,0.1) !important; /* Temporary debug border */
+    min-height: inherit !important;
 }
 
 /* ================== DESIGNER PROFILE PAGE ================== */
@@ -2004,21 +2019,11 @@ body.white-theme .work-section-title {
 
 /* Image hover effects in feed */
 .feed-item img {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.5s ease;
 }
 
 .feed-item:hover img {
     transform: scale(1.02);
-}
-
-/* Loading state for images */
-.feed-item img {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.feed-item img.loaded {
-    opacity: 1;
 }
 
 /* Image overlay enhancement */
@@ -2817,4 +2822,3 @@ body.white-theme .form-buttons button:hover {
         font-size: 0.95rem;
     }
 }
-

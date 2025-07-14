@@ -732,6 +732,387 @@ function testCarouselReach() {
     console.log('================================');
 }
 
+// NEW: Service Card Hover Video Preview (for Set Designing card)
+function setupServiceCardHoverPreviews() {
+    const setDesignCard = document.querySelector('a[href="/services/set-designing"]');
+    if (!setDesignCard) return;
+
+    const video = setDesignCard.querySelector('.service-card-video');
+    if (!video) return;
+
+    let previewInterval;
+    const clips = [
+        { src: '/videos/gift.mp4', start: 0, duration: 3 },
+        { src: '/videos/fashion.mp4', start: 0, duration: 3 },
+        { src: '/videos/advert.mp4', start: 0, duration: 3 }
+    ];
+    let currentClipIndex = 0;
+
+    function playNextClip() {
+        const clip = clips[currentClipIndex];
+        video.src = clip.src;
+        video.currentTime = clip.start;
+
+        video.play().then(() => {
+            console.log(`Playing clip ${currentClipIndex + 1}: ${clip.src}`);
+
+            // Switch to next clip after 3 seconds
+            setTimeout(() => {
+                currentClipIndex = (currentClipIndex + 1) % clips.length;
+                playNextClip();
+            }, clip.duration * 1000);
+        }).catch(err => {
+            console.log('Preview autoplay prevented:', err);
+        });
+    }
+
+    setDesignCard.addEventListener('mouseenter', () => {
+        console.log('Set design card hovered - starting preview loop');
+        playNextClip();
+    });
+
+    setDesignCard.addEventListener('mouseleave', () => {
+        console.log('Set design card unhovered - stopping preview');
+        video.pause();
+        video.currentTime = 0;
+        // Reset to original video
+        video.src = '/videos/set-designing-video.mp4';
+        clearTimeout(previewInterval);
+    });
+}
+
+// NEW: Image Loading Fix
+function setupImageLoading() {
+    const images = document.querySelectorAll('.feed-item img');
+    console.log(`🖼️ Setting up loading for ${images.length} images`);
+
+    images.forEach((img, index) => {
+        // Check if image is already loaded
+        if (img.complete && img.naturalHeight !== 0) {
+            img.classList.add('loaded');
+            console.log(`✅ Image ${index + 1} already loaded`);
+        } else {
+            // Add load event listener
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+                console.log(`✅ Image ${index + 1} loaded: ${img.src.split('/').pop()}`);
+            });
+
+            // Add error handling
+            img.addEventListener('error', () => {
+                console.error(`❌ Failed to load image ${index + 1}: ${img.src}`);
+                // Still show the image container
+                img.classList.add('loaded');
+            });
+        }
+    });
+}
+
+// ENHANCED: Video autoplay functionality with immediate start
+function setupEnhancedFeedVideoAutoplay() {
+    const feedVideos = document.querySelectorAll('.feed-video');
+    console.log(`🎥 Setting up enhanced autoplay for ${feedVideos.length} videos`);
+
+    // More aggressive intersection observer for immediate playback
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+
+            if (entry.isIntersecting && entry.intersectionRatio > 0.1) { // Lower threshold
+                // Try to play immediately
+                video.play().then(() => {
+                    console.log(`▶️ Playing video: ${video.src?.split('/').pop()}`);
+                }).catch(err => {
+                    console.log(`⏸️ Autoplay prevented: ${err.message}`);
+                });
+            } else {
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+    }, {
+        threshold: 0.1, // Much lower threshold for immediate trigger
+        rootMargin: '100px' // Larger margin to trigger earlier
+    });
+
+    feedVideos.forEach((video, index) => {
+        videoObserver.observe(video);
+
+        // Enhanced loop handling
+        video.addEventListener('loadedmetadata', () => {
+            console.log(`📊 Video ${index + 1} metadata loaded`);
+
+            video.addEventListener('timeupdate', () => {
+                // Loop after 4 seconds or full duration if shorter
+                const loopTime = Math.min(4, video.duration - 0.5);
+                if (video.currentTime >= loopTime) {
+                    video.currentTime = 0;
+                }
+            });
+        });
+
+        // Force load video immediately
+        video.load();
+
+        // Try immediate autoplay for visible videos
+        setTimeout(() => {
+            const rect = video.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                video.play().catch(() => {
+                    console.log('Initial autoplay prevented, will play on scroll');
+                });
+            }
+        }, 100);
+    });
+}
+
+// ENHANCED: Click handlers with better video modal debugging
+function setupEnhancedFeedItemClicks() {
+    console.log('🖱️ Setting up ENHANCED click handlers...');
+
+    // VIDEO CLICKS with debugging
+    const videoItems = document.querySelectorAll('.feed-item[data-video]');
+    console.log(`🎬 Found ${videoItems.length} video items`);
+
+    videoItems.forEach((item, index) => {
+        const videoSrc = item.getAttribute('data-video');
+        const title = item.getAttribute('data-title') || `Video ${index + 1}`;
+        const client = item.getAttribute('data-client') || 'Client';
+
+        console.log(`🎯 Setting up video click ${index + 1}: ${title} - ${videoSrc}`);
+
+        item.style.cursor = 'pointer';
+
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log(`🖱️ VIDEO CLICKED: ${title} - Attempting to open: ${videoSrc}`);
+
+            // Debug the modal elements before opening
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            console.log('Modal exists:', !!modal);
+            console.log('Modal video exists:', !!modalVideo);
+
+            if (modal && modalVideo) {
+                openVideoModalFixed(videoSrc, title, client);
+            } else {
+                console.error('❌ Video modal elements not found!');
+                alert(`Video modal not available. Tried to play: ${title}`);
+            }
+        });
+    });
+
+    // IMAGE CLICKS
+    const imageItems = document.querySelectorAll('.feed-item[data-image]');
+    console.log(`🖼️ Found ${imageItems.length} image items`);
+
+    imageItems.forEach((item, index) => {
+        const imageSrc = item.getAttribute('data-image');
+
+        console.log(`🎯 Setting up image click ${index + 1}: ${imageSrc?.split('/').pop()}`);
+
+        item.style.cursor = 'pointer';
+
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log(`🖱️ IMAGE CLICKED: ${imageSrc?.split('/').pop()}`);
+
+            const projectInfo = getImageProjectInfo(item);
+            openImageModalFixed(imageSrc, projectInfo);
+        });
+    });
+}
+
+// ENHANCED: Video modal with better debugging
+function openVideoModalFixed(videoSrc, title, client) {
+    console.log(`🎬 Opening video modal: ${title} with src: ${videoSrc}`);
+
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+
+    if (!modal || !modalVideo) {
+        console.error('❌ Video modal elements not found');
+        alert('Video modal not found - check HTML structure');
+        return;
+    }
+
+    // Set content
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalClient) modalClient.textContent = client;
+
+    // Show modal first
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Clear any existing source
+    modalVideo.src = '';
+    modalVideo.load();
+
+    // Set new source with error handling
+    modalVideo.addEventListener('loadeddata', () => {
+        console.log(`✅ Video loaded successfully: ${videoSrc}`);
+    }, { once: true });
+
+    modalVideo.addEventListener('error', (e) => {
+        console.error(`❌ Video failed to load: ${videoSrc}`, e);
+        alert(`Failed to load video: ${videoSrc.split('/').pop()}`);
+    }, { once: true });
+
+    // Set the source
+    modalVideo.src = videoSrc;
+    modalVideo.load();
+
+    console.log(`✅ Video modal opened for: ${title}`);
+}
+
+// FIXED: Image modal that works
+function openImageModalFixed(imageSrc, projectInfo = {}) {
+    console.log(`🖼️ Opening image modal: ${imageSrc?.split('/').pop()}`);
+
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) {
+        console.error('❌ Image modal elements not found');
+        alert('Image modal not found - check HTML structure');
+        return;
+    }
+
+    // Set content
+    modalImage.src = imageSrc;
+
+    if (imageTitle && projectInfo.title) {
+        imageTitle.textContent = projectInfo.title;
+    }
+    if (imageProject && projectInfo.client) {
+        imageProject.textContent = projectInfo.client;
+    }
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    console.log(`✅ Image modal opened`);
+}
+
+// Get project info (keep existing function)
+function getImageProjectInfo(imageItem) {
+    let feedInfo = null;
+    const container = imageItem.closest('.feed-container');
+    if (container) {
+        const allItems = Array.from(container.children);
+        const itemIndex = allItems.indexOf(imageItem);
+
+        for (let i = itemIndex - 1; i >= 0; i--) {
+            if (allItems[i].classList.contains('feed-info')) {
+                feedInfo = allItems[i];
+                break;
+            }
+        }
+    }
+
+    if (feedInfo) {
+        const clientName = feedInfo.querySelector('.client-name')?.textContent || '';
+        const projectTitle = feedInfo.querySelector('.project-title')?.textContent || '';
+
+        return {
+            title: projectTitle,
+            client: clientName
+        };
+    }
+
+    return {
+        title: 'Set Design Work',
+        client: 'Project'
+    };
+}
+
+// Close video modal
+function closeModal() {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+
+    if (!modal || !modalVideo) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Stop and reset video
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    modalVideo.src = '';
+}
+
+// Close image modal
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Clear image source to stop loading
+    if (modalImage) {
+        modalImage.src = '';
+    }
+
+    console.log('Image modal closed');
+}
+
+// Modal functionality
+function setupModalFunctionality() {
+    // Click outside to close - Video modal
+    const videoModal = document.getElementById('videoModal');
+    const imageModal = document.getElementById('imageModal');
+
+    if (videoModal) {
+        const backdrop = videoModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeModal);
+        }
+    }
+
+    // Click outside to close - Image modal
+    if (imageModal) {
+        const backdrop = imageModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeImageModal);
+        }
+
+        // Prevent image click from closing modal
+        const imageContainer = imageModal.querySelector('.image-container');
+        if (imageContainer) {
+            imageContainer.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    }
+}
+
+// Keyboard controls
+function setupKeyboardControls() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const videoModal = document.getElementById('videoModal');
+            const imageModal = document.getElementById('imageModal');
+
+            if (videoModal && videoModal.classList.contains('active')) {
+                closeModal();
+            } else if (imageModal && imageModal.classList.contains('active')) {
+                closeImageModal();
+            }
+        }
+    });
+}
+
 // ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -770,6 +1151,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
                 carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
                 carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+                // Setup hover previews for service cards
+                setupServiceCardHoverPreviews();
 
                 setTimeout(() => {
                     testCarouselReach();
@@ -846,12 +1230,23 @@ document.addEventListener('DOMContentLoaded', () => {
             blackThemeCircle.onclick = () => setTheme('black');
         }
 
-        // Initialize CMNPPL-style pages with FIXED version
+        // Initialize CMNPPL-style pages with ENHANCED version
         if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
-            console.log('🎯 CMNPPL page detected, initializing FIXED version...');
+            console.log('🎯 CMNPPL page detected, initializing ENHANCED version...');
 
             setTimeout(() => {
-                initCMNPPLStyleFixed();
+                // Setup image loading first
+                setupImageLoading();
+
+                // Setup enhanced video autoplay
+                setupEnhancedFeedVideoAutoplay();
+
+                // Setup enhanced click handlers
+                setupEnhancedFeedItemClicks();
+
+                // Setup modals
+                setupModalFunctionality();
+                setupKeyboardControls();
             }, 100);
         }
 
@@ -1177,291 +1572,6 @@ function initComingSoonPage() {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-// ================== FIXED CMNPPL-STYLE FUNCTIONALITY ==================
-
-// Enhanced CMNPPL initialization - FIXED VERSION
-function initCMNPPLStyleFixed() {
-    console.log('🎬 Initializing CMNPPL-style (FIXED VERSION)...');
-
-    setupFixedFeedVideoAutoplay();
-    setupFixedFeedItemClicks();
-    setupModalFunctionality();
-    setupKeyboardControls();
-
-    console.log('✅ CMNPPL-style initialization complete');
-}
-
-// FIXED: Video autoplay functionality
-function setupFixedFeedVideoAutoplay() {
-    const feedVideos = document.querySelectorAll('.feed-video');
-    console.log(`🎥 Setting up autoplay for ${feedVideos.length} videos`);
-
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-
-            if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
-                // Only try to play if video is loaded
-                if (video.readyState >= 2) {
-                    video.play().then(() => {
-                        console.log(`▶️ Playing video: ${video.src?.split('/').pop()}`);
-                    }).catch(err => {
-                        console.log(`⏸️ Autoplay prevented: ${err.message}`);
-                    });
-                }
-            } else {
-                video.pause();
-                video.currentTime = 0;
-            }
-        });
-    }, {
-        threshold: 0.4,
-        rootMargin: '50px'
-    });
-
-    feedVideos.forEach((video, index) => {
-        videoObserver.observe(video);
-
-        // Enhanced loop handling
-        video.addEventListener('loadedmetadata', () => {
-            console.log(`📊 Video ${index + 1} metadata loaded`);
-
-            video.addEventListener('timeupdate', () => {
-                // Loop after 4 seconds or full duration if shorter
-                const loopTime = Math.min(4, video.duration - 0.5);
-                if (video.currentTime >= loopTime) {
-                    video.currentTime = 0;
-                }
-            });
-        });
-
-        // Ensure video loads
-        video.load();
-    });
-}
-
-// FIXED: Click handlers that actually work
-function setupFixedFeedItemClicks() {
-    console.log('🖱️ Setting up FIXED click handlers...');
-
-    // VIDEO CLICKS
-    const videoItems = document.querySelectorAll('.feed-item[data-video]');
-    console.log(`🎬 Found ${videoItems.length} video items`);
-
-    videoItems.forEach((item, index) => {
-        const videoSrc = item.getAttribute('data-video');
-        const title = item.getAttribute('data-title') || `Video ${index + 1}`;
-        const client = item.getAttribute('data-client') || 'Client';
-
-        console.log(`🎯 Setting up video click ${index + 1}: ${title}`);
-
-        // Remove any existing listeners and add fresh one
-        item.style.cursor = 'pointer';
-
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log(`🖱️ VIDEO CLICKED: ${title}`);
-            openVideoModalFixed(videoSrc, title, client);
-        });
-    });
-
-    // IMAGE CLICKS
-    const imageItems = document.querySelectorAll('.feed-item[data-image]');
-    console.log(`🖼️ Found ${imageItems.length} image items`);
-
-    imageItems.forEach((item, index) => {
-        const imageSrc = item.getAttribute('data-image');
-
-        console.log(`🎯 Setting up image click ${index + 1}: ${imageSrc?.split('/').pop()}`);
-
-        item.style.cursor = 'pointer';
-
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log(`🖱️ IMAGE CLICKED: ${imageSrc?.split('/').pop()}`);
-
-            const projectInfo = getImageProjectInfo(item);
-            openImageModalFixed(imageSrc, projectInfo);
-        });
-    });
-}
-
-// FIXED: Video modal that works
-function openVideoModalFixed(videoSrc, title, client) {
-    console.log(`🎬 Opening video modal: ${title}`);
-
-    const modal = document.getElementById('videoModal');
-    const modalVideo = document.getElementById('modalVideo');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalClient = document.getElementById('modalClient');
-
-    if (!modal || !modalVideo) {
-        console.error('❌ Video modal elements not found');
-        alert('Video modal not found - check HTML structure');
-        return;
-    }
-
-    // Set content
-    if (modalTitle) modalTitle.textContent = title;
-    if (modalClient) modalClient.textContent = client;
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Set video source and try to play
-    modalVideo.src = videoSrc;
-    modalVideo.load();
-
-    console.log(`✅ Video modal opened for: ${title}`);
-}
-
-// FIXED: Image modal that works
-function openImageModalFixed(imageSrc, projectInfo = {}) {
-    console.log(`🖼️ Opening image modal: ${imageSrc?.split('/').pop()}`);
-
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
-
-    if (!modal || !modalImage) {
-        console.error('❌ Image modal elements not found');
-        alert('Image modal not found - check HTML structure');
-        return;
-    }
-
-    // Set content
-    modalImage.src = imageSrc;
-
-    if (imageTitle && projectInfo.title) {
-        imageTitle.textContent = projectInfo.title;
-    }
-    if (imageProject && projectInfo.client) {
-        imageProject.textContent = projectInfo.client;
-    }
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    console.log(`✅ Image modal opened`);
-}
-
-// Get project info (keep existing function)
-function getImageProjectInfo(imageItem) {
-    let feedInfo = null;
-    const container = imageItem.closest('.feed-container');
-    if (container) {
-        const allItems = Array.from(container.children);
-        const itemIndex = allItems.indexOf(imageItem);
-
-        for (let i = itemIndex - 1; i >= 0; i--) {
-            if (allItems[i].classList.contains('feed-info')) {
-                feedInfo = allItems[i];
-                break;
-            }
-        }
-    }
-
-    if (feedInfo) {
-        const clientName = feedInfo.querySelector('.client-name')?.textContent || '';
-        const projectTitle = feedInfo.querySelector('.project-title')?.textContent || '';
-
-        return {
-            title: projectTitle,
-            client: clientName
-        };
-    }
-
-    return {
-        title: 'Set Design Work',
-        client: 'Project'
-    };
-}
-
-// Close video modal
-function closeModal() {
-    const modal = document.getElementById('videoModal');
-    const modalVideo = document.getElementById('modalVideo');
-
-    if (!modal || !modalVideo) return;
-
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-
-    // Stop and reset video
-    modalVideo.pause();
-    modalVideo.currentTime = 0;
-    modalVideo.src = '';
-}
-
-// Close image modal
-function closeImageModal() {
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-
-    if (!modal) return;
-
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-
-    // Clear image source to stop loading
-    if (modalImage) {
-        modalImage.src = '';
-    }
-
-    console.log('Image modal closed');
-}
-
-// Modal functionality
-function setupModalFunctionality() {
-    // Click outside to close - Video modal
-    const videoModal = document.getElementById('videoModal');
-    const imageModal = document.getElementById('imageModal');
-
-    if (videoModal) {
-        const backdrop = videoModal.querySelector('.modal-backdrop');
-        if (backdrop) {
-            backdrop.addEventListener('click', closeModal);
-        }
-    }
-
-    // Click outside to close - Image modal
-    if (imageModal) {
-        const backdrop = imageModal.querySelector('.modal-backdrop');
-        if (backdrop) {
-            backdrop.addEventListener('click', closeImageModal);
-        }
-
-        // Prevent image click from closing modal
-        const imageContainer = imageModal.querySelector('.image-container');
-        if (imageContainer) {
-            imageContainer.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        }
-    }
-}
-
-// Keyboard controls
-function setupKeyboardControls() {
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const videoModal = document.getElementById('videoModal');
-            const imageModal = document.getElementById('imageModal');
-
-            if (videoModal && videoModal.classList.contains('active')) {
-                closeModal();
-            } else if (imageModal && imageModal.classList.contains('active')) {
-                closeImageModal();
-            }
-        }
-    });
 }
 
 // Cleanup on page unload
