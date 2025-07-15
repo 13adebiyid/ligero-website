@@ -1124,6 +1124,313 @@ function initializeModals() {
     console.log('✅ Modals initialized');
 }
 
+// Add these functions to your existing script.js file
+
+// ================== VIDEO REVEAL ANIMATION SYSTEM ==================
+
+let isAnimationPlaying = false;
+let animationCallback = null;
+
+// Create the reveal animation overlay
+function createRevealOverlay() {
+    if (document.getElementById('videoRevealOverlay')) {
+        return document.getElementById('videoRevealOverlay');
+    }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'videoRevealOverlay';
+    overlay.className = 'video-reveal-overlay';
+    overlay.innerHTML = `
+        <div class="reveal-tinted-overlay"></div>
+        <div class="reveal-logo-text">LIGERO</div>
+    `;
+    document.body.appendChild(overlay);
+    return overlay;
+}
+
+// Start the reveal animation
+function startVideoRevealAnimation(callback) {
+    if (isAnimationPlaying) {
+        console.log('Animation already playing, skipping...');
+        return;
+    }
+
+    isAnimationPlaying = true;
+    animationCallback = callback;
+
+    console.log('🎬 Starting video reveal animation...');
+
+    const overlay = createRevealOverlay();
+
+    // Show overlay
+    overlay.classList.add('active');
+
+    // Start expanding animation after brief delay
+    setTimeout(() => {
+        overlay.classList.add('expanding');
+    }, 100);
+
+    // Execute callback and hide overlay after animation completes
+    setTimeout(() => {
+        // Execute the callback (start video, open modal, etc.)
+        if (animationCallback) {
+            animationCallback();
+            animationCallback = null;
+        }
+
+        // Hide overlay
+        setTimeout(() => {
+            overlay.classList.remove('active', 'expanding');
+            isAnimationPlaying = false;
+            console.log('✅ Video reveal animation completed');
+        }, 400);
+    }, 3000); // 3 seconds for full animation
+}
+
+// Reset animation state (useful for cleanup)
+function resetVideoRevealAnimation() {
+    const overlay = document.getElementById('videoRevealOverlay');
+    if (overlay) {
+        overlay.classList.remove('active', 'expanding');
+    }
+    isAnimationPlaying = false;
+    animationCallback = null;
+}
+
+// ================== MODIFIED VIDEO FUNCTIONS ==================
+
+// Enhanced video modal opening with animation
+function openVideoModalWithAnimation(videoSrc, title, client) {
+    // Start animation, then open modal in callback
+    startVideoRevealAnimation(() => {
+        openVideoModalDirect(videoSrc, title, client);
+    });
+}
+
+// Direct modal opening (without animation) - renamed original function
+function openVideoModalDirect(videoSrc, title, client) {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+
+    if (!modal || !modalVideo) {
+        console.error('Video modal elements not found');
+        return;
+    }
+
+    // Set content
+    if (modalTitle) modalTitle.textContent = title || 'Video';
+    if (modalClient) modalClient.textContent = client || 'Client';
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Set video source and play
+    modalVideo.src = videoSrc;
+    modalVideo.load();
+
+    // Play video after it's loaded
+    modalVideo.addEventListener('loadeddata', () => {
+        modalVideo.play().catch(err => {
+            console.log('Video play failed:', err);
+        });
+    }, { once: true });
+}
+
+// Keep original home page video controls (NO animation)
+function setupOriginalVideoControls() {
+    const video = document.getElementById('bgVideo');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const playPauseIcon = document.getElementById('playPauseIcon');
+    const muteIcon = document.getElementById('muteIcon');
+
+    if (!video || !playPauseBtn || !muteBtn) return;
+
+    // Original play/pause functionality (NO animation)
+    playPauseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        if (video.paused) {
+            video.play().then(() => {
+                playPauseIcon.src = '/images/pause-icon.png';
+                playPauseIcon.alt = 'Pause';
+            }).catch(err => {
+                console.log('Video play failed:', err);
+                playPauseIcon.src = '/images/play-icon.png';
+            });
+        } else {
+            video.pause();
+            playPauseIcon.src = '/images/play-icon.png';
+            playPauseIcon.alt = 'Play';
+        }
+    });
+
+    // Mute/Unmute functionality
+    muteBtn.addEventListener('click', () => {
+        if (video.muted) {
+            video.muted = false;
+            muteIcon.src = '/images/sound-on-icon.png';
+            muteIcon.alt = 'Sound On';
+        } else {
+            video.muted = true;
+            muteIcon.src = '/images/sound-off-icon.png';
+            muteIcon.alt = 'Sound Off';
+        }
+    });
+
+    // Handle video events
+    video.addEventListener('play', () => {
+        playPauseIcon.src = '/images/pause-icon.png';
+    });
+
+    video.addEventListener('pause', () => {
+        playPauseIcon.src = '/images/play-icon.png';
+    });
+
+    // Auto-play functionality
+    function tryAutoplay() {
+        video.play().then(() => {
+            console.log('Video started playing (autoplay)');
+            playPauseIcon.src = '/images/pause-icon.png';
+        }).catch((error) => {
+            console.log('Autoplay prevented:', error);
+            playPauseIcon.src = '/images/play-icon.png';
+        });
+    }
+
+    // Try autoplay on page load
+    setTimeout(tryAutoplay, 100);
+
+    // Also try on first user interaction
+    document.addEventListener('touchstart', tryAutoplay, { once: true });
+    document.addEventListener('click', tryAutoplay, { once: true });
+
+    // Handle when video can play
+    video.addEventListener('canplaythrough', () => {
+        if (video.paused) {
+            tryAutoplay();
+        }
+    });
+}
+
+// ================== UPDATED MODAL SETUP ==================
+
+// Updated modal click setup to use animation
+function setupModalClicksWithAnimation() {
+    console.log('🎯 Setting up modal clicks with animation...');
+
+    // Video clicks with animation
+    const videoContainers = document.querySelectorAll('.video-container-main');
+    videoContainers.forEach(container => {
+        container.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Get video source from data attribute or video element
+            let videoSrc = container.getAttribute('data-video');
+            if (!videoSrc) {
+                const videoElement = container.querySelector('video source');
+                if (videoElement) {
+                    videoSrc = videoElement.getAttribute('src');
+                }
+            }
+
+            if (videoSrc) {
+                const projectInfo = getProjectInfo(container);
+                console.log('🎬 Video container clicked, starting animation...');
+                openVideoModalWithAnimation(videoSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+
+    // Image clicks (no animation needed)
+    const imageItems = document.querySelectorAll('.feed-item img');
+    imageItems.forEach(img => {
+        img.parentElement.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const imageSrc = img.getAttribute('src');
+            if (imageSrc) {
+                const projectInfo = getProjectInfo(img);
+                openImageModal(imageSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+
+    // Alternative image clicks
+    const imageContainers = document.querySelectorAll('[data-image]');
+    imageContainers.forEach(container => {
+        container.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const imageSrc = container.getAttribute('data-image');
+            if (imageSrc) {
+                const projectInfo = getProjectInfo(container);
+                openImageModal(imageSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+}
+
+// Enhanced modal initialization
+function initializeEnhancedModals() {
+    setupModalClicksWithAnimation();
+    setupModalCloseHandlers();
+    console.log('✅ Enhanced modals with animation initialized');
+}
+
+// ================== INTEGRATION WITH EXISTING SYSTEM ==================
+
+// Update the original initialization
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (keep all existing initialization code)
+
+    // Use original video controls for home page (NO animation)
+    setupOriginalVideoControls();
+
+    // Only use enhanced modals for CMNPPL pages (WITH animation)
+    if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
+        console.log('🎯 CMNPPL page detected, initializing enhanced modals...');
+
+        setTimeout(() => {
+            setupImageLoading();
+            setupEnhancedFeedVideoAutoplay();
+            initializeEnhancedModals(); // Use enhanced version with animation
+        }, 100);
+    }
+});
+
+// Cleanup animation on page unload
+window.addEventListener('beforeunload', () => {
+    resetVideoRevealAnimation();
+
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+    });
+});
+
+// Reset animation on navigation
+window.addEventListener('popstate', function(event) {
+    resetVideoRevealAnimation();
+});
+
+// Emergency cleanup for stuck animations
+setInterval(() => {
+    if (isAnimationPlaying) {
+        const overlay = document.getElementById('videoRevealOverlay');
+        if (overlay && !overlay.classList.contains('active')) {
+            console.warn('Animation state mismatch, cleaning up...');
+            resetVideoRevealAnimation();
+        }
+    }
+}, 5000);
+
+console.log('🎬 Video reveal animation system loaded');
+
 // ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {
     try {
