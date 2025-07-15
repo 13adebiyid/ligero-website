@@ -2138,82 +2138,115 @@ body.white-theme .home-link:hover {
 
 /* ================== VIDEO REVEAL ANIMATION ================== */
 
-/* ================== FIXED VIDEO REVEAL ANIMATION ================== */
-
-/* Animation overlay that appears over individual video containers */
-.video-reveal-animation {
+/* Animation overlay that appears directly on the modal video */
+.modal-video-reveal {
     position: absolute;
     inset: 0;
     z-index: 10;
     pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-    border-radius: inherit; /* Match container's border radius */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease 2.5s, visibility 0.5s ease 2.5s; /* Fade out after expansion */
+    border-radius: inherit;
     overflow: hidden;
 }
 
-.video-reveal-animation.active {
-    opacity: 1;
-    visibility: visible;
+.modal-video-reveal.hiding {
+    opacity: 0;
+    visibility: hidden;
 }
 
-/* Black transparent overlay background - this gets revealed through the circle */
+/* Dark overlay background */
 .reveal-overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Transparent black like your other overlays */
+    background-color: rgba(0, 0, 0, 0.85); /* Dark overlay */
     z-index: 1;
-    /* Use clip-path to create expanding circle reveal */
-    clip-path: circle(50px at 50% 50%);
-    transition: clip-path 2.5s cubic-bezier(0.3, 0, 1, 1);
 }
 
-.video-reveal-animation.expanding .reveal-overlay {
-    clip-path: circle(2000px at 50% 50%);
+/* Transparent expanding circle - using mask for proper transparency */
+.reveal-circle {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    /* Start with small circle (50px radius) */
+    -webkit-mask-image: radial-gradient(circle at center, transparent 50px, black 50px);
+    mask-image: radial-gradient(circle at center, transparent 50px, black 50px);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background: rgba(0, 0, 0, 0.85); /* Same as overlay */
+    transition: none;
 }
 
-/* LIGERO text container - positioned absolutely to prevent movement */
+/* Expanded state - large transparent circle */
+.modal-video-reveal.expanding .reveal-circle {
+    /* Animate to large circle (2000px radius) with cubic-bezier for slow-start, fast-end */
+    -webkit-mask-image: radial-gradient(circle at center, transparent 2000px, black 2000px);
+    mask-image: radial-gradient(circle at center, transparent 2000px, black 2000px);
+    transition: -webkit-mask-image 2.5s cubic-bezier(0.3, 0, 0.1, 1),
+    mask-image 2.5s cubic-bezier(0.3, 0, 0.1, 1);
+}
+
+/* LIGERO text container */
 .reveal-text-container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    width: 200px; /* Fixed width to prevent movement */
-    height: 80px; /* Fixed height to prevent movement */
+    width: 200px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Text fades with the overlay */
+    opacity: 1;
+    transition: opacity 0.5s ease 2.5s; /* Same timing as overlay fade */
 }
 
-/* LIGERO text inside the animation */
-.reveal-logo-inside {
+.modal-video-reveal.hiding .reveal-text-container {
+    opacity: 0;
+}
+
+/* LIGERO text */
+.reveal-logo-text {
     font-family: 'Suissnord', sans-serif;
     font-size: 3rem;
     font-weight: bold;
     color: white;
     white-space: nowrap;
     letter-spacing: 2px;
-    transition: opacity 0.5s ease-out 2.2s;
     text-align: center;
-    /* Prevent text movement during animation */
     transform: translateZ(0);
     backface-visibility: hidden;
 }
 
-.video-reveal-animation.expanding .reveal-logo-inside {
-    opacity: 0;
+/* Modal container adjustments */
+.modal-container {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 3001;
 }
 
-/* Responsive text sizing with fixed containers */
+/* Ensure modal video wrapper is positioned */
+.modal-video-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Responsive text sizing */
 @media screen and (max-width: 768px) {
     .reveal-text-container {
         width: 150px;
         height: 60px;
     }
 
-    .reveal-logo-inside {
+    .reveal-logo-text {
         font-size: 2rem;
         letter-spacing: 1px;
     }
@@ -2225,19 +2258,20 @@ body.white-theme .home-link:hover {
         height: 50px;
     }
 
-    .reveal-logo-inside {
+    .reveal-logo-text {
         font-size: 1.5rem;
         letter-spacing: 0.5px;
     }
 }
 
 /* White theme adjustments */
-body.white-theme .reveal-overlay {
-    background-color: rgba(255, 255, 255, 0.7); /* White transparent overlay for white theme */
+body.white-theme .reveal-overlay,
+body.white-theme .reveal-circle {
+    background-color: rgba(255, 255, 255, 0.85);
 }
 
-body.white-theme .reveal-logo-inside {
-    color: black; /* Black text for white theme */
+body.white-theme .reveal-logo-text {
+    color: black;
 }
 
 /* ================== COMING SOON PAGE STYLES ================== */

@@ -1130,9 +1130,105 @@ function getProjectInfo(clickedElement) {
 
 // ================== MODAL SETUP ==================
 
-// Updated modal click setup to use refined animation
+// ================== FIXED MODAL VIDEO REVEAL ANIMATION ==================
+
+// Create animation elements for modal video
+function createModalVideoReveal(container) {
+    const animationDiv = document.createElement('div');
+    animationDiv.className = 'modal-video-reveal';
+    animationDiv.innerHTML = `
+        <div class="reveal-overlay"></div>
+        <div class="reveal-circle"></div>
+        <div class="reveal-text-container">
+            <div class="reveal-logo-text">LIGERO</div>
+        </div>
+    `;
+
+    container.appendChild(animationDiv);
+    return animationDiv;
+}
+
+// Start reveal animation on modal video
+function startModalVideoReveal(modalVideoWrap, callback) {
+    console.log('🎬 Starting modal video reveal animation...');
+
+    // Create animation overlay on the video wrapper
+    const animationDiv = createModalVideoReveal(modalVideoWrap);
+
+    // Force browser to recognize the initial state
+    modalVideoWrap.offsetHeight;
+
+    // Start expanding animation
+    requestAnimationFrame(() => {
+        animationDiv.classList.add('expanding');
+
+        // After expansion completes (2.5s), fade out overlay and text together
+        setTimeout(() => {
+            animationDiv.classList.add('hiding');
+
+            // Remove animation elements after fade completes
+            setTimeout(() => {
+                if (animationDiv.parentNode) {
+                    animationDiv.remove();
+                }
+                console.log('✅ Modal video reveal animation completed');
+            }, 500); // 0.5s fade duration
+        }, 2500); // 2.5s expansion duration
+    });
+
+    // Execute callback immediately (don't wait for animation)
+    if (callback) {
+        callback();
+    }
+}
+
+// Enhanced video modal opening with animation
+function openVideoModalWithAnimation(videoSrc, title, client) {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+    const modalVideoWrap = modal?.querySelector('.modal-video-wrap');
+
+    if (!modal || !modalVideo || !modalVideoWrap) {
+        console.error('Video modal elements not found');
+        return;
+    }
+
+    // Set content
+    if (modalTitle) modalTitle.textContent = title || 'Video';
+    if (modalClient) modalClient.textContent = client || 'Client';
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Start reveal animation on the video wrapper
+    startModalVideoReveal(modalVideoWrap, () => {
+        // Set video source and play after modal is visible
+        modalVideo.src = videoSrc;
+        modalVideo.load();
+
+        modalVideo.addEventListener('loadeddata', () => {
+            modalVideo.play().catch(err => {
+                console.log('Video play failed:', err);
+            });
+        }, { once: true });
+    });
+}
+
+// Setup modal clicks with animation (only for set design and member pages)
 function setupModalClicksWithAnimation() {
     console.log('🎯 Setting up modal clicks with animation...');
+
+    // Only apply to video containers on set design and member pages
+    const isSetDesignPage = document.querySelector('.set-design-feed') !== null;
+    const isMemberPage = document.querySelector('.designer-profile-page') !== null;
+
+    if (!isSetDesignPage && !isMemberPage) {
+        console.log('Not on set design or member page, skipping animation setup');
+        return;
+    }
 
     // Video clicks with animation
     const videoContainers = document.querySelectorAll('.video-container-main');
@@ -1152,13 +1248,17 @@ function setupModalClicksWithAnimation() {
             if (videoSrc) {
                 const projectInfo = getProjectInfo(container);
                 console.log('🎬 Video container clicked, starting modal animation...');
-                // Pass video source directly, not container
                 openVideoModalWithAnimation(videoSrc, projectInfo.title, projectInfo.client);
             }
         });
     });
 
-    // Image clicks (no animation needed)
+    // Image clicks (no animation)
+    setupImageModalClicks();
+}
+
+// Setup image modal clicks separately (no animation)
+function setupImageModalClicks() {
     const imageItems = document.querySelectorAll('.feed-item img');
     imageItems.forEach(img => {
         img.parentElement.addEventListener('click', function(e) {
@@ -1172,7 +1272,6 @@ function setupModalClicksWithAnimation() {
         });
     });
 
-    // Alternative image clicks
     const imageContainers = document.querySelectorAll('[data-image]');
     imageContainers.forEach(container => {
         container.addEventListener('click', function(e) {
@@ -1187,9 +1286,89 @@ function setupModalClicksWithAnimation() {
     });
 }
 
+// Helper function to get project info (keep your existing one)
+function getProjectInfo(clickedElement) {
+    // Look for video metadata in the same video-section
+    let videoSection = clickedElement.closest('.video-section');
+    if (videoSection) {
+        const metadata = videoSection.querySelector('.video-metadata');
+        if (metadata) {
+            const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
+            const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
+            return { title: projectTitle, client: clientName };
+        }
+    }
+
+    // Fallback - look for any nearby metadata
+    const feedContainer = clickedElement.closest('.feed-container');
+    if (feedContainer) {
+        const clientName = feedContainer.querySelector('.client-name')?.textContent || 'Client';
+        const projectTitle = feedContainer.querySelector('.project-title')?.textContent || 'Project';
+        return { title: projectTitle, client: clientName };
+    }
+
+    return { title: 'Project', client: 'Ligero' };
+}
+
+// Simple image modal function (no animation)
+function openImageModal(imageSrc, title, client) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) {
+        console.error('Image modal elements not found');
+        return;
+    }
+
+    modalImage.src = imageSrc;
+    modalImage.alt = title || 'Image';
+
+    if (imageTitle) imageTitle.textContent = title || 'Project Image';
+    if (imageProject) imageProject.textContent = client || 'Ligero';
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close modal functions
+function closeModal() {
+    const videoModal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+
+    if (videoModal) {
+        videoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (modalVideo) {
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+        modalVideo.src = '';
+    }
+
+    // Clean up any remaining animation elements
+    const animationDivs = document.querySelectorAll('.modal-video-reveal');
+    animationDivs.forEach(div => div.remove());
+}
+
+function closeImageModal() {
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    if (imageModal) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (modalImage) {
+        modalImage.src = '';
+    }
+}
+
 // Setup modal close handlers
 function setupModalCloseHandlers() {
-    // Close buttons
     const videoCloseBtn = document.querySelector('#videoModal .modal-close');
     const imageCloseBtn = document.querySelector('#imageModal .modal-close');
 
@@ -1201,7 +1380,6 @@ function setupModalCloseHandlers() {
         imageCloseBtn.addEventListener('click', closeImageModal);
     }
 
-    // Click outside to close
     const videoModal = document.getElementById('videoModal');
     const imageModal = document.getElementById('imageModal');
 
@@ -1219,7 +1397,6 @@ function setupModalCloseHandlers() {
         }
     }
 
-    // Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeModal();
