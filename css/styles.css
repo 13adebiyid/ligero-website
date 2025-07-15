@@ -3325,18 +3325,9 @@ body.white-theme .form-buttons button:hover {
     }
 }
 
-/* ================== LIGERO TEXT LOGO REVEAL ANIMATION ================== */
+/* ================== LIGERO ANIMATION - CLEAN VERSION ================== */
 
-/* Hidden SVG definitions for text masking */
-.ligero-svg-defs {
-    position: absolute;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Tinted video overlay that gets revealed using LIGERO text shape */
+/* Dark overlay - starts hidden */
 .video-text-reveal-overlay {
     position: absolute;
     top: 0;
@@ -3346,50 +3337,20 @@ body.white-theme .form-buttons button:hover {
     background: rgba(0, 0, 0, 0.8);
     z-index: 3002;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     border-radius: 8px;
 }
 
+/* When animation starts */
 .video-text-reveal-overlay.active {
     opacity: 1;
+    visibility: visible;
     clip-path: circle(120px at center);
     animation: expandHole 3s ease-out forwards;
 }
 
-
-
-/* Better approach: Use pseudo-element with LIGERO text as mask */
-.video-text-reveal-overlay::before {
-    content: 'LIGERO';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Suissnord', 'Arial Black', sans-serif;
-    font-size: 6rem;
-    font-weight: 900;
-    letter-spacing: 0.2em;
-    color: white;
-    white-space: nowrap;
-    opacity: 0;
-    z-index: -1;
-}
-
-.video-text-reveal-overlay.active::before {
-    opacity: 1;
-}
-
-
-/* Tinted version of the video */
-.tinted-video-copy {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-    filter: brightness(0.3) saturate(0.2) contrast(0.8);
-}
-
-/* LIGERO logo text overlay that fades out */
+/* LIGERO logo - starts completely hidden */
 .video-logo-reveal {
     position: absolute;
     top: 50%;
@@ -3398,13 +3359,17 @@ body.white-theme .form-buttons button:hover {
     z-index: 3003;
     pointer-events: none;
     opacity: 0;
+    visibility: hidden;
 }
 
+/* When animation starts */
 .video-logo-reveal.active {
     opacity: 1;
+    visibility: visible;
     animation: ligeroLogoFadeOut 3.5s ease-out forwards;
 }
 
+/* ONLY ONE LOGO STYLE - REMOVE ANY OTHER .video-logo-text RULES */
 .video-logo-text {
     font-family: 'Suissnord', 'Arial Black', sans-serif;
     font-size: 4rem;
@@ -3418,25 +3383,15 @@ body.white-theme .form-buttons button:hover {
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 
+/* Remove any tinted video copy - we don't need it */
+.tinted-video-copy {
+    display: none !important;
+}
+
+/* Expanding hole animation */
 @keyframes expandHole {
     0% {
         clip-path: circle(120px at center);
-        opacity: 1;
-    }
-    70% {
-        clip-path: circle(300px at center);
-        opacity: 1;
-    }
-    100% {
-        clip-path: circle(100vw at center);
-        opacity: 0;
-    }
-}
-
-/* Animation keyframes for LIGERO text reveal */
-@keyframes expandLigeroReveal {
-    0% {
-        clip-path: circle(100px at center);
         opacity: 1;
     }
     70% {
@@ -3450,7 +3405,7 @@ body.white-theme .form-buttons button:hover {
     }
 }
 
-/* LIGERO logo fade out animation */
+/* Logo fade animation */
 @keyframes ligeroLogoFadeOut {
     0% {
         opacity: 1;
@@ -3466,11 +3421,12 @@ body.white-theme .form-buttons button:hover {
     }
     100% {
         opacity: 0;
+        visibility: hidden;
         transform: translate(-50%, -50%) scale(1.1);
     }
 }
 
-/* Mobile responsive adjustments */
+/* Mobile responsive */
 @media screen and (max-width: 768px) {
     .video-logo-text {
         font-size: 2.5rem;
@@ -3494,27 +3450,13 @@ body.white-theme .form-buttons button:hover {
         100% {
             clip-path: circle(100vw at center);
             opacity: 0;
+            visibility: hidden;
         }
     }
 }
 
-/* White theme adjustments */
+/* White theme */
 body.white-theme .video-logo-text {
-    -webkit-text-stroke: 3px rgba(0, 0, 0, 0.9);
-    text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-}
-
-body.white-theme .tinted-video-copy {
-    filter: brightness(0.8) saturate(0.3) sepia(0.2) hue-rotate(30deg) contrast(1.2);
-}
-
-/* White theme adjustments */
-body.white-theme .video-logo-text {
-    -webkit-text-stroke: 3px rgba(0, 0, 0, 0.9);
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-body.white-theme .tinted-video-copy {
-    /* Different tint for white theme */
-    filter: brightness(0.8) saturate(0.3) sepia(0.2) hue-rotate(30deg) contrast(1.2);
+    -webkit-text-stroke: 3px rgba(0, 0, 0, 0.95);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }

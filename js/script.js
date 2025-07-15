@@ -3,6 +3,9 @@ let isNavigating = false;
 let navigationTimeout = null;
 let lastNavigationTime = 0;
 
+// LIGERO animation tracking variable
+let hasPlayedLigeroReveal = false;
+
 function showPage(page) {
     // For multi-page website, we don't need to hide/show pages
     // Each page is a separate HTML file
@@ -777,15 +780,15 @@ function setupServiceCardHoverPreviews() {
     });
 }
 
-// NEW: Individual video looping functionality
+// FIXED: Individual video looping functionality - ensures specific segments loop with 8 SECOND DURATIONS
 function setupIndividualVideoLooping() {
     console.log('🎬 Setting up individual video looping...');
 
-    // Video configurations by ID
+    // Video configurations by ID - YOUR 8 SECOND DURATIONS
     const videoSettings = {
-        'gift-video': { start: 6, duration: 8 },
-        'fashion-video': { start: 10, duration: 8 },
-        'brand-video': { start: 3, duration: 8 }
+        'gift-video': { start: 6, duration: 8 },      // 6s to 14s (8 second loop)
+        'fashion-video': { start: 10, duration: 8 },  // 10s to 18s (8 second loop)
+        'brand-video': { start: 3, duration: 8 }      // 3s to 11s (8 second loop)
     };
 
     // Apply settings to each video
@@ -797,28 +800,45 @@ function setupIndividualVideoLooping() {
         }
 
         const settings = videoSettings[videoId];
-        console.log(`✅ Setting up ${videoId}: start=${settings.start}s, duration=${settings.duration}s`);
+        const endTime = settings.start + settings.duration;
 
-        // Set initial time when video loads
+        console.log(`✅ Setting up ${videoId}: ${settings.start}s to ${endTime}s (${settings.duration}s loop)`);
+
+        // CRITICAL: Set initial time when video metadata loads
         video.addEventListener('loadedmetadata', () => {
             video.currentTime = settings.start;
             console.log(`📊 ${videoId} metadata loaded, set to ${settings.start}s`);
         });
 
-        // Handle looping within the specified duration
+        // CRITICAL: Handle looping within the specified duration
         video.addEventListener('timeupdate', () => {
-            if (video.currentTime >= settings.start + settings.duration) {
+            // When video reaches the end of our desired segment, loop back to start
+            if (video.currentTime >= endTime) {
                 video.currentTime = settings.start;
-                console.log(`🔄 ${videoId} looped back to ${settings.start}s`);
+                console.log(`🔄 ${videoId} looped: ${endTime}s → ${settings.start}s`);
+            }
+
+            // Safety check: if video somehow goes before our start time, reset it
+            if (video.currentTime < settings.start) {
+                video.currentTime = settings.start;
+                console.log(`⚠️ ${videoId} corrected to start time: ${settings.start}s`);
             }
         });
 
-        // Set initial time immediately if already loaded
-        if (video.readyState >= 1) {
+        // IMMEDIATE: Set initial time if video is already loaded
+        if (video.readyState >= 1) { // HAVE_METADATA or higher
             video.currentTime = settings.start;
             console.log(`⚡ ${videoId} already loaded, set to ${settings.start}s immediately`);
         }
+
+        // FORCE LOAD: Ensure video metadata loads
+        if (video.readyState === 0) { // HAVE_NOTHING
+            video.load();
+            console.log(`🔄 Forcing ${videoId} to load`);
+        }
     });
+
+    console.log('✅ Individual video looping setup completed');
 }
 
 // NEW: Image Loading Fix
@@ -848,8 +868,7 @@ function setupImageLoading() {
     });
 }
 
-// ENHANCED: Video autoplay functionality with immediate start
-// FIXED: Enhanced autoplay that respects individual video settings
+// ENHANCED: Video autoplay functionality that respects individual video settings
 function setupEnhancedFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
     console.log(`🎥 Setting up enhanced autoplay for ${feedVideos.length} videos`);
@@ -871,9 +890,12 @@ function setupEnhancedFeedVideoAutoplay() {
                 });
             } else {
                 video.pause();
-                // Only reset to 0 if it's NOT a custom video
+                // CRITICAL: Only reset to 0 if it's NOT a custom video with specific segments
                 if (!video.id || !customVideoIds.includes(video.id)) {
                     video.currentTime = 0;
+                    console.log(`⏹️ Reset video to start: ${video.src?.split('/').pop()}`);
+                } else {
+                    console.log(`⚠️ Skipping reset for custom video: ${video.id}`);
                 }
             }
         });
@@ -890,6 +912,8 @@ function setupEnhancedFeedVideoAutoplay() {
             console.log(`⚠️ Skipping enhanced autoplay for ${video.id} (using custom settings)`);
             return; // Skip the rest of the setup for this video
         }
+
+        console.log(`🎬 Setting up enhanced autoplay for video ${index + 1} (no custom settings)`);
 
         video.addEventListener('loadedmetadata', () => {
             console.log(`📊 Video ${index + 1} metadata loaded (enhanced autoplay)`);
@@ -918,14 +942,9 @@ function setupEnhancedFeedVideoAutoplay() {
     });
 }
 
-// =================== FIXED MODAL FUNCTIONS ===================
+// =================== FIXED MODAL FUNCTIONS WITH DELAY AND LOOPING ===================
 
-// Simple Modal Functions
-// Enhanced video modal with logo reveal animation
-// LIGERO text logo reveal animation tracking
-let hasPlayedLigeroReveal = false;
-
-// Enhanced video modal with LIGERO text logo reveal animation
+// Enhanced video modal with DELAY + LIGERO animation (like reference website)
 function openVideoModal(videoSrc, title, client) {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
@@ -957,27 +976,32 @@ function openVideoModal(videoSrc, title, client) {
     modalVideo.src = videoSrc;
     modalVideo.load();
 
-    // Start animation when YOUR video is ready
+    // Start animation when YOUR video is ready - WITH DELAY
     modalVideo.addEventListener('loadeddata', function onVideoReady() {
         modalVideo.removeEventListener('loadeddata', onVideoReady);
 
-        console.log('📹 Video loaded, checking animation state...');
+        console.log('📹 Video loaded, starting with delay...');
 
         if (!hasPlayedLigeroReveal) {
-            console.log('✨ Starting LIGERO animation for your video!');
-            startLigeroRevealAnimation();
-            hasPlayedLigeroReveal = true;
+            // ADD DELAY LIKE REFERENCE WEBSITE (1.5 seconds)
+            setTimeout(() => {
+                console.log('✨ Starting LIGERO animation after delay!');
+                startLigeroRevealAnimation();
+                hasPlayedLigeroReveal = true;
+            }, 1500); // 1.5 second delay
         }
     });
 
-    // Fallback: If video doesn't trigger loadeddata, try with canplay
+    // Fallback: If video doesn't trigger loadeddata, try with canplay - WITH DELAY
     modalVideo.addEventListener('canplay', function onCanPlay() {
         modalVideo.removeEventListener('canplay', onCanPlay);
 
         if (!hasPlayedLigeroReveal) {
-            console.log('🎯 Fallback trigger - starting LIGERO animation!');
-            startLigeroRevealAnimation();
-            hasPlayedLigeroReveal = true;
+            setTimeout(() => {
+                console.log('🎯 Fallback trigger - starting LIGERO animation after delay!');
+                startLigeroRevealAnimation();
+                hasPlayedLigeroReveal = true;
+            }, 1500); // 1.5 second delay
         }
     });
 }
@@ -1004,12 +1028,10 @@ function startLigeroRevealAnimation() {
         });
     }
 
-    // Start the LIGERO animation
-    setTimeout(() => {
-        darkOverlay.classList.add('active');
-        logoReveal.classList.add('active');
-        console.log('🎭 LIGERO animation started successfully!');
-    }, 300);
+    // Start the LIGERO animation (no additional delay here, delay was already added above)
+    darkOverlay.classList.add('active');
+    logoReveal.classList.add('active');
+    console.log('🎭 LIGERO animation started successfully!');
 
     // Clean up after animation completes
     setTimeout(() => {
@@ -1210,11 +1232,14 @@ function setupModalCloseHandlers() {
     });
 }
 
-// Initialize modals when page loads
+// Initialize modals when page loads - UPDATED to include video looping
 function initializeModals() {
-    console.log('🚀 Initializing LIGERO modals...');
+    console.log('🚀 Initializing LIGERO modals with video looping...');
 
     setupModalClicks();
+
+    // IMPORTANT: Setup individual video looping for preview videos
+    setupIndividualVideoLooping();
 
     // Close modal when clicking backdrop
     const videoModal = document.getElementById('videoModal');
@@ -1232,7 +1257,7 @@ function initializeModals() {
         }
     });
 
-    console.log('✅ LIGERO modals initialized successfully');
+    console.log('✅ LIGERO modals + video looping initialized successfully');
 }
 
 // ROBUST: Apply theme and initialize everything
@@ -1273,22 +1298,22 @@ document.addEventListener('DOMContentLoaded', () => {
             hamburger.addEventListener('click', toggleMobileMenu);
         }
 
-        // IMPORTANT: Initialize LIGERO modals with logo reveal animation
+        // IMPORTANT: Initialize LIGERO modals with logo reveal animation + video looping
         if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
             console.log('🎯 CMNPPL page detected, initializing LIGERO modals...');
 
             setTimeout(() => {
-                // Setup image loading (existing code if you have it)
+                // Setup image loading
                 if (typeof setupImageLoading === 'function') {
                     setupImageLoading();
                 }
 
-                // Setup enhanced video autoplay (existing code if you have it)
+                // Setup enhanced video autoplay (respects custom video settings)
                 if (typeof setupEnhancedFeedVideoAutoplay === 'function') {
                     setupEnhancedFeedVideoAutoplay();
                 }
 
-                // Setup LIGERO modals with logo reveal animation
+                // Setup LIGERO modals with logo reveal animation + individual video looping
                 initializeModals();
             }, 100);
         }
