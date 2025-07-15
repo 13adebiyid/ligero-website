@@ -3396,21 +3396,11 @@ body.white-theme .form-buttons button:hover {
 }
 
 .video-text-reveal-overlay.active {
-    /* Use the LIGERO text as a mask */
-    -webkit-mask:
-            radial-gradient(ellipse at center, white 0%, white 100%);
-    mask:
-            radial-gradient(ellipse at center, white 0%, white 100%);
-    -webkit-mask-clip: text;
-    -webkit-mask-composite: source-in;
-    background: black;
-    color: transparent;
-}
-
-/* Simpler and more reliable approach using clip-path with LIGERO shape */
-.video-text-reveal-overlay.active {
-    /* Start with small LIGERO-shaped area in center */
-    clip-path: ellipse(120px 60px at 50% 50%);
+    opacity: 1;
+    /* Use exact LIGERO letterform clip-path */
+    clip-path: url('#ligero-exact-letterforms');
+    transform: scale(0.08);
+    transform-origin: center;
     animation: expandLigeroReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: 0.3s;
 }
