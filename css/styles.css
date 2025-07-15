@@ -3346,18 +3346,14 @@ body.white-theme .form-buttons button:hover {
     background: rgba(0, 0, 0, 0.8);
     z-index: 3002;
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
     border-radius: 8px;
-    clip-path: circle(0px at center);
-    transition: all 0.1s ease;
 }
 
 .video-text-reveal-overlay.active {
     opacity: 1;
-    visibility: visible;
-    clip-path: circle(100px at center);
-    animation: expandLigeroReveal 3s ease-out forwards;
+    clip-path: circle(120px at center);
+    animation: expandHole 3s ease-out forwards;
 }
 
 
@@ -3402,12 +3398,10 @@ body.white-theme .form-buttons button:hover {
     z-index: 3003;
     pointer-events: none;
     opacity: 0;
-    visibility: hidden;
 }
 
 .video-logo-reveal.active {
     opacity: 1;
-    visibility: visible;
     animation: ligeroLogoFadeOut 3.5s ease-out forwards;
 }
 
@@ -3419,8 +3413,24 @@ body.white-theme .form-buttons button:hover {
     text-align: center;
     white-space: nowrap;
     color: transparent;
-    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    -webkit-text-stroke: 3px rgba(255, 255, 255, 0.95);
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes expandHole {
+    0% {
+        clip-path: circle(120px at center);
+        opacity: 1;
+    }
+    70% {
+        clip-path: circle(300px at center);
+        opacity: 1;
+    }
+    100% {
+        clip-path: circle(100vw at center);
+        opacity: 0;
+    }
 }
 
 /* Animation keyframes for LIGERO text reveal */
@@ -3450,9 +3460,12 @@ body.white-theme .form-buttons button:hover {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
+    90% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
     100% {
         opacity: 0;
-        visibility: hidden;
         transform: translate(-50%, -50%) scale(1.1);
     }
 }
@@ -3462,26 +3475,25 @@ body.white-theme .form-buttons button:hover {
     .video-logo-text {
         font-size: 2.5rem;
         letter-spacing: 0.1em;
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
+        -webkit-text-stroke: 2px rgba(255, 255, 255, 0.95);
     }
 
     .video-text-reveal-overlay.active {
-        clip-path: circle(60px at center);
+        clip-path: circle(80px at center);
     }
 
-    @keyframes expandLigeroReveal {
+    @keyframes expandHole {
         0% {
-            clip-path: circle(60px at center);
+            clip-path: circle(80px at center);
             opacity: 1;
         }
         70% {
-            clip-path: circle(180px at center);
+            clip-path: circle(200px at center);
             opacity: 1;
         }
         100% {
             clip-path: circle(100vw at center);
             opacity: 0;
-            visibility: hidden;
         }
     }
 }
