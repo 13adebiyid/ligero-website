@@ -3343,20 +3343,21 @@ body.white-theme .form-buttons button:hover {
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, 0.8);
     z-index: 3002;
-    background: rgba(0, 0, 0, 0.7);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     border-radius: 8px;
-    overflow: hidden;
+    clip-path: circle(0px at center);
+    transition: all 0.1s ease;
 }
 
 .video-text-reveal-overlay.active {
     opacity: 1;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Ctext x='50%25' y='50%25' font-family='Arial Black, sans-serif' font-size='40' font-weight='900' text-anchor='middle' dominant-baseline='central' fill='white'%3ELIGERO%3C/text%3E%3C/svg%3E") center/300px auto no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Ctext x='50%25' y='50%25' font-family='Arial Black, sans-serif' font-size='40' font-weight='900' text-anchor='middle' dominant-baseline='central' fill='white'%3ELIGERO%3C/text%3E%3C/svg%3E") center/300px auto no-repeat;
-    animation: expandLigeroTextReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    animation-delay: 0.3s;
+    visibility: visible;
+    clip-path: circle(100px at center);
+    animation: expandLigeroReveal 3s ease-out forwards;
 }
 
 
@@ -3389,7 +3390,7 @@ body.white-theme .form-buttons button:hover {
     height: 100%;
     object-fit: contain;
     border-radius: 8px;
-    filter: brightness(0.25) saturate(0.1) sepia(0.4) hue-rotate(200deg) contrast(0.8);
+    filter: brightness(0.3) saturate(0.2) contrast(0.8);
 }
 
 /* LIGERO logo text overlay that fades out */
@@ -3401,62 +3402,41 @@ body.white-theme .form-buttons button:hover {
     z-index: 3003;
     pointer-events: none;
     opacity: 0;
+    visibility: hidden;
 }
 
 .video-logo-reveal.active {
     opacity: 1;
-    animation: ligeroLogoFadeOut 4.5s ease-in-out forwards;
+    visibility: visible;
+    animation: ligeroLogoFadeOut 3.5s ease-out forwards;
 }
 
 .video-logo-text {
     font-family: 'Suissnord', 'Arial Black', sans-serif;
-    font-size: 6rem;
+    font-size: 4rem;
     font-weight: 900;
-    color: transparent;
-    -webkit-text-stroke: 3px rgba(255, 255, 255, 0.9);
     letter-spacing: 0.2em;
     text-align: center;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
     white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 /* Animation keyframes for LIGERO text reveal */
 @keyframes expandLigeroReveal {
     0% {
-        clip-path: ellipse(120px 60px at 50% 50%);
+        clip-path: circle(100px at center);
         opacity: 1;
-    }
-    30% {
-        clip-path: ellipse(200px 100px at 50% 50%);
-        opacity: 1;
-    }
-    60% {
-        clip-path: ellipse(400px 200px at 50% 50%);
-        opacity: 1;
-    }
-    100% {
-        clip-path: ellipse(120vw 60vh at 50% 50%);
-        opacity: 0;
-    }
-}
-
-/* Alternative keyframes for text-based mask */
-@keyframes expandLigeroTextReveal {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
     }
     70% {
+        clip-path: circle(300px at center);
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    90% {
-        opacity: 0.3;
-        transform: translate(-50%, -50%) scale(1.02);
     }
     100% {
+        clip-path: circle(100vw at center);
         opacity: 0;
-        transform: translate(-50%, -50%) scale(1.05);
+        visibility: hidden;
     }
 }
 
@@ -3466,66 +3446,42 @@ body.white-theme .form-buttons button:hover {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
-    70% {
+    60% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
-    90% {
-        opacity: 0.3;
-        transform: translate(-50%, -50%) scale(1.02);
-    }
     100% {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(1.05);
+        visibility: hidden;
+        transform: translate(-50%, -50%) scale(1.1);
     }
 }
 
 /* Mobile responsive adjustments */
 @media screen and (max-width: 768px) {
     .video-logo-text {
-        font-size: 3rem;
-        letter-spacing: 0.15em;
-        -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
+        font-size: 2.5rem;
+        letter-spacing: 0.1em;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
     }
 
     .video-text-reveal-overlay.active {
-        clip-path: ellipse(80px 40px at 50% 50%);
+        clip-path: circle(60px at center);
     }
 
     @keyframes expandLigeroReveal {
         0% {
-            clip-path: ellipse(80px 40px at 50% 50%);
+            clip-path: circle(60px at center);
             opacity: 1;
         }
-        30% {
-            clip-path: ellipse(120px 60px at 50% 50%);
-            opacity: 1;
-        }
-        60% {
-            clip-path: ellipse(250px 125px at 50% 50%);
+        70% {
+            clip-path: circle(180px at center);
             opacity: 1;
         }
         100% {
-            clip-path: ellipse(100vw 50vh at 50% 50%);
+            clip-path: circle(100vw at center);
             opacity: 0;
-        }
-    }
-
-    @keyframes expandLigeroTextReveal {
-        0% {
-            -webkit-mask-size: 150px auto;
-            mask-size: 150px auto;
-            opacity: 1;
-        }
-        60% {
-            -webkit-mask-size: 500px auto;
-            mask-size: 500px auto;
-            opacity: 1;
-        }
-        100% {
-            -webkit-mask-size: 1200px auto;
-            mask-size: 1200px auto;
-            opacity: 0;
+            visibility: hidden;
         }
     }
 }
