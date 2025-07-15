@@ -198,19 +198,36 @@
 </div>
 
 <!-- Video Modal -->
+<!-- Enhanced Video Modal with LIGERO Text Logo Reveal -->
 <div class="video-modal" id="videoModal">
     <div class="modal-backdrop" onclick="closeModal()"></div>
     <div class="modal-container">
         <button class="modal-close" onclick="closeModal()">×</button>
+
         <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="modal-client" id="modalClient"></div>
+            <h2 class="modal-title" id="modalTitle">Video Title</h2>
+            <div class="modal-client" id="modalClient">Client Name</div>
         </div>
+
         <div class="modal-video-wrap">
-            <video class="modal-video" id="modalVideo" controls>
-                <source src="" type="video/mp4">
+            <!-- Main video element -->
+            <video class="modal-video" id="modalVideo" controls preload="metadata">
+                Your browser does not support the video tag.
             </video>
+
+            <!-- NEW: Tinted video overlay with LIGERO text reveal -->
+            <div class="video-text-reveal-overlay" id="videoTextRevealOverlay">
+                <video class="tinted-video-copy" id="tintedVideoCopy" muted preload="metadata">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <!-- NEW: LIGERO logo reveal animation -->
+            <div class="video-logo-reveal" id="videoLogoReveal">
+                <div class="video-logo-text">LIGERO</div>
+            </div>
         </div>
+
         <div class="modal-footer">
             <div class="modal-director">Ifeoluwa Segun-Oludimu</div>
         </div>

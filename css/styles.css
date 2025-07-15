@@ -3324,3 +3324,265 @@ body.white-theme .form-buttons button:hover {
         font-size: 1.8rem;
     }
 }
+
+/* ================== LIGERO TEXT LOGO REVEAL ANIMATION ================== */
+
+/* Hidden SVG definitions for text masking */
+.ligero-svg-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Tinted video overlay that gets revealed using LIGERO text shape */
+.video-text-reveal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3002;
+    background: black;
+    opacity: 0;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.video-text-reveal-overlay.active {
+    opacity: 1;
+    /* Use CSS mask with the LIGERO text */
+    -webkit-mask: radial-gradient(ellipse 300px 150px at center, white 40%, transparent 41%);
+    mask: radial-gradient(ellipse 300px 150px at center, white 40%, transparent 41%);
+    animation: expandLigeroTextReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: 0.3s;
+}
+
+/* Alternative method using text as mask image */
+.video-text-reveal-overlay.text-mask-version {
+    /* Create a mask using CSS generated content */
+    -webkit-mask:
+            linear-gradient(black, black),
+            radial-gradient(ellipse 400px 200px at center, transparent 30%, black 31%);
+    mask:
+            linear-gradient(black, black),
+            radial-gradient(ellipse 400px 200px at center, transparent 30%, black 31%);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: expandLigeroTextReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: 0.3s;
+}
+
+/* Better approach: Use pseudo-element with LIGERO text as mask */
+.video-text-reveal-overlay::before {
+    content: 'LIGERO';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Suissnord', 'Arial Black', sans-serif;
+    font-size: 6rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: white;
+    white-space: nowrap;
+    opacity: 0;
+    z-index: -1;
+}
+
+.video-text-reveal-overlay.active::before {
+    opacity: 1;
+}
+
+.video-text-reveal-overlay.active {
+    /* Use the LIGERO text as a mask */
+    -webkit-mask:
+            radial-gradient(ellipse at center, white 0%, white 100%);
+    mask:
+            radial-gradient(ellipse at center, white 0%, white 100%);
+    -webkit-mask-clip: text;
+    -webkit-mask-composite: source-in;
+    background: black;
+    color: transparent;
+}
+
+/* Simpler and more reliable approach using clip-path with LIGERO shape */
+.video-text-reveal-overlay.active {
+    /* Start with small LIGERO-shaped area in center */
+    clip-path: ellipse(120px 60px at 50% 50%);
+    animation: expandLigeroReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: 0.3s;
+}
+
+/* Tinted version of the video */
+.tinted-video-copy {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    /* Apply strong tint effect */
+    filter: brightness(0.25) saturate(0.1) sepia(0.4) hue-rotate(200deg) contrast(0.8);
+}
+
+/* LIGERO logo text overlay that fades out */
+.video-logo-reveal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3003;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.video-logo-reveal.active {
+    opacity: 1;
+    animation: ligeroLogoFadeOut 4.5s ease-in-out forwards;
+}
+
+.video-logo-text {
+    font-family: 'Suissnord', 'Arial Black', sans-serif;
+    font-size: 6rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 3px rgba(255, 255, 255, 0.9);
+    text-stroke: 3px rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.2em;
+    text-align: center;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+}
+
+/* Animation keyframes for LIGERO text reveal */
+@keyframes expandLigeroReveal {
+    0% {
+        clip-path: ellipse(120px 60px at 50% 50%);
+        opacity: 1;
+    }
+    30% {
+        clip-path: ellipse(200px 100px at 50% 50%);
+        opacity: 1;
+    }
+    60% {
+        clip-path: ellipse(400px 200px at 50% 50%);
+        opacity: 1;
+    }
+    100% {
+        clip-path: ellipse(120vw 60vh at 50% 50%);
+        opacity: 0;
+    }
+}
+
+/* Alternative keyframes for text-based mask */
+@keyframes expandLigeroTextReveal {
+    0% {
+        -webkit-mask-size: 300px auto;
+        mask-size: 300px auto;
+        opacity: 1;
+    }
+    60% {
+        -webkit-mask-size: 1000px auto;
+        mask-size: 1000px auto;
+        opacity: 1;
+    }
+    100% {
+        -webkit-mask-size: 2500px auto;
+        mask-size: 2500px auto;
+        opacity: 0;
+    }
+}
+
+/* LIGERO logo fade out animation */
+@keyframes ligeroLogoFadeOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    70% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    90% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 768px) {
+    .video-logo-text {
+        font-size: 3rem;
+        letter-spacing: 0.15em;
+        -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
+    }
+
+    .video-text-reveal-overlay.active {
+        clip-path: ellipse(80px 40px at 50% 50%);
+    }
+
+    @keyframes expandLigeroReveal {
+        0% {
+            clip-path: ellipse(80px 40px at 50% 50%);
+            opacity: 1;
+        }
+        30% {
+            clip-path: ellipse(120px 60px at 50% 50%);
+            opacity: 1;
+        }
+        60% {
+            clip-path: ellipse(250px 125px at 50% 50%);
+            opacity: 1;
+        }
+        100% {
+            clip-path: ellipse(100vw 50vh at 50% 50%);
+            opacity: 0;
+        }
+    }
+
+    @keyframes expandLigeroTextReveal {
+        0% {
+            -webkit-mask-size: 150px auto;
+            mask-size: 150px auto;
+            opacity: 1;
+        }
+        60% {
+            -webkit-mask-size: 500px auto;
+            mask-size: 500px auto;
+            opacity: 1;
+        }
+        100% {
+            -webkit-mask-size: 1200px auto;
+            mask-size: 1200px auto;
+            opacity: 0;
+        }
+    }
+}
+
+/* White theme adjustments */
+body.white-theme .video-logo-text {
+    -webkit-text-stroke: 3px rgba(0, 0, 0, 0.9);
+    text-stroke: 3px rgba(0, 0, 0, 0.9);
+    text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+body.white-theme .tinted-video-copy {
+    /* Different tint for white theme */
+    filter: brightness(0.8) saturate(0.3) sepia(0.2) hue-rotate(30deg) contrast(1.2);
+}
+
+/* White theme adjustments */
+body.white-theme .video-logo-text {
+    -webkit-text-stroke: 3px rgba(0, 0, 0, 0.9);
+    text-stroke: 3px rgba(0, 0, 0, 0.9);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+body.white-theme .tinted-video-copy {
+    /* Different tint for white theme */
+    filter: brightness(0.8) saturate(0.3) sepia(0.2) hue-rotate(30deg) contrast(1.2);
+}

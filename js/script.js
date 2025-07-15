@@ -2,6 +2,9 @@ let currentSlide = 0;
 let isNavigating = false;
 let navigationTimeout = null;
 let lastNavigationTime = 0;
+// Logo reveal animation tracking
+let hasPlayedRevealAnimation = false;
+let currentVideoSession = null;
 
 function showPage(page) {
     // For multi-page website, we don't need to hide/show pages
@@ -921,16 +924,29 @@ function setupEnhancedFeedVideoAutoplay() {
 // =================== FIXED MODAL FUNCTIONS ===================
 
 // Simple Modal Functions
+// Enhanced video modal with logo reveal animation
+// LIGERO text logo reveal animation tracking
+let hasPlayedLigeroReveal = false;
+let currentVideoSession = null;
+
+// Enhanced video modal with LIGERO text logo reveal animation
 function openVideoModal(videoSrc, title, client) {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
+    const tintedVideo = document.getElementById('tintedVideoCopy');
     const modalTitle = document.getElementById('modalTitle');
     const modalClient = document.getElementById('modalClient');
+    const revealOverlay = document.getElementById('videoTextRevealOverlay');
+    const logoReveal = document.getElementById('videoLogoReveal');
 
     if (!modal || !modalVideo) {
         console.error('Video modal elements not found');
         return;
     }
+
+    // Create new session ID to track unique video openings
+    currentVideoSession = Date.now() + '_' + Math.random();
+    hasPlayedLigeroReveal = false;
 
     // Set content
     if (modalTitle) modalTitle.textContent = title || 'Video';
@@ -940,9 +956,105 @@ function openVideoModal(videoSrc, title, client) {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Set video source
+    // Reset all animation states
+    resetLigeroRevealAnimation();
+
+    // Set video sources
     modalVideo.src = videoSrc;
+    if (tintedVideo) {
+        tintedVideo.src = videoSrc;
+        tintedVideo.load();
+    }
     modalVideo.load();
+
+    // Wait for main video to be ready, then start LIGERO animation
+    modalVideo.addEventListener('canplay', function onCanPlay() {
+        modalVideo.removeEventListener('canplay', onCanPlay);
+
+        // Start LIGERO text reveal animation (only once per session)
+        if (!hasPlayedLigeroReveal) {
+            startLigeroRevealAnimation();
+            hasPlayedLigeroReveal = true;
+        }
+    });
+
+    // Sync tinted video with main video
+    syncTintedVideo();
+}
+
+// Start the LIGERO text reveal animation
+function startLigeroRevealAnimation() {
+    const revealOverlay = document.getElementById('videoTextRevealOverlay');
+    const logoReveal = document.getElementById('videoLogoReveal');
+    const tintedVideo = document.getElementById('tintedVideoCopy');
+    const modalVideo = document.getElementById('modalVideo');
+
+    console.log('🎬 Starting LIGERO text reveal animation');
+
+    // Reset videos to start
+    if (modalVideo) {
+        modalVideo.currentTime = 0;
+        modalVideo.play().catch(err => console.log('Main video autoplay prevented:', err));
+    }
+    if (tintedVideo) {
+        tintedVideo.currentTime = 0;
+        tintedVideo.play().catch(err => console.log('Tinted video autoplay prevented:', err));
+    }
+
+    // Start LIGERO reveal animations
+    if (revealOverlay) {
+        revealOverlay.classList.add('active');
+    }
+    if (logoReveal) {
+        logoReveal.classList.add('active');
+    }
+}
+
+// Reset LIGERO animation elements
+function resetLigeroRevealAnimation() {
+    const revealOverlay = document.getElementById('videoTextRevealOverlay');
+    const logoReveal = document.getElementById('videoLogoReveal');
+
+    if (revealOverlay) {
+        revealOverlay.classList.remove('active');
+        revealOverlay.style.animation = 'none';
+        // Force reflow
+        revealOverlay.offsetHeight;
+    }
+
+    if (logoReveal) {
+        logoReveal.classList.remove('active');
+        logoReveal.style.animation = 'none';
+        // Force reflow
+        logoReveal.offsetHeight;
+    }
+}
+
+// Sync tinted video with main video
+function syncTintedVideo() {
+    const modalVideo = document.getElementById('modalVideo');
+    const tintedVideo = document.getElementById('tintedVideoCopy');
+
+    if (modalVideo && tintedVideo) {
+        // Keep videos in sync
+        modalVideo.addEventListener('timeupdate', () => {
+            if (Math.abs(modalVideo.currentTime - tintedVideo.currentTime) > 0.2) {
+                tintedVideo.currentTime = modalVideo.currentTime;
+            }
+        });
+
+        modalVideo.addEventListener('play', () => {
+            tintedVideo.play().catch(err => console.log('Sync play prevented:', err));
+        });
+
+        modalVideo.addEventListener('pause', () => {
+            tintedVideo.pause();
+        });
+
+        modalVideo.addEventListener('seeked', () => {
+            tintedVideo.currentTime = modalVideo.currentTime;
+        });
+    }
 }
 
 function openImageModal(imageSrc, title, client) {
@@ -972,6 +1084,7 @@ function openImageModal(imageSrc, title, client) {
 function closeModal() {
     const videoModal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
+    const tintedVideo = document.getElementById('tintedVideoCopy');
 
     if (videoModal) {
         videoModal.classList.remove('active');
@@ -983,6 +1096,20 @@ function closeModal() {
         modalVideo.currentTime = 0;
         modalVideo.src = '';
     }
+
+    // Clean up tinted video
+    if (tintedVideo) {
+        tintedVideo.pause();
+        tintedVideo.currentTime = 0;
+        tintedVideo.src = '';
+    }
+
+    // Reset LIGERO animation state
+    resetLigeroRevealAnimation();
+    hasPlayedLigeroReveal = false;
+    currentVideoSession = null;
+
+    console.log('🎬 Modal closed, LIGERO animation state reset');
 }
 
 function closeImageModal() {
