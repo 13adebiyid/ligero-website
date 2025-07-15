@@ -3344,19 +3344,18 @@ body.white-theme .form-buttons button:hover {
     width: 100%;
     height: 100%;
     z-index: 3002;
-    background: black;
+    background: rgba(0, 0, 0, 0.7);
     opacity: 0;
     pointer-events: none;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .video-text-reveal-overlay.active {
     opacity: 1;
-    /* Use exact LIGERO letterform clip-path */
-    clip-path: url('#ligero-exact-letterforms');
-    transform: scale(0.08);
-    transform-origin: center;
-    animation: expandLigeroReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Ctext x='50%25' y='50%25' font-family='Arial Black, sans-serif' font-size='40' font-weight='900' text-anchor='middle' dominant-baseline='central' fill='white'%3ELIGERO%3C/text%3E%3C/svg%3E") center/300px auto no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Ctext x='50%25' y='50%25' font-family='Arial Black, sans-serif' font-size='40' font-weight='900' text-anchor='middle' dominant-baseline='central' fill='white'%3ELIGERO%3C/text%3E%3C/svg%3E") center/300px auto no-repeat;
+    animation: expandLigeroTextReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: 0.3s;
 }
 
@@ -3390,7 +3389,6 @@ body.white-theme .form-buttons button:hover {
     height: 100%;
     object-fit: contain;
     border-radius: 8px;
-    /* Apply strong tint effect */
     filter: brightness(0.25) saturate(0.1) sepia(0.4) hue-rotate(200deg) contrast(0.8);
 }
 
@@ -3416,7 +3414,6 @@ body.white-theme .form-buttons button:hover {
     font-weight: 900;
     color: transparent;
     -webkit-text-stroke: 3px rgba(255, 255, 255, 0.9);
-    text-stroke: 3px rgba(255, 255, 255, 0.9);
     letter-spacing: 0.2em;
     text-align: center;
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
@@ -3446,19 +3443,20 @@ body.white-theme .form-buttons button:hover {
 /* Alternative keyframes for text-based mask */
 @keyframes expandLigeroTextReveal {
     0% {
-        -webkit-mask-size: 300px auto;
-        mask-size: 300px auto;
         opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
-    60% {
-        -webkit-mask-size: 1000px auto;
-        mask-size: 1000px auto;
+    70% {
         opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    90% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1.02);
     }
     100% {
-        -webkit-mask-size: 2500px auto;
-        mask-size: 2500px auto;
         opacity: 0;
+        transform: translate(-50%, -50%) scale(1.05);
     }
 }
 
@@ -3535,19 +3533,16 @@ body.white-theme .form-buttons button:hover {
 /* White theme adjustments */
 body.white-theme .video-logo-text {
     -webkit-text-stroke: 3px rgba(0, 0, 0, 0.9);
-    text-stroke: 3px rgba(0, 0, 0, 0.9);
     text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 body.white-theme .tinted-video-copy {
-    /* Different tint for white theme */
     filter: brightness(0.8) saturate(0.3) sepia(0.2) hue-rotate(30deg) contrast(1.2);
 }
 
 /* White theme adjustments */
 body.white-theme .video-logo-text {
     -webkit-text-stroke: 3px rgba(0, 0, 0, 0.9);
-    text-stroke: 3px rgba(0, 0, 0, 0.9);
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
