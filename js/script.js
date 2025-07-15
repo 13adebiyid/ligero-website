@@ -918,52 +918,57 @@ function setupEnhancedFeedVideoAutoplay() {
     });
 }
 
-// ================== REFINED VIDEO REVEAL ANIMATION SYSTEM ==================
+// ================== REVEAL ANIMATION SYSTEM ==================
 
 let activeAnimations = new Set(); // Track active animations
 
-// Create animation elements inside a specific video container
-function createVideoRevealAnimation(container) {
-    // Remove any existing animation in this container
-    removeVideoRevealAnimation(container);
+// Create animation elements for modal overlay (not preview videos)
+function createModalRevealAnimation() {
+    // Remove any existing animation
+    removeModalRevealAnimation();
 
     const animationDiv = document.createElement('div');
+    animationDiv.id = 'modalRevealAnimation';
     animationDiv.className = 'video-reveal-animation';
     animationDiv.innerHTML = `
         <div class="reveal-overlay"></div>
-        <div class="reveal-circle">
+        <div class="reveal-text-container">
             <div class="reveal-logo-inside">LIGERO</div>
         </div>
     `;
 
-    container.style.position = 'relative'; // Ensure container is positioned
-    container.appendChild(animationDiv);
+    // Add to body as full-screen overlay
+    animationDiv.style.position = 'fixed';
+    animationDiv.style.top = '0';
+    animationDiv.style.left = '0';
+    animationDiv.style.width = '100%';
+    animationDiv.style.height = '100%';
+    animationDiv.style.zIndex = '9998'; // Below modal but above everything else
+
+    document.body.appendChild(animationDiv);
 
     return animationDiv;
 }
 
-// Remove animation elements from container
-function removeVideoRevealAnimation(container) {
-    const existingAnimation = container.querySelector('.video-reveal-animation');
+// Remove animation elements
+function removeModalRevealAnimation() {
+    const existingAnimation = document.getElementById('modalRevealAnimation');
     if (existingAnimation) {
         existingAnimation.remove();
     }
 }
 
-// Start the refined reveal animation for a specific video container
-function startVideoRevealAnimation(container, callback) {
-    const containerId = container.dataset.animationId || Math.random().toString(36);
-    container.dataset.animationId = containerId;
-
-    if (activeAnimations.has(containerId)) {
-        console.log('Animation already running for this container');
+// Start the reveal animation before opening modal
+function startModalRevealAnimation(callback) {
+    if (activeAnimations.has('modal')) {
+        console.log('Modal animation already running');
         return;
     }
 
-    activeAnimations.add(containerId);
-    console.log('🎬 Starting refined video reveal animation...');
+    activeAnimations.add('modal');
+    console.log('🎬 Starting modal reveal animation...');
 
-    const animationDiv = createVideoRevealAnimation(container);
+    const animationDiv = createModalRevealAnimation();
 
     // Show animation
     requestAnimationFrame(() => {
@@ -977,25 +982,23 @@ function startVideoRevealAnimation(container, callback) {
 
     // Complete animation and cleanup
     setTimeout(() => {
-        // Execute callback (start video, open modal, etc.)
+        // Execute callback (open modal)
         if (callback) {
             callback();
         }
 
-        // Hide and remove animation elements
+        // Hide and remove animation elements after modal is open
         setTimeout(() => {
-            removeVideoRevealAnimation(container);
-            activeAnimations.delete(containerId);
-            console.log('✅ Video reveal animation completed and cleaned up');
+            removeModalRevealAnimation();
+            activeAnimations.delete('modal');
+            console.log('✅ Modal reveal animation completed and cleaned up');
         }, 400);
     }, 3000); // 3 seconds total animation time
 }
 
 // Cleanup function to remove all active animations
 function cleanupAllVideoAnimations() {
-    document.querySelectorAll('.video-reveal-animation').forEach(animation => {
-        animation.remove();
-    });
+    removeModalRevealAnimation();
     activeAnimations.clear();
     console.log('🧹 All video animations cleaned up');
 }
@@ -1003,9 +1006,9 @@ function cleanupAllVideoAnimations() {
 // ================== MODIFIED VIDEO FUNCTIONS ==================
 
 // Enhanced video modal opening with refined animation
-function openVideoModalWithAnimation(container, videoSrc, title, client) {
-    // Start animation on the specific container, then open modal in callback
-    startVideoRevealAnimation(container, () => {
+function openVideoModalWithAnimation(videoSrc, title, client) {
+    // Start animation, then open modal in callback
+    startModalRevealAnimation(() => {
         openVideoModalDirect(videoSrc, title, client);
     });
 }
@@ -1125,11 +1128,11 @@ function getProjectInfo(clickedElement) {
     return { title: 'Project', client: 'Ligero' };
 }
 
-// ================== UPDATED MODAL SETUP ==================
+// ================== MODAL SETUP ==================
 
 // Updated modal click setup to use refined animation
 function setupModalClicksWithAnimation() {
-    console.log('🎯 Setting up modal clicks with refined animation...');
+    console.log('🎯 Setting up modal clicks with animation...');
 
     // Video clicks with animation
     const videoContainers = document.querySelectorAll('.video-container-main');
@@ -1148,8 +1151,9 @@ function setupModalClicksWithAnimation() {
 
             if (videoSrc) {
                 const projectInfo = getProjectInfo(container);
-                console.log('🎬 Video container clicked, starting refined animation...');
-                openVideoModalWithAnimation(container, videoSrc, projectInfo.title, projectInfo.client);
+                console.log('🎬 Video container clicked, starting modal animation...');
+                // Pass video source directly, not container
+                openVideoModalWithAnimation(videoSrc, projectInfo.title, projectInfo.client);
             }
         });
     });
@@ -1181,11 +1185,6 @@ function setupModalClicksWithAnimation() {
             }
         });
     });
-}
-
-// Setup click handlers (for backwards compatibility)
-function setupModalClicks() {
-    setupModalClicksWithAnimation();
 }
 
 // Setup modal close handlers
