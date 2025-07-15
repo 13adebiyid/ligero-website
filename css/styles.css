@@ -2136,87 +2136,102 @@ body.white-theme .home-link:hover {
     border-bottom-color: black;
 }
 
-/* Add these styles to your existing styles.css file */
-
 /* ================== VIDEO REVEAL ANIMATION ================== */
 
-/* Full-screen overlay for video reveal animation */
-.video-reveal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
+/* Animation overlay that appears over individual video containers */
+.video-reveal-animation {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s ease;
+    border-radius: inherit; /* Match container's border radius */
+    overflow: hidden;
 }
 
-.video-reveal-overlay.active {
+.video-reveal-animation.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
 }
 
-/* Red tinted overlay with expanding circular hole */
-.reveal-tinted-overlay {
+/* Black transparent overlay background */
+.reveal-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(255, 0, 0, 0.85);
-    clip-path: circle(3% at 50% 50%);
-    transition: clip-path 3s ease-out;
+    background-color: rgba(0, 0, 0, 0.7); /* Transparent black like your other overlays */
+    z-index: 1;
 }
 
-.video-reveal-overlay.expanding .reveal-tinted-overlay {
-    clip-path: circle(150% at 50% 50%);
-}
-
-/* LIGERO text overlay */
-.reveal-logo-text {
+/* Expanding white circle */
+.reveal-circle {
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Suissnord', sans-serif;
-    font-size: 5rem;
-    font-weight: bold;
-    color: white;
-    letter-spacing: 4px;
-    opacity: 1;
-    z-index: 10001;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-    transition: opacity 0.6s ease-out 2.2s;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 2.5s cubic-bezier(0.3, 0, 1, 1),
+    height 2.5s cubic-bezier(0.3, 0, 1, 1),
+    opacity 1s ease 2.5s;
+    overflow: hidden;
 }
 
-.video-reveal-overlay.expanding .reveal-logo-text {
+.video-reveal-animation.expanding .reveal-circle {
+    width: 2000px;
+    height: 2000px;
+    opacity: 0;
+}
+
+/* LIGERO text inside the circle */
+.reveal-logo-inside {
+    font-family: 'Suissnord', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    color: black;
+    white-space: nowrap;
+    letter-spacing: 2px;
+    transition: opacity 0.5s ease-out 2.2s;
+    z-index: 3;
+}
+
+.video-reveal-animation.expanding .reveal-logo-inside {
     opacity: 0;
 }
 
 /* Responsive text sizing */
 @media screen and (max-width: 768px) {
-    .reveal-logo-text {
-        font-size: 3.5rem;
-        letter-spacing: 2px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .reveal-logo-text {
-        font-size: 2.5rem;
+    .reveal-logo-inside {
+        font-size: 2rem;
         letter-spacing: 1px;
     }
 }
 
-/* White theme for reveal animation */
-body.white-theme .reveal-tinted-overlay {
-    background: rgba(255, 255, 255, 0.85);
+@media screen and (max-width: 480px) {
+    .reveal-logo-inside {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
 }
 
-body.white-theme .reveal-logo-text {
-    color: black;
-    text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+/* White theme adjustments */
+body.white-theme .reveal-overlay {
+    background-color: rgba(255, 255, 255, 0.7); /* White transparent overlay for white theme */
+}
+
+body.white-theme .reveal-circle {
+    background: black; /* Black circle for white theme */
+}
+
+body.white-theme .reveal-logo-inside {
+    color: white; /* White text for white theme */
 }
 
 /* ================== COMING SOON PAGE STYLES ================== */
