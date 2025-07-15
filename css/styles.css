@@ -3352,27 +3352,15 @@ body.white-theme .form-buttons button:hover {
 
 .video-text-reveal-overlay.active {
     opacity: 1;
-    /* Use CSS mask with the LIGERO text */
-    -webkit-mask: radial-gradient(ellipse 300px 150px at center, white 40%, transparent 41%);
-    mask: radial-gradient(ellipse 300px 150px at center, white 40%, transparent 41%);
-    animation: expandLigeroTextReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    /* Use exact LIGERO letterform clip-path */
+    clip-path: url('#ligero-exact-letterforms');
+    transform: scale(0.08);
+    transform-origin: center;
+    animation: expandLigeroReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: 0.3s;
 }
 
-/* Alternative method using text as mask image */
-.video-text-reveal-overlay.text-mask-version {
-    /* Create a mask using CSS generated content */
-    -webkit-mask:
-            linear-gradient(black, black),
-            radial-gradient(ellipse 400px 200px at center, transparent 30%, black 31%);
-    mask:
-            linear-gradient(black, black),
-            radial-gradient(ellipse 400px 200px at center, transparent 30%, black 31%);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: expandLigeroTextReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    animation-delay: 0.3s;
-}
+
 
 /* Better approach: Use pseudo-element with LIGERO text as mask */
 .video-text-reveal-overlay::before {
@@ -3395,15 +3383,6 @@ body.white-theme .form-buttons button:hover {
     opacity: 1;
 }
 
-.video-text-reveal-overlay.active {
-    opacity: 1;
-    /* Use exact LIGERO letterform clip-path */
-    clip-path: url('#ligero-exact-letterforms');
-    transform: scale(0.08);
-    transform-origin: center;
-    animation: expandLigeroReveal 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    animation-delay: 0.3s;
-}
 
 /* Tinted version of the video */
 .tinted-video-copy {
