@@ -2381,12 +2381,12 @@ body.white-theme .form-buttons button:hover {
 @media screen and (min-width: 1200px) {
 
     .modal-container {
-        max-width: 95vw;
-        max-height: 95vh;
+        max-width: 100vw;
+        max-height: 100vh;
     }
 
     .modal-video {
-        max-height: 85vh;
+        max-height: 90vh;
     }
 
     .modal-video-wrap {
