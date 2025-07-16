@@ -296,6 +296,10 @@ nav {
         visibility: hidden !important;
     }
 
+    .hq-badge{
+        font-family: "Agency FB", sans-serif;
+    }
+
     /* Ensure no hover effects on mobile */
     .video-container-main:hover .video-overlay,
     .feed-item:hover .item-overlay {
