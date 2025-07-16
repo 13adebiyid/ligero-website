@@ -781,11 +781,18 @@ function setupServiceCardHoverPreviews() {
 function setupIndividualVideoLooping() {
     console.log('🎬 Setting up individual video looping...');
 
-    // Video configurations by ID
+    // Video configurations by ID - INCLUDING ASHLEIGH'S VIDEOS
     const videoSettings = {
+        // Ifeoluwa's videos (existing)
         'gift-video': { start: 6, duration: 8 },
         'fashion-video': { start: 10, duration: 8 },
-        'brand-video': { start: 3, duration: 8 }
+        'brand-video': { start: 3, duration: 8 },
+
+        // Ashleigh's videos (new)
+        'gabzy-video': { start: 5, duration: 8 },
+        'grime-video': { start: 3, duration: 8 },
+        'note-video': { start: 2, duration: 8 },
+        'reem-video': { start: 4, duration: 8 }
     };
 
     // Apply settings to each video
@@ -849,13 +856,15 @@ function setupImageLoading() {
 }
 
 // ENHANCED: Video autoplay functionality with immediate start
-// FIXED: Enhanced autoplay that respects individual video settings
 function setupEnhancedFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
     console.log(`🎥 Setting up enhanced autoplay for ${feedVideos.length} videos`);
 
-    // Videos with custom settings (skip enhanced autoplay for these)
-    const customVideoIds = ['gift-video', 'fashion-video', 'brand-video'];
+    // Videos with custom settings (skip enhanced autoplay for these) - UPDATED LIST
+    const customVideoIds = [
+        'gift-video', 'fashion-video', 'brand-video',  // Ifeoluwa's videos
+        'gabzy-video', 'grime-video', 'note-video', 'reem-video'  // Ashleigh's videos
+    ];
 
     // More aggressive intersection observer for immediate playback
     const videoObserver = new IntersectionObserver((entries) => {
