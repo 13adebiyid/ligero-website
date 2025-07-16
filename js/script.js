@@ -918,103 +918,10 @@ function setupEnhancedFeedVideoAutoplay() {
     });
 }
 
-// ================== REVEAL ANIMATION SYSTEM ==================
+// =================== FIXED MODAL FUNCTIONS ===================
 
-let activeAnimations = new Set(); // Track active animations
-
-// Create animation elements for modal overlay (not preview videos)
-function createModalRevealAnimation() {
-    // Remove any existing animation
-    removeModalRevealAnimation();
-
-    const animationDiv = document.createElement('div');
-    animationDiv.id = 'modalRevealAnimation';
-    animationDiv.className = 'video-reveal-animation';
-    animationDiv.innerHTML = `
-        <div class="reveal-overlay"></div>
-        <div class="reveal-text-container">
-            <div class="reveal-logo-inside">LIGERO</div>
-        </div>
-    `;
-
-    // Add to body as full-screen overlay
-    animationDiv.style.position = 'fixed';
-    animationDiv.style.top = '0';
-    animationDiv.style.left = '0';
-    animationDiv.style.width = '100%';
-    animationDiv.style.height = '100%';
-    animationDiv.style.zIndex = '9998'; // Below modal but above everything else
-
-    document.body.appendChild(animationDiv);
-
-    return animationDiv;
-}
-
-// Remove animation elements
-function removeModalRevealAnimation() {
-    const existingAnimation = document.getElementById('modalRevealAnimation');
-    if (existingAnimation) {
-        existingAnimation.remove();
-    }
-}
-
-// Start the reveal animation before opening modal
-function startModalRevealAnimation(callback) {
-    if (activeAnimations.has('modal')) {
-        console.log('Modal animation already running');
-        return;
-    }
-
-    activeAnimations.add('modal');
-    console.log('🎬 Starting modal reveal animation...');
-
-    const animationDiv = createModalRevealAnimation();
-
-    // Show animation
-    requestAnimationFrame(() => {
-        animationDiv.classList.add('active');
-
-        // Start expanding animation after brief delay
-        setTimeout(() => {
-            animationDiv.classList.add('expanding');
-        }, 100);
-    });
-
-    // Complete animation and cleanup
-    setTimeout(() => {
-        // Execute callback (open modal)
-        if (callback) {
-            callback();
-        }
-
-        // Hide and remove animation elements after modal is open
-        setTimeout(() => {
-            removeModalRevealAnimation();
-            activeAnimations.delete('modal');
-            console.log('✅ Modal reveal animation completed and cleaned up');
-        }, 400);
-    }, 3000); // 3 seconds total animation time
-}
-
-// Cleanup function to remove all active animations
-function cleanupAllVideoAnimations() {
-    removeModalRevealAnimation();
-    activeAnimations.clear();
-    console.log('🧹 All video animations cleaned up');
-}
-
-// ================== MODIFIED VIDEO FUNCTIONS ==================
-
-// Enhanced video modal opening with refined animation
-function openVideoModalWithAnimation(videoSrc, title, client) {
-    // Start animation, then open modal in callback
-    startModalRevealAnimation(() => {
-        openVideoModalDirect(videoSrc, title, client);
-    });
-}
-
-// Direct modal opening (without animation) - renamed original function
-function openVideoModalDirect(videoSrc, title, client) {
+// Simple Modal Functions
+function openVideoModal(videoSrc, title, client) {
     const modal = document.getElementById('videoModal');
     const modalVideo = document.getElementById('modalVideo');
     const modalTitle = document.getElementById('modalTitle');
@@ -1033,21 +940,9 @@ function openVideoModalDirect(videoSrc, title, client) {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Set video source and play
+    // Set video source
     modalVideo.src = videoSrc;
     modalVideo.load();
-
-    // Play video after it's loaded
-    modalVideo.addEventListener('loadeddata', () => {
-        modalVideo.play().catch(err => {
-            console.log('Video play failed:', err);
-        });
-    }, { once: true });
-}
-
-// Simple Modal Functions (for backwards compatibility)
-function openVideoModal(videoSrc, title, client) {
-    openVideoModalDirect(videoSrc, title, client);
 }
 
 function openImageModal(imageSrc, title, client) {
@@ -1128,109 +1023,9 @@ function getProjectInfo(clickedElement) {
     return { title: 'Project', client: 'Ligero' };
 }
 
-// ================== MODAL SETUP ==================
-
-// ================== FIXED MODAL VIDEO REVEAL ANIMATION ==================
-
-// Create animation elements for modal video
-function createModalVideoReveal(container) {
-    const animationDiv = document.createElement('div');
-    animationDiv.className = 'modal-video-reveal';
-    animationDiv.innerHTML = `
-        <div class="reveal-overlay"></div>
-        <div class="reveal-circle"></div>
-        <div class="reveal-text-container">
-            <div class="reveal-logo-text">LIGERO</div>
-        </div>
-    `;
-
-    container.appendChild(animationDiv);
-    return animationDiv;
-}
-
-// Start reveal animation on modal video
-function startModalVideoReveal(modalVideoWrap, callback) {
-    console.log('🎬 Starting modal video reveal animation...');
-
-    // Create animation overlay on the video wrapper
-    const animationDiv = createModalVideoReveal(modalVideoWrap);
-
-    // Force browser to recognize the initial state
-    modalVideoWrap.offsetHeight;
-
-    // Start expanding animation
-    requestAnimationFrame(() => {
-        animationDiv.classList.add('expanding');
-
-        // After expansion completes (2.5s), fade out overlay and text together
-        setTimeout(() => {
-            animationDiv.classList.add('hiding');
-
-            // Remove animation elements after fade completes
-            setTimeout(() => {
-                if (animationDiv.parentNode) {
-                    animationDiv.remove();
-                }
-                console.log('✅ Modal video reveal animation completed');
-            }, 500); // 0.5s fade duration
-        }, 2500); // 2.5s expansion duration
-    });
-
-    // Execute callback immediately (don't wait for animation)
-    if (callback) {
-        callback();
-    }
-}
-
-// Enhanced video modal opening with animation
-function openVideoModalWithAnimation(videoSrc, title, client) {
-    const modal = document.getElementById('videoModal');
-    const modalVideo = document.getElementById('modalVideo');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalClient = document.getElementById('modalClient');
-    const modalVideoWrap = modal?.querySelector('.modal-video-wrap');
-
-    if (!modal || !modalVideo || !modalVideoWrap) {
-        console.error('Video modal elements not found');
-        return;
-    }
-
-    // Set content
-    if (modalTitle) modalTitle.textContent = title || 'Video';
-    if (modalClient) modalClient.textContent = client || 'Client';
-
-    // Show modal
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Start reveal animation on the video wrapper
-    startModalVideoReveal(modalVideoWrap, () => {
-        // Set video source and play after modal is visible
-        modalVideo.src = videoSrc;
-        modalVideo.load();
-
-        modalVideo.addEventListener('loadeddata', () => {
-            modalVideo.play().catch(err => {
-                console.log('Video play failed:', err);
-            });
-        }, { once: true });
-    });
-}
-
-// Setup modal clicks with animation (only for set design and member pages)
-function setupModalClicksWithAnimation() {
-    console.log('🎯 Setting up modal clicks with animation...');
-
-    // Only apply to video containers on set design and member pages
-    const isSetDesignPage = document.querySelector('.set-design-feed') !== null;
-    const isMemberPage = document.querySelector('.designer-profile-page') !== null;
-
-    if (!isSetDesignPage && !isMemberPage) {
-        console.log('Not on set design or member page, skipping animation setup');
-        return;
-    }
-
-    // Video clicks with animation
+// Setup click handlers
+function setupModalClicks() {
+    // Video clicks
     const videoContainers = document.querySelectorAll('.video-container-main');
     videoContainers.forEach(container => {
         container.addEventListener('click', function(e) {
@@ -1247,18 +1042,12 @@ function setupModalClicksWithAnimation() {
 
             if (videoSrc) {
                 const projectInfo = getProjectInfo(container);
-                console.log('🎬 Video container clicked, starting modal animation...');
-                openVideoModalWithAnimation(videoSrc, projectInfo.title, projectInfo.client);
+                openVideoModal(videoSrc, projectInfo.title, projectInfo.client);
             }
         });
     });
 
-    // Image clicks (no animation)
-    setupImageModalClicks();
-}
-
-// Setup image modal clicks separately (no animation)
-function setupImageModalClicks() {
+    // Image clicks
     const imageItems = document.querySelectorAll('.feed-item img');
     imageItems.forEach(img => {
         img.parentElement.addEventListener('click', function(e) {
@@ -1272,6 +1061,7 @@ function setupImageModalClicks() {
         });
     });
 
+    // Alternative: if images have data-image attribute on parent
     const imageContainers = document.querySelectorAll('[data-image]');
     imageContainers.forEach(container => {
         container.addEventListener('click', function(e) {
@@ -1286,89 +1076,9 @@ function setupImageModalClicks() {
     });
 }
 
-// Helper function to get project info (keep your existing one)
-function getProjectInfo(clickedElement) {
-    // Look for video metadata in the same video-section
-    let videoSection = clickedElement.closest('.video-section');
-    if (videoSection) {
-        const metadata = videoSection.querySelector('.video-metadata');
-        if (metadata) {
-            const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
-            const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
-            return { title: projectTitle, client: clientName };
-        }
-    }
-
-    // Fallback - look for any nearby metadata
-    const feedContainer = clickedElement.closest('.feed-container');
-    if (feedContainer) {
-        const clientName = feedContainer.querySelector('.client-name')?.textContent || 'Client';
-        const projectTitle = feedContainer.querySelector('.project-title')?.textContent || 'Project';
-        return { title: projectTitle, client: clientName };
-    }
-
-    return { title: 'Project', client: 'Ligero' };
-}
-
-// Simple image modal function (no animation)
-function openImageModal(imageSrc, title, client) {
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
-
-    if (!modal || !modalImage) {
-        console.error('Image modal elements not found');
-        return;
-    }
-
-    modalImage.src = imageSrc;
-    modalImage.alt = title || 'Image';
-
-    if (imageTitle) imageTitle.textContent = title || 'Project Image';
-    if (imageProject) imageProject.textContent = client || 'Ligero';
-
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-// Close modal functions
-function closeModal() {
-    const videoModal = document.getElementById('videoModal');
-    const modalVideo = document.getElementById('modalVideo');
-
-    if (videoModal) {
-        videoModal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    if (modalVideo) {
-        modalVideo.pause();
-        modalVideo.currentTime = 0;
-        modalVideo.src = '';
-    }
-
-    // Clean up any remaining animation elements
-    const animationDivs = document.querySelectorAll('.modal-video-reveal');
-    animationDivs.forEach(div => div.remove());
-}
-
-function closeImageModal() {
-    const imageModal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-
-    if (imageModal) {
-        imageModal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    if (modalImage) {
-        modalImage.src = '';
-    }
-}
-
 // Setup modal close handlers
 function setupModalCloseHandlers() {
+    // Close buttons
     const videoCloseBtn = document.querySelector('#videoModal .modal-close');
     const imageCloseBtn = document.querySelector('#imageModal .modal-close');
 
@@ -1380,6 +1090,7 @@ function setupModalCloseHandlers() {
         imageCloseBtn.addEventListener('click', closeImageModal);
     }
 
+    // Click outside to close
     const videoModal = document.getElementById('videoModal');
     const imageModal = document.getElementById('imageModal');
 
@@ -1397,6 +1108,7 @@ function setupModalCloseHandlers() {
         }
     }
 
+    // Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeModal();
@@ -1405,87 +1117,264 @@ function setupModalCloseHandlers() {
     });
 }
 
-// Enhanced modal initialization
-function initializeEnhancedModals() {
-    setupModalClicksWithAnimation();
-    setupModalCloseHandlers();
-    console.log('✅ Enhanced modals with animation initialized');
-}
-
-// Initialize modals when page loads (for backwards compatibility)
+// Initialize modals when page loads
 function initializeModals() {
-    initializeEnhancedModals();
+    setupModalClicks();
+    setupModalCloseHandlers();
+    console.log('✅ Modals initialized');
 }
 
-// Keep original home page video controls (NO animation)
-function setupOriginalVideoControls() {
+// ROBUST: Apply theme and initialize everything
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        console.log('🚀 Initializing Ligero website...');
+
+        // FIRST: Reset any problematic states
+        resetPageState();
+
+        // Initialize page transitions
+        initPageLoad();
+        setupPageTransitions();
+
+        // Apply theme
+        try {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'white') {
+                document.body.classList.add('white-theme');
+            } else {
+                document.body.classList.remove('white-theme');
+            }
+        } catch (e) {
+            // localStorage not available, use default theme
+        }
+
+        // FIXED: Initialize carousel with proper mobile handling
+        const carousel = document.getElementById('carousel');
+        if (carousel) {
+            // Always reset first
+            resetCarousel();
+
+            if (!isMobile()) {
+                // Desktop setup
+                console.log('🎠 Dynamic responsive carousel initialized for desktop');
+                setupCarouselKeyboardNavigation();
+
+                carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+                carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+                carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+                // Setup hover previews for service cards (ORIGINAL FUNCTION)
+                setupServiceCardHoverPreviews();
+
+                setTimeout(() => {
+                    testCarouselReach();
+                }, 200);
+            } else {
+                // Mobile setup - ensure clean state
+                console.log('📱 Mobile detected - ensuring clean carousel state');
+
+                // Force clean mobile state
+                setTimeout(() => {
+                    resetCarousel();
+                }, 100);
+            }
+        }
+
+        // NEW: Setup individual video looping
+        setupIndividualVideoLooping();
+
+        // Setup hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger-menu');
+        if (hamburger) {
+            hamburger.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Setup mobile menu item click handlers
+        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+        mobileMenuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                setTimeout(() => {
+                    closeMobileMenu();
+                }, 100);
+            });
+        });
+
+        // Close mobile menu when clicking overlay
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', (e) => {
+                if (e.target === mobileMenuOverlay) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        // Ensure the current page content is visible
+        const homePage = document.getElementById('home-page');
+        const servicesPage = document.getElementById('services-page');
+        const shopPage = document.querySelector('.shop-page');
+        const policiesPage = document.getElementById('policies-page');
+
+        if (homePage) {
+            homePage.style.display = 'flex';
+        }
+        if (servicesPage) {
+            servicesPage.style.display = 'block';
+            servicesPage.classList.add('active');
+        }
+        if (shopPage) {
+            shopPage.style.display = 'block';
+        }
+        if (policiesPage) {
+            policiesPage.style.display = 'block';
+        }
+
+        // Add window resize listener
+        window.addEventListener('resize', handleResize);
+
+        // Setup theme switcher event listeners
+        const whiteThemeCircle = document.querySelector('.theme-circle.white');
+        const blackThemeCircle = document.querySelector('.theme-circle.black');
+
+        if (whiteThemeCircle) {
+            whiteThemeCircle.onclick = () => setTheme('white');
+        }
+
+        if (blackThemeCircle) {
+            blackThemeCircle.onclick = () => setTheme('black');
+        }
+
+        // Initialize CMNPPL-style pages with FIXED modal version
+        if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
+            console.log('🎯 CMNPPL page detected, initializing with FIXED modals...');
+
+            setTimeout(() => {
+                // Setup image loading first
+                setupImageLoading();
+
+                // Setup enhanced video autoplay
+                setupEnhancedFeedVideoAutoplay();
+
+                // Setup FIXED modals
+                initializeModals();
+            }, 100);
+        }
+
+        // Initialize contact page if we're on that page
+        if (document.querySelector('.contact-page')) {
+            initContactPage();
+        }
+
+        // Initialize coming soon page if we're on that page
+        if (document.querySelector('.coming-soon-page')) {
+            initComingSoonPage();
+        }
+
+        console.log('✅ Ligero website initialized successfully');
+
+    } catch (error) {
+        console.error('Error during initialization:', error);
+        emergencyCleanup();
+    }
+});
+
+// ROBUST: Handle page visibility changes
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        // Page became visible again, ensure clean state
+        if (isNavigating && Date.now() - lastNavigationTime > 3000) {
+            console.log('Page visible - cleaning up stuck navigation');
+            emergencyCleanup();
+        }
+    }
+});
+
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        console.log('Page restored from cache - resetting state');
+        resetPageState();
+
+        setTimeout(() => {
+            initPageSpecificFeatures();
+        }, 50);
+    }
+});
+
+window.addEventListener('popstate', function(event) {
+    console.log('Popstate event - resetting state');
+    resetPageState();
+});
+
+// Video controls functionality with mobile autoplay fix
+document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('bgVideo');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const muteBtn = document.getElementById('muteBtn');
     const playPauseIcon = document.getElementById('playPauseIcon');
     const muteIcon = document.getElementById('muteIcon');
 
-    if (!video || !playPauseBtn || !muteBtn) return;
+    if (video && playPauseBtn && muteBtn) {
 
-    // Mobile autoplay fix - try to play on any user interaction
-    function tryAutoplay() {
-        video.play().then(() => {
-            console.log('Video started playing');
+        // Mobile autoplay fix - try to play on any user interaction
+        function tryAutoplay() {
+            video.play().then(() => {
+                console.log('Video started playing');
+                playPauseIcon.src = '/images/pause-icon.png';
+            }).catch((error) => {
+                console.log('Autoplay prevented:', error);
+                playPauseIcon.src = '/images/play-icon.png';
+            });
+        }
+
+        // Try autoplay on page load
+        setTimeout(tryAutoplay, 100);
+
+        // Also try on first user interaction
+        document.addEventListener('touchstart', tryAutoplay, { once: true });
+        document.addEventListener('click', tryAutoplay, { once: true });
+
+        // Play/Pause functionality
+        playPauseBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering the autoplay listener
+            if (video.paused) {
+                video.play();
+                playPauseIcon.src = '/images/pause-icon.png';
+                playPauseIcon.alt = 'Pause';
+            } else {
+                video.pause();
+                playPauseIcon.src = '/images/play-icon.png';
+                playPauseIcon.alt = 'Play';
+            }
+        });
+
+        // Mute/Unmute functionality
+        muteBtn.addEventListener('click', () => {
+            if (video.muted) {
+                video.muted = false;
+                muteIcon.src = '/images/sound-on-icon.png';
+                muteIcon.alt = 'Sound On';
+            } else {
+                video.muted = true;
+                muteIcon.src = '/images/sound-off-icon.png';
+                muteIcon.alt = 'Sound Off';
+            }
+        });
+
+        // Handle video events
+        video.addEventListener('play', () => {
             playPauseIcon.src = '/images/pause-icon.png';
-        }).catch((error) => {
-            console.log('Autoplay prevented:', error);
+        });
+
+        video.addEventListener('pause', () => {
             playPauseIcon.src = '/images/play-icon.png';
         });
+
+        // Handle when video can play
+        video.addEventListener('canplaythrough', () => {
+            tryAutoplay();
+        });
     }
-
-    // Try autoplay on page load
-    setTimeout(tryAutoplay, 100);
-
-    // Also try on first user interaction
-    document.addEventListener('touchstart', tryAutoplay, { once: true });
-    document.addEventListener('click', tryAutoplay, { once: true });
-
-    // Play/Pause functionality (NO animation)
-    playPauseBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent triggering the autoplay listener
-        if (video.paused) {
-            video.play();
-            playPauseIcon.src = '/images/pause-icon.png';
-            playPauseIcon.alt = 'Pause';
-        } else {
-            video.pause();
-            playPauseIcon.src = '/images/play-icon.png';
-            playPauseIcon.alt = 'Play';
-        }
-    });
-
-    // Mute/Unmute functionality
-    muteBtn.addEventListener('click', () => {
-        if (video.muted) {
-            video.muted = false;
-            muteIcon.src = '/images/sound-on-icon.png';
-            muteIcon.alt = 'Sound On';
-        } else {
-            video.muted = true;
-            muteIcon.src = '/images/sound-off-icon.png';
-            muteIcon.alt = 'Sound Off';
-        }
-    });
-
-    // Handle video events
-    video.addEventListener('play', () => {
-        playPauseIcon.src = '/images/pause-icon.png';
-    });
-
-    video.addEventListener('pause', () => {
-        playPauseIcon.src = '/images/play-icon.png';
-    });
-
-    // Handle when video can play
-    video.addEventListener('canplaythrough', () => {
-        tryAutoplay();
-    });
-}
+});
 
 // ================== CONTACT PAGE FUNCTIONALITY ==================
 
@@ -1695,202 +1584,11 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// ================== MAIN INITIALIZATION ==================
-
-// ROBUST: Apply theme and initialize everything
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        console.log('🚀 Initializing Ligero website...');
-
-        // FIRST: Reset any problematic states
-        resetPageState();
-
-        // Initialize page transitions
-        initPageLoad();
-        setupPageTransitions();
-
-        // Apply theme
-        try {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'white') {
-                document.body.classList.add('white-theme');
-            } else {
-                document.body.classList.remove('white-theme');
-            }
-        } catch (e) {
-            // localStorage not available, use default theme
-        }
-
-        // FIXED: Initialize carousel with proper mobile handling
-        const carousel = document.getElementById('carousel');
-        if (carousel) {
-            // Always reset first
-            resetCarousel();
-
-            if (!isMobile()) {
-                // Desktop setup
-                console.log('🎠 Dynamic responsive carousel initialized for desktop');
-                setupCarouselKeyboardNavigation();
-
-                carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-                carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-                carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-                // Setup hover previews for service cards (ORIGINAL FUNCTION)
-                setupServiceCardHoverPreviews();
-
-                setTimeout(() => {
-                    testCarouselReach();
-                }, 200);
-            } else {
-                // Mobile setup - ensure clean state
-                console.log('📱 Mobile detected - ensuring clean carousel state');
-
-                // Force clean mobile state
-                setTimeout(() => {
-                    resetCarousel();
-                }, 100);
-            }
-        }
-
-        // NEW: Setup individual video looping
-        setupIndividualVideoLooping();
-
-        // Setup hamburger menu functionality
-        const hamburger = document.querySelector('.hamburger-menu');
-        if (hamburger) {
-            hamburger.addEventListener('click', toggleMobileMenu);
-        }
-
-        // Setup mobile menu item click handlers
-        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
-        mobileMenuItems.forEach(item => {
-            item.addEventListener('click', () => {
-                setTimeout(() => {
-                    closeMobileMenu();
-                }, 100);
-            });
-        });
-
-        // Close mobile menu when clicking overlay
-        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
-        if (mobileMenuOverlay) {
-            mobileMenuOverlay.addEventListener('click', (e) => {
-                if (e.target === mobileMenuOverlay) {
-                    closeMobileMenu();
-                }
-            });
-        }
-
-        // Ensure the current page content is visible
-        const homePage = document.getElementById('home-page');
-        const servicesPage = document.getElementById('services-page');
-        const shopPage = document.querySelector('.shop-page');
-        const policiesPage = document.getElementById('policies-page');
-
-        if (homePage) {
-            homePage.style.display = 'flex';
-        }
-        if (servicesPage) {
-            servicesPage.style.display = 'block';
-            servicesPage.classList.add('active');
-        }
-        if (shopPage) {
-            shopPage.style.display = 'block';
-        }
-        if (policiesPage) {
-            policiesPage.style.display = 'block';
-        }
-
-        // Add window resize listener
-        window.addEventListener('resize', handleResize);
-
-        // Setup theme switcher event listeners
-        const whiteThemeCircle = document.querySelector('.theme-circle.white');
-        const blackThemeCircle = document.querySelector('.theme-circle.black');
-
-        if (whiteThemeCircle) {
-            whiteThemeCircle.onclick = () => setTheme('white');
-        }
-
-        if (blackThemeCircle) {
-            blackThemeCircle.onclick = () => setTheme('black');
-        }
-
-        // Use original video controls for home page (NO animation)
-        setupOriginalVideoControls();
-
-        // Initialize CMNPPL-style pages with enhanced modals (WITH animation)
-        if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
-            console.log('🎯 CMNPPL page detected, initializing enhanced modals...');
-
-            setTimeout(() => {
-                // Setup image loading first
-                setupImageLoading();
-
-                // Setup enhanced video autoplay
-                setupEnhancedFeedVideoAutoplay();
-
-                // Setup enhanced modals with animation
-                initializeEnhancedModals();
-            }, 100);
-        }
-
-        // Initialize contact page if we're on that page
-        if (document.querySelector('.contact-page')) {
-            initContactPage();
-        }
-
-        // Initialize coming soon page if we're on that page
-        if (document.querySelector('.coming-soon-page')) {
-            initComingSoonPage();
-        }
-
-        console.log('✅ Ligero website initialized successfully');
-
-    } catch (error) {
-        console.error('Error during initialization:', error);
-        emergencyCleanup();
-    }
-});
-
-// ROBUST: Handle page visibility changes
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        // Page became visible again, ensure clean state
-        if (isNavigating && Date.now() - lastNavigationTime > 3000) {
-            console.log('Page visible - cleaning up stuck navigation');
-            emergencyCleanup();
-        }
-    }
-});
-
-// Cleanup animation on page unload
+// Cleanup on page unload
 window.addEventListener('beforeunload', () => {
-    cleanupAllVideoAnimations();
-
     const allVideos = document.querySelectorAll('video');
     allVideos.forEach(video => {
         video.pause();
         video.currentTime = 0;
     });
 });
-
-// Reset animation on navigation
-window.addEventListener('popstate', function(event) {
-    cleanupAllVideoAnimations();
-});
-
-// Emergency cleanup for stuck animations
-setInterval(() => {
-    if (activeAnimations.size > 0) {
-        // Check if any animation elements still exist
-        const existingAnimations = document.querySelectorAll('.video-reveal-animation');
-        if (existingAnimations.length === 0) {
-            console.warn('Animation state mismatch, cleaning up...');
-            activeAnimations.clear();
-        }
-    }
-}, 5000);
-
-console.log('🎬 Refined video reveal animation system loaded');
