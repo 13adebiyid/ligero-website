@@ -1179,6 +1179,109 @@ function initializeModals() {
     console.log('✅ Modals initialized');
 }
 
+// ================== YOUTUBE FALLBACK SYSTEM ==================
+
+// Video fallback configurations
+const videoFallbacks = {
+    'gabzy-video': {
+        youtubeUrl: 'https://www.youtube.com/embed/jUsE4hcoS2c?start=1',
+        title: 'King Promise, GABZY / "PERFECT COMBI"',
+        message: 'High-quality video not supported on this device. Playing YouTube version.'
+    }
+};
+
+/ Setup video fallback system
+function setupVideoFallbacks() {
+    Object.keys(videoFallbacks).forEach(videoId => {
+        const video = document.getElementById(videoId);
+        if (!video) return;
+
+        const config = videoFallbacks[videoId];
+        let fallbackTriggered = false;
+
+        // Create fallback function
+        function triggerFallback() {
+            if (fallbackTriggered) return;
+            fallbackTriggered = true;
+
+            console.log(`🔄 Triggering YouTube fallback for ${videoId}`);
+
+            // Get the video container
+            const videoContainer = video.closest('.video-container-main');
+            if (!videoContainer) return;
+
+            // Create YouTube fallback HTML
+            const fallbackHTML = `
+                <div class="youtube-fallback-container">
+                    <div class="compatibility-message">
+                        <div class="compatibility-icon">⚠️</div>
+                        <div class="compatibility-text">${config.message}</div>
+                    </div>
+                    <iframe 
+                        class="youtube-fallback-iframe"
+                        src="${config.youtubeUrl}&autoplay=0&mute=1&controls=1&rel=0"
+                        title="${config.title}"
+                        frameborder="0"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            `;
+
+            // Replace video content with YouTube fallback
+            videoContainer.innerHTML = fallbackHTML;
+
+            // Remove video overlay since we're using YouTube now
+            const overlay = videoContainer.querySelector('.video-overlay');
+            if (overlay) overlay.remove();
+        }
+
+        // Listen for video errors
+        video.addEventListener('error', () => {
+            console.log(`❌ Video error detected for ${videoId}`);
+            triggerFallback();
+        });
+
+        // Listen for load errors
+        video.addEventListener('loadstart', () => {
+            // Set a timeout to detect if video never loads
+            setTimeout(() => {
+                if (video.readyState === 0 || video.networkState === 3) {
+                    console.log(`⏱️ Video timeout detected for ${videoId}`);
+                    triggerFallback();
+                }
+            }, 5000); // 5 second timeout
+        });
+
+        // Check if video can play through
+        video.addEventListener('canplay', () => {
+            console.log(`✅ Video ${videoId} can play normally`);
+        });
+
+        // Detect if video fails to start playing
+        const originalPlay = video.play;
+        video.play = function() {
+            const playPromise = originalPlay.call(this);
+            if (playPromise && playPromise.catch) {
+                playPromise.catch(error => {
+                    console.log(`🚫 Video play failed for ${videoId}:`, error);
+                    triggerFallback();
+                });
+            }
+            return playPromise;
+        };
+    });
+}
+
+// Initialize fallback system when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Add a small delay to ensure videos are initialized
+    setTimeout(() => {
+        setupVideoFallbacks();
+        console.log('🛡️ Video fallback system initialized');
+    }, 1000);
+});
+
 // ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {
     try {
