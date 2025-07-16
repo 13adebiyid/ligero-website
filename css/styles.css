@@ -1735,7 +1735,7 @@ body.white-theme .modal-loading p {
 @media screen and (min-width: 1025px) {
     .hero-image-ash {
         object-fit: cover; /* Ensure it covers the full area */
-        object-position: center 25%; /* Center horizontally, 25% from top */
+        object-position: center 30%; /* Center horizontally, 25% from top */
         width: 100%;
         height: 100%;
     }
@@ -1745,7 +1745,7 @@ body.white-theme .modal-loading p {
 @media screen and (min-width: 1400px) {
     .hero-image-ash {
         object-fit: cover;
-        object-position: center 15%; /* Center horizontally, 15% from top */
+        object-position: center 20%; /* Center horizontally, 15% from top */
         width: 100%;
         height: 100%;
     }
