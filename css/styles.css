@@ -1731,6 +1731,20 @@ body.white-theme .modal-loading p {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* Normal PC/Desktop adjustments (1025px and up) */
+@media screen and (min-width: 1025px) {
+    .hero-image-ash {
+        object-position: center top 25%; /* Focus a little higher up */
+    }
+}
+
+/* Large PC/Desktop adjustments (1400px and up) */
+@media screen and (min-width: 1400px) {
+    .hero-image-ash {
+        object-position: center top 15%; /* Focus a lot higher up */
+    }
+}
+
 .hero-subtitle {
     margin-bottom: 10px;
     font-size: 1.2rem;
