@@ -263,6 +263,10 @@ nav {
     opacity: 0.9;
 }
 
+.hq-badge{
+    font-family: "Agency FB", sans-serif;
+}
+
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
 
@@ -286,7 +290,7 @@ nav {
         background: transparent !important;
     }
 
-    /* Fix 2: Hide ALL overlays, buttons, and badges on mobile */
+    /* Hide ALL overlays, buttons, and badges on mobile */
     .video-overlay,
     .play-indicator,
     .hq-badge,
@@ -294,10 +298,6 @@ nav {
         display: none !important;
         opacity: 0 !important;
         visibility: hidden !important;
-    }
-
-    .hq-badge{
-        font-family: "Agency FB", sans-serif;
     }
 
     /* Ensure no hover effects on mobile */
