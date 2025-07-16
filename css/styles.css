@@ -1728,6 +1728,7 @@ body.white-theme .modal-loading p {
 }
 
 .hero-subtitle {
+    margin-bottom: 10px;
     font-size: 1.2rem;
     opacity: 0.9;
     color: white;
@@ -1737,6 +1738,7 @@ body.white-theme .modal-loading p {
 .hero-role{
     font-size: 0.85rem;
     opacity: 0.6;
+    text-transform: uppercase;
 }
 
 /* Profile Content */
