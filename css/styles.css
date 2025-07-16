@@ -1598,6 +1598,8 @@ body.white-theme .modal-loading p {
     opacity: 1;
 }
 
+/* ================== FIXED MODAL ALIGNMENT ================== */
+
 /* Video Modal */
 .video-modal {
     position: fixed;
@@ -1609,6 +1611,7 @@ body.white-theme .modal-loading p {
     display: none;
     align-items: center;
     justify-content: center;
+    padding: 20px; /* Add padding to prevent cutoff */
 }
 
 .video-modal.active {
@@ -1630,6 +1633,10 @@ body.white-theme .modal-loading p {
     max-width: 90vw;
     max-height: 90vh;
     z-index: 3001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .modal-close {
@@ -1644,6 +1651,7 @@ body.white-theme .modal-loading p {
     padding: 10px;
     opacity: 0.7;
     transition: opacity 0.3s;
+    z-index: 3002;
 }
 
 .modal-close:hover {
@@ -1652,19 +1660,23 @@ body.white-theme .modal-loading p {
 
 .modal-header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px;
 }
 
 .modal-title {
     font-size: 1.8rem;
     font-weight: 300;
     margin-bottom: 8px;
+    color: white;
 }
 
 .modal-client {
     font-size: 0.9rem;
     opacity: 0.6;
     letter-spacing: 0.5px;
+    color: white;
 }
 
 .modal-video-wrap {
@@ -1672,23 +1684,79 @@ body.white-theme .modal-loading p {
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
+    display: flex;
+    justify-content: center;
 }
 
 .modal-video {
     width: 100%;
     height: auto;
-    max-height: 70vh;
+    max-height: 60vh; /* Reduced from 70vh to ensure metadata is visible */
     object-fit: contain;
+    border-radius: 8px;
 }
 
 .modal-footer {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
 }
 
 .modal-director {
     font-size: 1rem;
     opacity: 0.8;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+    .modal-container {
+        max-width: 95vw;
+        max-height: 95vh;
+        padding: 10px;
+    }
+
+    .modal-video {
+        max-height: 65vh;
+    }
+
+    .modal-close {
+        top: -40px;
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .video-modal {
+        padding: 10px;
+    }
+
+    .modal-container {
+        max-width: 98vw;
+        max-height: 98vh;
+    }
+
+    .modal-video {
+        max-height: 50vh;
+    }
+
+    .modal-close {
+        top: -35px;
+        font-size: 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.4rem;
+    }
+
+    .modal-header {
+        margin-bottom: 15px;
+    }
+
+    .modal-footer {
+        margin-top: 15px;
+    }
 }
 
 /* ================== DESIGNER PROFILE PAGE ================== */

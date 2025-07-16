@@ -1055,26 +1055,53 @@ function closeImageModal() {
 }
 
 // Get project info from the page structure
+// FIXED: Get project info from the page structure - handles dual videos correctly
 function getProjectInfo(clickedElement) {
-    // Look for video metadata in the same video-section
+    // First check if we're in a dual video item
+    let dualVideoItem = clickedElement.closest('.dual-video-item');
+    if (dualVideoItem) {
+        const metadata = dualVideoItem.querySelector('.video-metadata');
+        if (metadata) {
+            const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
+            const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
+            console.log(`📋 Found dual video metadata: ${projectTitle} - ${clientName}`);
+            return { title: projectTitle, client: clientName };
+        }
+    }
+
+    // Then check for regular video-section
     let videoSection = clickedElement.closest('.video-section');
     if (videoSection) {
         const metadata = videoSection.querySelector('.video-metadata');
         if (metadata) {
             const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
             const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
+            console.log(`📋 Found video section metadata: ${projectTitle} - ${clientName}`);
             return { title: projectTitle, client: clientName };
         }
     }
 
-    // Fallback - look for any nearby metadata
+    // Fallback - try to get from data attributes on the video container itself
+    const videoContainer = clickedElement.closest('.video-container-main');
+    if (videoContainer) {
+        const title = videoContainer.getAttribute('data-title');
+        const client = videoContainer.getAttribute('data-client');
+        if (title && client) {
+            console.log(`📋 Found data attribute metadata: ${title} - ${client}`);
+            return { title: title, client: client };
+        }
+    }
+
+    // Final fallback - look for any nearby metadata
     const feedContainer = clickedElement.closest('.feed-container');
     if (feedContainer) {
         const clientName = feedContainer.querySelector('.client-name')?.textContent || 'Client';
         const projectTitle = feedContainer.querySelector('.project-title')?.textContent || 'Project';
+        console.log(`📋 Found feed container metadata: ${projectTitle} - ${clientName}`);
         return { title: projectTitle, client: clientName };
     }
 
+    console.log(`📋 No metadata found, using defaults`);
     return { title: 'Project', client: 'Ligero' };
 }
 
@@ -1182,6 +1209,8 @@ function initializeModals() {
 // ================== YOUTUBE FALLBACK SYSTEM ==================
 
 // Video fallback configurations
+
+/*
 const videoFallbacks = {
     'gabzy-video': {
         youtubeUrl: 'https://www.youtube.com/embed/jUsE4hcoS2c?start=1',
@@ -1281,6 +1310,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('🛡️ Video fallback system initialized');
     }, 1000);
 });
+
+ */
 
 // ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {
