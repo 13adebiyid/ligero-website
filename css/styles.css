@@ -27,7 +27,7 @@ body {
 }
 
 .number {
-    font-family: Cascadia Code ExtraLight !important;
+    font-family: "Arial Nova Light" !important;
 }
 
 /* Page Transitions */
@@ -1718,7 +1718,7 @@ body.white-theme .modal-loading p {
     }
 
     .modal-video {
-        max-height: 65vh;
+        max-height: 70vh;
     }
 
     .modal-close {
