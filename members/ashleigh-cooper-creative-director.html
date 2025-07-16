@@ -34,7 +34,7 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<div class="electra-style-page">
+<div class="designer-profile-page">
     <div class="theme-switcher">
         <div class="theme-circle black" onclick="setTheme('black')"></div>
         <div class="theme-circle white" onclick="setTheme('white')"></div>
@@ -44,23 +44,23 @@
     <div class="designer-hero">
         <img src="/images/david-hero.png" alt="Ashleigh Cooper" class="hero-image">
         <div class="hero-overlay">
-            <h1 class="hero-title">ASHLEIGH COOPER</h1>
+            <h1 class="hero-title">Ashleigh Cooper</h1>
             <p class="hero-subtitle">BOLD. AUTHENTIC. CULTURAL</p>
         </div>
     </div>
 
-    <!-- Director Profile Header -->
+    <!-- Profile Content -->
     <div class="profile-content">
         <div class="profile-bio">
-            <p class="profile-bio">
+            <p class="bio-text">
                 Ashleigh brings bold visual storytelling to life, blending her London roots and
                 music-centered upbringing into charismatic narratives that connect across cultures.
             </p>
-            <p class="profile-bio">
+            <p class="bio-text">
                 Her performing arts background drives her understanding of rhythm and authenticity.
                 Humor, humanity, and cultural diversity flow through every frame she creates.
             </p>
-            <p class="profile-bio">
+            <p class="bio-text">
                 From music videos to campaigns, her work captures genuine essence while elevating
                 brands and artists through her signature connection-based approach.
             </p>
@@ -71,17 +71,17 @@
                 ashleighshoots
             </a>
         </div>
-    </div>
 
-    <!-- Video Grid -->
-    <div class="video-grid-section">
+        <!-- Work Section -->
         <h2 class="work-section-title">Featured Work</h2>
 
-        <div class="electra-grid">
-            <!-- Video 1: Gabzy -->
-            <div class="electra-item" data-video="/videos/gabzy.mp4" data-title="Gabzy Campaign" data-client="Music Video">
-                <div class="video-container">
-                    <video class="electra-video" muted loop preload="metadata" playsinline>
+        <!-- Work Feed -->
+        <div class="feed-container">
+
+            <!-- Large Video 1: Gabzy -->
+            <div class="video-section">
+                <div class="video-container-main" data-video="/videos/gabzy.mp4" data-title="King Promise, GABZY / 'PERFECT COMBI'" data-client="Sony Music / 5k Records">
+                    <video id="gabzy-video" class="feed-video" muted loop preload="metadata" playsinline>
                         <source src="/videos/gabzy.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
@@ -89,52 +89,53 @@
                         <div class="hq-badge">4K</div>
                     </div>
                 </div>
-                <div class="feed-info">
+
+                <div class="video-metadata">
                     <div class="client-name">Sony Music / 5k Records</div>
                     <div class="project-title">King Promise, GABZY / "PERFECT COMBI"</div>
-                    <div class="designer-link">Ashleigh Cooper</div>
                 </div>
             </div>
 
-            <!-- Video 2: Grime -->
-            <div class="electra-item" data-video="/videos/grime.mp4" data-title="Grime Documentary" data-client="Documentary Film">
-                <div class="video-container">
-                    <video class="electra-video" muted loop preload="metadata" playsinline>
-                        <source src="/videos/grime.mp4" type="video/mp4">
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-indicator">▶</div>
-                        <div class="hq-badge">4K</div>
+            <!-- Two Videos Side by Side -->
+            <div class="dual-video-section">
+                <!-- Grime Video -->
+                <div class="dual-video-item">
+                    <div class="video-container-main" data-video="/videos/grime.mp4" data-title="Diaspora / 'WEAR YOUR CROWN'" data-client="Independent Commercial">
+                        <video id="grime-video" class="feed-video" muted loop preload="metadata" playsinline>
+                            <source src="/videos/grime.mp4" type="video/mp4">
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-indicator">▶</div>
+                            <div class="hq-badge">4K</div>
+                        </div>
+                    </div>
+                    <div class="video-metadata">
+                        <div class="client-name">Independent Commercial</div>
+                        <div class="project-title">Diaspora / "WEAR YOUR CROWN"</div>
                     </div>
                 </div>
-                <div class="feed-info">
-                    <div class="client-name">Independent Commercial</div>
-                    <div class="project-title">Diaspora / "WEAR YOUR CROWN"</div>
-                    <div class="designer-link">Ashleigh Cooper</div>
-                </div>
-            </div>
 
-            <!-- Video 3: Note -->
-            <div class="electra-item" data-video="/videos/note.mp4" data-title="Note Creative" data-client="Brand Campaign">
-                <div class="video-container">
-                    <video class="electra-video" muted loop preload="metadata" playsinline>
-                        <source src="/videos/note.mp4" type="video/mp4">
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-indicator">▶</div>
+                <!-- Note Video -->
+                <div class="dual-video-item">
+                    <div class="video-container-main" data-video="/videos/note.mp4" data-title="'ONE MORE NOTE'" data-client="Self-Filmed/Self-Produced">
+                        <video id="note-video" class="feed-video" muted loop preload="metadata" playsinline>
+                            <source src="/videos/note.mp4" type="video/mp4">
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-indicator">▶</div>
+                        </div>
+                    </div>
+                    <div class="video-metadata">
+                        <div class="client-name">Self-Filmed/Self-Produced</div>
+                        <div class="project-title">"ONE MORE NOTE"</div>
                     </div>
                 </div>
-                <div class="feed-info">
-                    <div class="client-name">Self-Filmed/Self-Produced</div>
-                    <div class="project-title">"ONE MORE NOTE"</div>
-                    <div class="designer-link">Ashleigh Cooper</div>
-                </div>
             </div>
 
-            <!-- Video 4: Reem -->
-            <div class="electra-item" data-video="/videos/reem.mp4" data-title="Reem Project" data-client="Fashion Campaign">
-                <div class="video-container">
-                    <video class="electra-video" muted loop preload="metadata" playsinline>
+            <!-- Large Video 2: Reem -->
+            <div class="video-section">
+                <div class="video-container-main" data-video="/videos/reem.mp4" data-title="Reem / '100X'" data-client="Music Video">
+                    <video id="reem-video" class="feed-video" muted loop preload="metadata" playsinline>
                         <source src="/videos/reem.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
@@ -142,12 +143,13 @@
                         <div class="hq-badge">HD</div>
                     </div>
                 </div>
-                <div class="feed-info">
+
+                <div class="video-metadata">
                     <div class="client-name">Music Video</div>
                     <div class="project-title">Reem / "<span class="number">100</span>X"</div>
-                    <div class="designer-link">Ashleigh Cooper</div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
