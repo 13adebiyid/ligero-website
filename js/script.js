@@ -1190,7 +1190,7 @@ const videoFallbacks = {
     }
 };
 
-/ Setup video fallback system
+// Setup video fallback system
 function setupVideoFallbacks() {
     Object.keys(videoFallbacks).forEach(videoId => {
         const video = document.getElementById(videoId);
