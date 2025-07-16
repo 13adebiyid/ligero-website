@@ -1752,12 +1752,32 @@ body.white-theme .modal-loading p {
     opacity: 0.9;
 }
 
+/* for multiple links */
+.social-links-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
 .social-link {
     color: white;
     text-decoration: none;
     font-size: 1rem;
     opacity: 0.7;
     transition: opacity 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.social-link img {
+    width: 18px;
+    height: 18px;
+    opacity: inherit;
+    transition: inherit;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 .social-link:hover {
@@ -1775,6 +1795,10 @@ body.white-theme .modal-loading p {
 /* White Theme for Designer Profile */
 body.white-theme .social-link {
     color: black;
+}
+
+body.white-theme .instagram-icon {
+    content: url('/images/black-instagram-icon.png');
 }
 
 body.white-theme .work-section-title {
@@ -2382,7 +2406,7 @@ body.white-theme .form-buttons button:hover {
 
     .modal-container {
         max-width: 100vw;
-        max-height: 100vh;
+        max-height: 95vh;
     }
 
     .modal-video {
