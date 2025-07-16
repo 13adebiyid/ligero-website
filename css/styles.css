@@ -1691,7 +1691,7 @@ body.white-theme .modal-loading p {
 .modal-video {
     width: 100%;
     height: auto;
-    max-height: 45vh;
+    max-height: 100vh;
     object-fit: contain;
     border-radius: 8px;
 }
@@ -1718,7 +1718,7 @@ body.white-theme .modal-loading p {
     }
 
     .modal-video {
-        max-height: 70vh;
+        max-height: 65vh;
     }
 
     .modal-close {
@@ -1738,7 +1738,7 @@ body.white-theme .modal-loading p {
     }
 
     .modal-video {
-        max-height: 50vh;
+        max-height: 70vh;
     }
 
     .modal-close {
