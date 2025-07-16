@@ -3389,3 +3389,73 @@ body.white-theme .form-buttons button:hover {
         font-size: 1.8rem;
     }
 }
+
+/* Electra settings */
+/* Video Grid Section */
+.video-grid-section {
+    padding: 0 5vw 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.work-section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 60px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced Electra Grid for Ashleigh */
+.electra-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 60px 40px;
+    align-items: start;
+}
+
+/* Enhanced Electra Items */
+.electra-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.electra-item:nth-child(1) { animation-delay: 0.1s; }
+.electra-item:nth-child(2) { animation-delay: 0.2s; }
+.electra-item:nth-child(3) { animation-delay: 0.3s; }
+.electra-item:nth-child(4) { animation-delay: 0.4s; }
+
+.electra-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Video Containers */
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    background: #111;
+}
+
+.electra-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.electra-item:hover .electra-video {
+    transform: scale(1.02);
+}
+
+.electra-item:hover .video-overlay {
+    opacity: 1;
+}

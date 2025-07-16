@@ -918,6 +918,43 @@ function setupEnhancedFeedVideoAutoplay() {
     });
 }
 
+// for creative directing page
+
+function setupElectraVideoGrid() {
+    const electraItems = document.querySelectorAll('.electra-item');
+
+    electraItems.forEach(item => {
+        const video = item.querySelector('.electra-video');
+
+        if (video) {
+            // Video hover preview
+            item.addEventListener('mouseenter', () => {
+                video.play().catch(err => {
+                    console.log('Preview autoplay prevented:', err);
+                });
+            });
+
+            item.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+
+            // Click to open modal
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                const videoSrc = item.getAttribute('data-video');
+                const title = item.getAttribute('data-title');
+                const client = item.getAttribute('data-client');
+
+                if (videoSrc) {
+                    openVideoModal(videoSrc, title, client);
+                }
+            });
+        }
+    });
+}
+
 // =================== FIXED MODAL FUNCTIONS ===================
 
 // Simple Modal Functions
@@ -940,9 +977,18 @@ function openVideoModal(videoSrc, title, client) {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Set video source
+    // Set video source and enable autoplay
     modalVideo.src = videoSrc;
     modalVideo.load();
+
+    // NEW: Start playing automatically after a brief delay
+    setTimeout(() => {
+        modalVideo.play().then(() => {
+            console.log('Modal video started playing automatically');
+        }).catch(err => {
+            console.log('Autoplay prevented:', err);
+        });
+    }, 200);
 }
 
 function openImageModal(imageSrc, title, client) {
@@ -1244,19 +1290,21 @@ document.addEventListener('DOMContentLoaded', () => {
             blackThemeCircle.onclick = () => setTheme('black');
         }
 
-        // Initialize CMNPPL-style pages with FIXED modal version
-        if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page')) {
-            console.log('🎯 CMNPPL page detected, initializing with FIXED modals...');
+        // Initialize CMNPPL-style pages with modal
+        if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page') || document.querySelector('.electra-style-page')) {
+            console.log('🎯 CMNPPL/Electra page detected, initializing...');
 
             setTimeout(() => {
-                // Setup image loading first
                 setupImageLoading();
 
-                // Setup enhanced video autoplay
                 setupEnhancedFeedVideoAutoplay();
 
-                // Setup FIXED modals
                 initializeModals();
+
+                if (document.querySelector('.electra-style-page')) {
+                    setupElectraVideoGrid();
+                    console.log('✅ Electra video grid initialized');
+                }
             }, 100);
         }
 

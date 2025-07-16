@@ -2,9 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashleigh Cooper - Creative Director - Ligero</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
+    <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
+    <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
+<nav>
+    <div class="hamburger-menu">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+    <a href="/" class="logo">LIGERO</a>
+    <div class="nav-menu">
+        <a href="/shop/" class="nav-item">Shop</a>
+        <span class="nav-separator">|</span>
+        <a href="/services/" class="nav-item">Services</a>
+        <span class="nav-separator">|</span>
+        <a href="/policies/" class="nav-item">Policies</a>
+    </div>
+</nav>
+
+<div class="mobile-menu-overlay">
+    <a href="/" class="mobile-menu-item">HOME</a>
+    <a href="/shop/" class="mobile-menu-item">SHOP</a>
+    <a href="/services/" class="mobile-menu-item">SERVICES</a>
+    <a href="/policies/" class="mobile-menu-item">POLICIES</a>
+</div>
+
+<div class="electra-style-page">
+    <div class="theme-switcher">
+        <div class="theme-circle black" onclick="setTheme('black')"></div>
+        <div class="theme-circle white" onclick="setTheme('white')"></div>
+    </div>
+
+    <!-- Full-Width Hero Image -->
+    <div class="designer-hero">
+        <img src="/images/david-hero.png" alt="Ashleigh Cooper" class="hero-image">
+        <div class="hero-overlay">
+            <h1 class="hero-title">ASHLEIGH COOPER</h1>
+            <p class="hero-subtitle">BOLD. AUTHENTIC. CULTURAL</p>
+        </div>
+    </div>
+
+    <!-- Director Profile Header -->
+    <div class="profile-content">
+        <div class="profile-bio">
+            <p class="profile-bio">
+                Ashleigh brings bold visual storytelling to life, blending her London roots and
+                music-centered upbringing into charismatic narratives that connect across cultures.
+            </p>
+            <p class="profile-bio">
+                Her performing arts background drives her understanding of rhythm and authenticity.
+                Humor, humanity, and cultural diversity flow through every frame she creates.
+            </p>
+            <p class="profile-bio">
+                From music videos to campaigns, her work captures genuine essence while elevating
+                brands and artists through her signature connection-based approach.
+            </p>
+            <a href="https://www.instagram.com/ashleighshoots/" target="_blank" class="social-link">
+                <img src="/images/white-instagram-icon.png"
+                     alt="Instagram"
+                     class="instagram-icon">
+                ashleighshoots
+            </a>
+        </div>
+    </div>
+
+    <!-- Video Grid -->
+    <div class="video-grid-section">
+        <h2 class="work-section-title">Featured Work</h2>
+
+        <div class="electra-grid">
+            <!-- Video 1: Gabzy -->
+            <div class="electra-item" data-video="/videos/gabzy.mp4" data-title="Gabzy Campaign" data-client="Music Video">
+                <div class="video-container">
+                    <video class="electra-video" muted loop preload="metadata" playsinline>
+                        <source src="/videos/gabzy.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                        <div class="hq-badge">HD</div>
+                    </div>
+                </div>
+                <div class="feed-info">
+                    <div class="client-name">Music Video</div>
+                    <div class="project-title">Gabzy Campaign</div>
+                    <div class="designer-link">Ashleigh Cooper</div>
+                    <div class="separator">––––––––––––</div>
+                </div>
+            </div>
+
+            <!-- Video 2: Grime -->
+            <div class="electra-item" data-video="/videos/grime.mp4" data-title="Grime Documentary" data-client="Documentary Film">
+                <div class="video-container">
+                    <video class="electra-video" muted loop preload="metadata" playsinline>
+                        <source src="/videos/grime.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                        <div class="hq-badge">UHD</div>
+                    </div>
+                </div>
+                <div class="feed-info">
+                    <div class="client-name">Documentary Film</div>
+                    <div class="project-title">Grime Documentary</div>
+                    <div class="designer-link">Ashleigh Cooper</div>
+                    <div class="separator">––––––––––––</div>
+                </div>
+            </div>
+
+            <!-- Video 3: Note -->
+            <div class="electra-item" data-video="/videos/note.mp4" data-title="Note Creative" data-client="Brand Campaign">
+                <div class="video-container">
+                    <video class="electra-video" muted loop preload="metadata" playsinline>
+                        <source src="/videos/note.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                        <div class="hq-badge">HD</div>
+                    </div>
+                </div>
+                <div class="feed-info">
+                    <div class="client-name">Brand Campaign</div>
+                    <div class="project-title">Note Creative</div>
+                    <div class="designer-link">Ashleigh Cooper</div>
+                    <div class="separator">––––––––––––</div>
+                </div>
+            </div>
+
+            <!-- Video 4: Reem -->
+            <div class="electra-item" data-video="/videos/reem.mp4" data-title="Reem Project" data-client="Fashion Campaign">
+                <div class="video-container">
+                    <video class="electra-video" muted loop preload="metadata" playsinline>
+                        <source src="/videos/reem.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                        <div class="hq-badge">HD</div>
+                    </div>
+                </div>
+                <div class="feed-info">
+                    <div class="client-name">Fashion Campaign</div>
+                    <div class="project-title">Reem Project</div>
+                    <div class="designer-link">Ashleigh Cooper</div>
+                    <div class="separator">––––––––––––</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Modal -->
+<div class="video-modal" id="videoModal">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-container">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Video Title</h2>
+            <div class="modal-client" id="modalClient">Client Name</div>
+        </div>
+        <div class="modal-video-wrap">
+            <video class="modal-video" id="modalVideo" controls preload="metadata">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="modal-footer">
+            <div class="modal-director">Ashleigh Cooper</div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/script.js"></script>
 </body>
 </html>
