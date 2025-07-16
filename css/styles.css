@@ -1624,7 +1624,7 @@ body.white-theme .modal-loading p {
 .modal-container {
     position: relative;
     max-width: 90vw;
-    max-height: 100vh;
+    max-height: 90vh;
     z-index: 3001;
 }
 
