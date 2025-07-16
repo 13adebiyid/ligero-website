@@ -1734,14 +1734,20 @@ body.white-theme .modal-loading p {
 /* Normal PC/Desktop adjustments (1025px and up) */
 @media screen and (min-width: 1025px) {
     .hero-image-ash {
-        object-position: 50% 25%;
+        object-fit: cover; /* Ensure it covers the full area */
+        object-position: center 25%; /* Center horizontally, 25% from top */
+        width: 100%;
+        height: 100%;
     }
 }
 
 /* Large PC/Desktop adjustments (1400px and up) */
 @media screen and (min-width: 1400px) {
     .hero-image-ash {
-        object-position: 50% 25%;
+        object-fit: cover;
+        object-position: center 15%; /* Center horizontally, 15% from top */
+        width: 100%;
+        height: 100%;
     }
 }
 
