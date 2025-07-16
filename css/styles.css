@@ -1774,8 +1774,8 @@ body.white-theme .modal-loading p {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    line-height: 1;
 }
-
 .social-link img {
     width: 18px;
     height: 18px;
