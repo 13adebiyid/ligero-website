@@ -2387,10 +2387,11 @@ body.white-theme .form-buttons button:hover {
 
     .modal-video {
         max-height: 90vh;
+        min-width: 80vw;
     }
 
     .modal-video-wrap {
-        max-width: 1400px;
+        max-width: 1800px;
         margin: 0 auto;
     }
 
