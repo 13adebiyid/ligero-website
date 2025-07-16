@@ -1734,14 +1734,14 @@ body.white-theme .modal-loading p {
 /* Normal PC/Desktop adjustments (1025px and up) */
 @media screen and (min-width: 1025px) {
     .hero-image-ash {
-        object-position: center top 25%; /* Focus a little higher up */
+        object-position: 50% 25%;
     }
 }
 
 /* Large PC/Desktop adjustments (1400px and up) */
 @media screen and (min-width: 1400px) {
     .hero-image-ash {
-        object-position: center top 15%; /* Focus a lot higher up */
+        object-position: 50% 25%;
     }
 }
 
