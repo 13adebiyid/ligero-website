@@ -1124,6 +1124,202 @@ function initializeModals() {
     console.log('✅ Modals initialized');
 }
 
+
+
+
+// ================== VIDEO REVEAL ANIMATION FOR MODAL ==================
+
+// Create animation elements for modal video
+function createModalVideoReveal(container) {
+    const animationDiv = document.createElement('div');
+    animationDiv.className = 'modal-video-reveal';
+    animationDiv.innerHTML = `
+        <div class="reveal-circle-mask"></div>
+        <div class="reveal-text-container">
+            <div class="reveal-logo-text">LIGERO</div>
+        </div>
+    `;
+
+    container.appendChild(animationDiv);
+    return animationDiv;
+}
+
+// Start reveal animation on modal video
+function startModalVideoReveal(modalVideoWrap, callback) {
+    console.log('🎬 Starting modal video reveal animation...');
+
+    // Add loading class
+    modalVideoWrap.classList.add('loading');
+
+    // Create animation overlay
+    const animationDiv = createModalVideoReveal(modalVideoWrap);
+
+    // Force initial render
+    void animationDiv.offsetHeight;
+
+    // Start animation after brief delay
+    setTimeout(() => {
+        console.log('Starting circle expansion...');
+        animationDiv.classList.add('expanding');
+
+        // After expansion completes, fade everything out
+        setTimeout(() => {
+            console.log('Fading out animation...');
+            animationDiv.classList.add('hiding');
+
+            // Clean up after fade
+            setTimeout(() => {
+                if (animationDiv.parentNode) {
+                    animationDiv.remove();
+                }
+                modalVideoWrap.classList.remove('loading');
+                console.log('✅ Animation completed and cleaned up');
+            }, 500);
+        }, 2500);
+    }, 100);
+
+    // Execute callback for video loading
+    if (callback) {
+        callback();
+    }
+}
+
+// Enhanced video modal opening with animation
+function openVideoModalWithAnimation(videoSrc, title, client) {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+    const modalVideoWrap = modal?.querySelector('.modal-video-wrap');
+
+    if (!modal || !modalVideo || !modalVideoWrap) {
+        console.error('Video modal elements not found');
+        return;
+    }
+
+    // Set content
+    if (modalTitle) modalTitle.textContent = title || 'Video';
+    if (modalClient) modalClient.textContent = client || 'Client';
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Start reveal animation on the video wrapper
+    startModalVideoReveal(modalVideoWrap, () => {
+        // Set video source and play after modal is visible
+        modalVideo.src = videoSrc;
+        modalVideo.load();
+
+        modalVideo.addEventListener('loadeddata', () => {
+            modalVideo.play().catch(err => {
+                console.log('Video play failed:', err);
+            });
+        }, { once: true });
+    });
+}
+
+// Setup animation for set design and member pages only
+function setupVideoModalAnimation() {
+    console.log('🎯 Setting up video modal animation...');
+
+    // Only apply to set design and member pages
+    const isSetDesignPage = document.querySelector('.set-design-feed') !== null;
+    const isMemberPage = document.querySelector('.designer-profile-page') !== null;
+
+    if (!isSetDesignPage && !isMemberPage) {
+        console.log('Not on set design or member page, skipping animation');
+        return;
+    }
+
+    // Override video container clicks with animated version
+    const videoContainers = document.querySelectorAll('.video-container-main');
+    videoContainers.forEach(container => {
+        // Remove any existing click handlers
+        const newContainer = container.cloneNode(true);
+        container.parentNode.replaceChild(newContainer, container);
+
+        // Add new click handler with animation
+        newContainer.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Get video source
+            let videoSrc = newContainer.getAttribute('data-video');
+            if (!videoSrc) {
+                const videoElement = newContainer.querySelector('video source');
+                if (videoElement) {
+                    videoSrc = videoElement.getAttribute('src');
+                }
+            }
+
+            if (videoSrc) {
+                // Get project info
+                const projectInfo = getProjectInfo(newContainer);
+                console.log('🎬 Opening video with animation:', projectInfo);
+                openVideoModalWithAnimation(videoSrc, projectInfo.title, projectInfo.client);
+            }
+        });
+    });
+
+    console.log(`✅ Animation setup complete for ${videoContainers.length} videos`);
+}
+
+// Helper function to get project info (make sure this exists in your code)
+function getProjectInfo(clickedElement) {
+    // Look for video metadata in the same video-section
+    let videoSection = clickedElement.closest('.video-section');
+    if (videoSection) {
+        const metadata = videoSection.querySelector('.video-metadata');
+        if (metadata) {
+            const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
+            const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
+            return { title: projectTitle, client: clientName };
+        }
+    }
+
+    // Fallback
+    return { title: 'Project', client: 'Ligero' };
+}
+
+// Update the closeModal function to clean up any animations
+const originalCloseModal = window.closeModal || function() {};
+window.closeModal = function() {
+    // Clean up any remaining animation elements
+    const animationDivs = document.querySelectorAll('.modal-video-reveal');
+    animationDivs.forEach(div => div.remove());
+
+    // Call original close function
+    originalCloseModal();
+
+    const videoModal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+
+    if (videoModal) {
+        videoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (modalVideo) {
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+        modalVideo.src = '';
+    }
+};
+
+// Initialize the animation when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(setupVideoModalAnimation, 500);
+    });
+} else {
+    setTimeout(setupVideoModalAnimation, 500);
+}
+
+
+
+
+
+
 // ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {
     try {
