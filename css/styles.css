@@ -2145,7 +2145,7 @@ body.white-theme .home-link:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 100; /* Above video but below controls */
+    z-index: 100;
     pointer-events: none;
     overflow: hidden;
 }
@@ -2162,7 +2162,7 @@ body.white-theme .home-link:hover {
     /* Create dark overlay around circle using box-shadow */
     box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.85);
     /* Smooth transition with cubic-bezier */
-    transition: all 2.5s cubic-bezier(0.3, 0, 0.1, 1);
+    transition: all 5s cubic-bezier(0.3, 0, 0.1, 1);
     z-index: 2;
 }
 
@@ -2199,7 +2199,7 @@ body.white-theme .home-link:hover {
     font-family: 'Suissnord', sans-serif;
     font-size: 3rem;
     font-weight: bold;
-    color: white;
+    color: black;
     letter-spacing: 2px;
     text-align: center;
     white-space: nowrap;
