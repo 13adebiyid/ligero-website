@@ -1209,8 +1209,6 @@ function initializeModals() {
 // ================== YOUTUBE FALLBACK SYSTEM ==================
 
 // Video fallback configurations
-
-/*
 const videoFallbacks = {
     'gabzy-video': {
         youtubeUrl: 'https://www.youtube.com/embed/jUsE4hcoS2c?start=1',
@@ -1311,7 +1309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
 });
 
- */
+
 
 // ROBUST: Apply theme and initialize everything
 document.addEventListener('DOMContentLoaded', () => {

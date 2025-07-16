@@ -1611,7 +1611,7 @@ body.white-theme .modal-loading p {
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 20px; /* Add padding to prevent cutoff */
+    padding: 30px;
 }
 
 .video-modal.active {
@@ -1691,7 +1691,7 @@ body.white-theme .modal-loading p {
 .modal-video {
     width: 100%;
     height: auto;
-    max-height: 60vh; /* Reduced from 70vh to ensure metadata is visible */
+    max-height: 45vh;
     object-fit: contain;
     border-radius: 8px;
 }
@@ -1713,7 +1713,7 @@ body.white-theme .modal-loading p {
 @media screen and (max-width: 1024px) {
     .modal-container {
         max-width: 95vw;
-        max-height: 95vh;
+        max-height: 85vh;
         padding: 10px;
     }
 
@@ -3765,10 +3765,12 @@ body.white-theme .dual-video-item .video-container-main {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    opacity: 0;
+    animation: fadeInFallback 0.3s ease-out forwards; /* Faster animation */
 }
 
 .compatibility-message {
-    background: rgba(255, 193, 7, 0.9); /* Amber warning color */
+    background: rgba(255, 193, 7, 0.95); /* Amber warning color */
     color: #000;
     padding: 8px 15px;
     display: flex;
@@ -3779,6 +3781,7 @@ body.white-theme .dual-video-item .video-container-main {
     z-index: 10;
     position: relative;
     backdrop-filter: blur(10px);
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .compatibility-icon {
@@ -3797,9 +3800,15 @@ body.white-theme .dual-video-item .video-container-main {
     border: none;
     background: #000;
     min-height: 300px;
+    flex: 1; /* Take remaining space */
 }
 
 /* Ensure full height in dual video containers */
+.dual-video-item .youtube-fallback-container {
+    height: 100%;
+    min-height: 300px;
+}
+
 .dual-video-item .youtube-fallback-iframe {
     min-height: 250px;
 }
@@ -3843,16 +3852,11 @@ body.white-theme .compatibility-message {
     }
 }
 
-/* Animation for smooth fallback transition */
-.youtube-fallback-container {
-    opacity: 0;
-    animation: fadeInFallback 0.5s ease-out forwards;
-}
-
+/* Faster animation for immediate fallback */
 @keyframes fadeInFallback {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(5px);
     }
     to {
         opacity: 1;
