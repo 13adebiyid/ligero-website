@@ -3633,6 +3633,11 @@ body.white-theme .form-buttons button:hover {
 .dual-video-item .video-metadata {
     text-align: center;
     padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .dual-video-item .video-metadata .project-title {
