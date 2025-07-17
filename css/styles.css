@@ -1710,13 +1710,13 @@ body.white-theme .modal-loading p {
     backdrop-filter: blur(10px);
 }
 
-/* FIXED: Smart Modal Container - Fixed viewport approach */
+/* FIXED: Smart Modal Container - Maximized viewport approach */
 .modal-container {
     position: relative;
-    width: 90vw;
-    height: 90vh;
-    max-width: 1200px;
-    max-height: 800px;
+    width: 95vw;
+    height: 95vh;
+    max-width: 1800px;  /* Much larger max-width */
+    max-height: 1200px; /* Much larger max-height */
     z-index: 3001;
 
     /* Use flexbox to distribute space */
@@ -1809,13 +1809,13 @@ body.white-theme .modal-loading p {
 
 /* ================== RESPONSIVE MODAL ADJUSTMENTS ================== */
 
-/* Large screens - bigger modal */
+/* Large screens - maximize space */
 @media screen and (min-width: 1200px) {
     .modal-container {
-        width: 85vw;
-        height: 85vh;
-        max-width: 1400px;
-        max-height: 900px;
+        width: 92vw;
+        height: 92vh;
+        max-width: 2000px;
+        max-height: 1400px;
         padding: 30px;
     }
 
@@ -1847,13 +1847,13 @@ body.white-theme .modal-loading p {
     }
 }
 
-/* Tablets */
+/* Tablets - use more space */
 @media screen and (max-width: 1024px) {
     .modal-container {
-        width: 95vw;
-        height: 85vh;
-        max-width: 900px;
-        max-height: 700px;
+        width: 96vw;
+        height: 90vh;
+        max-width: 1200px;
+        max-height: 900px;
         padding: 20px;
     }
 
@@ -1871,17 +1871,17 @@ body.white-theme .modal-loading p {
     }
 }
 
-/* Mobile */
+/* Mobile - maximize available space */
 @media screen and (max-width: 768px) {
     .video-modal {
-        padding: 10px;
+        padding: 5px; /* Reduced padding for more space */
     }
 
     .modal-container {
         width: 98vw;
-        height: 90vh;
-        max-width: 500px;
-        max-height: 600px;
+        height: 95vh; /* Use more height on mobile */
+        max-width: 600px;
+        max-height: 800px; /* Increased for mobile */
         padding: 15px;
     }
 
@@ -1903,11 +1903,11 @@ body.white-theme .modal-loading p {
     }
 }
 
-/* Small mobile */
+/* Small mobile - still maximize space */
 @media screen and (max-width: 576px) {
     .modal-container {
-        width: 98vw;
-        height: 85vh;
+        width: 99vw;
+        height: 96vh; /* Use almost full height */
         padding: 10px;
     }
 
