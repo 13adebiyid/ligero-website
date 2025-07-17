@@ -148,26 +148,75 @@ nav {
     height: 24px;
     justify-content: space-between;
     z-index: 1001;
+    position: relative;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
 }
 
 .hamburger-line {
-    width: 100%;
+    display: block;
+    position: absolute;
     height: 3px;
+    width: 100%;
     background: white;
-    transition: all 0.3s ease;
-    border-radius: 2px;
+    border-radius: 3px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out;
 }
 
+/* Position the 3 lines */
+.hamburger-line:nth-child(1) {
+    top: 0px;
+}
+
+.hamburger-line:nth-child(2) {
+    top: 10.5px; /* Middle position */
+}
+
+.hamburger-line:nth-child(3) {
+    top: 21px; /* Bottom position */
+}
+
+/* Active state animation - Icon3 style adapted for 3 lines */
 .hamburger-menu.active .hamburger-line:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
+    top: 10.5px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .hamburger-menu.active .hamburger-line:nth-child(2) {
+    width: 0%;
     opacity: 0;
+    left: 50%;
 }
 
 .hamburger-menu.active .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -6px);
+    top: 10.5px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+/* White theme adjustments */
+body.white-theme .hamburger-line {
+    background: black;
 }
 
 /* Mobile Menu Overlay */
@@ -2173,7 +2222,7 @@ body.white-theme .image-project {
     border-radius: 5px;
     color: white;
     font-size: 1rem;
-    font-family:  'Numbers', sans-serif;
+    font-family: Aptos Light, serif;
     transition: all 0.3s;
 }
 

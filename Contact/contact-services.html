@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Services - Ligero</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
+  <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
+  <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="hamburger-menu">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
+
+  <a href="/" class="logo">LIGERO</a>
+
+  <div class="nav-menu">
+    <a href="/shop/" class="nav-item">Shop</a>
+    <span class="nav-separator">|</span>
+    <a href="/services/" class="nav-item">Services</a>
+    <span class="nav-separator">|</span>
+    <a href="/contact/" class="nav-item">Contact</a>
+    <span class="nav-separator">|</span>
+    <a href="/policies/" class="nav-item">Policies</a>
+  </div>
+</nav>
+
+<div class="mobile-menu-overlay">
+  <a href="/" class="mobile-menu-item">HOME</a>
+  <a href="/shop/" class="mobile-menu-item">SHOP</a>
+  <a href="/services/" class="mobile-menu-item">SERVICES</a>
+  <a href="/contact/" class="mobile-menu-item">CONTACT</a>
+  <a href="/policies/" class="mobile-menu-item">POLICIES</a>
+</div>
+
+<!-- Contact Page -->
+<div class="contact-page" id="contact-page">
+  <div class="theme-switcher">
+    <div class="theme-circle black" onclick="setTheme('black')"></div>
+    <div class="theme-circle white" onclick="setTheme('white')"></div>
+  </div>
+
+  <!-- Contact Form Section -->
+  <div class="contact-form-section" id="contactFormSection">
+    <div class="contact-container">
+      <h1 class="contact-title">GET IN TOUCH</h1>
+      <p class="contact-subtitle">Tell us about your project and we'll bring your vision to life</p>
+
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" name="firstName" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" name="lastName" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="service">Service Interest</label>
+          <select id="service" name="service">
+            <option value="">Select a service</option>
+            <option value="styling">Styling</option>
+            <option value="creative-directing">Creative Directing</option>
+            <option value="shoots">Shoots</option>
+            <option value="set-designing">Set Designing</option>
+            <option value="models">Models</option>
+            <option value="music">Music</option>
+            <option value="multiple">Multiple Services</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="budget">Project Budget</label>
+          <select id="budget" name="budget">
+            <option value="">Select budget range</option>
+            <option value="under-1k">Under $1,000</option>
+            <option value="1k-5k">$1,000 - $5,000</option>
+            <option value="5k-10k">$5,000 - $10,000</option>
+            <option value="10k-25k">$10,000 - $25,000</option>
+            <option value="25k-plus">$25,000+</option>
+            <option value="discuss">Prefer to discuss</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="timeline">Project Timeline</label>
+          <select id="timeline" name="timeline">
+            <option value="">Select timeline</option>
+            <option value="asap">ASAP</option>
+            <option value="1-month">Within 1 month</option>
+            <option value="2-3-months">2-3 months</option>
+            <option value="3-6-months">3-6 months</option>
+            <option value="6-plus-months">6+ months</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Project Details *</label>
+          <textarea id="message" name="message" rows="6" placeholder="Tell us about your project, vision, goals, and any specific requirements..." required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="submit-button">SEND MESSAGE</button>
+          <a href="/services/" class="back-link">← Back to Services</a>
+        </div>
+      </form>
+
+      <!-- Instagram Link Section -->
+      <div class="social-links">
+        <a href="https://instagram.com/ligero.official" target="_blank" rel="noopener" class="social-link-item">
+          <svg class="social-icon" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          @ligero.official
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thank You Section (initially hidden) -->
+  <div class="thank-you-section" id="thankYouSection" style="display: none;">
+    <div class="thank-you-container">
+      <h1 class="thank-you-title">THANK YOU FOR CONTACTING US</h1>
+      <p class="thank-you-message">We will be in touch with you shortly</p>
+      <a href="/" class="home-link">Back to Home Page >></a>
+    </div>
+  </div>
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>
