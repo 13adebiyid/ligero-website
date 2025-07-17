@@ -1000,12 +1000,13 @@ body.white-theme .contact-button:hover {
 /* Video Sections - Each video gets its own section */
 .video-section {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 3vw;
     width: 100%;
-    max-width: none;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0 auto 60px;
+    padding: 0 3vw;
 }
 
 .video-section.reverse {
@@ -1014,22 +1015,22 @@ body.white-theme .contact-button:hover {
 
 /* Video Container */
 .video-container-main {
-    flex: 4;
+    flex: 1 1 auto;
+    max-width: 75vw;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
-    background: #111;
+    background: transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    aspect-ratio: 16 / 9;
 }
 
 /* Video Metadata Sidebar */
 .video-metadata {
-    flex: 1;
-    min-width: 280px;
+    flex: 0 1 300px;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
@@ -1039,12 +1040,18 @@ body.white-theme .contact-button:hover {
 /* FIXED: Video sizing to fill container properly */
 .feed-video,
 .video-container-main video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    display: block !important;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
     border-radius: 12px;
+    background: #000;
+}
+
+.feed-video.cover-fit,
+.video-container-main video.cover-fit {
+    object-fit: cover;
 }
 
 /* Video overlay for play button */
@@ -1061,10 +1068,12 @@ body.white-theme .contact-button:hover {
     opacity: 0;
     transition: opacity 0.3s;
     border-radius: 12px;
+    pointer-events: none;
 }
 
 .video-container-main:hover .video-overlay {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .play-indicator {
@@ -1112,7 +1121,7 @@ body.white-theme .contact-button:hover {
 
 /* Enhanced Metadata Styling */
 .video-metadata .client-name {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
     opacity: 0.6;
     margin-bottom: 8px;
     letter-spacing: 1px;
@@ -1120,7 +1129,7 @@ body.white-theme .contact-button:hover {
 }
 
 .video-metadata .project-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 300;
     margin-bottom: 15px;
     line-height: 1.2;
@@ -1128,9 +1137,9 @@ body.white-theme .contact-button:hover {
 }
 
 .video-metadata .designer-link {
+    font-size: clamp(0.9rem, 1.8vw, 1.2rem);
     color: white;
     text-decoration: none;
-    font-size: 1.1rem;
     opacity: 0.8;
     transition: opacity 0.3s;
     display: inline-block;
@@ -2627,6 +2636,158 @@ body.white-theme .form-buttons button:hover {
 }
 
 /* ================== RESPONSIVE DESIGN ================== */
+
+@media screen and (min-width: 1600px) {
+    .video-section {
+        max-width: 1800px;
+        margin: 0 auto 60px;
+        padding: 0 4vw;
+    }
+
+    .video-container-main {
+        max-width: 1200px; /* Cap video size on very large screens */
+    }
+
+    .video-metadata {
+        flex: 0 1 350px;
+        padding: 20px 30px;
+    }
+}
+
+/* Large Screens (1200px - 1599px) */
+@media screen and (min-width: 1200px) and (max-width: 1599px) {
+    .video-container-main {
+        max-width: 70vw;
+    }
+
+    .video-metadata {
+        flex: 0 1 320px;
+    }
+}
+
+/* Medium Screens (992px - 1199px) */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .video-section {
+        gap: 30px;
+    }
+
+    .video-container-main {
+        max-width: 65vw;
+    }
+
+    .video-metadata {
+        flex: 0 1 280px;
+    }
+}
+
+/* Tablets (768px - 991px) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .video-section {
+        gap: 25px;
+    }
+
+    .video-container-main {
+        max-width: 60vw;
+        aspect-ratio: 16 / 10; /* Slightly taller on tablets */
+    }
+
+    .video-metadata {
+        flex: 0 1 250px;
+    }
+}
+
+/* Mobile Landscape & Small Tablets (576px - 767px) */
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    .video-section,
+    .video-section.reverse {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 3vw;
+    }
+
+    .video-container-main {
+        max-width: 90vw;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+    }
+
+    .video-metadata {
+        width: 100%;
+        text-align: center;
+        padding: 15px 0;
+        max-width: 90vw;
+    }
+}
+
+/* Mobile Portrait (up to 575px) */
+@media screen and (max-width: 575px) {
+    .video-section,
+    .video-section.reverse {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 2vw;
+        margin-bottom: 40px;
+    }
+
+    .video-container-main {
+        max-width: 96vw;
+        width: 100%;
+        aspect-ratio: 16 / 10; /* More square on mobile */
+        border-radius: 8px;
+    }
+
+    /* Hide metadata on very small screens */
+    .video-metadata {
+        display: none;
+    }
+
+    /* Alternative: Show minimal metadata */
+    .video-metadata.show-mobile {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .video-metadata .project-title {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .video-metadata .client-name {
+        font-size: 0.75rem;
+    }
+
+    .video-metadata .designer-link {
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+}
+
+/* Very Small Screens (up to 400px) */
+@media screen and (max-width: 400px) {
+    .video-container-main {
+        aspect-ratio: 4 / 3; /* Even more square on tiny screens */
+    }
+
+    .feed-video,
+    .video-container-main video {
+        border-radius: 6px;
+    }
+
+    .play-indicator {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .hq-badge {
+        top: 10px;
+        right: 10px;
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+}
 
 @media screen and (min-width: 1200px) {
 
