@@ -3856,6 +3856,8 @@ body.white-theme .form-buttons button:hover {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
+    align-items: center;
+    justify-content: center;
 }
 
 .dual-video-item {
@@ -3875,8 +3877,6 @@ body.white-theme .form-buttons button:hover {
     background: #111;
     cursor: pointer;
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .dual-video-item .video-metadata {
