@@ -38,20 +38,28 @@ div.project-title span.number {
 .project-title .number,
 .dual-video-item .project-title .number,
 .modal-title .number,
-.hero-title .number {
+.hero-title .number,
+.video-metadata .project-title span.number,
+.dual-video-item .video-metadata .project-title span.number,
+.designer-profile-page .video-metadata .project-title span.number
+{
     font-family: "Arial Nova Light", sans-serif !important;
     font-weight: normal !important;
 }
 
 .project-title span.number,
 .client-name span.number,
-.modal-client span.number {
+.modal-client span.number,body .number,
+body span.number,
+body .project-title span.number  {
     font-family: "Arial Nova Light", sans-serif !important;
 }
 
 body.white-theme .number,
 body.white-theme .video-metadata .number,
-body.white-theme .project-title .number {
+body.white-theme .project-title .number,
+body.white-theme span.number
+{
     font-family: "Arial Nova Light", sans-serif !important;
 }
 
@@ -338,7 +346,7 @@ body.white-theme .hamburger-line {
 }
 
 .hq-badge{
-    font-family: Arial, sans-serif;
+    font-family: "Arial Nova Light", sans-serif;
 }
 
 /* Hide on mobile if preferred */

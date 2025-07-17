@@ -1055,7 +1055,6 @@ function closeImageModal() {
 }
 
 // Get project info from the page structure
-// FIXED: Get project info function that works with Ifeoluwa's page structure
 function getProjectInfo(clickedElement) {
     // First check if we're in a dual video item (for Ashleigh's page)
     let dualVideoItem = clickedElement.closest('.dual-video-item');
