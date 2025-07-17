@@ -1055,9 +1055,9 @@ function closeImageModal() {
 }
 
 // Get project info from the page structure
-// FIXED: Get project info from the page structure - handles dual videos correctly
+// FIXED: Get project info function that works with Ifeoluwa's page structure
 function getProjectInfo(clickedElement) {
-    // First check if we're in a dual video item
+    // First check if we're in a dual video item (for Ashleigh's page)
     let dualVideoItem = clickedElement.closest('.dual-video-item');
     if (dualVideoItem) {
         const metadata = dualVideoItem.querySelector('.video-metadata');
@@ -1069,7 +1069,31 @@ function getProjectInfo(clickedElement) {
         }
     }
 
-    // Then check for regular video-section
+    // Check if we're clicking on an image in an images-grid
+    let imagesGrid = clickedElement.closest('.images-grid');
+    if (imagesGrid) {
+        console.log(`📋 Clicked on image in images-grid, looking for preceding video section...`);
+
+        // Find the video section that comes IMMEDIATELY BEFORE this images grid
+        let previousElement = imagesGrid.previousElementSibling;
+        while (previousElement) {
+            if (previousElement.classList && previousElement.classList.contains('video-section')) {
+                const metadata = previousElement.querySelector('.video-metadata');
+                if (metadata) {
+                    const clientName = metadata.querySelector('.client-name')?.textContent || 'Client';
+                    const projectTitle = metadata.querySelector('.project-title')?.textContent || 'Project';
+                    console.log(`📋 Found correct preceding video metadata for image: ${projectTitle} - ${clientName}`);
+                    return { title: projectTitle, client: clientName };
+                }
+                break; // Stop at the first video section we find
+            }
+            previousElement = previousElement.previousElementSibling;
+        }
+
+        console.log(`📋 Warning: No video section found before images grid`);
+    }
+
+    // For video clicks - check if we're in a regular video-section
     let videoSection = clickedElement.closest('.video-section');
     if (videoSection) {
         const metadata = videoSection.querySelector('.video-metadata');
@@ -1092,17 +1116,8 @@ function getProjectInfo(clickedElement) {
         }
     }
 
-    // Final fallback - look for any nearby metadata
-    const feedContainer = clickedElement.closest('.feed-container');
-    if (feedContainer) {
-        const clientName = feedContainer.querySelector('.client-name')?.textContent || 'Client';
-        const projectTitle = feedContainer.querySelector('.project-title')?.textContent || 'Project';
-        console.log(`📋 Found feed container metadata: ${projectTitle} - ${clientName}`);
-        return { title: projectTitle, client: clientName };
-    }
-
     console.log(`📋 No metadata found, using defaults`);
-    return { title: 'Project', client: 'Ligero' };
+    return { title: 'Project Image', client: 'Ligero' };
 }
 
 // Setup click handlers
