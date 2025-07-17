@@ -1393,6 +1393,8 @@ body.white-theme .feed-item[data-image] {
     overflow: hidden;
     border-radius: 8px;
     margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 .electra-video {
@@ -2662,8 +2664,7 @@ body.white-theme .form-buttons button:hover {
     .video-container-main {
         width: 100%;
         max-width: none;
-        justify-content: center;
-        align-items: center;
+
     }
 
     /* Keep metadata at proper size */
