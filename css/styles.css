@@ -270,10 +270,8 @@ nav {
 /* Hide on mobile if preferred */
 @media screen and (max-width: 768px) {
 
-    /* Fix 1: Remove greyish background from video containers */
     .video-container-main {
         background: transparent !important; /* Remove gray background */
-        min-height: auto !important; /* Let video determine height */
         max-height: none !important; /* Remove height constraints */
         overflow: hidden;
     }
@@ -976,7 +974,6 @@ body.white-theme .contact-button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: auto;
     width: 100%;
 }
 
@@ -1689,7 +1686,7 @@ body.white-theme .modal-loading p {
 }
 
 .modal-video {
-    width: 100%;
+    width: auto;
     height: auto;
     max-height: 100vh;
     object-fit: contain;
@@ -2520,7 +2517,7 @@ body.white-theme .form-buttons button:hover {
     }
 
     .modal-close {
-        top: -60px;
+        top: -70px;
         right: 0;
         font-size: 2.5rem;
         padding: 15px;
