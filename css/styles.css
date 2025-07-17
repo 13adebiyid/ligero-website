@@ -1039,6 +1039,8 @@ body.white-theme .contact-button:hover {
     width: 100%;
     max-width: none;
     margin: 0 auto;
+    justify-content: center;
+    align-items: center;
 }
 
 .video-section.reverse {
