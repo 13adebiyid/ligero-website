@@ -35,9 +35,10 @@ div.project-title span.number {
     font-style: normal !important;
 }
 
-.video-metadata .project-title span.number,
-.dual-video-item .video-metadata .project-title span.number,
-.designer-profile-page .video-metadata .project-title span.number {
+.project-title .number,
+.dual-video-item .project-title .number,
+.modal-title .number,
+.hero-title .number {
     font-family: "Arial Nova Light", sans-serif !important;
     font-weight: normal !important;
 }
