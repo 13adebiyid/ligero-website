@@ -3666,21 +3666,19 @@ body.white-theme .form-buttons button:hover {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    align-items: stretch; /* FIXED: Make grid items stretch to same height */
-    grid-template-rows: 1fr; /* FIXED: Force single row with equal height */
 }
 
 .dual-video-item {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* REMOVED: height: 100% - let grid control this */
 }
 
 .dual-video-item .video-container-main {
     width: 100%;
-    /* FIXED: Remove conflicting height constraints - let container determine size */
-    height: 400px; /* Fixed height for both containers */
+    height: 45vh; /* Back to the working viewport height */
+    min-height: 300px; /* Restored responsive constraints */
+    max-height: 400px;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
@@ -3689,13 +3687,11 @@ body.white-theme .form-buttons button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
 }
 
 .dual-video-item .video-metadata {
     text-align: center;
     padding: 15px 0;
-    flex-shrink: 0;
 }
 
 .dual-video-item .video-metadata .project-title {
@@ -3714,7 +3710,7 @@ body.white-theme .form-buttons button:hover {
     text-transform: uppercase;
 }
 
-/* Video styling within dual video items - FIXED alignment */
+/* Video styling within dual video items - ensure videos fit containers exactly */
 .dual-video-item .feed-video,
 .dual-video-item .video-container-main video {
     width: 100% !important;
@@ -3723,10 +3719,6 @@ body.white-theme .form-buttons button:hover {
     object-position: center !important;
     display: block !important;
     border-radius: 12px;
-    /* FIXED: Ensure consistent rendering */
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 /* Hover effects for dual videos */
