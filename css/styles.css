@@ -1492,6 +1492,92 @@ body.white-theme .modal-loading p {
     color: black;
 }
 
+/* ================== LARGE MONITOR MODAL FIX (2560x1440+) ================== */
+
+/* For large monitors 2560x1440 and above */
+@media screen and (min-width: 2560px) {
+    .video-modal {
+        padding: 60px 40px; /* More padding on large screens */
+    }
+
+    .modal-container {
+        max-width: 70vw; /* Smaller percentage on large screens */
+        max-height: 80vh; /* More conservative height */
+    }
+
+    .modal-video {
+        max-height: 35vh; /* Much smaller video on large monitors */
+        max-width: 1400px; /* Limit absolute width too */
+    }
+
+    .modal-title {
+        font-size: 2rem; /* Larger text on big screens */
+        margin-bottom: 10px;
+    }
+
+    .modal-client {
+        font-size: 1rem; /* Larger client text */
+    }
+
+    .modal-director {
+        font-size: 1.1rem; /* Larger director text */
+    }
+
+    .modal-close {
+        top: -70px; /* More space above on large screens */
+        font-size: 2.5rem; /* Bigger close button */
+    }
+
+    .modal-header {
+        margin-bottom: 30px; /* More spacing */
+    }
+
+    .modal-footer {
+        margin-top: 30px; /* More spacing */
+    }
+}
+
+/* For ultra-wide monitors (3440x1440, 5120x1440, etc.) */
+@media screen and (min-width: 3440px) {
+    .modal-container {
+        max-width: 60vw; /* Even smaller on ultra-wide */
+    }
+
+    .modal-video {
+        max-height: 30vh; /* Very conservative height */
+        max-width: 1600px; /* Cap the width */
+    }
+}
+
+/* For 4K monitors and above (3840x2160+) */
+@media screen and (min-width: 3840px) {
+    .video-modal {
+        padding: 80px 60px; /* Even more padding */
+    }
+
+    .modal-container {
+        max-width: 50vw; /* Much smaller percentage */
+        max-height: 70vh; /* Conservative height */
+    }
+
+    .modal-video {
+        max-height: 25vh; /* Very small video */
+        max-width: 1800px; /* Reasonable max width */
+    }
+
+    .modal-title {
+        font-size: 2.5rem; /* Larger for 4K */
+    }
+
+    .modal-client {
+        font-size: 1.2rem;
+    }
+
+    .modal-director {
+        font-size: 1.3rem;
+    }
+}
+
 /* ================== FIXED MEMBERS PAGE LAYOUT ================== */
 
 /* Fix for Designer Profile Page - Videos in Own Rows */
@@ -2517,7 +2603,7 @@ body.white-theme .form-buttons button:hover {
     }
 
     .modal-close {
-        top: -70px;
+        top: -50px;
         right: 0;
         font-size: 2.5rem;
         padding: 15px;
