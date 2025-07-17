@@ -3666,21 +3666,21 @@ body.white-theme .form-buttons button:hover {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    align-items: start; /* FIXED: Align containers to top */
+    align-items: stretch; /* FIXED: Make grid items stretch to same height */
+    grid-template-rows: 1fr; /* FIXED: Force single row with equal height */
 }
 
 .dual-video-item {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    height: 100%; /* FIXED: Ensure both items take full height */
+    /* REMOVED: height: 100% - let grid control this */
 }
 
 .dual-video-item .video-container-main {
     width: 100%;
-    height: 45vh; /* FIXED: Exact same height for both */
-    min-height: 300px;
-    max-height: 400px;
+    /* FIXED: Remove conflicting height constraints - let container determine size */
+    height: 400px; /* Fixed height for both containers */
     position: relative;
     overflow: hidden;
     border-radius: 12px;
@@ -3689,14 +3689,12 @@ body.white-theme .form-buttons button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* FIXED: Force consistent sizing */
     flex-shrink: 0;
 }
 
 .dual-video-item .video-metadata {
     text-align: center;
     padding: 15px 0;
-    /* FIXED: Ensure metadata doesn't affect video height */
     flex-shrink: 0;
 }
 
