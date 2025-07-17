@@ -1773,7 +1773,7 @@ body.white-theme .modal-loading p {
 .modal-video {
     width: auto;
     height: auto;
-    max-height: 100vh;
+    max-height: 70vh;
     object-fit: contain;
     border-radius: 8px;
 }
