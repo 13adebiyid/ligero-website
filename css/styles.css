@@ -1048,7 +1048,7 @@ body.white-theme .contact-button:hover {
 
 /* Video Container */
 .video-container-main {
-    flex: 1 1 auto;
+    flex: 1.2 1 auto;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
@@ -1063,7 +1063,7 @@ body.white-theme .contact-button:hover {
 /* Video Metadata Sidebar */
 .video-metadata {
     flex: 0 1 300px;
-    padding: 20px 0;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2681,10 +2681,10 @@ body.white-theme .form-buttons button:hover {
 
     .video-metadata {
         flex: 0 1 350px;
-        padding: 20px 30px;
+        padding: 20px 0;
     }
 
-    .feed- container {
+    .feed-container {
         max-width: 96vw;
         padding: 0 2vw;
     }
@@ -3891,8 +3891,9 @@ body.white-theme .form-buttons button:hover {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     width: 100%;
-    max-width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
+    padding: 0 3vw;
 }
 
 .dual-video-item {
