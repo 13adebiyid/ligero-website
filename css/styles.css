@@ -1693,7 +1693,7 @@ body.white-theme .modal-loading p {
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 30px;
+    padding: 5px; /* Reduced from 10px for maximum space */
 }
 
 .video-modal.active {
@@ -1713,10 +1713,10 @@ body.white-theme .modal-loading p {
 /* FIXED: Smart Modal Container - Maximized viewport approach */
 .modal-container {
     position: relative;
-    width: 95vw;
-    height: 95vh;
-    max-width: 1800px;  /* Much larger max-width */
-    max-height: 1200px; /* Much larger max-height */
+    width: 97vw;  /* Increased from 95vw */
+    height: 97vh; /* Increased from 95vh */
+    max-width: 2200px;  /* Increased from 1800px */
+    max-height: 1500px; /* Increased from 1200px */
     z-index: 3001;
 
     /* Use flexbox to distribute space */
@@ -1727,41 +1727,51 @@ body.white-theme .modal-loading p {
 
     /* Ensure everything fits inside */
     overflow: hidden;
-    padding: 20px;
+    padding: 15px; /* Reduced from 20px */
     box-sizing: border-box;
 }
 
 .modal-close {
     position: absolute;
-    top: -50px;
-    right: 0;
-    background: none;
+    top: 20px;  /* FIXED: Inside the modal container */
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Added background for better visibility */
     border: none;
     color: white;
     font-size: 2rem;
     cursor: pointer;
     padding: 10px;
-    opacity: 0.7;
-    transition: opacity 0.3s;
+    opacity: 0.8;
+    transition: all 0.3s;
     z-index: 3002;
+    /* FIXED: Now it's part of the modal and scales with it */
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
 }
 
 .modal-close:hover {
     opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
 }
 
 /* Header takes minimal space */
 .modal-header {
     flex-shrink: 0; /* Never shrink */
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced from 20px */
     width: 100%;
 }
 
 .modal-title {
     font-size: 1.8rem;
     font-weight: 300;
-    margin-bottom: 8px;
+    margin-bottom: 6px; /* Reduced from 8px */
     color: white;
 }
 
@@ -1797,7 +1807,7 @@ body.white-theme .modal-loading p {
 .modal-footer {
     flex-shrink: 0; /* Never shrink */
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px; /* Reduced from 20px */
     width: 100%;
 }
 
@@ -1812,26 +1822,22 @@ body.white-theme .modal-loading p {
 /* Large screens - maximize space */
 @media screen and (min-width: 1200px) {
     .modal-container {
-        width: 92vw;
-        height: 92vh;
-        max-width: 2000px;
-        max-height: 1400px;
-        padding: 30px;
+        width: 96vw;  /* Increased from 92vw */
+        height: 96vh; /* Increased from 92vh */
+        max-width: 2400px; /* Increased from 2000px */
+        max-height: 1600px; /* Increased from 1400px */
+        padding: 25px; /* Reduced from 30px */
     }
 
-    .modal-close {
-        top: -60px;
-        font-size: 2.5rem;
-        padding: 15px;
-    }
+    /* REMOVED: Close button positioning - now handled by container */
 
     .modal-header {
-        margin-bottom: 30px;
+        margin-bottom: 20px; /* Reduced from 30px */
     }
 
     .modal-title {
         font-size: 2.2rem;
-        margin-bottom: 10px;
+        margin-bottom: 8px; /* Reduced from 10px */
     }
 
     .modal-client {
@@ -1839,11 +1845,19 @@ body.white-theme .modal-loading p {
     }
 
     .modal-footer {
-        margin-top: 30px;
+        margin-top: 20px; /* Reduced from 30px */
     }
 
     .modal-director {
         font-size: 1.2rem;
+    }
+
+    /* FIXED: Close button scales with modal size */
+    .modal-close {
+        font-size: 2.5rem;
+        padding: 15px;
+        top: 25px;
+        right: 25px;
     }
 }
 
@@ -1865,9 +1879,12 @@ body.white-theme .modal-loading p {
         margin-top: 15px;
     }
 
+    /* FIXED: Close button inside container */
     .modal-close {
-        top: -40px;
+        top: 20px;
+        right: 20px;
         font-size: 1.8rem;
+        padding: 8px;
     }
 }
 
@@ -1897,9 +1914,12 @@ body.white-theme .modal-loading p {
         font-size: 1.4rem;
     }
 
+    /* FIXED: Close button inside container */
     .modal-close {
-        top: -35px;
+        top: 15px;
+        right: 15px;
         font-size: 1.5rem;
+        padding: 6px;
     }
 }
 
@@ -1921,6 +1941,14 @@ body.white-theme .modal-loading p {
 
     .modal-director {
         font-size: 0.9rem;
+    }
+
+    /* FIXED: Close button inside container */
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        font-size: 1.3rem;
+        padding: 5px;
     }
 }
 
@@ -3638,17 +3666,19 @@ body.white-theme .form-buttons button:hover {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
+    align-items: start; /* FIXED: Align containers to top */
 }
 
 .dual-video-item {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 100%; /* FIXED: Ensure both items take full height */
 }
 
 .dual-video-item .video-container-main {
     width: 100%;
-    height: 45vh; /* Slightly smaller than single videos */
+    height: 45vh; /* FIXED: Exact same height for both */
     min-height: 300px;
     max-height: 400px;
     position: relative;
@@ -3659,11 +3689,15 @@ body.white-theme .form-buttons button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* FIXED: Force consistent sizing */
+    flex-shrink: 0;
 }
 
 .dual-video-item .video-metadata {
     text-align: center;
     padding: 15px 0;
+    /* FIXED: Ensure metadata doesn't affect video height */
+    flex-shrink: 0;
 }
 
 .dual-video-item .video-metadata .project-title {
@@ -3682,7 +3716,7 @@ body.white-theme .form-buttons button:hover {
     text-transform: uppercase;
 }
 
-/* Video styling within dual video items */
+/* Video styling within dual video items - FIXED alignment */
 .dual-video-item .feed-video,
 .dual-video-item .video-container-main video {
     width: 100% !important;
@@ -3691,6 +3725,10 @@ body.white-theme .form-buttons button:hover {
     object-position: center !important;
     display: block !important;
     border-radius: 12px;
+    /* FIXED: Ensure consistent rendering */
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* Hover effects for dual videos */
