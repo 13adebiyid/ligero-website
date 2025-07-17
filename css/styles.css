@@ -1026,20 +1026,19 @@ body.white-theme .contact-button:hover {
     gap: 60px;
     align-items: center;
     width: 100%;
-    max-width: 94vw;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 3vw;
 }
 
 /* Video Sections - Each video gets its own section */
 .video-section {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3vw;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
     width: 100%;
-    margin: 0 auto 60px;
-    padding: 0;
+    max-width: none;
+    margin: 0 auto;
 }
 
 .video-section.reverse {
@@ -1048,22 +1047,24 @@ body.white-theme .contact-button:hover {
 
 /* Video Container */
 .video-container-main {
-    flex: 1.2 1 auto;
+    flex: 4;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
-    background: transparent;
+    background: #111;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 16 / 9;
+    height: auto;
+    width: 100%;
 }
 
 /* Video Metadata Sidebar */
 .video-metadata {
-    flex: 0 1 300px;
-    padding: 10px 0;
+    flex: 1;
+    min-width: 280px;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -3891,9 +3892,8 @@ body.white-theme .form-buttons button:hover {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     width: 100%;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 3vw;
 }
 
 .dual-video-item {
