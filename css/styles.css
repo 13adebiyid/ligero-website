@@ -1017,7 +1017,7 @@ body.white-theme .contact-button:hover {
     margin: 0 auto;
 }
 
-/* ================== NEW VIDEO-FOCUSED LAYOUT ================== */
+/* ================== NEW VIDEO-FOCUSED LAYOUT - FIXED ALIGNMENT ================== */
 
 /* Feed Container - New Structure */
 .feed-container {
@@ -1073,18 +1073,12 @@ body.white-theme .contact-button:hover {
 /* FIXED: Video sizing to fill container properly */
 .feed-video,
 .video-container-main video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
     border-radius: 12px;
-    background: #000;
-}
-
-.feed-video.cover-fit,
-.video-container-main video.cover-fit {
-    object-fit: cover;
 }
 
 /* Video overlay for play button */
@@ -1152,9 +1146,9 @@ body.white-theme .contact-button:hover {
     white-space: nowrap;
 }
 
-/* Enhanced Metadata Styling */
+/* FIXED: Enhanced Metadata Styling - Using fixed sizes from working CSS */
 .video-metadata .client-name {
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    font-size: 0.9rem;
     opacity: 0.6;
     margin-bottom: 8px;
     letter-spacing: 1px;
@@ -1162,7 +1156,7 @@ body.white-theme .contact-button:hover {
 }
 
 .video-metadata .project-title {
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: 2.2rem;
     font-weight: 300;
     margin-bottom: 15px;
     line-height: 1.2;
@@ -1170,9 +1164,9 @@ body.white-theme .contact-button:hover {
 }
 
 .video-metadata .designer-link {
-    font-size: clamp(0.9rem, 1.8vw, 1.2rem);
     color: white;
     text-decoration: none;
+    font-size: 1.1rem;
     opacity: 0.8;
     transition: opacity 0.3s;
     display: inline-block;
@@ -1199,6 +1193,7 @@ body.white-theme .contact-button:hover {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     width: 100%;
+    max-width: 100%;
     margin: 40px auto 0;
 }
 
@@ -1580,92 +1575,6 @@ body.white-theme .modal-spinner .spinner {
 
 body.white-theme .modal-loading p {
     color: black;
-}
-
-/* ================== LARGE MONITOR MODAL FIX (2560x1440+) ================== */
-
-/* For large monitors 2560x1440 and above */
-@media screen and (min-width: 2560px) {
-    .video-modal {
-        padding: 60px 40px; /* More padding on large screens */
-    }
-
-    .modal-container {
-        max-width: 70vw; /* Smaller percentage on large screens */
-        max-height: 80vh; /* More conservative height */
-    }
-
-    .modal-video {
-        max-height: 35vh; /* Much smaller video on large monitors */
-        max-width: 1400px; /* Limit absolute width too */
-    }
-
-    .modal-title {
-        font-size: 2rem; /* Larger text on big screens */
-        margin-bottom: 10px;
-    }
-
-    .modal-client {
-        font-size: 1rem; /* Larger client text */
-    }
-
-    .modal-director {
-        font-size: 1.1rem; /* Larger director text */
-    }
-
-    .modal-close {
-        top: -70px; /* More space above on large screens */
-        font-size: 2.5rem; /* Bigger close button */
-    }
-
-    .modal-header {
-        margin-bottom: 30px; /* More spacing */
-    }
-
-    .modal-footer {
-        margin-top: 30px; /* More spacing */
-    }
-}
-
-/* For ultra-wide monitors (3440x1440, 5120x1440, etc.) */
-@media screen and (min-width: 3440px) {
-    .modal-container {
-        max-width: 60vw; /* Even smaller on ultra-wide */
-    }
-
-    .modal-video {
-        max-height: 30vh; /* Very conservative height */
-        max-width: 1600px; /* Cap the width */
-    }
-}
-
-/* For 4K monitors and above (3840x2160+) */
-@media screen and (min-width: 3840px) {
-    .video-modal {
-        padding: 80px 60px; /* Even more padding */
-    }
-
-    .modal-container {
-        max-width: 50vw; /* Much smaller percentage */
-        max-height: 70vh; /* Conservative height */
-    }
-
-    .modal-video {
-        max-height: 25vh; /* Very small video */
-        max-width: 1800px; /* Reasonable max width */
-    }
-
-    .modal-title {
-        font-size: 2.5rem; /* Larger for 4K */
-    }
-
-    .modal-client {
-        font-size: 1.2rem;
-    }
-
-    .modal-director {
-        font-size: 1.3rem;
-    }
 }
 
 /* ================== FIXED MEMBERS PAGE LAYOUT ================== */
@@ -2667,171 +2576,9 @@ body.white-theme .form-buttons button:hover {
     color: white;
 }
 
-/* ================== RESPONSIVE DESIGN ================== */
+/* ================== RESPONSIVE DESIGN - FIXED ALIGNMENT ================== */
 
-@media screen and (min-width: 1600px) {
-    .video-section {
-        max-width: 1800px;
-        margin: 0 auto 60px;
-        padding: 0 4vw;
-    }
-
-    .dual-video-section {
-        max-width: 1800px;
-        margin: 0 auto;
-        padding: 0 4vw;
-    }
-
-    .video-container-main {
-        max-width: 1200px;
-    }
-
-    .video-metadata {
-        flex: 0 1 350px;
-        padding: 20px 0;
-    }
-
-    .feed-container {
-        max-width: 96vw;
-        padding: 0 2vw;
-    }
-}
-
-/* Large Screens (1200px - 1599px) */
-@media screen and (min-width: 1200px) and (max-width: 1599px) {
-    .video-container-main {
-        max-width: 70vw;
-    }
-
-    .video-metadata {
-        flex: 0 1 320px;
-    }
-}
-
-/* Medium Screens (992px - 1199px) */
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-    .video-section {
-        gap: 30px;
-    }
-
-    .video-container-main {
-        max-width: 65vw;
-    }
-
-    .video-metadata {
-        flex: 0 1 280px;
-    }
-}
-
-/* Tablets (768px - 991px) */
-@media screen and (min-width: 768px) and (max-width: 991px) {
-    .video-section {
-        gap: 25px;
-    }
-
-    .video-container-main {
-        max-width: 60vw;
-        aspect-ratio: 16 / 10; /* Slightly taller on tablets */
-    }
-
-    .video-metadata {
-        flex: 0 1 250px;
-    }
-}
-
-/* Mobile Landscape & Small Tablets (576px - 767px) */
-@media screen and (min-width: 576px) and (max-width: 767px) {
-    .video-section,
-    .video-section.reverse {
-        flex-direction: column;
-        gap: 20px;
-        padding: 0 3vw;
-    }
-
-    .video-container-main {
-        max-width: 90vw;
-        width: 100%;
-        aspect-ratio: 16 / 10;
-    }
-
-    .video-metadata {
-        width: 100%;
-        text-align: center;
-        padding: 15px 0;
-        max-width: 90vw;
-    }
-}
-
-/* Mobile Portrait (up to 575px) */
-@media screen and (max-width: 575px) {
-    .video-section,
-    .video-section.reverse {
-        flex-direction: column;
-        gap: 15px;
-        padding: 0 2vw;
-        margin-bottom: 40px;
-    }
-
-    .video-container-main {
-        max-width: 96vw;
-        width: 100%;
-        aspect-ratio: 16 / 10; /* More square on mobile */
-        border-radius: 8px;
-    }
-
-    /* Hide metadata on very small screens */
-    .video-metadata {
-        display: none;
-    }
-
-    /* Alternative: Show minimal metadata */
-    .video-metadata.show-mobile {
-        display: block;
-        width: 100%;
-        text-align: center;
-        padding: 10px 0;
-    }
-
-    .video-metadata .project-title {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-    }
-
-    .video-metadata .client-name {
-        font-size: 0.75rem;
-    }
-
-    .video-metadata .designer-link {
-        font-size: 0.85rem;
-        margin-bottom: 5px;
-    }
-}
-
-/* Very Small Screens (up to 400px) */
-@media screen and (max-width: 400px) {
-    .video-container-main {
-        aspect-ratio: 4 / 3; /* Even more square on tiny screens */
-    }
-
-    .feed-video,
-    .video-container-main video {
-        border-radius: 6px;
-    }
-
-    .play-indicator {
-        width: 50px;
-        height: 50px;
-        font-size: 16px;
-    }
-
-    .hq-badge {
-        top: 10px;
-        right: 10px;
-        padding: 3px 6px;
-        font-size: 10px;
-    }
-}
-
+/* Large Screens (1200px and up) - FIXED FROM WORKING CSS */
 @media screen and (min-width: 1200px) {
 
     .modal-container {
@@ -2840,7 +2587,7 @@ body.white-theme .form-buttons button:hover {
     }
 
     .modal-video {
-        max-height: 70vh;
+        max-height: 90vh;
     }
 
     .modal-video-wrap {
@@ -2856,7 +2603,7 @@ body.white-theme .form-buttons button:hover {
     }
 
     .modal-close {
-        top: -50px;
+        top: -60px;
         right: 0;
         font-size: 2.5rem;
         padding: 15px;
@@ -2991,6 +2738,37 @@ body.white-theme .form-buttons button:hover {
     .image-large {
         grid-column: span 1; /* Single column on smaller screens */
         height: 400px;
+    }
+}
+
+/* Medium Screens (992px - 1199px) */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .video-section {
+        gap: 30px;
+    }
+
+    .video-container-main {
+        max-width: 65vw;
+    }
+
+    .video-metadata {
+        flex: 0 1 280px;
+    }
+}
+
+/* Tablets (768px - 991px) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .video-section {
+        gap: 25px;
+    }
+
+    .video-container-main {
+        max-width: 60vw;
+        aspect-ratio: 16 / 10; /* Slightly taller on tablets */
+    }
+
+    .video-metadata {
+        flex: 0 1 250px;
     }
 }
 
@@ -3819,76 +3597,6 @@ body.white-theme .form-buttons button:hover {
     }
 }
 
-/* Electra settings */
-/* Video Grid Section */
-.video-grid-section {
-    padding: 0 5vw 80px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.work-section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 300;
-    margin-bottom: 60px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Enhanced Electra Grid for Ashleigh */
-.electra-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 60px 40px;
-    align-items: start;
-}
-
-/* Enhanced Electra Items */
-.electra-item {
-    cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.electra-item:nth-child(1) { animation-delay: 0.1s; }
-.electra-item:nth-child(2) { animation-delay: 0.2s; }
-.electra-item:nth-child(3) { animation-delay: 0.3s; }
-.electra-item:nth-child(4) { animation-delay: 0.4s; }
-
-.electra-item:hover {
-    transform: translateY(-5px);
-}
-
-/* Video Containers */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 350px;
-    overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 25px;
-    background: #111;
-}
-
-.electra-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 0.3s ease;
-}
-
-.electra-item:hover .electra-video {
-    transform: scale(1.02);
-}
-
-.electra-item:hover .video-overlay {
-    opacity: 1;
-}
-
 /* ================== DUAL VIDEO SECTION STYLES ================== */
 
 /* Dual Video Section - Two videos side by side */
@@ -4088,120 +3796,4 @@ body.white-theme .dual-video-item .video-container-main {
         height: 50px;
         font-size: 16px;
     }
-}
-
-/* ================== YOUTUBE FALLBACK SYSTEM STYLES ================== */
-
-.youtube-fallback-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    background: #111;
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    animation: fadeInFallback 0.3s ease-out forwards; /* Faster animation */
-}
-
-.compatibility-message {
-    background: rgba(255, 193, 7, 0.95); /* Amber warning color */
-    color: #000;
-    padding: 8px 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    z-index: 10;
-    position: relative;
-    backdrop-filter: blur(10px);
-    flex-shrink: 0; /* Prevent shrinking */
-}
-
-.compatibility-icon {
-    font-size: 1rem;
-    flex-shrink: 0;
-}
-
-.compatibility-text {
-    flex: 1;
-    line-height: 1.3;
-}
-
-.youtube-fallback-iframe {
-    width: 100%;
-    height: calc(100% - 44px); /* Subtract message height */
-    border: none;
-    background: #000;
-    min-height: 300px;
-    flex: 1; /* Take remaining space */
-}
-
-/* Ensure full height in dual video containers */
-.dual-video-item .youtube-fallback-container {
-    height: 100%;
-    min-height: 300px;
-}
-
-.dual-video-item .youtube-fallback-iframe {
-    min-height: 250px;
-}
-
-/* White theme adjustments */
-body.white-theme .youtube-fallback-container {
-    background: #f5f5f5;
-}
-
-body.white-theme .compatibility-message {
-    background: rgba(255, 193, 7, 0.95);
-    color: #000;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .compatibility-message {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-    }
-
-    .youtube-fallback-iframe {
-        height: calc(100% - 38px);
-        min-height: 250px;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    .compatibility-message {
-        padding: 5px 10px;
-        font-size: 0.75rem;
-    }
-
-    .compatibility-text {
-        line-height: 1.2;
-    }
-
-    .youtube-fallback-iframe {
-        height: calc(100% - 34px);
-        min-height: 200px;
-    }
-}
-
-/* Faster animation for immediate fallback */
-@keyframes fadeInFallback {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Hide any remaining video overlays when fallback is active */
-.youtube-fallback-container + .video-overlay,
-.youtube-fallback-container ~ .video-overlay {
-    display: none !important;
 }
