@@ -1026,8 +1026,9 @@ body.white-theme .contact-button:hover {
     gap: 60px;
     align-items: center;
     width: 100%;
-    max-width: 100%;
+    max-width: 94vw;
     margin: 0 auto;
+    padding: 0 3vw;
 }
 
 /* Video Sections - Each video gets its own section */
@@ -1037,9 +1038,8 @@ body.white-theme .contact-button:hover {
     justify-content: center;
     gap: 3vw;
     width: 100%;
-    max-width: 100%;
     margin: 0 auto 60px;
-    padding: 0 3vw;
+    padding: 0;
 }
 
 .video-section.reverse {
@@ -1049,7 +1049,6 @@ body.white-theme .contact-button:hover {
 /* Video Container */
 .video-container-main {
     flex: 1 1 auto;
-    max-width: 75vw;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
@@ -1199,7 +1198,6 @@ body.white-theme .contact-button:hover {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     width: 100%;
-    max-width: 100%;
     margin: 40px auto 0;
 }
 
@@ -2685,6 +2683,12 @@ body.white-theme .form-buttons button:hover {
         flex: 0 1 350px;
         padding: 20px 30px;
     }
+
+    .feed- container {
+        max-width: 96vw;
+        padding: 0 2vw;
+    }
+
 }
 
 /* Large Screens (1200px - 1599px) */
