@@ -32,14 +32,7 @@ function showPage(page) {
     if (policiesPage && page === 'policies') {
         policiesPage.style.display = 'block';
     }
-
-    // NEW: Handle unified service pages
-    const servicePage = document.querySelector('.service-page');
-    if (servicePage && (page === 'set-design' || page === 'creative-directing' || page.includes('service'))) {
-        servicePage.style.display = 'block';
-    }
 }
-
 
 function setTheme(theme) {
     if (theme === 'white') {
@@ -131,18 +124,6 @@ function initPageSpecificFeatures() {
         setTimeout(() => {
             testCarouselReach();
         }, 100);
-    }
-
-    // Initialize service page features for both old and new structures
-    if (document.querySelector('.service-page') ||
-        document.querySelector('.set-design-feed') ||
-        document.querySelector('.designer-profile-page')) {
-
-        setTimeout(() => {
-            setupImageLoading();
-            setupEnhancedFeedVideoAutoplay();
-            initializeModals();
-        }, 50);
     }
 
     // Ensure theme is applied correctly
@@ -1434,7 +1415,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const servicesPage = document.getElementById('services-page');
         const shopPage = document.querySelector('.shop-page');
         const policiesPage = document.getElementById('policies-page');
-        const servicePage = document.querySelector('.service-page'); // NEW: Handle unified service pages
 
         if (homePage) {
             homePage.style.display = 'flex';
@@ -1448,9 +1428,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (policiesPage) {
             policiesPage.style.display = 'block';
-        }
-        if (servicePage) { // NEW: Ensure service pages are visible
-            servicePage.style.display = 'block';
         }
 
         // Add window resize listener
@@ -1468,9 +1445,9 @@ document.addEventListener('DOMContentLoaded', () => {
             blackThemeCircle.onclick = () => setTheme('black');
         }
 
-        // Initialize service pages with modal functionality (UPDATED DETECTION)
-        if (document.querySelector('.service-page') || document.querySelector('.designer-profile-page')) {
-            console.log('🎯 Service page detected, initializing...');
+        // Initialize CMNPPL-style pages with modal
+        if (document.querySelector('.set-design-feed') || document.querySelector('.designer-profile-page') || document.querySelector('.electra-style-page')) {
+            console.log('🎯 CMNPPL/Electra page detected, initializing...');
 
             setTimeout(() => {
                 setupImageLoading();
@@ -1479,7 +1456,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 initializeModals();
 
-                // Keep existing electra detection for backward compatibility
                 if (document.querySelector('.electra-style-page')) {
                     setupElectraVideoGrid();
                     console.log('✅ Electra video grid initialized');
