@@ -763,10 +763,9 @@ nav {
     color: black;
 }
 
-/* ================== FEED LAYOUTS (SET DESIGN & MEMBER PAGES) ================== */
+/* ================== SERVICE PAGES (UNIFIED STRUCTURE) ================== */
 
-.set-design-feed,
-.designer-profile-page .profile-content {
+.service-page {
     padding: 100px 5vw 80px;
     max-width: 95vw;
     margin: 0 auto;
@@ -2148,8 +2147,7 @@ body.white-theme .form-buttons button:hover {
         right: 25px;
     }
 
-    .set-design-feed,
-    .designer-profile-page .profile-content {
+    .service-page {
         padding: 100px 3vw 80px;
         max-width: 94vw;
         margin: 0 auto;
@@ -2166,11 +2164,6 @@ body.white-theme .form-buttons button:hover {
         width: 100%;
         margin: 0 auto;
         gap: 40px;
-    }
-
-    .designer-profile-page .video-section {
-        max-width: none !important;
-        width: 100%;
     }
 
     .images-grid {
@@ -2192,11 +2185,6 @@ body.white-theme .form-buttons button:hover {
 
     .video-metadata .project-title {
         font-size: 2.5rem;
-    }
-
-    .designer-profile-page .feed-container {
-        max-width: 100%;
-        gap: 60px;
     }
 
     .profile-bio {
@@ -2662,8 +2650,7 @@ body.white-theme .form-buttons button:hover {
         text-align: left;
     }
 
-    .set-design-feed,
-    .designer-profile-page .profile-content {
+    .service-page {
         padding: 120px 4vw 60px;
         max-width: 96vw;
     }
@@ -3067,8 +3054,7 @@ body.white-theme .form-buttons button:hover {
         padding: 12px 30px;
     }
 
-    .set-design-feed,
-    .designer-profile-page .profile-content {
+    .service-page {
         padding: 120px 3vw 50px;
     }
 
