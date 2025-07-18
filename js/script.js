@@ -2195,3 +2195,129 @@ window.addEventListener('resize', () => {
     // Add photography resize handling
     handlePhotographyResize();
 });
+
+// ================== SMOOTH WHEEL SCROLLING ==================
+
+class SmoothScroll {
+    constructor() {
+        this.isRunning = false;
+        this.currentY = window.pageYOffset;
+        this.targetY = window.pageYOffset;
+        this.ease = 0.1; // Lower = smoother (0.05-0.15)
+
+        this.init();
+    }
+
+    init() {
+        // Disable default scrolling
+        document.body.style.height = document.body.scrollHeight + 'px';
+        document.body.style.overflow = 'hidden';
+
+        // Create smooth scroll container
+        this.smoothContainer = document.createElement('div');
+        this.smoothContainer.style.position = 'fixed';
+        this.smoothContainer.style.top = '0';
+        this.smoothContainer.style.left = '0';
+        this.smoothContainer.style.width = '100%';
+        this.smoothContainer.style.height = '100%';
+        this.smoothContainer.style.overflow = 'hidden';
+        this.smoothContainer.style.pointerEvents = 'none';
+
+        // Move all content into smooth container
+        while (document.body.firstChild) {
+            this.smoothContainer.appendChild(document.body.firstChild);
+        }
+        document.body.appendChild(this.smoothContainer);
+
+        // Re-enable pointer events on content
+        this.smoothContainer.style.pointerEvents = 'auto';
+
+        this.addEventListeners();
+        this.render();
+    }
+
+    addEventListeners() {
+        // Mouse wheel
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            this.targetY += e.deltaY;
+            this.clampTarget();
+        }, { passive: false });
+
+        // Touch events for mobile
+        let touchStart = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStart = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touchY = e.touches[0].clientY;
+            const deltaY = touchStart - touchY;
+            this.targetY += deltaY * 2;
+            this.clampTarget();
+            touchStart = touchY;
+        }, { passive: false });
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+            switch(e.code) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    this.targetY -= 100;
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    this.targetY += 100;
+                    break;
+                case 'PageUp':
+                    e.preventDefault();
+                    this.targetY -= window.innerHeight;
+                    break;
+                case 'PageDown':
+                    e.preventDefault();
+                    this.targetY += window.innerHeight;
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    this.targetY = 0;
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    this.targetY = document.body.scrollHeight - window.innerHeight;
+                    break;
+            }
+            this.clampTarget();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            document.body.style.height = document.body.scrollHeight + 'px';
+            this.clampTarget();
+        });
+    }
+
+    clampTarget() {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        this.targetY = Math.max(0, Math.min(this.targetY, maxScroll));
+    }
+
+    render() {
+        this.currentY += (this.targetY - this.currentY) * this.ease;
+
+        // Apply transform
+        this.smoothContainer.style.transform = `translateY(${-this.currentY}px)`;
+
+        // Update window.pageYOffset for other scripts
+        Object.defineProperty(window, 'pageYOffset', {
+            get: () => this.currentY
+        });
+
+        requestAnimationFrame(() => this.render());
+    }
+}
+
+// Initialize smooth scrolling (only on desktop)
+if (window.innerWidth > 768 && !('ontouchstart' in window)) {
+    new SmoothScroll();
+}

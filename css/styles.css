@@ -1,23 +1,5 @@
 /* ================== BASE STYLES ================== */
 
-/* Simple smooth scrolling */
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 100px; /* Adjust for fixed nav */
-}
-
-/* For browsers that support it */
-@supports (scroll-behavior: smooth) {
-    html {
-        scroll-behavior: smooth;
-    }
-}
-
-/* Momentum scrolling for iOS */
-body {
-    -webkit-overflow-scrolling: touch;
-}
-
 * {
     margin: 0;
     padding: 0;
