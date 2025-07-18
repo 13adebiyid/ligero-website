@@ -2137,7 +2137,6 @@ body.white-theme .form-buttons button:hover {
 
     .service-content,
     .designer-profile-page {
-        padding: 100px 3vw 80px;
         max-width: 94vw;
         margin: 0 auto;
     }
@@ -2651,7 +2650,6 @@ body.white-theme .form-buttons button:hover {
 
     .service-content,
     .designer-profile-page {
-        padding: 120px 4vw 60px;
         max-width: 96vw;
     }
 
@@ -3050,10 +3048,7 @@ body.white-theme .form-buttons button:hover {
         padding: 12px 30px;
     }
 
-    .service-content,
-    .designer-profile-page {
-        padding: 120px 3vw 50px;
-    }
+
 
     .video-container-main {
         min-height: 40vh;
