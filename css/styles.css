@@ -765,8 +765,8 @@ nav {
 
 /* ================== FEED LAYOUTS (SET DESIGN & MEMBER PAGES) ================== */
 
-.set-design-feed,
-.designer-profile-page .profile-content {
+.service-content,
+.designer-profile-page {
     padding: 100px 5vw 80px;
     max-width: 95vw;
     margin: 0 auto;
@@ -1184,7 +1184,7 @@ nav {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.profile-content {
+.service-content {
     padding: 80px 60px;
     max-width: 1200px;
     margin: 0 auto;
@@ -1231,15 +1231,6 @@ nav {
 
 .social-link:hover {
     opacity: 1;
-}
-
-.work-section-title {
-    font-size: 2rem;
-    font-weight: 300;
-    margin-bottom: 40px;
-    padding-top: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ================== MODALS ================== */
@@ -1957,10 +1948,6 @@ body.white-theme .social-link {
     color: black;
 }
 
-body.white-theme .work-section-title {
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
 body.white-theme .image-modal .modal-backdrop {
     background: rgba(255, 255, 255, 0.95);
 }
@@ -2148,8 +2135,8 @@ body.white-theme .form-buttons button:hover {
         right: 25px;
     }
 
-    .set-design-feed,
-    .designer-profile-page .profile-content {
+    .service-content,
+    .designer-profile-page {
         padding: 100px 3vw 80px;
         max-width: 94vw;
         margin: 0 auto;
@@ -2662,8 +2649,8 @@ body.white-theme .form-buttons button:hover {
         text-align: left;
     }
 
-    .set-design-feed,
-    .designer-profile-page .profile-content {
+    .service-content,
+    .designer-profile-page {
         padding: 120px 4vw 60px;
         max-width: 96vw;
     }
@@ -2785,12 +2772,8 @@ body.white-theme .form-buttons button:hover {
         font-size: 1rem;
     }
 
-    .profile-content {
+    .service-content {
         padding: 60px 20px;
-    }
-
-    .work-section-title {
-        font-size: 1.5rem;
     }
 
     .image-modal .modal-close {
@@ -3067,8 +3050,8 @@ body.white-theme .form-buttons button:hover {
         padding: 12px 30px;
     }
 
-    .set-design-feed,
-    .designer-profile-page .profile-content {
+    .service-content,
+    .designer-profile-page {
         padding: 120px 3vw 50px;
     }
 
