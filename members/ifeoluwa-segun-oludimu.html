@@ -7,7 +7,8 @@
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preload" href="/css/styles.css" as="script">
+    <link rel="preload" href="/js/script.js" as="script">
 </head>
 <body>
 
@@ -97,28 +98,28 @@
             <!-- A gift for a gift Images Grid -->
             <div class="images-grid">
                 <div class="feed-item image-medium" data-image="/images/gift-still-4.png">
-                    <img src="/images/gift-still-4.png" alt="Short Film Behind Scenes" loading="lazy">
+                    <img src="/images/gift-still-4.png" fetchpriority="high" alt="Short Film Behind Scenes" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-small" data-image="/images/gift-still-1.png">
-                    <img src="/images/gift-still-1.png" alt="Short Film Set Details" loading="lazy">
+                    <img src="/images/gift-still-1.png" fetchpriority="high" alt="Short Film Set Details" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-large" data-image="/images/gift-still-2.png">
-                    <img src="/images/gift-still-2.png" alt="Short Film Set Details" loading="lazy">
+                    <img src="/images/gift-still-2.png" fetchpriority="high" alt="Short Film Set Details" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-medium" data-image="/images/gift-still-3.png">
-                    <img src="/images/gift-still-3.png" alt="Short Film Behind Scenes" loading="lazy">
+                    <img src="/images/gift-still-3.png" fetchpriority="high" alt="Short Film Behind Scenes" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
@@ -146,28 +147,28 @@
             <!-- Fashion Images Grid -->
             <div class="images-grid">
                 <div class="feed-item image-large" data-image="/images/fashion-still-1.jpg">
-                    <img src="/images/fashion-still-1.jpg" alt="Fashion set" loading="lazy">
+                    <img src="/images/fashion-still-1.jpg" fetchpriority="low" alt="Fashion set" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-large" data-image="/images/fashion-still-2.jpg">
-                    <img src="/images/fashion-still-2.jpg" alt="Fashion set" loading="lazy">
+                    <img src="/images/fashion-still-2.jpg" fetchpriority="low" alt="Fashion set" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-small" data-image="/images/fashion-still-3.jpg">
-                    <img src="/images/fashion-still-3.jpg" alt="Fashion set" loading="lazy">
+                    <img src="/images/fashion-still-3.jpg" fetchpriority="low" alt="Fashion set" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-small" data-image="/images/fashion-still-4.jpg">
-                    <img src="/images/fashion-still-4.jpg" alt="Fashion set" loading="lazy">
+                    <img src="/images/fashion-still-4.jpg" fetchpriority="low" alt="Fashion set" loading="lazy">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
