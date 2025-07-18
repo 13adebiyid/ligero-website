@@ -1,24 +1,24 @@
 /* ================== BASE STYLES ================== */
-/* More aggressive smooth scrolling */
+
+/* Smooth scrolling behavior for the entire page */
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+}
+
+body {
+    scroll-behavior: smooth;
+}
+
+/* For webkit browsers - smooth scrolling */
+* {
+    -webkit-scroll-behavior: smooth;
+    scroll-behavior: smooth;
+}
+
+/* Smooth scrolling on all elements */
 html, body {
     scroll-behavior: smooth !important;
-}
-
-* {
-    scroll-behavior: smooth !important;
-}
-
-/* Override any conflicting styles */
-html {
-    scroll-behavior: smooth !important;
-    -webkit-scroll-behavior: smooth !important;
-}
-
-/* For webkit browsers */
-@media (prefers-reduced-motion: no-preference) {
-    html {
-        scroll-behavior: smooth !important;
-    }
 }
 
 * {
