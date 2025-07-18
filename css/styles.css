@@ -1143,6 +1143,9 @@ nav {
     max-height: 600px;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center
 }
 
 .hero-image {
@@ -1153,6 +1156,7 @@ nav {
     height: 100%;
     object-fit: cover;
     object-position: center;
+    z-index: 1;
 }
 
 .hero-overlay {
@@ -1162,6 +1166,7 @@ nav {
     right: 0;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     padding: 60px;
+    z-index: 2;
 }
 
 .hero-title {
