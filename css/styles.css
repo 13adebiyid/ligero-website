@@ -1146,17 +1146,13 @@ nav {
 }
 
 .hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-}
-
-.hero-image-ash {
-    object-fit: cover;
-    object-position: center 25%;
-    width: 100%;
-    height: 100%;
 }
 
 .hero-overlay {
@@ -2063,13 +2059,6 @@ body.white-theme .form-buttons button:hover {
 
 /* ================== RESPONSIVE DESIGN ================== */
 
-/* Very Large Screens (2000px+) */
-@media screen and (min-width: 2000px) {
-    .hero-image-ash {
-        object-position: center 10%;
-    }
-}
-
 /* Large Desktop (1600px+) */
 @media screen and (min-width: 1600px) {
     .video-section:not(.dual-video-section) {
@@ -2087,13 +2076,6 @@ body.white-theme .form-buttons button:hover {
         flex: 1;
         min-width: 280px;
         max-width: 350px;
-    }
-}
-
-/* Desktop (1400px+) */
-@media screen and (min-width: 1400px) {
-    .hero-image-ash {
-        object-position: center 15%;
     }
 }
 
@@ -2190,13 +2172,6 @@ body.white-theme .form-buttons button:hover {
     }
 }
 
-/* Desktop (1025px+) */
-@media screen and (min-width: 1025px) {
-    .hero-image-ash {
-        object-position: center 20%;
-    }
-}
-
 /* Tablets (769px - 1024px) */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
     nav {
@@ -2278,10 +2253,6 @@ body.white-theme .form-buttons button:hover {
 
     .dual-video-item .video-metadata .project-title {
         font-size: 1.2rem;
-    }
-
-    .hero-image-ash {
-        object-position: center 30%;
     }
 
     .modal-container {
