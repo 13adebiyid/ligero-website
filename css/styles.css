@@ -819,6 +819,14 @@ nav {
     justify-content: center;
 }
 
+.dual-video-section .video-metadata{
+    align-self: center;
+    position: static;
+    top: initial;
+    left: initial;
+    transform: initial;
+}
+
 .feed-video,
 .video-container-main video {
     width: 100% !important;
