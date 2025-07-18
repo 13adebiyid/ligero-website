@@ -765,8 +765,8 @@ nav {
 
 /* ================== FEED LAYOUTS (SET DESIGN & MEMBER PAGES) ================== */
 
-.service-content,
-.designer-profile-page {
+.set-design-feed,
+.designer-profile-page .profile-content {
     padding: 100px 5vw 80px;
     max-width: 95vw;
     margin: 0 auto;
@@ -1143,20 +1143,20 @@ nav {
     max-height: 600px;
     position: relative;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center
 }
 
 .hero-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-    z-index: 1;
+}
+
+.hero-image-ash {
+    object-fit: cover;
+    object-position: center 25%;
+    width: 100%;
+    height: 100%;
 }
 
 .hero-overlay {
@@ -1166,7 +1166,6 @@ nav {
     right: 0;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     padding: 60px;
-    z-index: 2;
 }
 
 .hero-title {
@@ -1185,7 +1184,7 @@ nav {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.service-content {
+.profile-content {
     padding: 80px 60px;
     max-width: 1200px;
     margin: 0 auto;
@@ -1232,6 +1231,15 @@ nav {
 
 .social-link:hover {
     opacity: 1;
+}
+
+.work-section-title {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 40px;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ================== MODALS ================== */
@@ -1949,6 +1957,10 @@ body.white-theme .social-link {
     color: black;
 }
 
+body.white-theme .work-section-title {
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 body.white-theme .image-modal .modal-backdrop {
     background: rgba(255, 255, 255, 0.95);
 }
@@ -2064,6 +2076,13 @@ body.white-theme .form-buttons button:hover {
 
 /* ================== RESPONSIVE DESIGN ================== */
 
+/* Very Large Screens (2000px+) */
+@media screen and (min-width: 2000px) {
+    .hero-image-ash {
+        object-position: center 10%;
+    }
+}
+
 /* Large Desktop (1600px+) */
 @media screen and (min-width: 1600px) {
     .video-section:not(.dual-video-section) {
@@ -2081,6 +2100,13 @@ body.white-theme .form-buttons button:hover {
         flex: 1;
         min-width: 280px;
         max-width: 350px;
+    }
+}
+
+/* Desktop (1400px+) */
+@media screen and (min-width: 1400px) {
+    .hero-image-ash {
+        object-position: center 15%;
     }
 }
 
@@ -2122,8 +2148,9 @@ body.white-theme .form-buttons button:hover {
         right: 25px;
     }
 
-    .service-content,
-    .designer-profile-page {
+    .set-design-feed,
+    .designer-profile-page .profile-content {
+        padding: 100px 3vw 80px;
         max-width: 94vw;
         margin: 0 auto;
     }
@@ -2174,6 +2201,13 @@ body.white-theme .form-buttons button:hover {
 
     .profile-bio {
         margin: 0 0 60px 0;
+    }
+}
+
+/* Desktop (1025px+) */
+@media screen and (min-width: 1025px) {
+    .hero-image-ash {
+        object-position: center 20%;
     }
 }
 
@@ -2258,6 +2292,10 @@ body.white-theme .form-buttons button:hover {
 
     .dual-video-item .video-metadata .project-title {
         font-size: 1.2rem;
+    }
+
+    .hero-image-ash {
+        object-position: center 30%;
     }
 
     .modal-container {
@@ -2624,8 +2662,9 @@ body.white-theme .form-buttons button:hover {
         text-align: left;
     }
 
-    .service-content,
-    .designer-profile-page {
+    .set-design-feed,
+    .designer-profile-page .profile-content {
+        padding: 120px 4vw 60px;
         max-width: 96vw;
     }
 
@@ -2746,8 +2785,12 @@ body.white-theme .form-buttons button:hover {
         font-size: 1rem;
     }
 
-    .service-content {
+    .profile-content {
         padding: 60px 20px;
+    }
+
+    .work-section-title {
+        font-size: 1.5rem;
     }
 
     .image-modal .modal-close {
@@ -3024,7 +3067,10 @@ body.white-theme .form-buttons button:hover {
         padding: 12px 30px;
     }
 
-
+    .set-design-feed,
+    .designer-profile-page .profile-content {
+        padding: 120px 3vw 50px;
+    }
 
     .video-container-main {
         min-height: 40vh;
