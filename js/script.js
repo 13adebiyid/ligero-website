@@ -2196,18 +2196,15 @@ window.addEventListener('resize', () => {
     handlePhotographyResize();
 });
 
-// The smoothest scrolling you'll ever see
+// SMOOTH SCROLLING
 const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    duration: 1.8,
+    easing: (t) => 1 - Math.pow(1 - t, 3),
     smooth: true,
-    smoothTouch: false, // Keep normal touch scrolling on mobile
+    smoothTouch: false,
+    lerp: 0.07,
+    wheelMultiplier: 0.8,
+    touchMultiplier: 2,
+    infinite: false,
 })
-
-function raf(time) {
-    lenis.raf(time)
-    requestAnimationFrame(raf)
-}
-
-requestAnimationFrame(raf)
 
