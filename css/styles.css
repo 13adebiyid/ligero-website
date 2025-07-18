@@ -1,6 +1,24 @@
 /* ================== BASE STYLES ================== */
+/* More aggressive smooth scrolling */
+html, body {
+    scroll-behavior: smooth !important;
+}
+
+* {
+    scroll-behavior: smooth !important;
+}
+
+/* Override any conflicting styles */
 html {
     scroll-behavior: smooth !important;
+    -webkit-scroll-behavior: smooth !important;
+}
+
+/* For webkit browsers */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth !important;
+    }
 }
 
 * {

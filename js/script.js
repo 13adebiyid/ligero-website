@@ -2076,8 +2076,6 @@ function openImageModal(index) {
 function updateModalContent(photo) {
     const elements = {
         modalImage: document.getElementById('modalImage'),
-        modalTitle: document.getElementById('modalTitle'),
-        modalDescription: document.getElementById('modalDescription'),
         modalPhotographer: document.getElementById('modalPhotographer'),
         modalClient: document.getElementById('modalClient'),
         modalCamera: document.getElementById('modalCamera'),
@@ -2085,8 +2083,6 @@ function updateModalContent(photo) {
     };
 
     if (elements.modalImage) elements.modalImage.src = photo.image;
-    if (elements.modalTitle) elements.modalTitle.textContent = photo.title;
-    if (elements.modalDescription) elements.modalDescription.textContent = photo.description;
     if (elements.modalPhotographer) {
         elements.modalPhotographer.textContent = photo.photographer;
         elements.modalPhotographer.href = photo.photographerUrl;
@@ -2129,6 +2125,59 @@ function handlePhotographyResize() {
         cursor.style.display = 'block';
         setupCustomCursor();
     }
+}
+
+// Add this function to your script.js
+function generateCategoryFilters() {
+    const categoryFilter = document.getElementById('categoryFilter');
+    if (!categoryFilter) return;
+
+    // Get unique categories from the data
+    const categories = [...new Set(photographyData.map(photo => photo.category))];
+
+    // Clear existing filters
+    categoryFilter.innerHTML = '';
+
+    // Add "All Work" button
+    const allButton = document.createElement('button');
+    allButton.className = 'filter-btn active';
+    allButton.dataset.category = 'all';
+    allButton.textContent = 'All Work';
+    categoryFilter.appendChild(allButton);
+
+    // Add category buttons
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = 'filter-btn';
+        button.dataset.category = category;
+        button.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        categoryFilter.appendChild(button);
+    });
+
+    // Re-setup event listeners for the new buttons
+    setupFilterEventListeners();
+}
+
+// Update your filter event listener setup
+function setupFilterEventListeners() {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const category = this.dataset.category;
+
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter photos
+            filterPhotos(category);
+        });
+    });
+}
+
+// Update your initialization function
+function initializeGallery() {
+    generateCategoryFilters(); // Generate filters first
+    renderPhotos(photographyData);
 }
 
 // Add photography initialization to your existing DOMContentLoaded event
