@@ -7,8 +7,12 @@
   <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
   <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
   <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-  <link rel="stylesheet" href="/css/styles.css">
-  <script src="/js/lenis.min.js"></script></head>
+  <!-- Preload and apply stylesheet -->
+  <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/css/styles.css"></noscript>
+  <!-- Preload and apply scripts -->
+  <link rel="preload" href="/js/script.js" as="script">
+  <script src="/js/script.js" defer></script>
 <body>
 
 <!-- Navigation -->
@@ -150,6 +154,5 @@
   </div>
 </div>
 
-<script src="/js/script.js"></script>
 </body>
 </html>
