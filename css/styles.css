@@ -63,7 +63,7 @@ body.white-theme span.number
     font-family: "Arial Nova Light", sans-serif !important;
 }
 
-/* ================== PAGE TRANSITIONS ================== */
+/* Page Transitions */
 .page-transition {
     position: fixed;
     top: 0;
@@ -107,6 +107,7 @@ body.white-theme span.number
     }
 }
 
+/* White theme for transition */
 body.white-theme .page-transition {
     background: white;
 }
@@ -115,6 +116,7 @@ body.white-theme .page-transition .loading-text {
     color: black;
 }
 
+/* Simple Fade In Animation for Page Load */
 body {
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
@@ -124,7 +126,7 @@ body.page-loaded {
     opacity: 1;
 }
 
-/* ================== NAVIGATION ================== */
+/* Navigation */
 nav {
     position: fixed;
     top: 0;
@@ -170,6 +172,7 @@ nav {
     font-size: 1rem;
 }
 
+/* Hamburger Menu */
 .hamburger-menu {
     display: none;
     flex-direction: column;
@@ -208,18 +211,20 @@ nav {
     transition: .25s ease-in-out;
 }
 
+/* Position the 3 lines */
 .hamburger-line:nth-child(1) {
     top: 0px;
 }
 
 .hamburger-line:nth-child(2) {
-    top: 10.5px;
+    top: 10.5px; /* Middle position */
 }
 
 .hamburger-line:nth-child(3) {
-    top: 21px;
+    top: 21px; /* Bottom position */
 }
 
+/* Active state animation - Icon3 style adapted for 3 lines */
 .hamburger-menu.active .hamburger-line:nth-child(1) {
     top: 10.5px;
     -webkit-transform: rotate(45deg);
@@ -242,10 +247,12 @@ nav {
     transform: rotate(-45deg);
 }
 
+/* White theme adjustments */
 body.white-theme .hamburger-line {
     background: black;
 }
 
+/* Mobile Menu Overlay */
 .mobile-menu-overlay {
     position: fixed;
     top: 0;
@@ -279,7 +286,7 @@ body.white-theme .hamburger-line {
     opacity: 0.7;
 }
 
-/* ================== HOME PAGE ================== */
+/* Home Page */
 .home-page {
     height: 100vh;
     position: relative;
@@ -298,6 +305,7 @@ body.white-theme .hamburger-line {
     z-index: -1;
 }
 
+/* Video controls styling */
 .video-controls {
     position: fixed;
     display: flex;
@@ -341,6 +349,120 @@ body.white-theme .hamburger-line {
     font-family: "Arial Nova Light", sans-serif;
 }
 
+/* Hide on mobile if preferred */
+@media screen and (max-width: 768px) {
+
+    .video-container-main {
+        background: transparent !important; /* Remove gray background */
+        max-height: none !important; /* Remove height constraints */
+        overflow: hidden;
+    }
+
+    /* Ensure videos fill container properly without gray bars */
+    .feed-video,
+    .video-container-main video {
+        width: 100% !important;
+        height: auto !important; /* Let aspect ratio determine height */
+        object-fit: cover !important;
+        object-position: center !important;
+        display: block !important;
+        border-radius: 12px;
+        background: transparent !important;
+    }
+
+    /* Hide ALL overlays, buttons, and badges on mobile */
+    .video-overlay,
+    .play-indicator,
+    .hq-badge,
+    .item-overlay {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* Ensure no hover effects on mobile */
+    .video-container-main:hover .video-overlay,
+    .feed-item:hover .item-overlay {
+        display: none !important;
+        opacity: 0 !important;
+    }
+
+    /* Remove pointer cursor on mobile since no interaction */
+    .video-container-main,
+    .feed-item[data-image] {
+        cursor: default !important;
+    }
+
+    /* Ensure video sections have proper spacing without background issues */
+    .video-section {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 40px;
+    }
+
+    /* Fix video metadata positioning on mobile */
+    .video-metadata {
+        background: transparent;
+        padding: 15px 0;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    /* This targets touch devices specifically */
+
+    .video-overlay,
+    .play-indicator,
+    .hq-badge,
+    .item-overlay {
+        display: none !important;
+    }
+
+    /* Remove any hover states on touch devices */
+    .video-container-main:hover .video-overlay,
+    .feed-item:hover .item-overlay {
+        display: none !important;
+        opacity: 0 !important;
+    }
+
+    /* Disable pointer cursor on touch devices */
+    .video-container-main,
+    .feed-item[data-image] {
+        cursor: default;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Ensure feed containers don't have background issues */
+    .feed-container {
+        background: transparent;
+        padding: 0;
+    }
+
+    /* Make sure image items also don't show overlays */
+    .feed-item[data-image] .item-overlay {
+        display: none !important;
+    }
+
+    /* Remove any background from image containers */
+    .feed-item[data-image] {
+        background: transparent !important;
+    }
+
+    /* Ensure images also fill properly */
+    .feed-item img {
+        background: transparent !important;
+    }
+
+    /* Video container should take natural video aspect ratio */
+    .video-container-main {
+        aspect-ratio: unset !important; /* Let video determine ratio */
+        height: auto !important;
+    }
+}
+
+
+/* ACCESS button - subtle pulse and glow effect */
 .choose-button {
     background: transparent;
     border: none;
@@ -374,7 +496,7 @@ body.white-theme .hamburger-line {
     }
 }
 
-/* ================== SHOP PAGE ================== */
+/* Shop Page */
 .shop-page {
     min-height: 100vh;
     padding: 100px 50px 50px;
@@ -485,7 +607,7 @@ body.white-theme .hamburger-line {
     opacity: 0.7;
 }
 
-/* ================== SERVICES PAGE ================== */
+/* Services Page */
 .services-page {
     min-height: 100vh;
     padding: 80px 50px 50px;
@@ -506,6 +628,7 @@ body.white-theme .hamburger-line {
     font-weight: 300;
 }
 
+/* RESPONSIVE CAROUSEL AND SERVICE CARDS */
 .carousel-container {
     position: relative;
     width: 100vw;
@@ -519,7 +642,7 @@ body.white-theme .hamburger-line {
 
 .carousel {
     display: flex;
-    gap: 2vw;
+    gap: 2vw;  /* Responsive gap - 2% of viewport width */
     overflow: visible;
     padding: 0 10px;
     height: 100%;
@@ -530,8 +653,11 @@ body.white-theme .hamburger-line {
     transition: transform 0.3s ease;
 }
 
+/* RESPONSIVE SERVICE CARDS - CHANGE THESE VALUES TO RESIZE */
 .service-card {
-    height: 55vh;
+    /* MAIN SIZE CONTROLS - ADJUST THESE VALUES */
+
+    height: 55vh;          /* 55% of viewport height */
     flex-basis: 35%;
     flex-shrink: 0;
     min-width: 280px;
@@ -553,6 +679,7 @@ body.white-theme .hamburger-line {
     overflow: hidden;
 }
 
+/* Video styling for service cards */
 .service-card-video {
     position: absolute;
     top: 0;
@@ -618,6 +745,7 @@ body.white-theme .hamburger-line {
     right: 5%;
 }
 
+/* Force service card colors - override all browser defaults */
 .carousel .service-card,
 .carousel .service-card:link,
 .carousel .service-card:visited,
@@ -628,6 +756,7 @@ body.white-theme .hamburger-line {
     text-decoration: none !important;
 }
 
+/* White theme override */
 body.white-theme .carousel .service-card,
 body.white-theme .carousel .service-card:link,
 body.white-theme .carousel .service-card:visited,
@@ -638,6 +767,7 @@ body.white-theme .carousel .service-card:focus {
     text-decoration: none !important;
 }
 
+/* White theme text shadow */
 body.white-theme .service-card-title {
     text-shadow:
             2px 2px 4px rgba(255, 255, 255, 0.9),
@@ -667,7 +797,7 @@ body.white-theme .carousel-arrow:hover {
     color: white;
 }
 
-/* ================== POLICIES PAGE ================== */
+/* Policies Page */
 .policies-page {
     min-height: 100vh;
     padding: 100px 50px 50px;
@@ -701,7 +831,7 @@ body.white-theme .carousel-arrow:hover {
     margin-bottom: 15px;
 }
 
-/* ================== WHITE THEME ================== */
+/* White theme */
 body.white-theme {
     background: white;
     color: black;
@@ -735,6 +865,8 @@ body.white-theme .mobile-menu-item {
     color: black;
 }
 
+/* White theme CHOOSE button - removed since it's always on video background */
+
 body.white-theme .buy-button {
     border-color: black;
     color: black;
@@ -767,7 +899,7 @@ body.white-theme .carousel-container::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.5);
 }
 
-/* ================== SERVICE DETAIL PAGES ================== */
+/* Service Detail Pages */
 .service-detail-page {
     min-height: 100vh;
     padding: 120px 50px 50px;
@@ -857,6 +989,7 @@ body.white-theme .carousel-container::-webkit-scrollbar-thumb:hover {
     color: black;
 }
 
+/* White theme for service detail pages */
 body.white-theme .back-link {
     color: black;
 }
@@ -875,14 +1008,18 @@ body.white-theme .contact-button:hover {
     color: white;
 }
 
-/* ================== VIDEO LAYOUTS ================== */
+/* ================== RESPONSIVE SET DESIGN AND MEMBER PAGES ================== */
+
 .set-design-feed,
 .designer-profile-page .profile-content {
-    padding: 100px 5vw 80px;
-    max-width: 95vw;
+    padding: 100px 5vw 80px; /* Use viewport width for responsive padding */
+    max-width: 95vw; /* Use most of the screen width */
     margin: 0 auto;
 }
 
+/* ================== NEW VIDEO-FOCUSED LAYOUT - FIXED ALIGNMENT ================== */
+
+/* Feed Container - New Structure */
 .feed-container {
     display: flex;
     flex-direction: column;
@@ -893,6 +1030,7 @@ body.white-theme .contact-button:hover {
     margin: 0 auto;
 }
 
+/* Video Sections - Each video gets its own section */
 .video-section {
     display: flex;
     flex-direction: row;
@@ -907,6 +1045,7 @@ body.white-theme .contact-button:hover {
     flex-direction: row-reverse;
 }
 
+/* Video Container */
 .video-container-main {
     flex: 4;
     position: relative;
@@ -921,6 +1060,7 @@ body.white-theme .contact-button:hover {
     width: 100%;
 }
 
+/* Video Metadata Sidebar */
 .video-metadata {
     flex: 1;
     min-width: 280px;
@@ -930,6 +1070,7 @@ body.white-theme .contact-button:hover {
     justify-content: center;
 }
 
+/* FIXED: Video sizing to fill container properly */
 .feed-video,
 .video-container-main video {
     width: 100% !important;
@@ -940,6 +1081,7 @@ body.white-theme .contact-button:hover {
     border-radius: 12px;
 }
 
+/* Video overlay for play button */
 .video-overlay {
     position: absolute;
     top: 0;
@@ -990,14 +1132,21 @@ body.white-theme .contact-button:hover {
     font-weight: bold;
     border-radius: 6px;
     letter-spacing: 1px;
+
+    /* Perfect centering using flexbox */
     display: flex;
     align-items: center;
     justify-content: center;
+
+    /* Ensure consistent dimensions */
     min-width: 32px;
     min-height: 20px;
+
+    /* Prevent text from breaking */
     white-space: nowrap;
 }
 
+/* FIXED: Enhanced Metadata Styling - Using fixed sizes from working CSS */
 .video-metadata .client-name {
     font-size: 0.9rem;
     opacity: 0.6;
@@ -1038,6 +1187,7 @@ body.white-theme .contact-button:hover {
     margin-top: 10px;
 }
 
+/* Image Grid - Separate from videos */
 .images-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1051,6 +1201,7 @@ body.white-theme .contact-button:hover {
     border-radius: 0 !important;
 }
 
+/* Image Items - Updated sizing */
 .feed-item[data-image] {
     position: relative;
     cursor: pointer;
@@ -1069,13 +1220,14 @@ body.white-theme .contact-button:hover {
 }
 
 .feed-item[data-image] .item-overlay {
-    background: transparent !important;
+    background: transparent !important; /* Remove overlay background */
 }
 
 .feed-item[data-image] .item-overlay .play-indicator {
     display: none !important;
 }
 
+/* Remove all play indicators from images */
 .images-grid .feed-item .item-overlay {
     display: none !important;
 }
@@ -1089,6 +1241,7 @@ body.white-theme .contact-button:hover {
     opacity: 0.9;
 }
 
+/* Image sizes for grid */
 .image-small {
     height: 300px;
 }
@@ -1101,6 +1254,7 @@ body.white-theme .contact-button:hover {
     grid-column: span 2;
     height: 500px;
 }
+
 
 .feed-item img {
     width: 100% !important;
@@ -1122,6 +1276,7 @@ body.white-theme .contact-button:hover {
     transform: scale(1.02);
 }
 
+/* Image overlay */
 .feed-item[data-image] .item-overlay {
     position: absolute;
     top: 0;
@@ -1137,6 +1292,9 @@ body.white-theme .contact-button:hover {
     border-radius: 0;
 }
 
+
+/* ================== MEMBER PAGE SPECIFIC ================== */
+
 .designer-profile-page .feed-container {
     max-width: 90vw;
 }
@@ -1146,6 +1304,7 @@ body.white-theme .contact-button:hover {
     width: 100%;
 }
 
+/* Hero adjustments for better responsiveness */
 .designer-hero {
     width: 100%;
     height: 75vh;
@@ -1157,6 +1316,8 @@ body.white-theme .contact-button:hover {
     max-width: 90vw;
     margin: 0 auto;
 }
+
+/* ================== WHITE THEME ADJUSTMENTS ================== */
 
 body.white-theme .video-metadata .project-title {
     color: black;
@@ -1175,6 +1336,8 @@ body.white-theme .video-container-main {
 body.white-theme .feed-item[data-image] {
     background: #f5f5f5;
 }
+
+/* ================== NEW ELECTRA-STYLE PAGE ================== */
 
 .electra-style-page {
     min-height: 100vh;
@@ -1195,6 +1358,7 @@ body.white-theme .feed-item[data-image] {
     opacity: 0.9;
 }
 
+/* Electra Grid Layout */
 .electra-grid {
     max-width: 1400px;
     margin: 0 auto;
@@ -1221,6 +1385,7 @@ body.white-theme .feed-item[data-image] {
     transform: translateY(-10px);
 }
 
+/* Video Container */
 .video-container {
     position: relative;
     width: 100%;
@@ -1233,7 +1398,7 @@ body.white-theme .feed-item[data-image] {
 .electra-video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Show full video without cropping */
     object-position: center;
     transition: transform 0.3s ease;
 }
@@ -1242,6 +1407,7 @@ body.white-theme .feed-item[data-image] {
     transform: scale(1.05);
 }
 
+/* Loading Spinner */
 .loading-spinner {
     position: absolute;
     top: 50%;
@@ -1267,6 +1433,9 @@ body.white-theme .feed-item[data-image] {
     100% { transform: rotate(360deg); }
 }
 
+/* ================== SHARED METADATA STYLES (CMNPPL + ELECTRA) ================== */
+
+/* Feed Info Styling - Works for both CMNPPL and Electra layouts */
 .feed-info {
     padding: 20px 0;
     line-height: 1.4;
@@ -1308,6 +1477,7 @@ body.white-theme .feed-item[data-image] {
     letter-spacing: 1px;
 }
 
+/* Pulsing animation for designer links */
 @keyframes designer-pulse {
     0%, 100% {
         opacity: 0.7;
@@ -1321,6 +1491,7 @@ body.white-theme .feed-item[data-image] {
     }
 }
 
+/* White theme for metadata */
 body.white-theme .designer-link {
     color: black;
     animation: designer-pulse-white 3s ease-in-out infinite;
@@ -1339,6 +1510,7 @@ body.white-theme .designer-link {
     }
 }
 
+/* Enhanced Modal Styles */
 .modal-loading {
     position: absolute;
     top: 50%;
@@ -1369,6 +1541,7 @@ body.white-theme .designer-link {
     opacity: 0.8;
 }
 
+/* White Theme for Electra Style */
 body.white-theme .page-title h1 {
     color: black;
 }
@@ -1404,6 +1577,9 @@ body.white-theme .modal-loading p {
     color: black;
 }
 
+/* ================== FIXED MEMBERS PAGE LAYOUT ================== */
+
+/* Fix for Designer Profile Page - Videos in Own Rows */
 .designer-profile-page .feed-container {
     display: flex;
     flex-direction: column;
@@ -1427,6 +1603,7 @@ body.white-theme .modal-loading p {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Responsive grid for images under videos */
 .designer-profile-page .image-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1434,6 +1611,9 @@ body.white-theme .modal-loading p {
     margin-bottom: 40px;
 }
 
+/* TRUE CMNPPL-STYLE SET DESIGN PAGE - LEGACY SUPPORT */
+
+/* Feed Items - Different Sizes for Artistic Layout */
 .feed-item {
     position: relative;
     cursor: pointer;
@@ -1446,6 +1626,7 @@ body.white-theme .modal-loading p {
     opacity: 0.85;
 }
 
+/* Video Sizes - Legacy support */
 .large-video {
     grid-column: span 2;
     height: 70vh;
@@ -1463,22 +1644,24 @@ body.white-theme .modal-loading p {
     min-height: 600px;
 }
 
+/* Legacy video styling */
 .feed-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Changed to cover for consistency */
     object-position: center;
     display: block;
 }
 
 .feed-video.cover-fit {
-    object-fit: cover;
+    object-fit: cover; /* Use this class for videos that should crop */
 }
 
 .feed-item img.cover-fit {
-    object-fit: cover;
+    object-fit: cover; /* Use this class for images that should crop */
 }
 
+/* Item Overlay - Legacy support */
 .item-overlay {
     position: absolute;
     top: 0;
@@ -1497,7 +1680,9 @@ body.white-theme .modal-loading p {
     opacity: 1;
 }
 
-/* ================== MODAL SYSTEM ================== */
+/* ================== FIXED MODAL ALIGNMENT ================== */
+
+/* Video Modal */
 .video-modal {
     position: fixed;
     top: 0;
@@ -1508,7 +1693,7 @@ body.white-theme .modal-loading p {
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 5px;
+    padding: 5px; /* Reduced from 10px for maximum space */
 }
 
 .video-modal.active {
@@ -1525,27 +1710,32 @@ body.white-theme .modal-loading p {
     backdrop-filter: blur(10px);
 }
 
+/* FIXED: Smart Modal Container - Maximized viewport approach */
 .modal-container {
     position: relative;
-    width: 97vw;
-    height: 97vh;
-    max-width: 2200px;
-    max-height: 1500px;
+    width: 97vw;  /* Increased from 95vw */
+    height: 97vh; /* Increased from 95vh */
+    max-width: 2200px;  /* Increased from 1800px */
+    max-height: 1500px; /* Increased from 1200px */
     z-index: 3001;
+
+    /* Use flexbox to distribute space */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    /* Ensure everything fits inside */
     overflow: hidden;
-    padding: 15px;
+    padding: 15px; /* Reduced from 20px */
     box-sizing: border-box;
 }
 
 .modal-close {
     position: absolute;
-    top: 20px;
+    top: 20px;  /* FIXED: Inside the modal container */
     right: 20px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5); /* Added background for better visibility */
     border: none;
     color: white;
     font-size: 2rem;
@@ -1554,6 +1744,7 @@ body.white-theme .modal-loading p {
     opacity: 0.8;
     transition: all 0.3s;
     z-index: 3002;
+    /* FIXED: Now it's part of the modal and scales with it */
     min-width: 40px;
     min-height: 40px;
     display: flex;
@@ -1569,17 +1760,18 @@ body.white-theme .modal-loading p {
     transform: scale(1.1);
 }
 
+/* Header takes minimal space */
 .modal-header {
-    flex-shrink: 0;
+    flex-shrink: 0; /* Never shrink */
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Reduced from 20px */
     width: 100%;
 }
 
 .modal-title {
     font-size: 1.8rem;
     font-weight: 300;
-    margin-bottom: 6px;
+    margin-bottom: 6px; /* Reduced from 8px */
     color: white;
 }
 
@@ -1590,16 +1782,18 @@ body.white-theme .modal-loading p {
     color: white;
 }
 
+/* Video takes remaining space but can shrink */
 .modal-video-wrap {
-    flex: 1;
+    flex: 1; /* Take remaining space */
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 0;
+    min-height: 0; /* Allow shrinking */
     overflow: hidden;
 }
 
+/* Video fits within whatever space is available */
 .modal-video {
     max-width: 100%;
     max-height: 100%;
@@ -1609,10 +1803,11 @@ body.white-theme .modal-loading p {
     border-radius: 8px;
 }
 
+/* Footer takes minimal space */
 .modal-footer {
-    flex-shrink: 0;
+    flex-shrink: 0; /* Never shrink */
     text-align: center;
-    margin-top: 15px;
+    margin-top: 15px; /* Reduced from 20px */
     width: 100%;
 }
 
@@ -1622,11 +1817,148 @@ body.white-theme .modal-loading p {
     color: white;
 }
 
+/* ================== RESPONSIVE MODAL ADJUSTMENTS ================== */
+
+/* Large screens - maximize space */
+@media screen and (min-width: 1200px) {
+    .modal-container {
+        width: 96vw;  /* Increased from 92vw */
+        height: 96vh; /* Increased from 92vh */
+        max-width: 2400px; /* Increased from 2000px */
+        max-height: 1600px; /* Increased from 1400px */
+        padding: 25px; /* Reduced from 30px */
+    }
+
+    /* REMOVED: Close button positioning - now handled by container */
+
+    .modal-header {
+        margin-bottom: 20px; /* Reduced from 30px */
+    }
+
+    .modal-title {
+        font-size: 2.2rem;
+        margin-bottom: 8px; /* Reduced from 10px */
+    }
+
+    .modal-client {
+        font-size: 1.1rem;
+    }
+
+    .modal-footer {
+        margin-top: 20px; /* Reduced from 30px */
+    }
+
+    .modal-director {
+        font-size: 1.2rem;
+    }
+
+    /* FIXED: Close button scales with modal size */
+    .modal-close {
+        font-size: 2.5rem;
+        padding: 15px;
+        top: 25px;
+        right: 25px;
+    }
+}
+
+/* Tablets - use more space */
+@media screen and (max-width: 1024px) {
+    .modal-container {
+        width: 96vw;
+        height: 90vh;
+        max-width: 1200px;
+        max-height: 900px;
+        padding: 20px;
+    }
+
+    .modal-header {
+        margin-bottom: 15px;
+    }
+
+    .modal-footer {
+        margin-top: 15px;
+    }
+
+    /* FIXED: Close button inside container */
+    .modal-close {
+        top: 20px;
+        right: 20px;
+        font-size: 1.8rem;
+        padding: 8px;
+    }
+}
+
+/* Mobile - maximize available space */
+@media screen and (max-width: 768px) {
+    .video-modal {
+        padding: 5px; /* Reduced padding for more space */
+    }
+
+    .modal-container {
+        width: 98vw;
+        height: 95vh; /* Use more height on mobile */
+        max-width: 600px;
+        max-height: 800px; /* Increased for mobile */
+        padding: 15px;
+    }
+
+    .modal-header {
+        margin-bottom: 10px;
+    }
+
+    .modal-footer {
+        margin-top: 10px;
+    }
+
+    .modal-title {
+        font-size: 1.4rem;
+    }
+
+    /* FIXED: Close button inside container */
+    .modal-close {
+        top: 15px;
+        right: 15px;
+        font-size: 1.5rem;
+        padding: 6px;
+    }
+}
+
+/* Small mobile - still maximize space */
+@media screen and (max-width: 576px) {
+    .modal-container {
+        width: 99vw;
+        height: 96vh; /* Use almost full height */
+        padding: 10px;
+    }
+
+    .modal-title {
+        font-size: 1.2rem;
+    }
+
+    .modal-client {
+        font-size: 0.85rem;
+    }
+
+    .modal-director {
+        font-size: 0.9rem;
+    }
+
+    /* FIXED: Close button inside container */
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        font-size: 1.3rem;
+        padding: 5px;
+    }
+}
+
 /* ================== DESIGNER PROFILE PAGE ================== */
+
 .designer-profile-page {
     min-height: 100vh;
 }
 
+/* Full-Width Hero Image */
 .designer-hero {
     width: 100%;
     height: 80vh;
@@ -1660,6 +1992,44 @@ body.white-theme .modal-loading p {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* ================== ASHLEIGH'S HERO IMAGE FIXES ================== */
+
+/* Ashleigh's hero image positioning - all device sizes */
+.hero-image-ash {
+    object-fit: cover;
+    object-position: center 25%; /* Center horizontally, 25% from top */
+    width: 100%;
+    height: 100%;
+}
+
+/* Tablet adjustments for Ashleigh's hero */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .hero-image-ash {
+        object-position: center 30%; /* Slightly lower on tablets */
+    }
+}
+
+/* Desktop adjustments for Ashleigh's hero */
+@media screen and (min-width: 1025px) {
+    .hero-image-ash {
+        object-position: center 20%; /* Higher positioning on desktop */
+    }
+}
+
+/* Large desktop adjustments for Ashleigh's hero */
+@media screen and (min-width: 1400px) {
+    .hero-image-ash {
+        object-position: center 15%; /* Even higher on large screens */
+    }
+}
+
+/* Very large screens adjustments for Ashleigh's hero */
+@media screen and (min-width: 2000px) {
+    .hero-image-ash {
+        object-position: center 10%; /* Top positioning for very large screens */
+    }
+}
+
 .hero-subtitle {
     margin-bottom: 10px;
     font-size: 1.2rem;
@@ -1668,6 +2038,7 @@ body.white-theme .modal-loading p {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Profile Content */
 .profile-content {
     padding: 80px 60px;
     max-width: 1200px;
@@ -1685,6 +2056,7 @@ body.white-theme .modal-loading p {
     opacity: 0.9;
 }
 
+/* for multiple links */
 .social-links-container {
     display: flex;
     flex-direction: column;
@@ -1725,6 +2097,7 @@ body.white-theme .modal-loading p {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* White Theme for Designer Profile */
 body.white-theme .social-link {
     color: black;
 }
@@ -1737,7 +2110,9 @@ body.white-theme .work-section-title {
     border-color: rgba(0, 0, 0, 0.1);
 }
 
-/* ================== IMAGE MODAL ================== */
+/* ================== ENHANCED IMAGE MODAL ================== */
+
+/* Image Modal */
 .image-modal {
     position: fixed;
     top: 0;
@@ -1832,6 +2207,7 @@ body.white-theme .work-section-title {
     letter-spacing: 0.5px;
 }
 
+/* White theme for image modal */
 body.white-theme .image-modal .modal-backdrop {
     background: rgba(255, 255, 255, 0.95);
 }
@@ -1850,13 +2226,15 @@ body.white-theme .image-project {
     color: black;
 }
 
-/* ================== CONTACT PAGE ================== */
+/* ================== CONTACT PAGE STYLES ================== */
+
 .contact-page {
     min-height: 100vh;
     padding: 100px 50px 50px;
     position: relative;
 }
 
+/* Contact Form Section */
 .contact-form-section {
     opacity: 0;
     transform: translateY(30px);
@@ -1885,6 +2263,7 @@ body.white-theme .image-project {
     line-height: 1.5;
 }
 
+/* Contact Form Styles */
 .contact-form {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1953,6 +2332,7 @@ body.white-theme .image-project {
     min-height: 120px;
 }
 
+/* Form Actions */
 .form-actions {
     display: flex;
     justify-content: space-between;
@@ -1983,6 +2363,7 @@ body.white-theme .image-project {
     cursor: not-allowed;
 }
 
+/* Thank You Section */
 .thank-you-section {
     display: flex;
     align-items: center;
@@ -2036,6 +2417,7 @@ body.white-theme .image-project {
     opacity: 0.8;
 }
 
+/* White Theme Adjustments */
 body.white-theme .contact-form {
     background: rgba(0, 0, 0, 0.03);
     border-color: rgba(0, 0, 0, 0.1);
@@ -2083,7 +2465,9 @@ body.white-theme .home-link:hover {
     border-bottom-color: black;
 }
 
-/* ================== COMING SOON PAGE ================== */
+/* ================== COMING SOON PAGE STYLES ================== */
+
+/* Coming Soon Page Styles */
 .coming-soon-page {
     min-height: 100vh;
     padding: 100px 50px 50px;
@@ -2166,6 +2550,7 @@ body.white-theme .home-link:hover {
     opacity: 0.7;
 }
 
+/* Notification Form Overlay */
 .notify-form-overlay {
     position: fixed;
     top: 0;
@@ -2255,6 +2640,7 @@ body.white-theme .home-link:hover {
     color: black;
 }
 
+/* Fade in animation */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -2266,6 +2652,7 @@ body.white-theme .home-link:hover {
     }
 }
 
+/* White theme adjustments for coming soon page */
 body.white-theme .coming-soon-page {
     color: black;
 }
@@ -2318,7 +2705,731 @@ body.white-theme .form-buttons button:hover {
     color: white;
 }
 
-/* ================== DUAL VIDEO SECTION ================== */
+/* ================== RESPONSIVE DESIGN - FIXED ALIGNMENT ================== */
+
+/* Large Screens (1200px and up) - FIXED FROM WORKING CSS */
+@media screen and (min-width: 1200px) {
+
+    .modal-container {
+        max-width: 100vw;
+        max-height: 90vh;
+    }
+
+    .modal-video {
+        max-height: 90vh;
+    }
+
+    .modal-video-wrap {
+        max-width: 1800px;
+        margin: 0 auto;
+    }
+
+    .set-design-feed,
+    .designer-profile-page .profile-content {
+        padding: 100px 3vw 80px;
+        max-width: 94vw;
+        margin: 0 auto;
+    }
+
+    .modal-close {
+        top: -60px;
+        right: 0;
+        font-size: 2.5rem;
+        padding: 15px;
+    }
+
+    .modal-header {
+        margin-bottom: 30px;
+    }
+
+    .modal-title {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+
+    .modal-client {
+        font-size: 1.1rem;
+    }
+
+    .modal-footer {
+        margin-top: 30px;
+    }
+
+    .modal-director {
+        font-size: 1.2rem;
+    }
+
+    /* Feed container - make it use full available width */
+    .feed-container {
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    /* Video sections - expand to full width with proper spacing */
+    .video-section {
+        max-width: none !important;
+        width: 100%;
+        margin: 0 auto;
+        gap: 40px;
+    }
+
+    /* Specifically target the video sections in member pages */
+    .designer-profile-page .video-section {
+        max-width: none !important;
+        width: 100%;
+    }
+
+    .images-grid {
+        max-width: 100%;
+        width: 100%;
+        margin: 40px auto 0;
+        padding: 0;
+    }
+
+    /* Ensure video containers fill their allocated space */
+    .video-container-main {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Keep metadata at proper size */
+    .video-metadata {
+        min-width: 280px;
+        max-width: 350px;
+    }
+
+    /* Larger project titles on big screens */
+    .video-metadata .project-title {
+        font-size: 2.5rem;
+    }
+
+    /* Ensure member page specific elements also expand */
+    .designer-profile-page .feed-container {
+        max-width: 100%;
+        gap: 60px;
+    }
+
+    /* Profile bio can be wider but not too wide for readability */
+    .profile-bio {
+        margin: 0 0 60px 0;
+    }
+}
+
+/* ================== FIX FOR VIDEO SECTIONS ON VERY LARGE SCREENS ================== */
+
+/* Fix for large screens - ensure singular videos match dual video width */
+@media screen and (min-width: 1600px) {
+    /* Make sure singular video sections use full available width like dual videos */
+    .video-section:not(.dual-video-section) {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto;
+    }
+
+    /* Ensure video containers expand to match dual video width */
+    .video-section:not(.dual-video-section) .video-container-main {
+        width: 100%;
+        max-width: none !important; /* Remove any width constraints */
+    }
+
+    /* Keep metadata proportional */
+    .video-section:not(.dual-video-section) .video-metadata {
+        flex: 1;
+        min-width: 280px;
+        max-width: 350px;
+    }
+}
+
+/* Additional fix for consistent spacing across all screen sizes */
+.feed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+    max-width: 90vw;
+    margin: 0 auto;
+}
+
+/* Override the base video section max-width constraint */
+.video-section {
+    max-width: none; /* Remove the 1400px limit from the base styles */
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Ensure video containers expand properly */
+.video-container-main {
+    width: 100%;
+    flex: 4;
+}
+
+/* Ensure images grid doesn't break layout */
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+/* Make sure image sizes work properly in the grid */
+.image-large {
+    grid-column: span 2;
+    height: 500px;
+}
+
+.image-medium {
+    height: 400px;
+}
+
+.image-small {
+    height: 300px;
+}
+
+/* Responsive adjustments for the image grid */
+@media screen and (max-width: 900px) {
+    .image-large {
+        grid-column: span 1; /* Single column on smaller screens */
+        height: 400px;
+    }
+}
+
+/* Medium Screens (992px - 1199px) */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .video-section {
+        gap: 30px;
+    }
+
+    .video-container-main {
+        max-width: 65vw;
+    }
+
+    .video-metadata {
+        flex: 0 1 280px;
+    }
+}
+
+/* Tablets (768px - 991px) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .video-section {
+        gap: 25px;
+    }
+
+    .video-container-main {
+        max-width: 60vw;
+        aspect-ratio: 16 / 10; /* Slightly taller on tablets */
+    }
+
+    .video-metadata {
+        flex: 0 1 250px;
+    }
+}
+
+/* Tablet Styles (769px - 1024px) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    nav {
+        padding: 15px 30px;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+    }
+
+    .nav-item {
+        font-size: 0.9rem;
+        padding: 0 15px;
+    }
+
+    .product-container {
+        gap: 60px;
+    }
+
+    .product-image {
+        width: 350px;
+        height: 450px;
+        margin-left: 50px;
+    }
+
+    .product-title {
+        font-size: 2.2rem;
+    }
+
+    .product-price {
+        font-size: 1.8rem;
+    }
+
+    .services-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .policies-title {
+        font-size: 2.5rem;
+    }
+
+    .electra-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px 40px;
+    }
+
+    .video-section {
+        gap: 30px;
+    }
+
+    .video-container-main {
+        min-height: 50vh;
+        max-height: 60vh;
+    }
+
+    .video-metadata {
+        min-width: 250px;
+    }
+
+    .video-metadata .project-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .video-metadata .designer-link {
+        font-size: 1rem;
+    }
+
+    .images-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .image-large {
+        grid-column: span 1;
+        height: 350px;
+    }
+
+    .image-medium {
+        height: 300px;
+    }
+
+    .image-small {
+        height: 250px;
+    }
+
+    .modal-container {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-close {
+        top: -40px;
+        font-size: 1.5rem;
+    }
+
+    .designer-hero {
+        height: 70vh;
+    }
+
+    .hero-overlay {
+        padding: 40px 20px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .profile-content {
+        padding: 60px 20px;
+    }
+
+    .work-section-title {
+        font-size: 1.5rem;
+    }
+
+    .image-modal .modal-close {
+        top: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .image-container {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-image {
+        max-height: 75vh;
+    }
+
+    .image-info {
+        margin-top: 15px;
+        padding: 0 20px;
+    }
+
+    .image-title {
+        font-size: 1.2rem;
+    }
+
+    .image-project {
+        font-size: 0.9rem;
+    }
+
+    .contact-page {
+        padding: 120px 20px 50px;
+    }
+
+    .contact-title {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+
+    .contact-subtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .contact-form {
+        padding: 30px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+        margin-top: 30px;
+    }
+
+    .submit-button {
+        width: 100%;
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .thank-you-container {
+        padding: 40px 20px;
+    }
+
+    .thank-you-title {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+    }
+
+    .thank-you-message {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+    .home-link {
+        font-size: 1rem;
+    }
+
+    .coming-soon-page {
+        padding: 120px 20px 50px;
+    }
+
+    .coming-soon-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+
+    .coming-soon-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .coming-soon-description {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .coming-soon-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .services-button,
+    .notify-button {
+        width: 100%;
+        max-width: 280px;
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .notify-form {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+}
+
+/* Small Mobile (up to 576px) */
+@media screen and (max-width: 576px) {
+    nav {
+        padding: 12px 15px;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .hamburger-menu {
+        width: 25px;
+        height: 20px;
+    }
+
+    .hamburger-line {
+        height: 2px;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.8rem;
+    }
+
+    .services-page {
+        padding: 120px 15px 30px;
+    }
+
+    .services-title {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+    }
+
+    .carousel-container {
+        max-height: calc(100vh - 240px);
+        padding: 15px 0;
+        margin-top: 15px;
+    }
+
+    .carousel {
+        gap: 20px;
+    }
+
+    .service-card {
+        height: 180px;
+        font-size: 1rem;
+        padding: 140px 15px 30px;
+    }
+
+    .shop-page {
+        padding: 100px 15px 30px;
+    }
+
+    .product-image {
+        height: 300px;
+    }
+
+    .product-title {
+        font-size: 1.8rem;
+    }
+
+    .product-price {
+        font-size: 1.4rem;
+    }
+
+    .product-description {
+        font-size: 0.9rem;
+    }
+
+    .buy-button, .info-button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+        width: 100%;
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+
+    .policies-page {
+        padding: 100px 15px 30px;
+    }
+
+    .policies-title {
+        font-size: 1.8rem;
+    }
+
+    .policy-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .policy-section p {
+        font-size: 0.9rem;
+    }
+
+    .theme-switcher {
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .theme-circle {
+        width: 22px;
+        height: 22px;
+    }
+
+    .service-detail-page {
+        padding: 100px 15px 30px;
+    }
+
+    .contact-button {
+        width: 100%;
+        padding: 12px 30px;
+    }
+
+    .electra-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .video-container {
+        height: 200px;
+    }
+
+    .page-title h1 {
+        font-size: 2rem;
+    }
+
+    /* NEW VIDEO LAYOUT SMALL MOBILE */
+    .set-design-feed,
+    .designer-profile-page .profile-content {
+        padding: 120px 3vw 50px;
+    }
+
+    .video-container-main {
+        min-height: 40vh;
+        max-height: 50vh;
+        border-radius: 8px;
+    }
+
+    .video-metadata .project-title {
+        font-size: 1.3rem;
+    }
+
+    .video-metadata .client-name {
+        font-size: 0.8rem;
+    }
+
+    .play-indicator {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .contact-title {
+        font-size: 1.8rem;
+    }
+
+    .contact-form {
+        padding: 25px 15px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .thank-you-title {
+        font-size: 1.8rem;
+        line-height: 1.3;
+    }
+
+    .thank-you-message {
+        font-size: 1rem;
+    }
+
+    .coming-soon-title {
+        font-size: 2rem;
+    }
+
+    .coming-soon-subtitle {
+        font-size: 1rem;
+    }
+
+    .coming-soon-description {
+        font-size: 0.95rem;
+    }
+}
+
+/* Large Mobile Portrait and Small Landscape adjustments */
+@media screen and (max-width: 480px) {
+    .service-card {
+        height: 160px;
+        font-size: 0.95rem;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.6rem;
+    }
+}
+
+/* Very Small Screens */
+@media screen and (max-width: 375px) {
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .hamburger-menu {
+        width: 22px;
+        height: 18px;
+    }
+
+    .product-title {
+        font-size: 1.6rem;
+    }
+
+    .services-title {
+        font-size: 1.6rem;
+    }
+
+    .policies-title {
+        font-size: 1.6rem;
+    }
+
+    .service-card {
+        height: 150px;
+        font-size: 0.9rem;
+    }
+
+    .mobile-menu-item {
+        font-size: 1.4rem;
+    }
+
+    .page-title h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* ================== DUAL VIDEO SECTION STYLES ================== */
+
+/* Dual Video Section - Two videos side by side */
 .dual-video-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2336,8 +3447,8 @@ body.white-theme .form-buttons button:hover {
 
 .dual-video-item .video-container-main {
     width: 100%;
-    height: 45vh;
-    min-height: 300px;
+    height: 45vh; /* Back to the working viewport height */
+    min-height: 300px; /* Restored responsive constraints */
     max-height: 400px;
     position: relative;
     overflow: hidden;
@@ -2355,7 +3466,7 @@ body.white-theme .form-buttons button:hover {
 }
 
 .dual-video-item .video-metadata .project-title {
-    font-size: 1.4rem;
+    font-size: 1.4rem; /* Slightly smaller for dual layout */
     font-weight: 300;
     margin-bottom: 10px;
     line-height: 1.2;
@@ -2370,6 +3481,7 @@ body.white-theme .form-buttons button:hover {
     text-transform: uppercase;
 }
 
+/* Video styling within dual video items - ensure videos fit containers exactly */
 .dual-video-item .feed-video,
 .dual-video-item .video-container-main video {
     width: 100% !important;
@@ -2380,6 +3492,7 @@ body.white-theme .form-buttons button:hover {
     border-radius: 12px;
 }
 
+/* Hover effects for dual videos */
 .dual-video-item .video-overlay {
     position: absolute;
     top: 0;
@@ -2400,7 +3513,7 @@ body.white-theme .form-buttons button:hover {
 }
 
 .dual-video-item .play-indicator {
-    width: 60px;
+    width: 60px; /* Slightly smaller for dual layout */
     height: 60px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 50%;
@@ -2436,6 +3549,7 @@ body.white-theme .form-buttons button:hover {
     white-space: nowrap;
 }
 
+/* White theme adjustments for dual videos */
 body.white-theme .dual-video-item .video-metadata .project-title {
     color: black;
 }
@@ -2444,36 +3558,1084 @@ body.white-theme .dual-video-item .video-container-main {
     background: #f5f5f5;
 }
 
-/* ================== RESPONSIVE DESIGN ================== */
+/* ================== RESPONSIVE DESIGN FOR DUAL VIDEOS ================== */
 
-/* CRITICAL FIX: Dual video height alignment for 1200px-1600px range */
-@media screen and (min-width: 1200px) and (max-width: 1600px) {
+/* Tablet adjustments */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .dual-video-section {
+        gap: 30px;
+    }
+
+    .dual-video-item .video-container-main {
+        height: 40vh;
+        min-height: 250px;
+        max-height: 350px;
+    }
+
+    .dual-video-item .video-metadata .project-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Mobile - Stack dual videos vertically */
+@media screen and (max-width: 768px) {
+    .dual-video-section {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 30px;
+    }
+
+    .dual-video-item .video-container-main {
+        height: 50vh;
+        min-height: 300px;
+        max-height: 400px;
+    }
+
+    .dual-video-item .video-metadata {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .dual-video-item .video-metadata .project-title {
+        font-size: 1.5rem; /* Restore larger size on mobile when stacked */
+    }
+}
+
+/* Small mobile adjustments */
+@media screen and (max-width: 576px) {
+    .dual-video-section {
+        gap: 25px;
+    }
+
+    .dual-video-item .video-container-main {
+        height: 45vh;
+        min-height: 250px;
+        max-height: 350px;
+        border-radius: 8px;
+    }
+
+    .dual-video-item .video-metadata .project-title {
+        font-size: 1.3rem;
+    }
+
+    .dual-video-item .video-metadata .client-name {
+        font-size: 0.8rem;
+    }
+
+    .dual-video-item .play-indicator {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+    }
+}
+
+
+.images-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+
+/* Mobile and below (768px and below) */
+@media screen and (max-width: 768px) {
+    nav {
+        padding: 15px 20px;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    /* Home Page Mobile */
+    .home-page div {
+        padding: 10px 10px !important;
+    }
+
+    .choose-button {
+        padding: 12px 30px;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    /* Shop Page Mobile */
+    .shop-page {
+        padding: 120px 20px 50px;
+    }
+
+    .product-container {
+        flex-direction: column;
+        gap: 40px;
+        min-height: auto;
+        padding: 20px 0;
+    }
+
+    .product-image {
+        width: 100%;
+        max-width: 350px;
+        height: 400px;
+        margin-left: 0;
+    }
+
+    .product-info {
+        max-width: 100%;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .product-description {
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .buy-button, .info-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    /* Services Page Mobile - Vertical Scroll */
+    .services-page {
+        padding: 120px 20px 50px;
+    }
+
+    .services-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .carousel-container {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        margin-top: 20px !important; /* Ensure space below title */
+        overflow: auto !important;
+    }
+
+    .carousel {
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        transition: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .service-card {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .service-card-content {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 2 !important;
+        text-align: center !important;
+        width: auto !important;
+        pointer-events: none !important;
+    }
+
+    .service-card-title {
+        margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+    }
+
+    /* White theme adjustments for mobile */
+    body.white-theme .service-card-title {
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9),
+        -1px -1px 2px rgba(255, 255, 255, 0.7),
+        1px 1px 3px rgba(255, 255, 255, 0.8);
+        color: black;
+    }
+
+    .carousel-arrow {
+        display: none;
+    }
+
+    .carousel .service-card,
+    .carousel .service-card:link,
+    .carousel .service-card:visited,
+    .carousel .service-card:hover,
+    .carousel .service-card:active,
+    .carousel .service-card:focus {
+        color: white !important;
+    }
+
+    body.white-theme .carousel .service-card,
+    body.white-theme .carousel .service-card:link,
+    body.white-theme .carousel .service-card:visited,
+    body.white-theme .carousel .service-card:hover,
+    body.white-theme .carousel .service-card:active,
+    body.white-theme .carousel .service-card:focus {
+        color: black !important;
+    }
+
+    /* Custom scrollbar for services */
+    .carousel-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .carousel-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Policies Page Mobile */
+    .policies-page {
+        padding: 120px 20px 50px;
+    }
+
+    .policies-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .policies-content {
+        max-width: 100%;
+        line-height: 1.6;
+    }
+
+    .policy-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .policy-section p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    /* Theme Switcher Mobile */
+    .theme-switcher {
+        bottom: 20px;
+        left: 20px;
+        gap: 10px;
+    }
+
+    .theme-circle {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Service detail pages mobile */
+    .service-detail-page {
+        padding: 120px 20px 50px;
+    }
+
+    .service-title {
+        font-size: 2rem;
+    }
+
+    .service-description {
+        text-align: center;
+    }
+
+    .service-features {
+        text-align: left;
+    }
+
+    .electra-style-page {
+        padding: 120px 20px 60px;
+    }
+
+    .page-title h1 {
+        font-size: 2.5rem;
+    }
+
+    .electra-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .video-container {
+        height: 250px;
+    }
+
+    .video-title {
+        font-size: 1.2rem;
+    }
+
+    /* NEW VIDEO LAYOUT MOBILE */
+    .set-design-feed,
+    .designer-profile-page .profile-content {
+        padding: 120px 4vw 60px;
+        max-width: 96vw;
+    }
+
+    .feed-container {
+        max-width: 92vw;
+        gap: 40px;
+    }
+
+    .video-section,
+    .video-section.reverse {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .video-container-main {
+        width: 100%;
+        min-height: 50vh;
+        max-height: 60vh;
+    }
+
+    .video-metadata {
+        width: 100%;
+        min-width: auto;
+        text-align: center;
+        padding: 15px 0;
+    }
+
+    .video-metadata .project-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    /* ================== DUAL VIDEO SECTION STYLES ================== */
+    /* Dual Video Section - Two videos side by side */
     .dual-video-section {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 40px;
-        align-items: stretch; /* Force equal heights */
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     .dual-video-item {
         display: flex;
         flex-direction: column;
-        height: 100%; /* Take full available height */
+        gap: 15px;
     }
 
     .dual-video-item .video-container-main {
         width: 100%;
-        height: 50vh !important; /* Fixed height for both videos */
-        min-height: 400px !important;
-        max-height: 500px !important;
-        flex: 1; /* Fill available space equally */
+        height: 45vh; /* Back to the working viewport height */
+        min-height: 300px; /* Restored responsive constraints */
+        max-height: 400px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        background: #111;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .dual-video-item .video-metadata {
-        flex-shrink: 0; /* Don't shrink metadata */
-        min-height: 80px; /* Consistent metadata height */
+        text-align: center;
+        padding: 15px 0;
+    }
+
+    .dual-video-item .video-metadata .project-title {
+        font-size: 1.4rem; /* Slightly smaller for dual layout */
+        font-weight: 300;
+        margin-bottom: 10px;
+        line-height: 1.2;
+        color: white;
+    }
+
+    .dual-video-item .video-metadata .client-name {
+        font-size: 0.85rem;
+        opacity: 0.6;
+        margin-bottom: 5px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    /* Video styling within dual video items - ensure videos fit containers exactly */
+    .dual-video-item .feed-video,
+    .dual-video-item .video-container-main video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        display: block !important;
+        border-radius: 12px;
+    }
+
+    /* Hover effects for dual videos */
+    .dual-video-item .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.15);
         display: flex;
-        flex-direction: column;
+        align-items: center;
         justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+        border-radius: 12px;
+    }
+
+    .dual-video-item .video-container-main:hover .video-overlay {
+        opacity: 1;
+    }
+
+    .dual-video-item .play-indicator {
+        width: 60px; /* Slightly smaller for dual layout */
+        height: 60px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: black;
+        padding-left: 3px;
+        transition: transform 0.3s;
+    }
+
+    .dual-video-item .play-indicator:hover {
+        transform: scale(1.1);
+    }
+
+    .dual-video-item .hq-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        color: black;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: bold;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        min-height: 16px;
+        white-space: nowrap;
+    }
+
+    /* White theme adjustments for dual videos */
+    body.white-theme .dual-video-item .video-metadata .project-title {
+        color: black;
+    }
+
+    body.white-theme .dual-video-item .video-container-main {
+        background: #f5f5f5;
+    }
+
+    /* ================== RESPONSIVE DESIGN FOR DUAL VIDEOS ================== */
+    /* Tablet adjustments */
+    @media screen and (max-width: 1024px) and (min-width: 769px) {
+        .dual-video-section {
+            gap: 30px;
+        }
+
+        .dual-video-item .video-container-main {
+            height: 40vh;
+            min-height: 250px;
+            max-height: 350px;
+        }
+
+        .dual-video-item .video-metadata .project-title {
+            font-size: 1.2rem;
+        }
+    }
+
+    /* Mobile - Stack dual videos vertically */
+    @media screen and (max-width: 768px) {
+        .dual-video-section {
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 30px;
+        }
+
+        .dual-video-item .video-container-main {
+            height: 50vh;
+            min-height: 300px;
+            max-height: 400px;
+        }
+
+        .dual-video-item .video-metadata {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .dual-video-item .video-metadata .project-title {
+            font-size: 1.5rem; /* Restore larger size on mobile when stacked */
+        }
+    }
+
+    /* Small mobile adjustments */
+    @media screen and (max-width: 576px) {
+        .dual-video-section {
+            gap: 25px;
+        }
+
+        .dual-video-item .video-container-main {
+            height: 45vh;
+            min-height: 250px;
+            max-height: 350px;
+            border-radius: 8px;
+        }
+
+        .dual-video-item .video-metadata .project-title {
+            font-size: 1.3rem;
+        }
+
+        .dual-video-item .video-metadata .client-name {
+            font-size: 0.8rem;
+        }
+
+        .dual-video-item .play-indicator {
+            width: 50px;
+            height: 50px;
+            font-size: 16px;
+        }
+    }
+
+    .video-metadata .designer-link {
+        font-size: 1rem;
+    }
+
+    .images-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .image-large {
+        grid-column: span 1;
+        height: 350px;
+    }
+
+    .image-medium {
+        height: 300px;
+    }
+
+    .image-small {
+        height: 250px;
+    }
+
+    .designer-hero {
+        height: 70vh;
+    }
+
+    .hero-overlay {
+        padding: 40px 20px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .profile-content {
+        padding: 60px 20px;
+    }
+
+    .work-section-title {
+        font-size: 1.5rem;
+    }
+
+    .image-modal .modal-close {
+        top: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .image-container {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-image {
+        max-height: 75vh;
+    }
+
+    .image-info {
+        margin-top: 15px;
+        padding: 0 20px;
+    }
+
+    .image-title {
+        font-size: 1.2rem;
+    }
+
+    .image-project {
+        font-size: 0.9rem;
+    }
+
+    .contact-page {
+        padding: 120px 20px 50px;
+    }
+
+    .contact-title {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+
+    .contact-subtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .contact-form {
+        padding: 30px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+        margin-top: 30px;
+    }
+
+    .submit-button {
+        width: 100%;
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .thank-you-container {
+        padding: 40px 20px;
+    }
+
+    .thank-you-title {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+    }
+
+    .thank-you-message {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+    .home-link {
+        font-size: 1rem;
+    }
+
+    .coming-soon-page {
+        padding: 120px 20px 50px;
+    }
+
+    .coming-soon-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+
+    .coming-soon-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .coming-soon-description {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .coming-soon-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .services-button,
+    .notify-button {
+        width: 100%;
+        max-width: 280px;
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .notify-form {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+
+
+    /* Small Mobile (up to 576px) */
+    @media screen and (max-width: 576px) {
+        nav {
+            padding: 12px 15px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+        }
+
+        .hamburger-menu {
+            width: 25px;
+            height: 20px;
+        }
+
+        .hamburger-line {
+            height: 2px;
+        }
+
+        .mobile-menu-item {
+            font-size: 1.8rem;
+        }
+
+        .services-page {
+            padding: 120px 15px 30px;
+        }
+
+        .services-title {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+        }
+
+        .carousel-container {
+            max-height: calc(100vh - 240px);
+            padding: 15px 0;
+            margin-top: 15px;
+        }
+
+        .carousel {
+            gap: 20px;
+        }
+
+        .service-card {
+            height: 180px;
+            font-size: 1rem;
+            padding: 140px 15px 30px;
+        }
+
+        .shop-page {
+            padding: 100px 15px 30px;
+        }
+
+        .product-image {
+            height: 300px;
+        }
+
+        .product-title {
+            font-size: 1.8rem;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+        }
+
+        .buy-button, .info-button {
+            padding: 10px 25px;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-bottom: 15px;
+            margin-right: 0;
+        }
+
+        .policies-page {
+            padding: 100px 15px 30px;
+        }
+
+        .policies-title {
+            font-size: 1.8rem;
+        }
+
+        .policy-section h3 {
+            font-size: 1.2rem;
+        }
+
+        .policy-section p {
+            font-size: 0.9rem;
+        }
+
+        .theme-switcher {
+            bottom: 15px;
+            left: 15px;
+        }
+
+        .theme-circle {
+            width: 22px;
+            height: 22px;
+        }
+
+        .service-detail-page {
+            padding: 100px 15px 30px;
+        }
+
+        .contact-button {
+            width: 100%;
+            padding: 12px 30px;
+        }
+
+        .electra-grid {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .video-container {
+            height: 200px;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+        }
+
+        /* NEW VIDEO LAYOUT SMALL MOBILE */
+        .set-design-feed,
+        .designer-profile-page .profile-content {
+            padding: 120px 3vw 50px;
+        }
+
+        .video-container-main {
+            min-height: 40vh;
+            max-height: 50vh;
+            border-radius: 8px;
+        }
+
+        .video-metadata .project-title {
+            font-size: 1.3rem;
+        }
+
+        .video-metadata .client-name {
+            font-size: 0.8rem;
+        }
+
+        .play-indicator {
+            width: 50px;
+            height: 50px;
+            font-size: 16px;
+        }
+
+        .contact-title {
+            font-size: 1.8rem;
+        }
+
+        .contact-form {
+            padding: 25px 15px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .thank-you-title {
+            font-size: 1.8rem;
+            line-height: 1.3;
+        }
+
+        .thank-you-message {
+            font-size: 1rem;
+        }
+
+        .coming-soon-title {
+            font-size: 2rem;
+        }
+
+        .coming-soon-subtitle {
+            font-size: 1rem;
+        }
+
+        .coming-soon-description {
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Large Mobile Portrait and Small Landscape adjustments */
+    @media screen and (max-width: 480px) {
+        .service-card {
+            height: 160px;
+            font-size: 0.95rem;
+        }
+
+        .mobile-menu-item {
+            font-size: 1.6rem;
+        }
+    }
+
+    /* Very Small Screens */
+    @media screen and (max-width: 375px) {
+        .logo {
+            font-size: 1.2rem;
+        }
+
+        .hamburger-menu {
+            width: 22px;
+            height: 18px;
+        }
+
+        .product-title {
+            font-size: 1.6rem;
+        }
+
+        .services-title {
+            font-size: 1.6rem;
+        }
+
+        .policies-title {
+            font-size: 1.6rem;
+        }
+
+        .service-card {
+            height: 150px;
+            font-size: 0.9rem;
+        }
+
+        .mobile-menu-item {
+            font-size: 1.4rem;
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+        }
+    }
+
+    /* ================== ASHLEIGH'S HERO IMAGE FIXES ================== */
+    /* Ashleigh's hero image positioning - all device sizes */
+    .hero-image-ash {
+        object-fit: cover;
+        object-position: center 25%; /* Center horizontally, 25% from top */
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Tablet adjustments for Ashleigh's hero */
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+        .hero-image-ash {
+            object-position: center 30%; /* Slightly lower on tablets */
+        }
+    }
+
+    /* Desktop adjustments for Ashleigh's hero */
+    @media screen and (min-width: 1025px) {
+        .hero-image-ash {
+            object-position: center 20%; /* Higher positioning on desktop */
+        }
+    }
+
+    /* Large desktop adjustments for Ashleigh's hero */
+    @media screen and (min-width: 1400px) {
+        .hero-image-ash {
+            object-position: center 15%; /* Even higher on large screens */
+        }
+    }
+
+    /* Very large screens adjustments for Ashleigh's hero */
+    @media screen and (min-width: 2000px) {
+        .hero-image-ash {
+            object-position: center 10%; /* Top positioning for very large screens */
+        }
+    }
+
+    /* ================== FIX FOR VIDEO SECTIONS ON VERY LARGE SCREENS ================== */
+    /* Fix for large screens - ensure singular videos match dual video width */
+    @media screen and (min-width: 1600px) {
+        /* Make sure singular video sections use full available width like dual videos */
+        .video-section:not(.dual-video-section) {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto;
+        }
+
+        /* Ensure video containers expand to match dual video width */
+        .video-section:not(.dual-video-section) .video-container-main {
+            width: 100%;
+            max-width: none !important; /* Remove any width constraints */
+        }
+
+        /* Keep metadata proportional */
+        .video-section:not(.dual-video-section) .video-metadata {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+        }
     }
 }
