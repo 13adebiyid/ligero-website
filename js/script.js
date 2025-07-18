@@ -1795,3 +1795,354 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
+
+// ================== PHOTOGRAPHY PORTFOLIO ==================
+
+// Photography portfolio data
+const photographyData = [
+    {
+        id: 1,
+        category: "commercial",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "Harper's Bazaar",
+        camera: "Canon EOS R5, 85mm f/1.4",
+        year: "2024",
+        image: "/images/ash-pic-1.png"
+    },
+    {
+        id: 2,
+        category: "fashion",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "Dezeen Magazine",
+        camera: "Sony A7R IV, 24-70mm f/2.8",
+        year: "2024",
+        image: "/images/ash-pic-2.png"
+    },
+    {
+        id: 3,
+        category: "fashion",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "National Geographic",
+        camera: "Nikon D850, 70-200mm f/2.8",
+        year: "2023",
+        image: "/images/ash-pic-3.png"
+    },
+    {
+        id: 4,
+        category: "editorial",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "Louis Vuitton",
+        camera: "Canon EOS R6, 100mm f/2.8 Macro",
+        year: "2024",
+        image: "/images/ash-pic-4.png"
+    },
+    {
+        id: 5,
+        category: "editorial",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "Vogue Italia",
+        camera: "Fujifilm GFX 100S, 63mm f/2.8",
+        year: "2024",
+        image: "/images/ash-pic-5.png"
+    },
+    {
+        id: 6,
+        category: "editorial",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "Glastonbury Festival",
+        camera: "Sony A9 III, 24-105mm f/4",
+        year: "2023",
+        image: "/images/ash-pic-6.png"
+    },
+    {
+        id: 7,
+        category: "commercial",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "TIME Magazine",
+        camera: "Leica Q2, 28mm f/1.7",
+        year: "2023",
+        image: "/images/ash-pic-7.png"
+    },
+    {
+        id: 8,
+        category: "events",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "Apple Inc.",
+        camera: "Canon EOS R5, 50mm f/1.2",
+        year: "2024",
+        image: "/images/ash-pic-8.png"
+    },
+    {
+        id: 9,
+        category: "portrait",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "London Fashion Week",
+        camera: "Canon EOS R6, 35mm f/1.4",
+        year: "2024",
+        image: "/images/ash-pic-9.png"
+    },
+    {
+        id: 9,
+        category: "commercial",
+        photographer: "Ashleigh Cooper",
+        photographerUrl: "/members/ashleigh-cooper-photography",
+        client: "London Fashion Week",
+        camera: "Canon EOS R6, 35mm f/1.4",
+        year: "2024",
+        image: "/images/ash-pic-10.png"
+    }
+];
+
+let currentModalIndex = 0;
+let isModalOpen = false;
+let filteredPhotos = photographyData;
+
+// Initialize Photography Portfolio
+function initializePhotographyPortfolio() {
+    // Only initialize if we're on a page with photography elements
+    if (document.getElementById('masonryGrid')) {
+        initializeGallery();
+        setupCustomCursor();
+        setupPhotographyEventListeners();
+        console.log('✅ Photography portfolio initialized');
+    }
+}
+
+function initializeGallery() {
+    renderPhotos(photographyData);
+}
+
+function renderPhotos(photos) {
+    const masonryGrid = document.getElementById('masonryGrid');
+    if (!masonryGrid) return;
+
+    masonryGrid.innerHTML = '';
+
+    photos.forEach((photo, index) => {
+        const photoItem = createPhotoItem(photo, index);
+        masonryGrid.appendChild(photoItem);
+    });
+
+    filteredPhotos = photos;
+
+    // Re-setup photo hovers after rendering
+    setTimeout(() => {
+        setupPhotoHovers();
+    }, 100);
+}
+
+function createPhotoItem(photo, index) {
+    const masonryItem = document.createElement('div');
+    masonryItem.className = `masonry-item`;
+    masonryItem.dataset.category = photo.category;
+    masonryItem.onclick = () => openImageModal(index);
+
+    masonryItem.innerHTML = `
+        <img class="photo-image" src="${photo.image}" alt="${photo.title}" loading="lazy">
+        <div class="photo-overlay">
+            <div class="photo-category">${photo.category}</div>
+            <div class="photo-content">
+                <div class="photo-meta">
+                    <a href="${photo.photographerUrl}" class="photographer-link">${photo.photographer}</a>
+                    <span>${photo.client} • ${photo.year}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return masonryItem;
+}
+
+// Custom Cursor for Photography
+function setupCustomCursor() {
+    const cursor = document.getElementById('customCursor');
+    if (!cursor) return;
+
+    // Only setup cursor on non-mobile devices
+    if (window.innerWidth > 768) {
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        setupPhotoHovers();
+
+        // General hover effects
+        document.querySelectorAll('a, button, .theme-circle, .filter-btn').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+    }
+}
+
+function setupPhotoHovers() {
+    document.querySelectorAll('.masonry-item').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            const cursor = document.getElementById('customCursor');
+            if (cursor) cursor.classList.add('view');
+        });
+
+        item.addEventListener('mouseleave', () => {
+            const cursor = document.getElementById('customCursor');
+            if (cursor) cursor.classList.remove('view');
+        });
+    });
+}
+
+// Photography Event Listeners
+function setupPhotographyEventListeners() {
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const category = this.dataset.category;
+
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter photos
+            filterPhotos(category);
+        });
+    });
+
+    // Photography-specific keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (isModalOpen) {
+            if (e.key === 'ArrowRight') navigateModal(1);
+            if (e.key === 'ArrowLeft') navigateModal(-1);
+            if (e.key === 'Escape') closeImageModal();
+        }
+    });
+
+    // Close modal when clicking outside
+    const imageModal = document.getElementById('imageModal');
+    if (imageModal) {
+        imageModal.addEventListener('click', (e) => {
+            if (e.target.id === 'imageModal') {
+                closeImageModal();
+            }
+        });
+    }
+}
+
+function filterPhotos(category) {
+    const allItems = document.querySelectorAll('.masonry-item');
+
+    allItems.forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+            item.classList.remove('hidden');
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+
+    // Update filtered photos array for modal navigation
+    if (category === 'all') {
+        filteredPhotos = photographyData;
+    } else {
+        filteredPhotos = photographyData.filter(photo => photo.category === category);
+    }
+}
+
+// Photography Modal Functions
+function openImageModal(index) {
+    currentModalIndex = index;
+    isModalOpen = true;
+
+    const modal = document.getElementById('imageModal');
+    if (!modal) return;
+
+    const photo = filteredPhotos[index];
+    updateModalContent(photo);
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function updateModalContent(photo) {
+    const elements = {
+        modalImage: document.getElementById('modalImage'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalDescription: document.getElementById('modalDescription'),
+        modalPhotographer: document.getElementById('modalPhotographer'),
+        modalClient: document.getElementById('modalClient'),
+        modalCamera: document.getElementById('modalCamera'),
+        modalYear: document.getElementById('modalYear')
+    };
+
+    if (elements.modalImage) elements.modalImage.src = photo.image;
+    if (elements.modalTitle) elements.modalTitle.textContent = photo.title;
+    if (elements.modalDescription) elements.modalDescription.textContent = photo.description;
+    if (elements.modalPhotographer) {
+        elements.modalPhotographer.textContent = photo.photographer;
+        elements.modalPhotographer.href = photo.photographerUrl;
+    }
+    if (elements.modalClient) elements.modalClient.textContent = photo.client;
+    if (elements.modalCamera) elements.modalCamera.textContent = photo.camera;
+    if (elements.modalYear) elements.modalYear.textContent = photo.year;
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    isModalOpen = false;
+}
+
+function navigateModal(direction) {
+    currentModalIndex += direction;
+
+    if (currentModalIndex < 0) {
+        currentModalIndex = filteredPhotos.length - 1;
+    } else if (currentModalIndex >= filteredPhotos.length) {
+        currentModalIndex = 0;
+    }
+
+    const photo = filteredPhotos[currentModalIndex];
+    updateModalContent(photo);
+}
+
+// Photography Window Resize Handler
+function handlePhotographyResize() {
+    const cursor = document.getElementById('customCursor');
+    if (!cursor) return;
+
+    if (window.innerWidth <= 768) {
+        cursor.style.display = 'none';
+    } else {
+        cursor.style.display = 'block';
+        setupCustomCursor();
+    }
+}
+
+// Add photography initialization to your existing DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing initialization code...
+
+    // Add photography portfolio initialization
+    initializePhotographyPortfolio();
+});
+
+// Add photography resize handler to your existing window resize event
+window.addEventListener('resize', () => {
+    // Your existing resize handling...
+
+    // Add photography resize handling
+    handlePhotographyResize();
+});

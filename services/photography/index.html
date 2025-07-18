@@ -11,6 +11,12 @@
 </head>
 <body>
 
+<!-- Custom Cursor -->
+<div class="custom-cursor" id="customCursor">
+    <span class="cursor-text">VIEW</span>
+</div>
+
+<!-- Navigation -->
 <nav>
     <div class="hamburger-menu">
         <div class="hamburger-line"></div>
@@ -39,33 +45,64 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<div class="service-detail-page">
+<!-- Photography Portfolio Page -->
+<div class="photography-page">
     <div class="theme-switcher">
         <div class="theme-circle black" onclick="setTheme('black')"></div>
         <div class="theme-circle white" onclick="setTheme('white')"></div>
     </div>
 
-    <div class="service-content">
-        <h1 class="service-title">PHOTOGRAPHY</h1>
-        <a href="/services/" class="back-link">← Back to Services</a>
+    <h1 class="service-title">PHOTOGRAPHY</h1>
 
-        <div class="service-description">
-            <p>Professional photography and videography services for fashion, lifestyle, and commercial projects. We create stunning visual content that captures your brand's essence and tells your story.</p>
+    <!-- Category Filter -->
+    <div class="category-filter">
+        <button class="filter-btn active" data-category="all">All Work</button>
+        <button class="filter-btn" data-category="fashion">Fashion</button>
+        <button class="filter-btn" data-category="commercial">Commercial</button>
+        <button class="filter-btn" data-category="editorial">Editorial</button>
+        <button class="filter-btn" data-category="portrait">Portrait</button>
+        <button class="filter-btn" data-category="event">Event</button>
+        <button class="filter-btn" data-category="architecture">Architecture</button>
+    </div>
 
-            <div class="service-features">
-                <h3>What We Offer:</h3>
-                <ul>
-                    <li>Fashion photography shoots</li>
-                    <li>Commercial product photography</li>
-                    <li>Lifestyle and portrait sessions</li>
-                    <li>Video content creation</li>
-                    <li>Post-production and editing</li>
-                </ul>
-            </div>
+    <!-- Masonry Grid -->
+    <div class="masonry-container">
+        <div class="masonry-grid" id="masonryGrid">
+            <!-- Photos will be dynamically generated -->
         </div>
+    </div>
+</div>
 
-        <div class="service-actions">
-            <a href="/contact/?service=shoots" class="contact-button">Get in Touch</a>
+<!-- Lightbox Modal -->
+<div class="image-modal" id="imageModal">
+    <button class="modal-close" onclick="closeImageModal()">×</button>
+    <button class="modal-nav prev" onclick="navigateModal(-1)">‹</button>
+    <button class="modal-nav next" onclick="navigateModal(1)">›</button>
+
+    <div class="modal-image-container">
+        <img class="modal-image" id="modalImage" src="" alt="">
+    </div>
+
+    <div class="modal-info">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-description" id="modalDescription"></p>
+        <div class="modal-meta">
+            <div class="modal-meta-item">
+                <span class="modal-meta-label">Photographer</span>
+                <a class="modal-photographer" id="modalPhotographer" href=""></a>
+            </div>
+            <div class="modal-meta-item">
+                <span class="modal-meta-label">Client</span>
+                <span class="modal-meta-value" id="modalClient"></span>
+            </div>
+            <div class="modal-meta-item">
+                <span class="modal-meta-label">Camera</span>
+                <span class="modal-meta-value" id="modalCamera"></span>
+            </div>
+            <div class="modal-meta-item">
+                <span class="modal-meta-label">Year</span>
+                <span class="modal-meta-value" id="modalYear"></span>
+            </div>
         </div>
     </div>
 </div>
