@@ -31,37 +31,7 @@ body.page-loaded {
 
 /* ================== NUMBER FONT FIXES ================== */
 
-.number,
-span.number,
-.project-title .number,
-.video-metadata .number,
-.client-name .number,
-.modal-title .number,
-.hero-title .number,
-div.video-metadata span.number,
-div.project-title span.number,
-.project-title .number,
-.dual-video-item .project-title .number,
-.modal-title .number,
-.hero-title .number,
-.video-metadata .project-title span.number,
-.dual-video-item .video-metadata .project-title span.number,
-.designer-profile-page .video-metadata .project-title span.number,
-.project-title span.number,
-.client-name span.number,
-.modal-client span.number,
-body .number,
-body span.number,
-body .project-title span.number {
-    font-family: "Arial Nova Light", sans-serif !important;
-    font-weight: normal !important;
-    font-style: normal !important;
-}
-
-body.white-theme .number,
-body.white-theme .video-metadata .number,
-body.white-theme .project-title .number,
-body.white-theme span.number {
+.number{
     font-family: "Arial Nova Light", sans-serif !important;
 }
 
