@@ -1073,9 +1073,9 @@ function setupVideoControls() {
 
     function tryAutoplay() {
         video.play().then(() => {
-            playPauseIcon.src = '/images/pause-icon.png';
+            playPauseIcon.src = '/images/pause-icon.webp';
         }).catch(() => {
-            playPauseIcon.src = '/images/play-icon.png';
+            playPauseIcon.src = '/images/play-icon.webp';
         });
     }
 
@@ -1087,24 +1087,24 @@ function setupVideoControls() {
         e.stopPropagation();
         if (video.paused) {
             video.play();
-            playPauseIcon.src = '/images/pause-icon.png';
+            playPauseIcon.src = '/images/pause-icon.webp';
         } else {
             video.pause();
-            playPauseIcon.src = '/images/play-icon.png';
+            playPauseIcon.src = '/images/play-icon.webp';
         }
     });
 
     muteBtn.addEventListener('click', () => {
         video.muted = !video.muted;
-        muteIcon.src = video.muted ? '/images/sound-off-icon.png' : '/images/sound-on-icon.png';
+        muteIcon.src = video.muted ? '/images/sound-off-icon.webp' : '/images/sound-on-icon.webp';
     });
 
     video.addEventListener('play', () => {
-        playPauseIcon.src = '/images/pause-icon.png';
+        playPauseIcon.src = '/images/pause-icon.webp';
     });
 
     video.addEventListener('pause', () => {
-        playPauseIcon.src = '/images/play-icon.png';
+        playPauseIcon.src = '/images/play-icon.webp';
     });
 }
 
