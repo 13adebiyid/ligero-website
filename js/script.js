@@ -722,7 +722,7 @@ const photographyData = [
         client: "Apple Inc.",
         camera: "Canon EOS R5, 50mm f/1.2",
         year: "2024",
-        image: "/images/ash-pic-8.png"
+        image: "/images/ash-pic-8.webp"
     },
     {
         id: 9,
