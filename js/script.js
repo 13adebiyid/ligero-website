@@ -1126,8 +1126,8 @@ function setupModalClicks() {
     videoContainers.forEach(container => {
         container.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
 
-            // Get video source from data attribute or video element
             let videoSrc = container.getAttribute('data-video');
             if (!videoSrc) {
                 const videoElement = container.querySelector('video source');
@@ -1143,32 +1143,46 @@ function setupModalClicks() {
         });
     });
 
-    // Image clicks
-    const imageItems = document.querySelectorAll('.feed-item img');
-    imageItems.forEach(img => {
-        img.parentElement.addEventListener('click', function(e) {
-            e.preventDefault();
+    // Fix: Properly handle feed-item images
+    const feedItems = document.querySelectorAll('.feed-item[data-image]');
+    feedItems.forEach(item => {
+        // Remove any existing listeners by cloning
+        const newItem = item.cloneNode(true);
+        item.parentNode.replaceChild(newItem, item);
+    });
 
-            const imageSrc = img.getAttribute('src');
+    // Re-query after cloning
+    const newFeedItems = document.querySelectorAll('.feed-item[data-image]');
+    newFeedItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const imageSrc = this.getAttribute('data-image');
             if (imageSrc) {
-                const projectInfo = getProjectInfo(img);
+                const projectInfo = getProjectInfo(this);
                 openImageModal(imageSrc, projectInfo.title, projectInfo.client);
             }
         });
     });
 
-    // Alternative: if images have data-image attribute on parent
-    const imageContainers = document.querySelectorAll('[data-image]');
-    imageContainers.forEach(container => {
-        container.addEventListener('click', function(e) {
-            e.preventDefault();
+    // Also handle direct image clicks as fallback
+    const feedImages = document.querySelectorAll('.feed-item img');
+    feedImages.forEach(img => {
+        const parent = img.closest('.feed-item');
+        if (parent && parent.hasAttribute('data-image')) {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            const imageSrc = container.getAttribute('data-image');
-            if (imageSrc) {
-                const projectInfo = getProjectInfo(container);
-                openImageModal(imageSrc, projectInfo.title, projectInfo.client);
-            }
-        });
+                const imageSrc = parent.getAttribute('data-image');
+                if (imageSrc) {
+                    const projectInfo = getProjectInfo(parent);
+                    openImageModal(imageSrc, projectInfo.title, projectInfo.client);
+                }
+            });
+        }
     });
 }
 
@@ -1905,6 +1919,7 @@ const photographyData = [
 let currentModalIndex = 0;
 let isModalOpen = false;
 let filteredPhotos = photographyData;
+let currentFilter = 'all';
 
 // Initialize Photography Portfolio
 function initializePhotographyPortfolio() {
@@ -1927,9 +1942,9 @@ function renderPhotos(photos) {
 
     masonryGrid.innerHTML = '';
 
-    photos.forEach((photo, index) => {
-        const photoItem = createPhotoItem(photo, index);
-        masonryGrid.appendChild(photoItem);
+    photos.forEach((photo) => {
+        const masonryItem = createPhotoItem(photo);
+        masonryGrid.appendChild(masonryItem);
     });
 
     filteredPhotos = photos;
@@ -1940,11 +1955,11 @@ function renderPhotos(photos) {
     }, 100);
 }
 
-function createPhotoItem(photo, index) {
+function createPhotoItem(photo) {
     const masonryItem = document.createElement('div');
     masonryItem.className = `masonry-item`;
     masonryItem.dataset.category = photo.category;
-    masonryItem.onclick = () => openImageModal(index);
+    masonryItem.dataset.photoId = photo.id;
 
     masonryItem.innerHTML = `
         <img class="photo-image" src="${photo.image}" alt="${photo.title}" loading="lazy">
@@ -1958,6 +1973,15 @@ function createPhotoItem(photo, index) {
             </div>
         </div>
     `;
+
+    // Add click handler
+    masonryItem.addEventListener('click', () => {
+        const photoId = parseInt(masonryItem.dataset.photoId);
+        const indexInFiltered = filteredPhotos.findIndex(p => p.id === photoId);
+        if (indexInFiltered !== -1) {
+            openImageModal(indexInFiltered);
+        }
+    });
 
     return masonryItem;
 }
@@ -2040,22 +2064,16 @@ function setupPhotographyEventListeners() {
 }
 
 function filterPhotos(category) {
-    const allItems = document.querySelectorAll('.masonry-item');
+    currentFilter = category;
 
-    allItems.forEach(item => {
-        if (category === 'all' || item.dataset.category === category) {
-            item.classList.remove('hidden');
-        } else {
-            item.classList.add('hidden');
-        }
-    });
-
-    // Update filtered photos array for modal navigation
     if (category === 'all') {
         filteredPhotos = photographyData;
     } else {
         filteredPhotos = photographyData.filter(photo => photo.category === category);
     }
+
+    // Re-render photos with updated filtered array
+    renderPhotos(filteredPhotos);
 }
 
 // Photography Modal Functions

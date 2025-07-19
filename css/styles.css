@@ -1081,7 +1081,7 @@ nav {
 }
 
 .feed-item[data-image]:hover {
-    transform: translateY(-5px);
+    transform: scale(1.02);
     opacity: 0.9;
 }
 
@@ -1386,6 +1386,7 @@ nav {
 .image-modal.active {
     display: flex;
     opacity: 1;
+    animation: fadeIn 0.3s ease;
 }
 
 .image-modal .modal-backdrop {
@@ -3520,7 +3521,19 @@ body.white-theme .photographer-link {
 .image-modal.active {
     display: flex;
     opacity: 1;
+    animation: fadeIn 0.3s ease;
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.image-modal,
+.video-modal {
+    z-index: 10000;
+}
+
 
 .modal-close {
     position: absolute;
