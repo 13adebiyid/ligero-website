@@ -56,13 +56,13 @@ to = "/music/"
 status = 301
 
 [[redirects]]
-from = "/music/producers"
-to = "/music/producers.html"
+from = "/services/music/producers"
+to = "/services/music/producers.html"
 status = 200
 
 [[redirects]]
-from = "/music/songwriters"
-to = "/music/songwriters.html"
+from = "/services/music/songwriters"
+to = "/services/music/songwriters.html"
 status = 200
 
 [[redirects]]
