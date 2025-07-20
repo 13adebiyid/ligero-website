@@ -926,9 +926,7 @@ nav {
 
 .dual-video-item .video-container-main {
     width: 100%;
-    height: 45vh;
-    min-height: 300px;
-    max-height: 400px;
+    aspect-ratio: 16 / 9;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
@@ -968,6 +966,9 @@ nav {
     object-position: center !important;
     display: block !important;
     border-radius: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .dual-video-item .video-overlay {
@@ -1025,6 +1026,19 @@ nav {
     min-height: 16px;
     white-space: nowrap;
 }
+
+@media screen and (max-width: 1400px) {
+    .dual-video-item .video-container-main {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .dual-video-item .video-container-main {
+        aspect-ratio: 16 / 11;
+    }
+}
+
 
 /* ================== IMAGES GRID ================== */
 
