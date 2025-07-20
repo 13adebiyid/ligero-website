@@ -20,7 +20,6 @@ from = "/contact"
 to = "/contact/"
 status = 301
 
-# Service sub-pages redirects
 [[redirects]]
 from = "/services/styling"
 to = "/services/styling.html"
@@ -51,7 +50,21 @@ from = "/services/music"
 to = "/services/music.html"
 status = 200
 
-# Members profile routes
+[[redirects]]
+from = "/music"
+to = "/music/"
+status = 301
+
+[[redirects]]
+from = "/music/producers"
+to = "/music/producers.html"
+status = 200
+
+[[redirects]]
+from = "/music/songwriters"
+to = "/music/songwriters.html"
+status = 200
+
 [[redirects]]
 from = "/members/ifeoluwa-segun-oludimu"
 to = "/members/ifeoluwa-segun-oludimu.html"
