@@ -1432,6 +1432,115 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+// === PRODUCERS PAGE PLAYER ===
+
+// Track data
+const tracks = [
+    { id: 1, title: "Copy Cat", artist: "K1D", duration: "3:45", src: "/audio/track1.mp3" },
+    { id: 2, title: "Electric Pulse", artist: "Sofia Rodriguez", duration: "4:12", src: "/audio/track2.mp3" },
+    { id: 3, title: "Golden Hour", artist: "James Williams", duration: "3:28", src: "/audio/track3.mp3" },
+    { id: 4, title: "Neon Nights", artist: "Luna Park", duration: "5:02", src: "/audio/track4.mp3" },
+    { id: 5, title: "Urban Symphony", artist: "Alex Kim", duration: "4:33", src: "/audio/track5.mp3" }
+];
+
+let currentTrackId = null;
+let isPlaying = false;
+const audioPlayer = document.getElementById('audioPlayer');
+const nowPlaying = document.getElementById('nowPlaying');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
+
+// Play a track by ID
+function playTrack(trackId) {
+    const track = tracks.find(t => t.id === trackId);
+    if (!track) return;
+
+    // Update UI states
+    document.querySelectorAll('.audio-track').forEach(el => {
+        el.classList.remove('playing');
+        el.querySelector('.play-btn').classList.remove('playing');
+    });
+
+    const trackElement = document.querySelector(`[data-track-id="${trackId}"]`);
+    trackElement.classList.add('playing');
+    trackElement.querySelector('.play-btn').classList.add('playing');
+
+    document.getElementById('playingTitle').textContent = track.title;
+    document.getElementById('playingArtist').textContent = track.artist;
+    document.getElementById('miniPlayBtn').classList.remove('paused');
+    nowPlaying.classList.add('active');
+    currentTrackId = trackId;
+
+    audioPlayer.src = track.src;
+    audioPlayer.play();
+    isPlaying = true;
+}
+
+// Toggle play/pause
+function togglePlay() {
+    if (!currentTrackId) return;
+
+    if (isPlaying) {
+        audioPlayer.pause();
+        document.getElementById('miniPlayBtn').classList.add('paused');
+    } else {
+        audioPlayer.play();
+        document.getElementById('miniPlayBtn').classList.remove('paused');
+    }
+    isPlaying = !isPlaying;
+}
+
+// Track navigation
+function previousTrack() {
+    if (currentTrackId > 1) {
+        playTrack(currentTrackId - 1);
+    }
+}
+
+function nextTrack() {
+    if (currentTrackId < tracks.length) {
+        playTrack(currentTrackId + 1);
+    }
+}
+
+// Update progress bar
+audioPlayer.addEventListener('timeupdate', () => {
+    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+
+    const minutes = Math.floor(audioPlayer.currentTime / 60);
+    const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
+    currentTimeEl.textContent = `${minutes}:${seconds}`;
+});
+
+// Handle track end
+audioPlayer.addEventListener('ended', () => {
+    nextTrack();
+});
+
+// Seek manually
+function seek(event) {
+    const progressBar = document.getElementById('progressBar');
+    const rect = progressBar.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const percentage = x / rect.width;
+    audioPlayer.currentTime = audioPlayer.duration * percentage;
+}
+
+document.getElementById('progressBar').addEventListener('click', seek);
+
+
+// Click audio track anywhere to play
+document.querySelectorAll('.audio-track').forEach(track => {
+    track.addEventListener('click', (e) => {
+        if (!e.target.closest('a') && !e.target.closest('.play-btn')) {
+            const trackId = parseInt(track.dataset.trackId);
+            playTrack(trackId);
+        }
+    });
+});
+
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
         resetPageState();

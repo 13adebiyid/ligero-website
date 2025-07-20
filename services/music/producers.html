@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Producers - Ligero</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/producers.css" />
+    <script src="/js/script.js" defer></script>
+    <script src="/js/producers.js" defer></script>
+</head>
+<body>
+
+<nav>
+    <div class="hamburger-menu">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+    <a href="/" class="logo">LIGERO</a>
+    <div class="nav-menu">
+        <a href="/shop/" class="nav-item">Shop</a>
+        <span class="nav-separator">|</span>
+        <a href="/services/" class="nav-item">Services</a>
+        <span class="nav-separator">|</span>
+        <a href="/contact/" class="nav-item">Contact</a>
+        <span class="nav-separator">|</span>
+        <a href="/policies/" class="nav-item">Policies</a>
+    </div>
+</nav>
+
+<div class="producers-page">
+    <div class="hero-section">
+        <h1 class="page-title">MUSIC LAB</h1>
+    </div>
+
+    <div class="tracks-container">
+        <!-- Each .audio-track block -->
+        <div class="audio-track" data-track-id="1">
+            <button class="play-btn" onclick="playTrack(1)"></button>
+            <div class="track-info">
+                <div class="track-header">
+                    <h3 class="track-title">Copy Cat</h3>
+                    <a href="/members/marcus-chen.html" class="artist-name">K1D</a>
+                </div>
+                <div class="track-meta">
+                    <div class="tags">
+                        <span class="tag">Underground</span><span class="tag">Uk Rap</span>
+                    </div>
+                    <div class="bpm">♫ 144 BPM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Duplicate for more tracks (2-5) -->
+        <!-- ... same pattern with different data-track-id, artist, tags ... -->
+
+    </div>
+</div>
+
+<div class="now-playing" id="nowPlaying">
+    <div class="player-container">
+        <div class="player-info">
+            <div class="playing-track-info">
+                <button class="mini-play-btn" id="miniPlayBtn" onclick="togglePlay()"></button>
+                <div>
+                    <div class="playing-title" id="playingTitle">Track Name</div>
+                    <div class="playing-artist" id="playingArtist">Artist Name</div>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" onclick="previousTrack()">⏮</button>
+                <button class="control-btn" onclick="nextTrack()">⏭</button>
+            </div>
+        </div>
+        <div class="progress-container">
+            <span class="time" id="currentTime">0:00</span>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span class="time" id="duration">3:45</span>
+        </div>
+    </div>
+</div>
+
+<audio id="audioPlayer" style="display: none;"></audio>
+
+</body>
+</html>
