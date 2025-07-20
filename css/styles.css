@@ -1027,7 +1027,6 @@ nav {
     white-space: nowrap;
 }
 
-
 /* ================== IMAGES GRID ================== */
 
 .images-grid {
@@ -3450,6 +3449,7 @@ body.white-theme .photo-category {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    font-family: "Dubai Light", serif;
 }
 
 .photographer-link {
