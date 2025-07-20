@@ -3534,12 +3534,13 @@ body.white-theme .photographer-link {
 
 .image-modal .modal-info {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     left: 0;
     right: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
     padding: 2rem;
     color: white;
+    font-family: "Dubai Light", serif;
 }
 
 .image-modal.active .modal-image {
