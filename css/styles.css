@@ -1027,18 +1027,6 @@ nav {
     white-space: nowrap;
 }
 
-@media screen and (max-width: 1400px) {
-    .dual-video-item .video-container-main {
-        aspect-ratio: 16 / 10;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .dual-video-item .video-container-main {
-        aspect-ratio: 16 / 11;
-    }
-}
-
 
 /* ================== IMAGES GRID ================== */
 
