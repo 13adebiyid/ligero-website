@@ -200,10 +200,13 @@ function resetCarousel() {
 
 // ============= PAGE TRANSITIONS =============
 function createTransitionOverlay() {
-    const overlay = document.createElement('div');
-    overlay.className = 'page-transition';
-    overlay.innerHTML = '<div class="loading-text">LIGERO</div>';
-    document.body.appendChild(overlay);
+    let overlay = document.querySelector('.page-transition');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'page-transition';
+        overlay.innerHTML = '<div class="loading-text">LIGERO</div>';
+        document.body.appendChild(overlay);
+    }
     return overlay;
 }
 
@@ -220,25 +223,28 @@ function showNavigationTransition() {
 }
 
 function handleSimplePageTransition(url) {
-    const now = Date.now();
-    if (state.isNavigating || (now - state.lastNavigationTime < 300)) return;
-
+    if (state.isNavigating) return;
     state.isNavigating = true;
-    state.lastNavigationTime = now;
 
-    try {
-        // Simplified transition - remove opacity changes that might be causing issues
-        DOM.body.style.pointerEvents = 'none';
+    // Show the transition overlay
+    const overlay = createTransitionOverlay();
+    overlay.classList.add('active');
 
-        // Shorter timeout to prevent hanging
-        state.navigationTimeout = setTimeout(() => {
-            window.location.href = url;
-        }, 50); // Reduced from 150ms
-    } catch (error) {
-        console.error('Error during simple transition:', error);
-        emergencyCleanup();
-    }
+    // Ensure page is interactable for a moment so assets can queue
+    setTimeout(() => {
+        // Optional: wait for fonts if you're using custom text in the overlay
+        document.fonts.ready.then(() => {
+            requestAnimationFrame(() => {
+                // Give time for CSS opacity transition (0.4s in your CSS)
+                setTimeout(() => {
+                    // Navigate cleanly
+                    window.location.assign(url);
+                }, 400); // Match your CSS: transition: all 0.4s
+            });
+        });
+    }, 50); // Give browser time to queue poster/video/font requests
 }
+
 
 function handleHomePageTransition(url) {
     const now = Date.now();
@@ -1477,17 +1483,6 @@ function setupPageTransitions() {
             const href = target.getAttribute('href');
             if (!href || !href.startsWith('/') || href.startsWith('//')) return;
 
-            // Special handling for service cards to prevent transition issues
-            const isServiceCard = target.classList.contains('service-card');
-            if (isServiceCard) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                // Direct navigation without transitions for service cards
-                window.location.href = href;
-                return;
-            }
-
             e.preventDefault();
             e.stopPropagation();
 
@@ -1508,6 +1503,7 @@ function setupPageTransitions() {
                 return;
             }
 
+            // ✅ Allow transition even for service-card links
             handleSimplePageTransition(href);
 
         } catch (error) {
@@ -1516,6 +1512,7 @@ function setupPageTransitions() {
         }
     });
 }
+
 
 function initPageSpecificFeatures() {
     // Reset carousel if on services page
