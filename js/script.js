@@ -5,12 +5,13 @@
 // ============= DOM CACHE & STATE =============
 const DOM = {
     body: document.body,
-    carousel: null, // Set after DOM load
+    carousel: null,
     mobileMenuOverlay: null,
     hamburger: null,
     videoModal: null,
     imageModal: null,
-    bgVideo: null
+    bgVideo: null,
+    customCursor: null // Added for cursor management
 };
 
 // State Management
@@ -276,6 +277,11 @@ function openImageModal(imageSrc, title, client) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
+
+    // Fix: Keep cursor visible in modal
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
 }
 
 function closeImageModal() {
@@ -285,8 +291,10 @@ function closeImageModal() {
     modal.classList.remove('active');
     DOM.body.style.overflow = '';
 
-    const cursor = document.getElementById('customCursor');
-    if (cursor) cursor.style.display = 'block';
+    // Keep cursor visible
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
 }
 
 // ============= VIDEO MODAL =============
@@ -306,6 +314,11 @@ function openVideoModal(videoSrc, title, client) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
+
+    // Fix: Keep cursor visible in modal
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
 
     modalVideo.src = videoSrc;
     modalVideo.load();
@@ -331,6 +344,11 @@ function closeModal() {
         modalVideo.currentTime = 0;
         modalVideo.src = '';
     }
+
+    // Keep cursor visible
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
 }
 
 // ============= PHOTOGRAPHY MODAL (Special case) =============
@@ -346,6 +364,11 @@ function openPhotographyModal(index) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
+
+    // Fix: Keep cursor visible in photography modal
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
 }
 
 function updatePhotographyModalContent(photo) {
@@ -375,8 +398,10 @@ function closePhotographyModal() {
     DOM.body.style.overflow = '';
     state.isModalOpen = false;
 
-    const cursor = document.getElementById('customCursor');
-    if (cursor) cursor.style.display = 'block';
+    // Keep cursor visible
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
 }
 
 function navigateModal(direction) {
@@ -811,6 +836,8 @@ function setupCustomCursor() {
     const cursor = document.getElementById('customCursor');
     if (!cursor || utils.isMobile()) return;
 
+    DOM.customCursor = cursor; // Store reference
+
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
@@ -829,20 +856,27 @@ function setupCustomCursor() {
         });
     });
 
-    // "OPEN" text for photographer links
+    // Fix: "OPEN" text for photographer links - use event delegation
     document.addEventListener('mouseover', (e) => {
-        if (e.target.matches('.photographer-link, .modal-meta-item a')) {
+        const target = e.target;
+        // Check if hovering over photographer link or modal photographer link
+        if (target.matches('.photographer-link, .modal-photographer, .modal-meta-item a')) {
             cursor.classList.add('open-mode');
             const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) cursorText.textContent = 'OPEN';
+            if (cursorText) {
+                cursorText.textContent = 'OPEN';
+            }
         }
     });
 
     document.addEventListener('mouseout', (e) => {
-        if (e.target.matches('.photographer-link, .modal-meta-item a')) {
+        const target = e.target;
+        if (target.matches('.photographer-link, .modal-photographer, .modal-meta-item a')) {
             cursor.classList.remove('open-mode');
             const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) cursorText.textContent = 'VIEW';
+            if (cursorText) {
+                cursorText.textContent = 'VIEW';
+            }
         }
     });
 }
@@ -885,7 +919,7 @@ function setupPhotographyEventListeners() {
     const imageModal = DOM.imageModal;
     if (imageModal) {
         imageModal.addEventListener('click', (e) => {
-            if (e.target.id === 'imageModal') {
+            if (e.target.id === 'imageModal' || e.target.classList.contains('modal-backdrop')) {
                 closePhotographyModal();
             }
         });
@@ -1108,6 +1142,134 @@ function setupVideoControls() {
     });
 }
 
+// === PRODUCERS PAGE PLAYER ===
+
+// Track data (without hardcoded durations)
+const tracks = [
+    { id: 1, title: "Copy Cat", artist: "K1D", src: "/audio/track1.mp3" },
+    { id: 2, title: "Electric Pulse", artist: "Sofia Rodriguez", src: "/audio/track2.mp3" },
+    { id: 3, title: "Golden Hour", artist: "James Williams", src: "/audio/track3.mp3" },
+    { id: 4, title: "Neon Nights", artist: "Luna Park", src: "/audio/track4.mp3" },
+    { id: 5, title: "Urban Symphony", artist: "Alex Kim", src: "/audio/track5.mp3" }
+];
+
+let currentTrackId = null;
+let isPlaying = false;
+const audioPlayer = document.getElementById('audioPlayer');
+const nowPlaying = document.getElementById('nowPlaying');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
+
+// Play a track by ID
+function playTrack(trackId) {
+    const track = tracks.find(t => t.id === trackId);
+    if (!track) return;
+
+    // Update UI states
+    document.querySelectorAll('.audio-track').forEach(el => {
+        el.classList.remove('playing');
+        el.querySelector('.play-btn').classList.remove('playing');
+    });
+
+    const trackElement = document.querySelector(`[data-track-id="${trackId}"]`);
+    trackElement.classList.add('playing');
+    trackElement.querySelector('.play-btn').classList.add('playing');
+
+    document.getElementById('playingTitle').textContent = track.title;
+    document.getElementById('playingArtist').textContent = track.artist;
+    document.getElementById('miniPlayBtn').classList.remove('paused');
+    nowPlaying.classList.add('active');
+    currentTrackId = trackId;
+
+    audioPlayer.src = track.src;
+
+    // Get real duration when metadata loads
+    audioPlayer.addEventListener('loadedmetadata', () => {
+        const duration = audioPlayer.duration;
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
+        durationEl.textContent = `${minutes}:${seconds}`;
+    }, { once: true });
+
+    audioPlayer.play();
+    isPlaying = true;
+}
+
+// Toggle play/pause
+function togglePlay() {
+    if (!currentTrackId) return;
+
+    if (isPlaying) {
+        audioPlayer.pause();
+        document.getElementById('miniPlayBtn').classList.add('paused');
+    } else {
+        audioPlayer.play();
+        document.getElementById('miniPlayBtn').classList.remove('paused');
+    }
+    isPlaying = !isPlaying;
+}
+
+// Track navigation with proper icons
+function previousTrack() {
+    if (currentTrackId > 1) {
+        playTrack(currentTrackId - 1);
+    }
+}
+
+function nextTrack() {
+    if (currentTrackId < tracks.length) {
+        playTrack(currentTrackId + 1);
+    }
+}
+
+// Update progress bar
+audioPlayer?.addEventListener('timeupdate', () => {
+    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+
+    const minutes = Math.floor(audioPlayer.currentTime / 60);
+    const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
+    currentTimeEl.textContent = `${minutes}:${seconds}`;
+});
+
+// Handle track end
+audioPlayer?.addEventListener('ended', () => {
+    nextTrack();
+});
+
+// Seek manually
+function seek(event) {
+    const progressBar = document.getElementById('progressBar');
+    const rect = progressBar.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const percentage = x / rect.width;
+    audioPlayer.currentTime = audioPlayer.duration * percentage;
+}
+
+document.getElementById('progressBar')?.addEventListener('click', seek);
+
+// Click audio track anywhere to play
+document.querySelectorAll('.audio-track').forEach(track => {
+    track.addEventListener('click', (e) => {
+        if (!e.target.closest('a') && !e.target.closest('.play-btn')) {
+            const trackId = parseInt(track.dataset.trackId);
+            playTrack(trackId);
+        }
+    });
+});
+
+// Update control buttons HTML after DOM loads
+function updateProducerControls() {
+    const controlButtons = document.querySelectorAll('.control-btn');
+    if (controlButtons.length >= 2) {
+        // Previous button
+        controlButtons[0].innerHTML = '<img src="/images/previous-icon.webp" alt="Previous" style="width: 20px; height: 20px;">';
+        // Next button
+        controlButtons[1].innerHTML = '<img src="/images/next-icon.webp" alt="Next" style="width: 20px; height: 20px;">';
+    }
+}
+
 // ============= INITIALIZATION =============
 function initPageLoad() {
     try {
@@ -1284,6 +1446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         DOM.videoModal = document.getElementById('videoModal');
         DOM.imageModal = document.getElementById('imageModal');
         DOM.bgVideo = document.getElementById('bgVideo');
+        DOM.customCursor = document.getElementById('customCursor');
 
         // Reset states
         resetPageState();
@@ -1382,6 +1545,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Photography page
         initializePhotographyPortfolio();
 
+        // Producers page - update control buttons
+        if (document.querySelector('.producers-page')) {
+            updateProducerControls();
+        }
+
         console.log('✅ Ligero website initialized successfully');
 
     } catch (error) {
@@ -1430,115 +1598,6 @@ document.addEventListener('visibilitychange', () => {
             emergencyCleanup();
         }
     }
-});
-
-// === PRODUCERS PAGE PLAYER ===
-
-// Track data
-const tracks = [
-    { id: 1, title: "Copy Cat", artist: "K1D", duration: "3:45", src: "/audio/track1.mp3" },
-    { id: 2, title: "Electric Pulse", artist: "Sofia Rodriguez", duration: "4:12", src: "/audio/track2.mp3" },
-    { id: 3, title: "Golden Hour", artist: "James Williams", duration: "3:28", src: "/audio/track3.mp3" },
-    { id: 4, title: "Neon Nights", artist: "Luna Park", duration: "5:02", src: "/audio/track4.mp3" },
-    { id: 5, title: "Urban Symphony", artist: "Alex Kim", duration: "4:33", src: "/audio/track5.mp3" }
-];
-
-let currentTrackId = null;
-let isPlaying = false;
-const audioPlayer = document.getElementById('audioPlayer');
-const nowPlaying = document.getElementById('nowPlaying');
-const progress = document.getElementById('progress');
-const currentTimeEl = document.getElementById('currentTime');
-const durationEl = document.getElementById('duration');
-
-// Play a track by ID
-function playTrack(trackId) {
-    const track = tracks.find(t => t.id === trackId);
-    if (!track) return;
-
-    // Update UI states
-    document.querySelectorAll('.audio-track').forEach(el => {
-        el.classList.remove('playing');
-        el.querySelector('.play-btn').classList.remove('playing');
-    });
-
-    const trackElement = document.querySelector(`[data-track-id="${trackId}"]`);
-    trackElement.classList.add('playing');
-    trackElement.querySelector('.play-btn').classList.add('playing');
-
-    document.getElementById('playingTitle').textContent = track.title;
-    document.getElementById('playingArtist').textContent = track.artist;
-    document.getElementById('miniPlayBtn').classList.remove('paused');
-    nowPlaying.classList.add('active');
-    currentTrackId = trackId;
-
-    audioPlayer.src = track.src;
-    audioPlayer.play();
-    isPlaying = true;
-}
-
-// Toggle play/pause
-function togglePlay() {
-    if (!currentTrackId) return;
-
-    if (isPlaying) {
-        audioPlayer.pause();
-        document.getElementById('miniPlayBtn').classList.add('paused');
-    } else {
-        audioPlayer.play();
-        document.getElementById('miniPlayBtn').classList.remove('paused');
-    }
-    isPlaying = !isPlaying;
-}
-
-// Track navigation
-function previousTrack() {
-    if (currentTrackId > 1) {
-        playTrack(currentTrackId - 1);
-    }
-}
-
-function nextTrack() {
-    if (currentTrackId < tracks.length) {
-        playTrack(currentTrackId + 1);
-    }
-}
-
-// Update progress bar
-audioPlayer.addEventListener('timeupdate', () => {
-    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progress.style.width = `${progressPercent}%`;
-
-    const minutes = Math.floor(audioPlayer.currentTime / 60);
-    const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
-    currentTimeEl.textContent = `${minutes}:${seconds}`;
-});
-
-// Handle track end
-audioPlayer.addEventListener('ended', () => {
-    nextTrack();
-});
-
-// Seek manually
-function seek(event) {
-    const progressBar = document.getElementById('progressBar');
-    const rect = progressBar.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const percentage = x / rect.width;
-    audioPlayer.currentTime = audioPlayer.duration * percentage;
-}
-
-document.getElementById('progressBar').addEventListener('click', seek);
-
-
-// Click audio track anywhere to play
-document.querySelectorAll('.audio-track').forEach(track => {
-    track.addEventListener('click', (e) => {
-        if (!e.target.closest('a') && !e.target.closest('.play-btn')) {
-            const trackId = parseInt(track.dataset.trackId);
-            playTrack(trackId);
-        }
-    });
 });
 
 window.addEventListener('pageshow', function(event) {
