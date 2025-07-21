@@ -31,6 +31,12 @@ const state = {
 let filteredPhotos = [];
 let currentFilter = 'all';
 
+// ============= FADE-IN ON LOAD =============
+window.addEventListener('DOMContentLoaded', () => {
+    DOM.body.classList.add('page-loaded');
+});
+
+
 // ============= UTILITIES =============
 const utils = {
     isMobile: () => window.innerWidth <= 768,
@@ -226,24 +232,13 @@ function handleSimplePageTransition(url) {
     if (state.isNavigating) return;
     state.isNavigating = true;
 
-    // Show the transition overlay
-    const overlay = createTransitionOverlay();
-    overlay.classList.add('active');
+    DOM.body.classList.remove('page-loaded');
 
-    // Ensure page is interactable for a moment so assets can queue
     setTimeout(() => {
-        // Optional: wait for fonts if you're using custom text in the overlay
-        document.fonts.ready.then(() => {
-            requestAnimationFrame(() => {
-                // Give time for CSS opacity transition (0.4s in your CSS)
-                setTimeout(() => {
-                    // Navigate cleanly
-                    window.location.assign(url);
-                }, 400); // Match your CSS: transition: all 0.4s
-            });
-        });
-    }, 50); // Give browser time to queue poster/video/font requests
+        window.location.assign(url);
+    }, 400);
 }
+
 
 
 function handleHomePageTransition(url) {
@@ -1488,22 +1483,13 @@ function setupPageTransitions() {
 
             if (state.isNavigating) return;
 
-            const isLogo = target.classList.contains('logo');
             const isGoingHome = href === '/' || href.endsWith('index.html') || href === '';
 
-            if (isLogo && utils.isOnHomePage() && isGoingHome) return;
-
-            if (target.classList.contains('mobile-menu-item') && isGoingHome && utils.isOnHomePage()) {
-                closeMobileMenu();
-                return;
-            }
-
-            if (isGoingHome && (isLogo || target.classList.contains('choose-button'))) {
+            if (isGoingHome) {
                 handleHomePageTransition(href);
                 return;
             }
 
-            // ✅ Allow transition even for service-card links
             handleSimplePageTransition(href);
 
         } catch (error) {
@@ -1512,6 +1498,8 @@ function setupPageTransitions() {
         }
     });
 }
+
+
 
 
 function initPageSpecificFeatures() {
