@@ -583,7 +583,6 @@ function setupServiceCardHoverPreviews() {
 // ============= LAZY LOADING =============
 function setupEnhancedFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
-    const customVideoIds = Object.keys(videoSettings);
 
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -595,9 +594,7 @@ function setupEnhancedFeedVideoAutoplay() {
                 });
             } else {
                 video.pause();
-                if (!video.id || !customVideoIds.includes(video.id)) {
-                    video.currentTime = 0;
-                }
+                video.currentTime = 0;
             }
         });
     }, {
@@ -605,10 +602,8 @@ function setupEnhancedFeedVideoAutoplay() {
         rootMargin: '100px'
     });
 
-    feedVideos.forEach((video, index) => {
+    feedVideos.forEach((video) => {
         videoObserver.observe(video);
-
-        if (video.id && customVideoIds.includes(video.id)) return;
 
         video.addEventListener('loadedmetadata', () => {
             video.addEventListener('timeupdate', () => {
@@ -629,6 +624,7 @@ function setupEnhancedFeedVideoAutoplay() {
         }, 100);
     });
 }
+
 
 // ============= PHOTOGRAPHY PORTFOLIO =============
 const photographyData = [
@@ -1593,6 +1589,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Setup video features
         setupVideoControls();
+        setupModalClicks();
+        setupEnhancedFeedVideoAutoplay();
 
         // Setup mobile menu
         if (DOM.hamburger) {
