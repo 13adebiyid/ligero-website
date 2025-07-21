@@ -839,20 +839,11 @@ function setupCustomCursor() {
     document.body.appendChild(cursor);
     cursor.style.zIndex = '999999';
 
-    let cursorX = 0;
-    let cursorY = 0;
-
     document.addEventListener('mousemove', (e) => {
-        cursorX = e.clientX;
-        cursorY = e.clientY;
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
     });
 
-    function animateCursor() {
-        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-        requestAnimationFrame(animateCursor);
-    }
-
-    animateCursor();
     setupPhotoHovers();
 
     // Hover effects
@@ -1681,8 +1672,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize page-specific features
         if (document.querySelector('.set-design-feed') ||
             document.querySelector('.designer-profile-page') ||
-            document.querySelector('.electra-style-page')||
-            document.querySelector('.music-container')) {
+            document.querySelector('.electra-style-page')) {
 
             // Add page-specific class for creative directing
             if (window.location.pathname.includes('creative-directing')) {
@@ -1698,8 +1688,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.appendChild(cursor);
                 DOM.customCursor = cursor;
             }
-
-            setupCustomCursor();
 
             setTimeout(() => {
                 setupImageLoading();
