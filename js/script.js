@@ -1377,9 +1377,9 @@ function updateProducerControls() {
     const controlButtons = document.querySelectorAll('.control-btn');
     if (controlButtons.length >= 2) {
         // Previous button
-        controlButtons[0].innerHTML = '<img src="/images/previous-icon.webp" alt="Previous" style="width: 20px; height: 20px;">';
+        controlButtons[0].innerHTML = '<img src="/images/next-icon.webp" alt="Previous" style="width: 20px; height: 20px;">';
         // Next button
-        controlButtons[1].innerHTML = '<img src="/images/next-icon.webp" alt="Next" style="width: 20px; height: 20px;">';
+        controlButtons[1].innerHTML = '<img src="/images/previous-icon.webp" alt="Next" style="width: 20px; height: 20px;">';
     }
 }
 

@@ -3695,12 +3695,14 @@ body.white-theme .cursor-text {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 15px;
+    font-family: "Dubai Light";
 }
 
 .playing-track-info {
     display: flex;
     align-items: center;
     gap: 20px;
+    font-family: "Dubai Light";
 }
 
 .mini-play-btn {
