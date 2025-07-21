@@ -534,40 +534,6 @@ function setupModalClicks() {
     }
 }
 
-// ============= VIDEO SETTINGS =============
-const videoSettings = {
-    'gift-video': { start: 6, duration: 8 },
-    'fashion-video': { start: 10, duration: 8 },
-    'brand-video': { start: 3, duration: 8 },
-    'gabzy-video': { start: 5, duration: 8 },
-    'grime-video': { start: 3, duration: 8 },
-    'note-video': { start: 2, duration: 8 },
-    'reem-video': { start: 6, duration: 8 }
-};
-
-function setupIndividualVideoLooping() {
-    Object.keys(videoSettings).forEach(videoId => {
-        const video = document.getElementById(videoId);
-        if (!video) return;
-
-        const settings = videoSettings[videoId];
-
-        video.addEventListener('loadedmetadata', () => {
-            video.currentTime = settings.start;
-        });
-
-        video.addEventListener('timeupdate', () => {
-            if (video.currentTime >= settings.start + settings.duration) {
-                video.currentTime = settings.start;
-            }
-        });
-
-        if (video.readyState >= 1) {
-            video.currentTime = settings.start;
-        }
-    });
-}
-
 // ============= SERVICE CARD PREVIEWS =============
 function setupServiceCardHoverPreviews() {
     const setDesignCard = document.querySelector('a[href="/services/set-designing"]');
