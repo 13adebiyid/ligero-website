@@ -21,12 +21,12 @@ body {
     background: black;
     color: white;
     overflow-x: hidden;
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
 }
 
-body.page-loaded {
-    opacity: 1;
+.page-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease-out 0.2s forwards;
 }
 
 /* ================== NUMBER FONT FIXES ================== */

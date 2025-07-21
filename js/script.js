@@ -31,12 +31,6 @@ const state = {
 let filteredPhotos = [];
 let currentFilter = 'all';
 
-// ============= FADE-IN ON LOAD =============
-window.addEventListener('DOMContentLoaded', () => {
-    DOM.body.classList.add('page-loaded');
-});
-
-
 // ============= UTILITIES =============
 const utils = {
     isMobile: () => window.innerWidth <= 768,
@@ -1478,6 +1472,9 @@ function setupPageTransitions() {
             const href = target.getAttribute('href');
             if (!href || !href.startsWith('/') || href.startsWith('//')) return;
 
+            const isSamePage = href === window.location.pathname;
+            if (isSamePage) return;
+
             e.preventDefault();
             e.stopPropagation();
 
@@ -1487,10 +1484,9 @@ function setupPageTransitions() {
 
             if (isGoingHome) {
                 handleHomePageTransition(href);
-                return;
+            } else {
+                handleSimplePageTransition(href);
             }
-
-            handleSimplePageTransition(href);
 
         } catch (error) {
             console.error('Error in navigation click handler:', error);
@@ -1498,6 +1494,7 @@ function setupPageTransitions() {
         }
     });
 }
+
 
 
 
