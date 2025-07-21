@@ -767,18 +767,15 @@ nav {
 }
 
 .video-container-main {
-    flex: 4;
+    aspect-ratio: 16 / 9;
+    width: 100%;
     position: relative;
     overflow: hidden;
     border-radius: 12px;
     background: #111;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    width: 100%;
 }
+
 
 .video-metadata {
     flex: 1;
@@ -799,13 +796,17 @@ nav {
 
 .feed-video,
 .video-container-main video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    display: block !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
     border-radius: 12px;
 }
+
 
 .video-overlay {
     position: absolute;
@@ -932,9 +933,6 @@ nav {
     border-radius: 12px;
     background: #111;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .dual-video-item .video-metadata {
@@ -958,17 +956,17 @@ nav {
     text-transform: uppercase;
 }
 
-.dual-video-item .feed-video,
-.dual-video-item .video-container-main video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    display: block !important;
-    border-radius: 12px;
+.dual-video-item .video-container-main video,
+.dual-video-item .feed-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     position: absolute;
     top: 0;
     left: 0;
+    display: block;
+    border-radius: 12px;
 }
 
 .dual-video-item .video-overlay {
