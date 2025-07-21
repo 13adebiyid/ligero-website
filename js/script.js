@@ -278,9 +278,31 @@ function openImageModal(imageSrc, title, client) {
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
 
-    // Fix: Keep cursor visible in modal
+    // Create and setup cursor for modal if it doesn't exist
+    if (!DOM.customCursor && !document.querySelector('.photography-page')) {
+        const cursor = document.getElementById('customCursor') || document.createElement('div');
+        if (!cursor.id) {
+            cursor.id = 'customCursor';
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
+        }
+        DOM.customCursor = cursor;
+
+        // Add mouse tracking for modal
+        const handleMouseMove = (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursor.style.display = 'block';
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+        modal.dataset.mouseMoveHandler = handleMouseMove;
+    }
+
+    // Ensure cursor stays visible and on top
     if (DOM.customCursor) {
         DOM.customCursor.style.display = 'block';
+        DOM.customCursor.style.zIndex = '999999';
     }
 }
 
@@ -291,9 +313,15 @@ function closeImageModal() {
     modal.classList.remove('active');
     DOM.body.style.overflow = '';
 
-    // Keep cursor visible
-    if (DOM.customCursor) {
-        DOM.customCursor.style.display = 'block';
+    // Hide cursor on non-photography pages
+    if (DOM.customCursor && !document.querySelector('.photography-page')) {
+        DOM.customCursor.style.display = 'none';
+
+        // Remove mouse tracking if it was added for modal
+        if (modal.dataset.mouseMoveHandler) {
+            document.removeEventListener('mousemove', modal.dataset.mouseMoveHandler);
+            delete modal.dataset.mouseMoveHandler;
+        }
     }
 }
 
@@ -838,6 +866,10 @@ function setupCustomCursor() {
 
     DOM.customCursor = cursor; // Store reference
 
+    // Ensure cursor is at the end of body for highest z-index
+    document.body.appendChild(cursor);
+    cursor.style.zIndex = '999999';
+
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
@@ -928,6 +960,8 @@ function setupPhotographyEventListeners() {
 
 function initializePhotographyPortfolio() {
     if (document.getElementById('masonryGrid')) {
+        // Add class to body for CSS targeting
+        DOM.body.classList.add('photography-page');
         renderPhotos(photographyData);
         setupCustomCursor();
         setupPhotographyEventListeners();
@@ -1223,14 +1257,21 @@ function nextTrack() {
     }
 }
 
+// Progress bar state
+let isDragging = false;
+let progressBar = null;
+let progressContainer = null;
+
 // Update progress bar
 audioPlayer?.addEventListener('timeupdate', () => {
-    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progress.style.width = `${progressPercent}%`;
+    if (!isDragging && audioPlayer.duration) {
+        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progress.style.width = `${progressPercent}%`;
 
-    const minutes = Math.floor(audioPlayer.currentTime / 60);
-    const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
-    currentTimeEl.textContent = `${minutes}:${seconds}`;
+        const minutes = Math.floor(audioPlayer.currentTime / 60);
+        const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
+        currentTimeEl.textContent = `${minutes}:${seconds}`;
+    }
 });
 
 // Handle track end
@@ -1238,16 +1279,157 @@ audioPlayer?.addEventListener('ended', () => {
     nextTrack();
 });
 
-// Seek manually
-function seek(event) {
-    const progressBar = document.getElementById('progressBar');
-    const rect = progressBar.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const percentage = x / rect.width;
-    audioPlayer.currentTime = audioPlayer.duration * percentage;
+// Seek functionality with hover and drag
+function initProgressBar() {
+    progressBar = document.getElementById('progressBar');
+    progressContainer = document.querySelector('.progress-container');
+    if (!progressBar || !progressContainer) return;
+
+    // Create hover indicator
+    const hoverIndicator = document.createElement('div');
+    hoverIndicator.className = 'progress-hover';
+    progressBar.appendChild(hoverIndicator);
+
+    // Mouse events
+    progressBar.addEventListener('mouseenter', handleProgressHover);
+    progressBar.addEventListener('mousemove', handleProgressHover);
+    progressBar.addEventListener('mouseleave', handleProgressLeave);
+    progressBar.addEventListener('mousedown', startDragging);
+    progressBar.addEventListener('click', seek);
+
+    // Global mouse events for dragging
+    document.addEventListener('mousemove', handleDragging);
+    document.addEventListener('mouseup', stopDragging);
+
+    // Touch events for mobile
+    progressBar.addEventListener('touchstart', startDraggingTouch, { passive: false });
+    document.addEventListener('touchmove', handleDraggingTouch, { passive: false });
+    document.addEventListener('touchend', stopDraggingTouch);
 }
 
-document.getElementById('progressBar')?.addEventListener('click', seek);
+function handleProgressHover(e) {
+    if (!progressBar || !audioPlayer.duration) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+    const hoverIndicator = progressBar.querySelector('.progress-hover');
+    if (hoverIndicator) {
+        hoverIndicator.style.width = `${percentage}%`;
+        hoverIndicator.style.opacity = '1';
+    }
+
+    // Show time tooltip
+    const hoverTime = (percentage / 100) * audioPlayer.duration;
+    const minutes = Math.floor(hoverTime / 60);
+    const seconds = Math.floor(hoverTime % 60).toString().padStart(2, '0');
+
+    // Create or update tooltip
+    let tooltip = progressBar.querySelector('.progress-tooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'progress-tooltip';
+        progressBar.appendChild(tooltip);
+    }
+
+    tooltip.textContent = `${minutes}:${seconds}`;
+    tooltip.style.left = `${percentage}%`;
+    tooltip.style.opacity = '1';
+}
+
+function handleProgressLeave() {
+    const hoverIndicator = progressBar?.querySelector('.progress-hover');
+    const tooltip = progressBar?.querySelector('.progress-tooltip');
+
+    if (hoverIndicator) hoverIndicator.style.opacity = '0';
+    if (tooltip) tooltip.style.opacity = '0';
+}
+
+function startDragging(e) {
+    if (!audioPlayer.duration) return;
+    isDragging = true;
+    progressBar.classList.add('dragging');
+    updateProgress(e.clientX);
+}
+
+function startDraggingTouch(e) {
+    if (!audioPlayer.duration) return;
+    e.preventDefault();
+    isDragging = true;
+    progressBar.classList.add('dragging');
+    updateProgress(e.touches[0].clientX);
+}
+
+function handleDragging(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    updateProgress(e.clientX);
+}
+
+function handleDraggingTouch(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    updateProgress(e.touches[0].clientX);
+}
+
+function stopDragging() {
+    if (!isDragging) return;
+    isDragging = false;
+    progressBar?.classList.remove('dragging');
+
+    // Set the actual audio time when drag ends
+    if (progressBar && audioPlayer.duration) {
+        const progressWidth = parseFloat(progress.style.width);
+        const newTime = (progressWidth / 100) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    }
+}
+
+function stopDraggingTouch() {
+    if (!isDragging) return;
+    isDragging = false;
+    progressBar?.classList.remove('dragging');
+
+    // Set the actual audio time when drag ends
+    if (progressBar && audioPlayer.duration) {
+        const progressWidth = parseFloat(progress.style.width);
+        const newTime = (progressWidth / 100) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    }
+}
+
+function updateProgress(clientX) {
+    if (!progressBar || !audioPlayer.duration) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+    // Update progress bar visual immediately during drag
+    progress.style.width = `${percentage}%`;
+
+    // Update time display immediately
+    const newTime = (percentage / 100) * audioPlayer.duration;
+    const minutes = Math.floor(newTime / 60);
+    const seconds = Math.floor(newTime % 60).toString().padStart(2, '0');
+    currentTimeEl.textContent = `${minutes}:${seconds}`;
+
+    // Only update audio currentTime on mouse up to prevent stuttering
+    if (!isDragging) {
+        audioPlayer.currentTime = newTime;
+    }
+}
+
+function seek(e) {
+    if (isDragging) return;
+    if (!audioPlayer.duration) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = (x / rect.width);
+    audioPlayer.currentTime = audioPlayer.duration * percentage;
+}
 
 // Click audio track anywhere to play
 document.querySelectorAll('.audio-track').forEach(track => {
@@ -1525,6 +1707,21 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.designer-profile-page') ||
             document.querySelector('.electra-style-page')) {
 
+            // Add page-specific class for creative directing
+            if (window.location.pathname.includes('creative-directing')) {
+                DOM.body.classList.add('creative-directing-page');
+            }
+
+            // Create custom cursor for modal interactions if it doesn't exist
+            if (!DOM.customCursor) {
+                const cursor = document.createElement('div');
+                cursor.id = 'customCursor';
+                cursor.className = 'custom-cursor';
+                cursor.style.display = 'none'; // Hide by default on non-photography pages
+                document.body.appendChild(cursor);
+                DOM.customCursor = cursor;
+            }
+
             setTimeout(() => {
                 setupImageLoading();
                 setupEnhancedFeedVideoAutoplay();
@@ -1545,9 +1742,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Photography page
         initializePhotographyPortfolio();
 
-        // Producers page - update control buttons
+        // Producers page - update control buttons and init progress bar
         if (document.querySelector('.producers-page')) {
             updateProducerControls();
+            initProgressBar();
         }
 
         console.log('✅ Ligero website initialized successfully');
