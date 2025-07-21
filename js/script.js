@@ -227,11 +227,13 @@ function handleSimplePageTransition(url) {
     state.lastNavigationTime = now;
 
     try {
-        DOM.body.style.opacity = '0.3';
+        // Simplified transition - remove opacity changes that might be causing issues
         DOM.body.style.pointerEvents = 'none';
+
+        // Shorter timeout to prevent hanging
         state.navigationTimeout = setTimeout(() => {
             window.location.href = url;
-        }, 150);
+        }, 50); // Reduced from 150ms
     } catch (error) {
         console.error('Error during simple transition:', error);
         emergencyCleanup();
@@ -277,33 +279,11 @@ function openImageModal(imageSrc, title, client) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
+    DOM.body.classList.add('modal-open'); // Add class for CSS targeting
 
-    // Create and setup cursor for modal if it doesn't exist
-    if (!DOM.customCursor && !document.querySelector('.photography-page')) {
-        const cursor = document.getElementById('customCursor') || document.createElement('div');
-        if (!cursor.id) {
-            cursor.id = 'customCursor';
-            cursor.className = 'custom-cursor';
-            document.body.appendChild(cursor);
-        }
-        DOM.customCursor = cursor;
-
-        // Add mouse tracking for modal
-        const handleMouseMove = (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursor.style.display = 'block';
-        };
-
-        document.addEventListener('mousemove', handleMouseMove);
-        modal.dataset.mouseMoveHandler = handleMouseMove;
-    }
-
-    // Ensure cursor stays visible and on top
-    if (DOM.customCursor) {
-        DOM.customCursor.style.display = 'block';
-        DOM.customCursor.style.zIndex = '999999';
-    }
+    // Force default cursor to ensure visibility
+    DOM.body.style.cursor = 'auto';
+    modal.style.cursor = 'auto';
 }
 
 function closeImageModal() {
@@ -312,17 +292,11 @@ function closeImageModal() {
 
     modal.classList.remove('active');
     DOM.body.style.overflow = '';
+    DOM.body.classList.remove('modal-open'); // Remove class
 
-    // Hide cursor on non-photography pages
-    if (DOM.customCursor && !document.querySelector('.photography-page')) {
-        DOM.customCursor.style.display = 'none';
-
-        // Remove mouse tracking if it was added for modal
-        if (modal.dataset.mouseMoveHandler) {
-            document.removeEventListener('mousemove', modal.dataset.mouseMoveHandler);
-            delete modal.dataset.mouseMoveHandler;
-        }
-    }
+    // Reset cursor
+    DOM.body.style.cursor = '';
+    modal.style.cursor = '';
 }
 
 // ============= VIDEO MODAL =============
@@ -342,11 +316,11 @@ function openVideoModal(videoSrc, title, client) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
+    DOM.body.classList.add('modal-open'); // Add class for CSS targeting
 
-    // Fix: Keep cursor visible in modal
-    if (DOM.customCursor) {
-        DOM.customCursor.style.display = 'block';
-    }
+    // Force default cursor to ensure visibility
+    DOM.body.style.cursor = 'auto';
+    modal.style.cursor = 'auto';
 
     modalVideo.src = videoSrc;
     modalVideo.load();
@@ -365,6 +339,7 @@ function closeModal() {
     if (videoModal) {
         videoModal.classList.remove('active');
         DOM.body.style.overflow = '';
+        DOM.body.classList.remove('modal-open'); // Remove class
     }
 
     if (modalVideo) {
@@ -373,10 +348,9 @@ function closeModal() {
         modalVideo.src = '';
     }
 
-    // Keep cursor visible
-    if (DOM.customCursor) {
-        DOM.customCursor.style.display = 'block';
-    }
+    // Reset cursor
+    DOM.body.style.cursor = '';
+    if (videoModal) videoModal.style.cursor = '';
 }
 
 // ============= PHOTOGRAPHY MODAL (Special case) =============
@@ -1503,6 +1477,17 @@ function setupPageTransitions() {
             const href = target.getAttribute('href');
             if (!href || !href.startsWith('/') || href.startsWith('//')) return;
 
+            // Special handling for service cards to prevent transition issues
+            const isServiceCard = target.classList.contains('service-card');
+            if (isServiceCard) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Direct navigation without transitions for service cards
+                window.location.href = href;
+                return;
+            }
+
             e.preventDefault();
             e.stopPropagation();
 
@@ -1817,10 +1802,14 @@ window.addEventListener('beforeunload', () => {
     });
 });
 
-// Emergency cleanup interval
+// Emergency cleanup interval - more aggressive
 setInterval(() => {
-    if (state.isNavigating && Date.now() - state.lastNavigationTime > 5000) {
-        console.warn('Navigation appears stuck, cleaning up...');
+    if (state.isNavigating && Date.now() - state.lastNavigationTime > 2000) {
+        console.warn('Navigation appears stuck, forcing cleanup...');
         emergencyCleanup();
+        // Force reload if still stuck
+        if (window.location.pathname.includes('services') && state.isNavigating) {
+            window.location.reload();
+        }
     }
-}, 1000);
+}, 500); // Check every 500ms instead of 1000ms

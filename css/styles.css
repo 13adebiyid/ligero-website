@@ -1027,154 +1027,7 @@ nav {
     white-space: nowrap;
 }
 
-/* ================== DUAL VIDEO HEIGHT FIXES - CREATIVE DIRECTING PAGE ONLY ================== */
 
-/* Target the specific page that has the issue */
-.service-detail-page .dual-video-item .video-container-main,
-.creative-directing-page .dual-video-item .video-container-main {
-    width: 100%;
-    aspect-ratio: 16 / 9 !important; /* Force consistent aspect ratio */
-    height: auto !important; /* Let height be determined by aspect ratio */
-    max-height: none !important; /* Remove max-height constraints */
-    min-height: unset !important; /* Remove min-height constraints */
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    background: #111;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Ensure the grid maintains equal heights on creative directing page */
-.service-detail-page .dual-video-section,
-.creative-directing-page .dual-video-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch !important; /* Force equal heights */
-    gap: 40px;
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-}
-
-/* Reset any conflicting styles */
-.service-detail-page .dual-video-item,
-.creative-directing-page .dual-video-item {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Take full height of grid cell */
-}
-
-/* Ensure videos fill their containers properly */
-.service-detail-page .dual-video-item .feed-video,
-.service-detail-page .dual-video-item .video-container-main video,
-.creative-directing-page .dual-video-item .feed-video,
-.creative-directing-page .dual-video-item .video-container-main video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    display: block !important;
-    border-radius: 12px;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-/* Responsive adjustments with consistent aspect ratios */
-@media screen and (max-width: 1024px) {
-    .service-detail-page .dual-video-section,
-    .creative-directing-page .dual-video-section {
-        gap: 30px;
-    }
-
-    .service-detail-page .dual-video-item .video-container-main,
-    .creative-directing-page .dual-video-item .video-container-main {
-        aspect-ratio: 16 / 9 !important;
-    }
-}
-
-@media screen and (min-width: 576px) and (max-width: 768px) {
-    .service-detail-page .dual-video-section,
-    .creative-directing-page .dual-video-section {
-        grid-template-columns: 1fr; /* Stack vertically on tablets */
-        gap: 30px;
-    }
-
-    .service-detail-page .dual-video-item .video-container-main,
-    .creative-directing-page .dual-video-item .video-container-main {
-        aspect-ratio: 16 / 9 !important;
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .service-detail-page .dual-video-section,
-    .creative-directing-page .dual-video-section {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .service-detail-page .dual-video-item .video-container-main,
-    .creative-directing-page .dual-video-item .video-container-main {
-        aspect-ratio: 16 / 9 !important;
-        min-height: unset !important;
-        max-height: unset !important;
-        height: auto !important;
-    }
-}
-
-/* ================== CURSOR Z-INDEX FIX ================== */
-
-/* Ensure custom cursor always stays on top of modals */
-.custom-cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 999999 !important; /* Ensure it's always on top */
-    transition: all 0.15s ease;
-    mix-blend-mode: difference;
-    transform: translate(-50%, -50%);
-}
-
-/* Hide cursor on non-photography pages by default */
-body:not(.photography-page) .custom-cursor {
-    display: none;
-}
-
-/* Show cursor when modals are active on any page */
-body:not(.photography-page) .image-modal.active ~ .custom-cursor,
-body:not(.photography-page) .video-modal.active ~ .custom-cursor {
-    display: block !important;
-}
-
-/* Always show cursor on photography page */
-.photography-page .custom-cursor {
-    display: block !important;
-}
-
-/* Make sure modals don't hide the cursor */
-.image-modal,
-.video-modal {
-    z-index: 10000 !important; /* High but below cursor */
-}
-
-.image-modal .modal-close,
-.video-modal .modal-close {
-    z-index: 10001 !important; /* Below cursor */
-}
-
-/* Ensure cursor stays visible in all modal states */
-.image-modal.active ~ .custom-cursor,
-.video-modal.active ~ .custom-cursor {
-    display: block !important;
-    z-index: 999999 !important;
-}
 
 /* ================== PROGRESS BAR REAL-TIME DRAG ================== */
 
@@ -1596,6 +1449,36 @@ body:not(.photography-page) .video-modal.active ~ .custom-cursor {
     opacity: 0.7;
     color: white;
     letter-spacing: 0.5px;
+}
+
+/* ================== SERVICE CARD TRANSITION FIX ================== */
+
+/* Disable complex transitions on service cards to prevent loading issues */
+.service-card {
+    transition: transform 0.2s ease !important;
+}
+
+.service-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px) !important; /* Reduced from -10px */
+}
+
+
+.carousel .service-card {
+    animation: none !important;
+}
+
+/* ================== EMERGENCY STYLES FOR STUCK STATES ================== */
+
+/* Force visibility when navigation gets stuck */
+body.navigation-stuck {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Remove any lingering transitions */
+body.page-loaded * {
+    transition-duration: 0.3s !important;
 }
 
 /* ================== CONTACT PAGE ================== */
