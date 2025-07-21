@@ -1592,7 +1592,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Setup video features
-        setupIndividualVideoLooping();
         setupVideoControls();
 
         // Setup mobile menu
