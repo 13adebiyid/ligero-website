@@ -3768,6 +3768,7 @@ body.white-theme .cursor-text {
     display: flex;
     align-items: center;
     gap: 15px;
+    font-family: "Dubai Light";
 }
 
 .time {
