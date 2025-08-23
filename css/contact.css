@@ -1,0 +1,661 @@
+/* ================== CONTACT STYLES ================== */
+
+/* Reset & Base */
+.hidden {
+    display: none !important;
+}
+
+/* Contact Hero */
+.contact-hero {
+    height: 40vh;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 70%);
+    animation: heroFloat 20s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+    0%, 100% { transform: translate(-25%, -25%) rotate(0deg); }
+    50% { transform: translate(-25%, -25%) rotate(180deg); }
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 200;
+    letter-spacing: 0.5em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.6;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: fadeInUp 1s ease 0.2s forwards;
+    opacity: 0;
+}
+
+/* Enquiry Selection */
+.enquiry-selection {
+    padding: 80px 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
+
+.enquiry-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    max-width: 900px;
+    width: 100%;
+}
+
+.enquiry-card {
+    position: relative;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.enquiry-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.card-inner {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-inner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.enquiry-card:hover .card-inner {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.enquiry-card:hover .card-inner::before {
+    opacity: 1;
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 2rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.enquiry-card:hover .card-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.card-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+}
+
+.card-description {
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.select-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 32px;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.select-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: white;
+    transition: left 0.3s ease;
+}
+
+.select-btn span,
+.select-btn svg {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.select-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.select-btn:hover {
+    border-color: white;
+}
+
+.select-btn:hover::before {
+    left: 0;
+}
+
+.select-btn:hover span,
+.select-btn:hover svg {
+    color: black;
+}
+
+.select-btn:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* Form Sections */
+.form-section {
+    padding: 60px 5vw 100px;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    margin-bottom: 3rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+}
+
+.back-btn:hover {
+    opacity: 1;
+    transform: translateX(-4px);
+}
+
+.back-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.form-title {
+    font-size: 2.5rem;
+    font-weight: 200;
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.form-subtitle {
+    text-align: center;
+    opacity: 0.6;
+    margin-bottom: 4rem;
+    font-size: 1.1rem;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.form-field {
+    position: relative;
+}
+
+.form-field.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 12px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+.form-field label {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    font-size: 1rem;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    letter-spacing: 0.05em;
+}
+
+.form-field input:focus + label,
+.form-field input:not(:placeholder-shown) + label,
+.form-field select:focus + label,
+.form-field select:valid + label,
+.form-field textarea:focus + label,
+.form-field textarea:not(:placeholder-shown) + label {
+    top: -20px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    letter-spacing: 0.1em;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: white;
+    transition: width 0.3s ease;
+}
+
+.form-field input:focus ~ .field-line,
+.form-field select:focus ~ .field-line,
+.form-field textarea:focus ~ .field-line {
+    width: 100%;
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-field select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='white' stroke-opacity='0.5' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 30px;
+}
+
+.form-field select option {
+    background: #000;
+    color: white;
+}
+
+/* Submit Button */
+.submit-btn {
+    display: block;
+    margin: 4rem auto 0;
+    padding: 16px 60px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: white;
+    transition: left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.submit-btn:hover::before {
+    left: 0;
+}
+
+.submit-btn:hover .btn-text {
+    color: black;
+}
+
+.btn-text,
+.btn-loading {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.btn-loading {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.submit-btn.loading .btn-text {
+    opacity: 0;
+}
+
+.submit-btn.loading .btn-loading {
+    display: block;
+}
+
+.spinner {
+    animation: rotate 2s linear infinite;
+    width: 24px;
+    height: 24px;
+}
+
+.spinner circle {
+    stroke: white;
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+/* Success Modal */
+.success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.success-modal.active {
+    display: flex;
+    opacity: 1;
+    animation: fadeIn 0.4s ease;
+}
+
+.success-content {
+    text-align: center;
+    padding: 3rem;
+    max-width: 400px;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: scaleIn 0.5s ease 0.2s forwards;
+}
+
+@keyframes scaleIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.checkmark-wrapper {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 2rem;
+}
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #4bb71b;
+    stroke-miterlimit: 10;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #4bb71b;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.success-title {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    opacity: 0.7;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.success-close {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 32px;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.success-close:hover {
+    border-color: white;
+    background: white;
+    color: black;
+}
+
+/* White Theme Overrides */
+body.white-theme .form-field input,
+body.white-theme .form-field select,
+body.white-theme .form-field textarea {
+    color: black;
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.white-theme .form-field input:focus,
+body.white-theme .form-field select:focus,
+body.white-theme .form-field textarea:focus {
+    border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+
+body.white-theme .field-line {
+    background: black;
+}
+
+body.white-theme .form-field label {
+    color: black;
+    opacity: 0.6;
+}
+
+body.white-theme .card-inner {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.white-theme .enquiry-card:hover .card-inner {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+body.white-theme .select-btn,
+body.white-theme .submit-btn,
+body.white-theme .success-close {
+    border-color: rgba(0, 0, 0, 0.3);
+    color: black;
+}
+
+body.white-theme .select-btn::before,
+body.white-theme .submit-btn::before {
+    background: black;
+}
+
+body.white-theme .select-btn:hover,
+body.white-theme .submit-btn:hover,
+body.white-theme .success-close:hover {
+    border-color: black;
+}
+
+body.white-theme .select-btn:hover span,
+body.white-theme .select-btn:hover svg,
+body.white-theme .submit-btn:hover .btn-text {
+    color: white;
+}
+
+body.white-theme .back-btn {
+    color: black;
+}
+
+body.white-theme .success-modal {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+body.white-theme .form-field select {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='black' stroke-opacity='0.5' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+body.white-theme .form-field select option {
+    background: white;
+    color: black;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        letter-spacing: 0.2em;
+    }
+
+    .enquiry-cards {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

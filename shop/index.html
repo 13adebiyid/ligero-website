@@ -7,11 +7,16 @@
   <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
   <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
   <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-  <!-- Preload and apply stylesheet -->
-  <link rel="stylesheet" href="/css/styles.css">
-  <!-- Preload and apply scripts -->
-  <link rel="preload" href="/js/script.js" as="script">
-  <script src="/js/script.js" defer></script>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/forms.css">
+  <link rel="stylesheet" href="/css/modals.css">
+  <script src="/js/core.js" defer></script>
+  <script src="/js/navigation.js" defer></script>
+  <script src="/js/forms.js" defer></script>
+  <script src="/js/modals.js" defer></script>
+  <script src="/js/contact.js" defer></script>
 </head>
 <body>
 
@@ -70,13 +75,19 @@
     </div>
   </div>
 
-  <!-- Notification signup form (initially hidden) -->
+  <!-- Enhanced Notification Form -->
   <div class="notify-form-overlay" id="notifyFormOverlay">
     <div class="notify-form">
       <h3>Stay Updated</h3>
       <p>Be the first to know when our products launch</p>
-      <form id="notifyForm">
-        <input type="email" placeholder="Enter your email address" required>
+
+      <!-- Netlify Forms Integration -->
+      <form id="notifyForm" name="notify-list" method="POST" netlify netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="notify-list">
+        <p class="hidden">
+          <label>Don't fill this out: <input name="bot-field" /></label>
+        </p>
+        <input type="email" name="email" placeholder="Enter your email address" required>
         <div class="form-buttons">
           <button type="submit">NOTIFY ME</button>
           <button type="button" onclick="hideNotifyForm()">CANCEL</button>
