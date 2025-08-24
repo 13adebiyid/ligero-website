@@ -4783,7 +4783,7 @@ body.white-theme .checkmark {
     stroke-miterlimit: 10;
     stroke: #7ac142;
     fill: #7ac142; /* Fill the circle with green */
-    animation: checkmark-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    animation: checkmark-stroke 0.1s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
 
 .checkmark__check {
@@ -4792,7 +4792,7 @@ body.white-theme .checkmark {
     stroke-dashoffset: 48;
     stroke: #ffffff; /* White checkmark on green background */
     stroke-width: 3; /* Slightly thicker for better visibility */
-    animation: checkmark-stroke 0.2s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    animation: checkmark-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
 
 @keyframes checkmark-stroke {
