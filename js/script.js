@@ -1781,6 +1781,7 @@ function initEnhancedComingSoonPage() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             hideNotifyForm();
+            hideNotifySuccess();
             hideContactSuccess();
         }
     });
@@ -1801,18 +1802,28 @@ function handleNotifyFormSubmission(e) {
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encode(formData)
+            body: encode(Object.fromEntries(formData))
         })
             .then(() => {
-                // Show success animation
-                showNotifySuccess();
+                // Hide the form modal first
+                hideNotifyForm();
+                // Then show success modal
+                setTimeout(() => {
+                    showNotifySuccess();
+                }, 400);
                 form.reset();
             })
             .catch(error => {
                 console.error('Form submission error:', error);
                 // Still show success for better UX
-                showNotifySuccess();
+                hideNotifyForm();
+                setTimeout(() => {
+                    showNotifySuccess();
+                }, 400);
                 form.reset();
+            })
+            .finally(() => {
+                hideNotifyLoading();
             });
     } else {
         // Add shake animation for invalid email
@@ -1831,28 +1842,39 @@ function showNotifyLoading() {
     }
 }
 
-function showNotifySuccess() {
-    const notifyForm = document.getElementById('notifyFormMain');
-    const notifySuccess = document.getElementById('notifySuccess');
+function hideNotifyLoading() {
+    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'NOTIFY ME';
+    }
+}
 
-    if (notifyForm && notifySuccess) {
-        // Hide form
-        notifyForm.style.opacity = '0';
-        notifyForm.style.transform = 'scale(0.9)';
+function showNotifySuccess() {
+    const successModal = document.getElementById('notifySuccessModal');
+    if (successModal) {
+        successModal.style.display = 'flex';
+        DOM.body.style.overflow = 'hidden';
 
         setTimeout(() => {
-            notifyForm.style.display = 'none';
-            notifySuccess.style.display = 'block';
+            successModal.classList.add('active');
+        }, 50);
 
-            // Trigger success animation
-            setTimeout(() => {
-                notifySuccess.classList.add('active');
-            }, 50);
+        // Auto hide after 4 seconds
+        setTimeout(() => {
+            hideNotifySuccess();
+        }, 4000);
+    }
+}
 
-            // Auto hide after 3 seconds
-            setTimeout(() => {
-                hideNotifyForm();
-            }, 3500);
+function hideNotifySuccess() {
+    const successModal = document.getElementById('notifySuccessModal');
+    if (successModal) {
+        successModal.classList.remove('active');
+
+        setTimeout(() => {
+            successModal.style.display = 'none';
+            DOM.body.style.overflow = '';
         }, 300);
     }
 }
@@ -1864,7 +1886,7 @@ function encode(data) {
         .join('&');
 }
 
-// Override existing functions with enhanced versions
+// Updated show/hide functions
 function showNotifyForm() {
     const overlay = document.getElementById('notifyFormOverlay');
     if (overlay) {
@@ -1890,21 +1912,8 @@ function hideNotifyForm() {
 }
 
 function resetNotifyForm() {
-    const notifyForm = document.getElementById('notifyFormMain');
-    const notifySuccess = document.getElementById('notifySuccess');
     const form = document.getElementById('notifyForm');
     const submitBtn = form?.querySelector('button[type="submit"]');
-
-    if (notifyForm) {
-        notifyForm.style.display = 'block';
-        notifyForm.style.opacity = '1';
-        notifyForm.style.transform = 'scale(1)';
-    }
-
-    if (notifySuccess) {
-        notifySuccess.style.display = 'none';
-        notifySuccess.classList.remove('active');
-    }
 
     if (form) {
         form.reset();
@@ -1980,6 +1989,9 @@ function initModernContactPage() {
             servicesSection.classList.add('active');
         }
     }, 800);
+
+    // Setup real-time validation
+    setupRealTimeValidation();
 }
 
 function handleContactFormSubmission(e) {
@@ -1992,10 +2004,8 @@ function handleContactFormSubmission(e) {
     // Show loading state
     showContactLoading(submitButton);
 
-    // Prepare form data
-    const formData = new FormData(form);
-
     // Submit to Netlify
+    const formData = new FormData(form);
     fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -2007,8 +2017,7 @@ function handleContactFormSubmission(e) {
         })
         .catch(error => {
             console.error('Form submission error:', error);
-            // Still show success for better UX
-            showContactSuccess();
+            showContactSuccess(); // Still show success for better UX
             form.reset();
         })
         .finally(() => {

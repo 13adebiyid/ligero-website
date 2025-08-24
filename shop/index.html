@@ -15,7 +15,6 @@
 </head>
 <body>
 
-
 <!-- Navigation -->
 <nav>
   <div class="hamburger-menu">
@@ -71,9 +70,10 @@
     </div>
   </div>
 
-  <!-- Enhanced notification signup form -->
+  <!-- Enhanced notification signup form with proper modal structure -->
   <div class="notify-form-overlay" id="notifyFormOverlay">
     <div class="notify-form-container">
+      <!-- Main Form -->
       <div class="notify-form" id="notifyFormMain">
         <button class="notify-close" onclick="hideNotifyForm()">×</button>
         <h3>Stay Updated</h3>
@@ -89,20 +89,21 @@
           </div>
         </form>
       </div>
+    </div>
+  </div>
 
-      <!-- Success animation container -->
-      <div class="notify-success" id="notifySuccess" style="display: none;">
-        <div class="success-content">
-          <div class="checkmark-wrapper">
-            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-            </svg>
-          </div>
-          <h3>Thank You!</h3>
-          <p>We'll notify you when our collection launches</p>
-        </div>
+  <!-- Success Modal (Same structure as contact page) -->
+  <div class="notify-success-modal" id="notifySuccessModal" style="display: none;">
+    <div class="success-content">
+      <div class="checkmark-wrapper">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
       </div>
+      <h2>Thank You!</h2>
+      <p>We'll notify you when our collection launches</p>
+      <button class="back-button" onclick="hideNotifySuccess()">Close</button>
     </div>
   </div>
 </div>
