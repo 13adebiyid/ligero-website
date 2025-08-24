@@ -354,34 +354,82 @@ nav {
 
 /* ================== THEME SWITCHER ================== */
 
-.theme-switcher {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    display: flex;
-    gap: 15px;
-    z-index: 1000;
+.theme-switcher,
+.page-fade-in .theme-switcher,
+.designer-profile-page .theme-switcher,
+.designer-profile-page .page-fade-in .theme-switcher,
+.service-detail-page .theme-switcher,
+.service-detail-page .page-fade-in .theme-switcher,
+.set-design-feed .theme-switcher,
+.set-design-feed .page-fade-in .theme-switcher,
+.policies-page .theme-switcher,
+.coming-soon-page .theme-switcher,
+.modern-contact-page .theme-switcher,
+.photography-page .theme-switcher,
+.services-page .theme-switcher,
+.shop-page .theme-switcher,
+.contact-page .theme-switcher,
+.home-page .theme-switcher,
+body .theme-switcher {
+    position: fixed !important;
+    bottom: 30px !important;
+    left: 30px !important;
+    display: flex !important;
+    gap: 15px !important;
+    z-index: 1000 !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
 }
 
+/* Ensure theme circles are properly styled */
 .theme-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #666;
-    transition: all 0.3s;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: 2px solid #666 !important;
+    transition: all 0.3s !important;
+    flex-shrink: 0 !important;
+    display: block !important;
 }
 
 .theme-circle.white {
-    background: white;
+    background: white !important;
 }
 
 .theme-circle.black {
-    background: black;
+    background: black !important;
 }
 
 .theme-circle:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) !important;
+}
+
+/* Mobile adjustments - highest specificity */
+@media screen and (max-width: 768px) {
+    .theme-switcher,
+    .page-fade-in .theme-switcher,
+    .designer-profile-page .theme-switcher,
+    .designer-profile-page .page-fade-in .theme-switcher,
+    .service-detail-page .theme-switcher,
+    .service-detail-page .page-fade-in .theme-switcher,
+    .set-design-feed .theme-switcher,
+    .set-design-feed .page-fade-in .theme-switcher,
+    .policies-page .theme-switcher,
+    body .theme-switcher {
+        bottom: 20px !important;
+        left: 20px !important;
+    }
+
+    .theme-circle {
+        width: 25px !important;
+        height: 25px !important;
+    }
 }
 
 /* ================== SHOP PAGE ================== */
@@ -5756,34 +5804,6 @@ body.white-theme .modal-info-close:hover {
 
 .modal-info {
     transition: all 0.3s ease;
-}
-
-/* Fix theme switcher positioning for all pages */
-.designer-profile-page .page-fade-in .theme-switcher,
-.service-detail-page .page-fade-in .theme-switcher,
-.set-design-feed .page-fade-in .theme-switcher,
-.policies-page .theme-switcher,
-.service-detail-page .theme-switcher,
-.designer-profile-page .theme-switcher,
-.set-design-feed .theme-switcher {
-    position: fixed !important;
-    bottom: 30px !important;
-    left: 30px !important;
-    z-index: 1000 !important;
-    transform: none !important;
-}
-
-
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .service-detail-page .theme-switcher,
-    .designer-profile-page .theme-switcher,
-    .set-design-feed .theme-switcher,
-    .policies-page .theme-switcher {
-        bottom: 20px !important;
-        left: 20px !important;
-    }
 }
 
 .selector-icon-img {

@@ -343,6 +343,8 @@ function closeModal() {
 }
 
 // ============= PHOTOGRAPHY MODAL (Special case) =============
+let isModalInfoVisible = true;
+
 window.toggleModalInfo = function() {
     const modalInfo = document.querySelector('.modal-info');
     if (!modalInfo) return;
@@ -380,11 +382,17 @@ function setupModalInfoButton() {
 }
 
 function openPhotographyModal(index) {
+    console.log('Opening photography modal, index:', index); // Debug log
+
     state.currentModalIndex = index;
     state.isModalOpen = true;
+    isModalInfoVisible = true; // Reset to visible
 
     const modal = DOM.imageModal;
-    if (!modal) return;
+    if (!modal) {
+        console.log('Modal element not found'); // Debug log
+        return;
+    }
 
     const photo = filteredPhotos[index];
     updatePhotographyModalContent(photo);
@@ -392,9 +400,37 @@ function openPhotographyModal(index) {
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
 
+    // Make sure info is visible when opening
+    const modalInfo = modal.querySelector('.modal-info');
+    if (modalInfo) {
+        modalInfo.classList.remove('hidden');
+        modalInfo.style.opacity = '1';
+        modalInfo.style.transform = 'translateY(0)';
+        modalInfo.style.pointerEvents = 'auto';
+        modalInfo.style.transition = 'all 0.3s ease';
+        console.log('Modal info made visible'); // Debug log
+    } else {
+        console.log('Modal info element not found in modal'); // Debug log
+    }
+
+    // Setup the modal info button after modal is fully rendered
+    setTimeout(() => {
+        setupModalInfoButton();
+    }, 100);
+
+    // Additional setup after a longer delay to ensure DOM is ready
+    setTimeout(() => {
+        setupModalInfoButton();
+    }, 300);
+
     if (DOM.customCursor) {
         DOM.customCursor.style.display = 'block';
     }
+
+    // Restore body cursor to none for photography page
+    document.body.style.cursor = 'none';
+
+    console.log('Photography modal opened'); // Debug log
 }
 
 function updatePhotographyModalContent(photo) {
@@ -430,6 +466,8 @@ function closePhotographyModal() {
 }
 
 function navigateModal(direction) {
+    console.log('Navigating modal, direction:', direction); // Debug log
+
     state.currentModalIndex += direction;
 
     if (state.currentModalIndex < 0) {
@@ -440,6 +478,11 @@ function navigateModal(direction) {
 
     const photo = filteredPhotos[state.currentModalIndex];
     updatePhotographyModalContent(photo);
+
+    // Re-setup modal info button after content update
+    setTimeout(() => {
+        setupModalInfoButton();
+    }, 100);
 }
 
 // ============= PROJECT INFO HELPER =============
@@ -810,7 +853,7 @@ function filterPhotos(category) {
 }
 
 // Metadata exit button
-let isModalInfoVisible = true;
+
 
 function toggleModalInfo() {
     const modalInfo = document.querySelector('.modal-info');
@@ -890,6 +933,8 @@ function setupCustomCursor() {
     // Smooth cursor movement with better performance
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
+    let isOverPhoto = false;
+    let isOverSpecialLink = false;
 
     function updateCursor() {
         cursorX += (mouseX - cursorX) * 0.1;
@@ -902,6 +947,34 @@ function setupCustomCursor() {
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
+
+        // Check if we're over a photo
+        const photoElement = e.target.closest('.masonry-item');
+        const specialLink = e.target.closest('.photographer-link, .modal-photographer, .modal-meta-item a');
+
+        isOverPhoto = !!photoElement;
+        isOverSpecialLink = !!specialLink;
+
+        const cursorText = cursor.querySelector('.cursor-text');
+
+        if (isOverSpecialLink) {
+            // Over a special link - show OPEN
+            if (cursorText) {
+                cursorText.textContent = 'OPEN';
+                cursorText.style.opacity = '1';
+            }
+        } else if (isOverPhoto) {
+            // Over a photo but not a special link - show VIEW
+            if (cursorText) {
+                cursorText.textContent = 'VIEW';
+                cursorText.style.opacity = '1';
+            }
+        } else {
+            // Not over a photo - hide text
+            if (cursorText) {
+                cursorText.style.opacity = '0';
+            }
+        }
     });
 
     // Start the cursor animation loop
@@ -910,8 +983,8 @@ function setupCustomCursor() {
     // Setup photo hovers
     setupPhotoHovers();
 
-    // Handle other interactive elements
-    document.querySelectorAll('a, button, .theme-circle, .filter-btn').forEach(item => {
+    // Handle other interactive elements (not photos)
+    document.querySelectorAll('a:not(.photographer-link), button, .theme-circle, .filter-btn').forEach(item => {
         item.addEventListener('mouseenter', () => {
             cursor.classList.add('hover');
             cursor.style.width = '80px';
@@ -919,40 +992,23 @@ function setupCustomCursor() {
             cursor.style.background = 'rgba(255, 255, 255, 0.1)';
             cursor.style.border = '2px solid white';
             cursor.style.backdropFilter = 'blur(10px)';
+
+            const cursorText = cursor.querySelector('.cursor-text');
+            if (cursorText) {
+                cursorText.style.opacity = '0'; // Hide text for regular interactive elements
+            }
         });
 
         item.addEventListener('mouseleave', () => {
             cursor.classList.remove('hover');
             cursor.style.width = '20px';
             cursor.style.height = '20px';
-            cursor.style.background = 'white';
+            cursor.style.background = document.body.classList.contains('white-theme') ? 'black' : 'white';
             cursor.style.border = 'none';
             cursor.style.backdropFilter = 'none';
+
+            // Don't change text opacity here - let mousemove handle it
         });
-    });
-
-    // Handle photographer links and modal elements
-    document.addEventListener('mouseover', (e) => {
-        const target = e.target;
-        if (target.matches('.photographer-link, .modal-photographer, .modal-meta-item a')) {
-            cursor.classList.add('open-mode');
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.textContent = 'OPEN';
-                cursorText.style.opacity = '1';
-            }
-        }
-    });
-
-    document.addEventListener('mouseout', (e) => {
-        const target = e.target;
-        if (target.matches('.photographer-link, .modal-photographer, .modal-meta-item a')) {
-            cursor.classList.remove('open-mode');
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.textContent = 'VIEW';
-            }
-        }
     });
 
     // White theme handling
@@ -1044,6 +1100,8 @@ function setupPhotoHovers() {
 }
 
 function setupPhotographyEventListeners() {
+    console.log('Setting up photography event listeners...'); // Debug log
+
     // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -1060,7 +1118,10 @@ function setupPhotographyEventListeners() {
             if (e.key === 'ArrowRight') navigateModal(1);
             if (e.key === 'ArrowLeft') navigateModal(-1);
             if (e.key === 'Escape') closePhotographyModal();
-            if (e.key === 'i' || e.key === 'I') window.toggleModalInfo(); // 'i' key to toggle info
+            if (e.key === 'i' || e.key === 'I') {
+                console.log('I key pressed, toggling modal info'); // Debug log
+                window.toggleModalInfo();
+            }
         }
     });
 
@@ -1083,6 +1144,10 @@ function setupPhotographyEventListeners() {
             e.preventDefault();
             e.stopPropagation();
             navigateModal(-1);
+            // Re-setup button after navigation
+            setTimeout(() => {
+                setupModalInfoButton();
+            }, 100);
         });
     }
 
@@ -1091,23 +1156,41 @@ function setupPhotographyEventListeners() {
             e.preventDefault();
             e.stopPropagation();
             navigateModal(1);
+            // Re-setup button after navigation
+            setTimeout(() => {
+                setupModalInfoButton();
+            }, 100);
         });
     }
+
+    // Setup modal info button on page load
+    setupModalInfoButton();
+
+    console.log('Photography event listeners setup complete'); // Debug log
 }
 
 function initializePhotographyPortfolio() {
+    console.log('Initializing photography portfolio...'); // Debug log
+
     if (document.getElementById('masonryGrid')) {
         DOM.body.classList.add('photography-page');
         renderPhotos(photographyData);
         setupCustomCursor();
         setupPhotographyEventListeners();
 
-        // Make sure the modal info button works
+        // Multiple attempts to setup the modal info button
         setTimeout(() => {
             setupModalInfoButton();
         }, 500);
+
+        setTimeout(() => {
+            setupModalInfoButton();
+        }, 1000);
+
+        console.log('Photography portfolio initialization complete'); // Debug log
     }
 }
+
 // ============= CONTACT PAGE =============
 function initContactPage() {
     const contactForm = document.getElementById('contactForm');
