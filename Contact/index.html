@@ -120,11 +120,11 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="services-email">Email Address *</label>
-                        <input type="email" id="services-email" name="email" required>
+                        <input  class="numbers" type="email" id="services-email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="services-phone">Phone Number</label>
-                        <input type="tel" id="services-phone" name="phone">
+                        <input class="numbers" type="tel" id="services-phone" name="phone">
                     </div>
                 </div>
 
@@ -148,31 +148,31 @@
                         <label for="services-budget">Project Budget</label>
                         <select id="services-budget" name="budget">
                             <option value="">Select budget range</option>
-                            <option value="under-1k">Under $1,000</option>
-                            <option value="1k-5k">$1,000 - $5,000</option>
-                            <option value="5k-10k">$5,000 - $10,000</option>
-                            <option value="10k-25k">$10,000 - $25,000</option>
-                            <option value="25k-plus">$25,000+</option>
-                            <option value="discuss">Prefer to discuss</option>
+                            <option class="numbers" value="under-1k">Under $1,000</option>
+                            <option class="numbers" value="1k-5k">$1,000 - $5,000</option>
+                            <option class="numbers" value="5k-10k">$5,000 - $10,000</option>
+                            <option class="numbers" value="10k-25k">$10,000 - $25,000</option>
+                            <option class="numbers" value="25k-plus">$25,000+</option>
+                            <option class="numbers" value="discuss">Prefer to discuss</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="services-timeline">Project Timeline</label>
                         <select id="services-timeline" name="timeline">
                             <option value="">Select timeline</option>
-                            <option value="asap">ASAP</option>
-                            <option value="1-month">Within 1 month</option>
-                            <option value="2-3-months">2-3 months</option>
-                            <option value="3-6-months">3-6 months</option>
-                            <option value="6-plus-months">6+ months</option>
-                            <option value="flexible">Flexible</option>
+                            <option class="numbers" value="asap">ASAP</option>
+                            <option class="numbers" value="1-month">Within 1 month</option>
+                            <option class="numbers" value="2-3-months">2-3 months</option>
+                            <option class="numbers" value="3-6-months">3-6 months</option>
+                            <option class="numbers" value="6-plus-months">6+ months</option>
+                            <option class="numbers" value="flexible">Flexible</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="services-message">Project Details *</label>
-                    <textarea id="services-message" name="message" rows="6" placeholder="Tell us about your project, vision, goals, and any specific requirements..." required></textarea>
+                    <textarea class="numbers" id="services-message" name="message" rows="6" placeholder="Tell us about your project, vision, goals, and any specific requirements..." required></textarea>
                 </div>
 
                 <!-- reCAPTCHA -->
@@ -233,20 +233,15 @@
                     <label for="clothing-enquiry">Enquiry Type *</label>
                     <select id="clothing-enquiry" name="enquiryType" required>
                         <option value="">Select enquiry type</option>
-                        <option value="product-info">Product Information</option>
-                        <option value="sizing">Sizing & Fit</option>
-                        <option value="availability">Product Availability</option>
                         <option value="order-status">Order Status</option>
                         <option value="returns">Returns & Exchanges</option>
-                        <option value="custom-order">Custom Order</option>
-                        <option value="wholesale">Wholesale Enquiry</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="clothing-product">Product Reference</label>
-                    <input type="text" id="clothing-product" name="productReference" placeholder="Product name, code, or link (if applicable)">
+                    <label for="clothing-product">Order ID</label>
+                    <input class="numbers" type="text" id="clothing-product" name="productReference" placeholder="Product reference number">
                 </div>
 
                 <div class="form-group">
@@ -284,7 +279,7 @@
                 </svg>
             </div>
             <h2>Message Sent!</h2>
-            <p>Thank you for contacting us. We'll get back to you within 24 hours.</p>
+            <p>Thank you for reaching out to us. We'll get back to you.</p>
             <button class="back-button" onclick="resetContactForms()">Send Another Message</button>
         </div>
     </div>
