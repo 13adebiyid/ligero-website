@@ -5053,6 +5053,10 @@ body.white-theme .modern-contact-form::before {
     background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.3), transparent);
 }
 
+.form-group .numbers{
+    font-family: "Dubai Light" !important;
+}
+
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
