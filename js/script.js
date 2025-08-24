@@ -11,7 +11,7 @@ const DOM = {
     videoModal: null,
     imageModal: null,
     bgVideo: null,
-    customCursor: null // Added for cursor management
+    customCursor: null
 };
 
 // State Management
@@ -233,8 +233,6 @@ function handleSimplePageTransition(url) {
     }, 400);
 }
 
-
-
 function handleHomePageTransition(url) {
     const now = Date.now();
     if (state.isNavigating || (now - state.lastNavigationTime < 300)) return;
@@ -274,9 +272,8 @@ function openImageModal(imageSrc, title, client) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
-    DOM.body.classList.add('modal-open'); // Add class for CSS targeting
+    DOM.body.classList.add('modal-open');
 
-    // Force default cursor to ensure visibility
     DOM.body.style.cursor = 'auto';
     modal.style.cursor = 'auto';
 }
@@ -287,9 +284,8 @@ function closeImageModal() {
 
     modal.classList.remove('active');
     DOM.body.style.overflow = '';
-    DOM.body.classList.remove('modal-open'); // Remove class
+    DOM.body.classList.remove('modal-open');
 
-    // Reset cursor
     DOM.body.style.cursor = '';
     modal.style.cursor = '';
 }
@@ -311,9 +307,8 @@ function openVideoModal(videoSrc, title, client) {
 
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
-    DOM.body.classList.add('modal-open'); // Add class for CSS targeting
+    DOM.body.classList.add('modal-open');
 
-    // Force default cursor to ensure visibility
     DOM.body.style.cursor = 'auto';
     modal.style.cursor = 'auto';
 
@@ -334,7 +329,7 @@ function closeModal() {
     if (videoModal) {
         videoModal.classList.remove('active');
         DOM.body.style.overflow = '';
-        DOM.body.classList.remove('modal-open'); // Remove class
+        DOM.body.classList.remove('modal-open');
     }
 
     if (modalVideo) {
@@ -343,7 +338,6 @@ function closeModal() {
         modalVideo.src = '';
     }
 
-    // Reset cursor
     DOM.body.style.cursor = '';
     if (videoModal) videoModal.style.cursor = '';
 }
@@ -362,7 +356,6 @@ function openPhotographyModal(index) {
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
 
-    // Fix: Keep cursor visible in photography modal
     if (DOM.customCursor) {
         DOM.customCursor.style.display = 'block';
     }
@@ -395,7 +388,6 @@ function closePhotographyModal() {
     DOM.body.style.overflow = '';
     state.isModalOpen = false;
 
-    // Keep cursor visible
     if (DOM.customCursor) {
         DOM.customCursor.style.display = 'block';
     }
@@ -416,7 +408,6 @@ function navigateModal(direction) {
 
 // ============= PROJECT INFO HELPER =============
 function getProjectInfo(clickedElement) {
-    // Check dual video item
     let dualVideoItem = clickedElement.closest('.dual-video-item');
     if (dualVideoItem) {
         const metadata = dualVideoItem.querySelector('.video-metadata');
@@ -427,7 +418,6 @@ function getProjectInfo(clickedElement) {
         }
     }
 
-    // Check images grid
     let imagesGrid = clickedElement.closest('.images-grid');
     if (imagesGrid) {
         let previousElement = imagesGrid.previousElementSibling;
@@ -445,7 +435,6 @@ function getProjectInfo(clickedElement) {
         }
     }
 
-    // Check video section
     let videoSection = clickedElement.closest('.video-section');
     if (videoSection) {
         const metadata = videoSection.querySelector('.video-metadata');
@@ -456,7 +445,6 @@ function getProjectInfo(clickedElement) {
         }
     }
 
-    // Check data attributes
     const videoContainer = clickedElement.closest('.video-container-main');
     if (videoContainer) {
         const title = videoContainer.getAttribute('data-title');
@@ -471,7 +459,6 @@ function getProjectInfo(clickedElement) {
 
 // ============= MODAL CLICK HANDLERS =============
 function setupModalClicks() {
-    // Video clicks
     const videoContainers = document.querySelectorAll('.video-container-main');
     videoContainers.forEach(container => {
         container.addEventListener('click', function(e) {
@@ -493,11 +480,9 @@ function setupModalClicks() {
         });
     });
 
-    // Check if we're on photography page
     const isPhotographyPage = document.querySelector('.photography-page') !== null;
 
     if (!isPhotographyPage) {
-        // Generic image handling for all non-photography pages
         const feedItems = document.querySelectorAll('.feed-item[data-image]');
         feedItems.forEach(item => {
             item.style.cursor = 'pointer';
@@ -513,7 +498,6 @@ function setupModalClicks() {
             });
         });
 
-        // Handle direct image clicks
         const feedImages = document.querySelectorAll('.feed-item img');
         feedImages.forEach(img => {
             const parent = img.closest('.feed-item');
@@ -590,7 +574,7 @@ function setupEnhancedFeedVideoAutoplay() {
 
             if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
                 video.play().catch(err => {
-                    console.log(`⏸️ Autoplay prevented: ${err.message}`);
+                    console.log(`⸻️ Autoplay prevented: ${err.message}`);
                 });
             } else {
                 video.pause();
@@ -624,7 +608,6 @@ function setupEnhancedFeedVideoAutoplay() {
         }, 100);
     });
 }
-
 
 // ============= PHOTOGRAPHY PORTFOLIO =============
 const photographyData = [
@@ -795,9 +778,8 @@ function setupCustomCursor() {
     const cursor = document.getElementById('customCursor');
     if (!cursor || utils.isMobile()) return;
 
-    DOM.customCursor = cursor; // Store reference
+    DOM.customCursor = cursor;
 
-    // Ensure cursor is at the end of body for highest z-index
     document.body.appendChild(cursor);
     cursor.style.zIndex = '999999';
 
@@ -808,7 +790,6 @@ function setupCustomCursor() {
 
     setupPhotoHovers();
 
-    // Hover effects
     document.querySelectorAll('a, button, .theme-circle, .filter-btn').forEach(item => {
         item.addEventListener('mouseenter', () => {
             cursor.classList.add('hover');
@@ -819,10 +800,8 @@ function setupCustomCursor() {
         });
     });
 
-    // Fix: "OPEN" text for photographer links - use event delegation
     document.addEventListener('mouseover', (e) => {
         const target = e.target;
-        // Check if hovering over photographer link or modal photographer link
         if (target.matches('.photographer-link, .modal-photographer, .modal-meta-item a')) {
             cursor.classList.add('open-mode');
             const cursorText = cursor.querySelector('.cursor-text');
@@ -859,7 +838,6 @@ function setupPhotoHovers() {
 }
 
 function setupPhotographyEventListeners() {
-    // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const category = this.dataset.category;
@@ -869,7 +847,6 @@ function setupPhotographyEventListeners() {
         });
     });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (state.isModalOpen) {
             if (e.key === 'ArrowRight') navigateModal(1);
@@ -878,7 +855,6 @@ function setupPhotographyEventListeners() {
         }
     });
 
-    // Click outside to close
     const imageModal = DOM.imageModal;
     if (imageModal) {
         imageModal.addEventListener('click', (e) => {
@@ -891,7 +867,6 @@ function setupPhotographyEventListeners() {
 
 function initializePhotographyPortfolio() {
     if (document.getElementById('masonryGrid')) {
-        // Add class to body for CSS targeting
         DOM.body.classList.add('photography-page');
         renderPhotos(photographyData);
         setupCustomCursor();
@@ -1005,23 +980,11 @@ function preSelectService() {
     }
 }
 
-// ============= COMING SOON PAGE =============
-function initComingSoonPage() {
+// ============= ENHANCED NOTIFY FORM =============
+function initEnhancedComingSoonPage() {
     const form = document.getElementById('notifyForm');
     if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = form.querySelector('input[type="email"]');
-            const email = emailInput.value;
-
-            if (email && isValidEmail(email)) {
-                alert('Thank you! We\'ll notify you when our products launch.');
-                hideNotifyForm();
-                form.reset();
-            } else {
-                alert('Please enter a valid email address.');
-            }
-        });
+        form.addEventListener('submit', handleNotifyFormSubmission);
     }
 
     const overlay = document.getElementById('notifyFormOverlay');
@@ -1036,8 +999,100 @@ function initComingSoonPage() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             hideNotifyForm();
+            hideNotifySuccess();
+            hideContactSuccess();
         }
     });
+}
+
+function handleNotifyFormSubmission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const emailInput = form.querySelector('input[type="email"]');
+    const email = emailInput.value;
+
+    if (email && isValidEmail(email)) {
+        showNotifyLoading();
+
+        const formData = new FormData(form);
+        if (!formData.has('form-name')) {
+            formData.append('form-name', 'notify-signup');
+        }
+
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+        })
+            .then(() => {
+                console.log('Notify form submitted successfully');
+                hideNotifyForm();
+                setTimeout(() => {
+                    showNotifySuccess();
+                }, 400);
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Notify form submission error:', error);
+                hideNotifyForm();
+                setTimeout(() => {
+                    showNotifySuccess();
+                }, 400);
+                form.reset();
+            })
+            .finally(() => {
+                hideNotifyLoading();
+            });
+    } else {
+        emailInput.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+            emailInput.style.animation = '';
+        }, 500);
+    }
+}
+
+function showNotifyLoading() {
+    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'SENDING...';
+    }
+}
+
+function hideNotifyLoading() {
+    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'NOTIFY ME';
+    }
+}
+
+function showNotifySuccess() {
+    const successModal = document.getElementById('notifySuccessModal');
+    if (successModal) {
+        successModal.style.display = 'flex';
+        DOM.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            successModal.classList.add('active');
+        }, 50);
+
+        setTimeout(() => {
+            hideNotifySuccess();
+        }, 4000);
+    }
+}
+
+function hideNotifySuccess() {
+    const successModal = document.getElementById('notifySuccessModal');
+    if (successModal) {
+        successModal.classList.remove('active');
+
+        setTimeout(() => {
+            successModal.style.display = 'none';
+            DOM.body.style.overflow = '';
+        }, 300);
+    }
 }
 
 function showNotifyForm() {
@@ -1045,6 +1100,7 @@ function showNotifyForm() {
     if (overlay) {
         overlay.classList.add('active');
         DOM.body.style.overflow = 'hidden';
+        resetNotifyForm();
     }
 }
 
@@ -1053,11 +1109,289 @@ function hideNotifyForm() {
     if (overlay) {
         overlay.classList.remove('active');
         DOM.body.style.overflow = '';
+
+        setTimeout(() => {
+            resetNotifyForm();
+        }, 400);
     }
 }
 
+function resetNotifyForm() {
+    const form = document.getElementById('notifyForm');
+    const submitBtn = form?.querySelector('button[type="submit"]');
+
+    if (form) {
+        form.reset();
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'NOTIFY ME';
+    }
+}
+
+// ============= MODERN CONTACT PAGE =============
+let currentContactType = 'services';
+
+function initModernContactPage() {
+    const servicesForm = document.getElementById('servicesContactForm');
+    const clothingForm = document.getElementById('clothingContactForm');
+
+    if (servicesForm) {
+        servicesForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    if (clothingForm) {
+        clothingForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    setTimeout(() => {
+        const servicesSection = document.getElementById('servicesForm');
+        if (servicesSection) {
+            servicesSection.classList.add('active');
+        }
+    }, 800);
+
+    setupRealTimeValidation();
+}
+
+function handleContactFormSubmission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const submitButton = form.querySelector('.submit-button');
+
+    if (!validateContactForm(form)) return;
+
+    showContactLoading(submitButton);
+
+    const formData = new FormData(form);
+    const formName = form.getAttribute('name');
+    if (!formData.has('form-name') && formName) {
+        formData.append('form-name', formName);
+    }
+
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+    })
+        .then(response => {
+            console.log('Contact form submitted successfully', response.status);
+            showContactSuccess();
+            form.reset();
+        })
+        .catch(error => {
+            console.error('Contact form submission error:', error);
+            showContactSuccess();
+            form.reset();
+        })
+        .finally(() => {
+            hideContactLoading(submitButton);
+        });
+}
+
+function switchContactType(type) {
+    if (currentContactType === type) return;
+
+    const buttons = document.querySelectorAll('.type-selector-btn');
+    const sections = document.querySelectorAll('.contact-form-section');
+
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.type === type) {
+            btn.classList.add('active');
+        }
+    });
+
+    sections.forEach(section => {
+        if (section.classList.contains('active')) {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+
+                const newSection = document.getElementById(type + 'Form');
+                if (newSection) {
+                    newSection.style.display = 'block';
+                    setTimeout(() => {
+                        newSection.classList.add('active');
+                    }, 50);
+                }
+            }, 200);
+        }
+    });
+
+    currentContactType = type;
+}
+
+function validateContactForm(form) {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    const errors = [];
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            addFieldError(field, 'This field is required');
+            errors.push(field);
+        } else {
+            removeFieldError(field);
+        }
+    });
+
+    const emailField = form.querySelector('input[type="email"]');
+    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
+        isValid = false;
+        addFieldError(emailField, 'Please enter a valid email address');
+        errors.push(emailField);
+    }
+
+    const phoneField = form.querySelector('input[type="tel"]');
+    if (phoneField && phoneField.value && !isValidPhone(phoneField.value)) {
+        addFieldError(phoneField, 'Please enter a valid phone number');
+    }
+
+    if (errors.length > 0) {
+        errors[0].focus();
+        errors[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    return isValid;
+}
+
+function addFieldError(field, message) {
+    removeFieldError(field);
+
+    field.style.borderColor = '#ff6b6b';
+    field.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
+
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    errorDiv.style.color = '#ff6b6b';
+    errorDiv.style.fontSize = '0.85rem';
+    errorDiv.style.marginTop = '5px';
+    errorDiv.style.opacity = '0';
+    errorDiv.style.animation = 'fadeInUp 0.3s ease forwards';
+
+    field.parentNode.appendChild(errorDiv);
+
+    field.addEventListener('input', () => removeFieldError(field), { once: true });
+}
+
+function removeFieldError(field) {
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+
+    const existingError = field.parentNode.querySelector('.field-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
+function isValidPhone(phone) {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
+    return phoneRegex.test(cleaned) && cleaned.length >= 7;
+}
+
 function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return emailRegex.test(email);
+}
+
+function showContactLoading(button) {
+    if (button) {
+        button.classList.add('loading');
+        button.disabled = true;
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
+
+        if (buttonText) buttonText.style.display = 'none';
+        if (buttonLoader) buttonLoader.style.display = 'block';
+    }
+}
+
+function hideContactLoading(button) {
+    if (button) {
+        button.classList.remove('loading');
+        button.disabled = false;
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
+
+        if (buttonText) buttonText.style.display = 'block';
+        if (buttonLoader) buttonLoader.style.display = 'none';
+    }
+}
+
+function showContactSuccess() {
+    const successElement = document.getElementById('contactSuccess');
+    if (successElement) {
+        successElement.style.display = 'flex';
+        DOM.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            successElement.classList.add('active');
+        }, 50);
+    }
+}
+
+function hideContactSuccess() {
+    const successElement = document.getElementById('contactSuccess');
+    if (successElement) {
+        successElement.classList.remove('active');
+
+        setTimeout(() => {
+            successElement.style.display = 'none';
+            DOM.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+function resetContactForms() {
+    hideContactSuccess();
+
+    const forms = document.querySelectorAll('.modern-contact-form');
+    forms.forEach(form => {
+        form.reset();
+    });
+
+    setTimeout(() => {
+        switchContactType('services');
+    }, 400);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+const debouncedValidation = debounce((field) => {
+    if (field.value.trim()) {
+        removeFieldError(field);
+    }
+}, 300);
+
+function setupRealTimeValidation() {
+    const formFields = document.querySelectorAll('.modern-contact-form input, .modern-contact-form select, .modern-contact-form textarea');
+
+    formFields.forEach(field => {
+        field.addEventListener('input', () => debouncedValidation(field));
+        field.addEventListener('blur', () => {
+            if (field.hasAttribute('required') && !field.value.trim()) {
+                addFieldError(field, 'This field is required');
+            }
+        });
+    });
 }
 
 // ============= VIDEO CONTROLS =============
@@ -1108,8 +1442,6 @@ function setupVideoControls() {
 }
 
 // === PRODUCERS PAGE PLAYER ===
-
-// Track data (without hardcoded durations)
 const tracks = [
     { id: 1, title: "Copy Cat", artist: "K1D", src: "/audio/track1.mp3" },
     { id: 2, title: "Electric Pulse", artist: "Sofia Rodriguez", src: "/audio/track2.mp3" },
@@ -1126,12 +1458,10 @@ const progress = document.getElementById('progress');
 const currentTimeEl = document.getElementById('currentTime');
 const durationEl = document.getElementById('duration');
 
-// Play a track by ID
 function playTrack(trackId) {
     const track = tracks.find(t => t.id === trackId);
     if (!track) return;
 
-    // Update UI states
     document.querySelectorAll('.audio-track').forEach(el => {
         el.classList.remove('playing');
         el.querySelector('.play-btn').classList.remove('playing');
@@ -1149,7 +1479,6 @@ function playTrack(trackId) {
 
     audioPlayer.src = track.src;
 
-    // Get real duration when metadata loads
     audioPlayer.addEventListener('loadedmetadata', () => {
         const duration = audioPlayer.duration;
         const minutes = Math.floor(duration / 60);
@@ -1161,7 +1490,6 @@ function playTrack(trackId) {
     isPlaying = true;
 }
 
-// Toggle play/pause
 function togglePlay() {
     if (!currentTrackId) return;
 
@@ -1175,7 +1503,6 @@ function togglePlay() {
     isPlaying = !isPlaying;
 }
 
-// Track navigation with proper icons
 function previousTrack() {
     if (currentTrackId > 1) {
         playTrack(currentTrackId - 1);
@@ -1188,12 +1515,10 @@ function nextTrack() {
     }
 }
 
-// Progress bar state
 let isDragging = false;
 let progressBar = null;
 let progressContainer = null;
 
-// Update progress bar
 audioPlayer?.addEventListener('timeupdate', () => {
     if (!isDragging && audioPlayer.duration) {
         const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
@@ -1205,34 +1530,28 @@ audioPlayer?.addEventListener('timeupdate', () => {
     }
 });
 
-// Handle track end
 audioPlayer?.addEventListener('ended', () => {
     nextTrack();
 });
 
-// Seek functionality with hover and drag
 function initProgressBar() {
     progressBar = document.getElementById('progressBar');
     progressContainer = document.querySelector('.progress-container');
     if (!progressBar || !progressContainer) return;
 
-    // Create hover indicator
     const hoverIndicator = document.createElement('div');
     hoverIndicator.className = 'progress-hover';
     progressBar.appendChild(hoverIndicator);
 
-    // Mouse events
     progressBar.addEventListener('mouseenter', handleProgressHover);
     progressBar.addEventListener('mousemove', handleProgressHover);
     progressBar.addEventListener('mouseleave', handleProgressLeave);
     progressBar.addEventListener('mousedown', startDragging);
     progressBar.addEventListener('click', seek);
 
-    // Global mouse events for dragging
     document.addEventListener('mousemove', handleDragging);
     document.addEventListener('mouseup', stopDragging);
 
-    // Touch events for mobile
     progressBar.addEventListener('touchstart', startDraggingTouch, { passive: false });
     document.addEventListener('touchmove', handleDraggingTouch, { passive: false });
     document.addEventListener('touchend', stopDraggingTouch);
@@ -1251,12 +1570,10 @@ function handleProgressHover(e) {
         hoverIndicator.style.opacity = '1';
     }
 
-    // Show time tooltip
     const hoverTime = (percentage / 100) * audioPlayer.duration;
     const minutes = Math.floor(hoverTime / 60);
     const seconds = Math.floor(hoverTime % 60).toString().padStart(2, '0');
 
-    // Create or update tooltip
     let tooltip = progressBar.querySelector('.progress-tooltip');
     if (!tooltip) {
         tooltip = document.createElement('div');
@@ -1309,7 +1626,6 @@ function stopDragging() {
     isDragging = false;
     progressBar?.classList.remove('dragging');
 
-    // Set the actual audio time when drag ends
     if (progressBar && audioPlayer.duration) {
         const progressWidth = parseFloat(progress.style.width);
         const newTime = (progressWidth / 100) * audioPlayer.duration;
@@ -1322,7 +1638,6 @@ function stopDraggingTouch() {
     isDragging = false;
     progressBar?.classList.remove('dragging');
 
-    // Set the actual audio time when drag ends
     if (progressBar && audioPlayer.duration) {
         const progressWidth = parseFloat(progress.style.width);
         const newTime = (progressWidth / 100) * audioPlayer.duration;
@@ -1337,16 +1652,13 @@ function updateProgress(clientX) {
     const x = clientX - rect.left;
     const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
 
-    // Update progress bar visual immediately during drag
     progress.style.width = `${percentage}%`;
 
-    // Update time display immediately
     const newTime = (percentage / 100) * audioPlayer.duration;
     const minutes = Math.floor(newTime / 60);
     const seconds = Math.floor(newTime % 60).toString().padStart(2, '0');
     currentTimeEl.textContent = `${minutes}:${seconds}`;
 
-    // Only update audio currentTime on mouse up to prevent stuttering
     if (!isDragging) {
         audioPlayer.currentTime = newTime;
     }
@@ -1362,7 +1674,6 @@ function seek(e) {
     audioPlayer.currentTime = audioPlayer.duration * percentage;
 }
 
-// Click audio track anywhere to play
 document.querySelectorAll('.audio-track').forEach(track => {
     track.addEventListener('click', (e) => {
         if (!e.target.closest('a') && !e.target.closest('.play-btn')) {
@@ -1372,13 +1683,10 @@ document.querySelectorAll('.audio-track').forEach(track => {
     });
 });
 
-// Update control buttons HTML after DOM loads
 function updateProducerControls() {
     const controlButtons = document.querySelectorAll('.control-btn');
     if (controlButtons.length >= 2) {
-        // Previous button
         controlButtons[0].innerHTML = '<img src="/images/next-icon.webp" alt="Previous" style="width: 20px; height: 20px;">';
-        // Next button
         controlButtons[1].innerHTML = '<img src="/images/previous-icon.webp" alt="Next" style="width: 20px; height: 20px;">';
     }
 }
@@ -1457,27 +1765,6 @@ function setupPageTransitions() {
     });
 }
 
-
-
-
-
-function initPageSpecificFeatures() {
-    // Reset carousel if on services page
-    if (DOM.carousel && !utils.isMobile()) {
-        resetCarousel();
-    }
-
-    // Apply saved theme
-    try {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'white') {
-            DOM.body.classList.add('white-theme');
-        } else {
-            DOM.body.classList.remove('white-theme');
-        }
-    } catch (e) {}
-}
-
 function setupModalCloseHandlers() {
     const videoCloseBtn = document.querySelector('#videoModal .modal-close');
     const imageCloseBtn = document.querySelector('#imageModal .modal-close');
@@ -1491,7 +1778,6 @@ function setupModalCloseHandlers() {
         imageCloseBtn.addEventListener('click', isPhotographyPage ? closePhotographyModal : closeImageModal);
     }
 
-    // Click outside to close
     if (DOM.videoModal) {
         const backdrop = DOM.videoModal.querySelector('.modal-backdrop');
         if (backdrop) {
@@ -1506,7 +1792,6 @@ function setupModalCloseHandlers() {
         }
     }
 
-    // Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeModal();
@@ -1520,7 +1805,6 @@ function initializeModals() {
     setupModalCloseHandlers();
 }
 
-// ============= TOUCH EVENTS =============
 function handleTouchStart(e) {
     if (utils.isMobile()) return;
     state.touchStartX = e.changedTouches[0].screenX;
@@ -1545,148 +1829,6 @@ function handleTouchEnd(e) {
     state.isSwiping = false;
 }
 
-// ============= MAIN INITIALIZATION =============
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        console.log('🚀 Initializing Ligero website...');
-
-        // Cache DOM elements
-        DOM.carousel = document.getElementById('carousel');
-        DOM.mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
-        DOM.hamburger = document.querySelector('.hamburger-menu');
-        DOM.videoModal = document.getElementById('videoModal');
-        DOM.imageModal = document.getElementById('imageModal');
-        DOM.bgVideo = document.getElementById('bgVideo');
-        DOM.customCursor = document.getElementById('customCursor');
-
-        // Reset states
-        resetPageState();
-
-        // Initialize core features
-        initPageLoad();
-        setupPageTransitions();
-
-        // Apply theme
-        try {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'white') {
-                DOM.body.classList.add('white-theme');
-            }
-        } catch (e) {}
-
-        // Setup carousel
-        if (DOM.carousel) {
-            resetCarousel();
-
-            if (!utils.isMobile()) {
-                setupCarouselKeyboardNavigation();
-                DOM.carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-                DOM.carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-                DOM.carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-                setupServiceCardHoverPreviews();
-            }
-        }
-
-        // Setup video features
-        setupVideoControls();
-        setupModalClicks();
-        setupEnhancedFeedVideoAutoplay();
-
-        // Setup mobile menu
-        if (DOM.hamburger) {
-            DOM.hamburger.addEventListener('click', toggleMobileMenu);
-        }
-
-        // Mobile menu items
-        document.querySelectorAll('.mobile-menu-item').forEach(item => {
-            item.addEventListener('click', () => {
-                setTimeout(closeMobileMenu, 100);
-            });
-        });
-
-        // Mobile menu overlay click
-        if (DOM.mobileMenuOverlay) {
-            DOM.mobileMenuOverlay.addEventListener('click', (e) => {
-                if (e.target === DOM.mobileMenuOverlay) {
-                    closeMobileMenu();
-                }
-            });
-        }
-
-        // Window resize handler
-        const handleResize = utils.debounce(() => {
-            resetCarousel();
-            if (window.innerWidth > 768) {
-                closeMobileMenu();
-            }
-        }, 250);
-
-        window.addEventListener('resize', handleResize);
-
-        // Theme switchers
-        document.querySelectorAll('.theme-circle.white').forEach(el => {
-            el.onclick = () => setTheme('white');
-        });
-
-        document.querySelectorAll('.theme-circle.black').forEach(el => {
-            el.onclick = () => setTheme('black');
-        });
-
-        // Initialize page-specific features
-        if (document.querySelector('.set-design-feed') ||
-            document.querySelector('.designer-profile-page') ||
-            document.querySelector('.electra-style-page')) {
-
-            // Add page-specific class for creative directing
-            if (window.location.pathname.includes('creative-directing')) {
-                DOM.body.classList.add('creative-directing-page');
-            }
-
-            // Create custom cursor for modal interactions if it doesn't exist
-            if (!DOM.customCursor) {
-                const cursor = document.createElement('div');
-                cursor.id = 'customCursor';
-                cursor.className = 'custom-cursor';
-                cursor.style.display = 'none'; // Hide by default on non-photography pages
-                document.body.appendChild(cursor);
-                DOM.customCursor = cursor;
-            }
-
-            setTimeout(() => {
-                setupImageLoading();
-                setupEnhancedFeedVideoAutoplay();
-                initializeModals();
-            }, 100);
-        }
-
-        // Contact page
-        if (document.querySelector('.contact-page')) {
-            initContactPage();
-        }
-
-        // Coming soon page
-        if (document.querySelector('.coming-soon-page')) {
-            initComingSoonPage();
-        }
-
-        // Photography page
-        initializePhotographyPortfolio();
-
-        // Producers page - update control buttons and init progress bar
-        if (document.querySelector('.producers-page')) {
-            updateProducerControls();
-            initProgressBar();
-        }
-
-        console.log('✅ Ligero website initialized successfully');
-
-    } catch (error) {
-        console.error('Error during initialization:', error);
-        emergencyCleanup();
-    }
-});
-
-// Setup keyboard navigation for carousel
 function setupCarouselKeyboardNavigation() {
     if (utils.isMobile()) return;
 
@@ -1699,7 +1841,6 @@ function setupCarouselKeyboardNavigation() {
     });
 }
 
-// Setup image loading
 function setupImageLoading() {
     const images = document.querySelectorAll('.feed-item img');
 
@@ -1719,7 +1860,134 @@ function setupImageLoading() {
     });
 }
 
-// Page visibility and state restoration
+// ============= MAIN INITIALIZATION =============
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        console.log('🚀 Initializing Ligero website...');
+
+        DOM.carousel = document.getElementById('carousel');
+        DOM.mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        DOM.hamburger = document.querySelector('.hamburger-menu');
+        DOM.videoModal = document.getElementById('videoModal');
+        DOM.imageModal = document.getElementById('imageModal');
+        DOM.bgVideo = document.getElementById('bgVideo');
+        DOM.customCursor = document.getElementById('customCursor');
+
+        resetPageState();
+        initPageLoad();
+        setupPageTransitions();
+
+        try {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'white') {
+                DOM.body.classList.add('white-theme');
+            }
+        } catch (e) {}
+
+        if (DOM.carousel) {
+            resetCarousel();
+
+            if (!utils.isMobile()) {
+                setupCarouselKeyboardNavigation();
+                DOM.carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+                DOM.carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+                DOM.carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+                setupServiceCardHoverPreviews();
+            }
+        }
+
+        setupVideoControls();
+        setupModalClicks();
+        setupEnhancedFeedVideoAutoplay();
+
+        if (DOM.hamburger) {
+            DOM.hamburger.addEventListener('click', toggleMobileMenu);
+        }
+
+        document.querySelectorAll('.mobile-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                setTimeout(closeMobileMenu, 100);
+            });
+        });
+
+        if (DOM.mobileMenuOverlay) {
+            DOM.mobileMenuOverlay.addEventListener('click', (e) => {
+                if (e.target === DOM.mobileMenuOverlay) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        const handleResize = utils.debounce(() => {
+            resetCarousel();
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        }, 250);
+
+        window.addEventListener('resize', handleResize);
+
+        document.querySelectorAll('.theme-circle.white').forEach(el => {
+            el.onclick = () => setTheme('white');
+        });
+
+        document.querySelectorAll('.theme-circle.black').forEach(el => {
+            el.onclick = () => setTheme('black');
+        });
+
+        if (document.querySelector('.set-design-feed') ||
+            document.querySelector('.designer-profile-page') ||
+            document.querySelector('.electra-style-page')) {
+
+            if (window.location.pathname.includes('creative-directing')) {
+                DOM.body.classList.add('creative-directing-page');
+            }
+
+            if (!DOM.customCursor) {
+                const cursor = document.createElement('div');
+                cursor.id = 'customCursor';
+                cursor.className = 'custom-cursor';
+                cursor.style.display = 'none';
+                document.body.appendChild(cursor);
+                DOM.customCursor = cursor;
+            }
+
+            setTimeout(() => {
+                setupImageLoading();
+                setupEnhancedFeedVideoAutoplay();
+                initializeModals();
+            }, 100);
+        }
+
+        if (document.querySelector('.contact-page')) {
+            initContactPage();
+        }
+
+        if (document.querySelector('.modern-contact-page')) {
+            console.log('Initializing modern contact page...');
+            initModernContactPage();
+        }
+
+        if (document.querySelector('.coming-soon-page')) {
+            console.log('Initializing coming soon page...');
+            initEnhancedComingSoonPage();
+        }
+
+        initializePhotographyPortfolio();
+
+        if (document.querySelector('.producers-page')) {
+            updateProducerControls();
+            initProgressBar();
+        }
+
+        console.log('✅ Ligero website initialized successfully');
+
+    } catch (error) {
+        console.error('Error during initialization:', error);
+        emergencyCleanup();
+    }
+});
+
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         if (state.isNavigating && Date.now() - state.lastNavigationTime > 3000) {
@@ -1731,7 +1999,14 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
         resetPageState();
-        setTimeout(initPageSpecificFeatures, 50);
+        setTimeout(() => {
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'white') {
+                    DOM.body.classList.add('white-theme');
+                }
+            } catch (e) {}
+        }, 50);
     }
 });
 
@@ -1747,573 +2022,12 @@ window.addEventListener('beforeunload', () => {
     });
 });
 
-// Emergency cleanup interval - more aggressive
 setInterval(() => {
     if (state.isNavigating && Date.now() - state.lastNavigationTime > 2000) {
         console.warn('Navigation appears stuck, forcing cleanup...');
         emergencyCleanup();
-        // Force reload if still stuck
         if (window.location.pathname.includes('services') && state.isNavigating) {
             window.location.reload();
         }
     }
-}, 500); // Check every 500ms instead of 1000ms
-
-// ============= ENHANCED NOTIFY FORM =============
-
-// Enhanced notify form handling
-function initEnhancedComingSoonPage() {
-    const form = document.getElementById('notifyForm');
-    if (form) {
-        form.addEventListener('submit', handleNotifyFormSubmission);
-    }
-
-    const overlay = document.getElementById('notifyFormOverlay');
-    if (overlay) {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                hideNotifyForm();
-            }
-        });
-    }
-
-    // ESC key handler
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            hideNotifyForm();
-            hideNotifySuccess();
-            hideContactSuccess();
-        }
-    });
-}
-
-function handleNotifyFormSubmission(e) {
-    e.preventDefault();
-    const form = e.target;
-    const emailInput = form.querySelector('input[type="email"]');
-    const email = emailInput.value;
-
-    if (email && isValidEmail(email)) {
-        // Show loading state
-        showNotifyLoading();
-
-        // Prepare form data for Netlify
-        const formData = new FormData(form);
-
-        // Submit to Netlify
-        fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encode(Object.fromEntries(formData))
-        })
-            .then(() => {
-                // Hide the form modal first
-                hideNotifyForm();
-                // Then show success modal after short delay
-                setTimeout(() => {
-                    showNotifySuccess();
-                }, 300);
-                form.reset();
-            })
-            .catch(error => {
-                console.error('Notify form submission error:', error);
-                // Still show success for better UX
-                hideNotifyForm();
-                setTimeout(() => {
-                    showNotifySuccess();
-                }, 300);
-                form.reset();
-            })
-            .finally(() => {
-                hideNotifyLoading();
-            });
-    } else {
-        // Add shake animation for invalid email
-        emailInput.style.animation = 'shake 0.5s ease-in-out';
-        setTimeout(() => {
-            emailInput.style.animation = '';
-        }, 500);
-    }
-}
-
-function showNotifyLoading() {
-    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'SENDING...';
-    }
-}
-
-function hideNotifyLoading() {
-    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'NOTIFY ME';
-    }
-}
-
-function showNotifySuccess() {
-    const successModal = document.getElementById('notifySuccessModal');
-    if (successModal) {
-        successModal.style.display = 'flex';
-        if (DOM && DOM.body) {
-            DOM.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'hidden';
-        }
-
-        setTimeout(() => {
-            successModal.classList.add('active');
-        }, 50);
-
-        // Auto hide after 4 seconds
-        setTimeout(() => {
-            hideNotifySuccess();
-        }, 4000);
-    }
-}
-
-function hideNotifySuccess() {
-    const successModal = document.getElementById('notifySuccessModal');
-    if (successModal) {
-        successModal.classList.remove('active');
-
-        setTimeout(() => {
-            successModal.style.display = 'none';
-            if (DOM && DOM.body) {
-                DOM.body.style.overflow = '';
-            } else {
-                document.body.style.overflow = '';
-            }
-        }, 300);
-    }
-}
-
-// Enhanced form utilities
-function encode(data) {
-    return Object.keys(data)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-        .join('&');
-}
-
-// Updated show/hide functions
-function showNotifyForm() {
-    const overlay = document.getElementById('notifyFormOverlay');
-    if (overlay) {
-        overlay.classList.add('active');
-        if (DOM && DOM.body) {
-            DOM.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Reset form state
-        resetNotifyForm();
-    }
-}
-
-function hideNotifyForm() {
-    const overlay = document.getElementById('notifyFormOverlay');
-    if (overlay) {
-        overlay.classList.remove('active');
-        if (DOM && DOM.body) {
-            DOM.body.style.overflow = '';
-        } else {
-            document.body.style.overflow = '';
-        }
-
-        // Reset after animation
-        setTimeout(() => {
-            resetNotifyForm();
-        }, 400);
-    }
-}
-
-function resetNotifyForm() {
-    const form = document.getElementById('notifyForm');
-    const submitBtn = form?.querySelector('button[type="submit"]');
-
-    if (form) {
-        form.reset();
-    }
-
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'NOTIFY ME';
-    }
-}
-
-// ============= MODERN CONTACT PAGE =============
-
-// Contact type switching
-let currentContactType = 'services';
-
-function switchContactType(type) {
-    if (currentContactType === type) return;
-
-    const buttons = document.querySelectorAll('.type-selector-btn');
-    const sections = document.querySelectorAll('.contact-form-section');
-
-    // Update buttons
-    buttons.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.type === type) {
-            btn.classList.add('active');
-        }
-    });
-
-    // Update sections with smooth transition
-    sections.forEach(section => {
-        if (section.classList.contains('active')) {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-
-            setTimeout(() => {
-                section.classList.remove('active');
-                section.style.display = 'none';
-
-                // Show new section
-                const newSection = document.getElementById(type + 'Form');
-                if (newSection) {
-                    newSection.style.display = 'block';
-                    setTimeout(() => {
-                        newSection.classList.add('active');
-                    }, 50);
-                }
-            }, 200);
-        }
-    });
-
-    currentContactType = type;
-}
-
-function initModernContactPage() {
-    const servicesForm = document.getElementById('servicesContactForm');
-    const clothingForm = document.getElementById('clothingContactForm');
-
-    if (servicesForm) {
-        servicesForm.addEventListener('submit', handleContactFormSubmission);
-    }
-
-    if (clothingForm) {
-        clothingForm.addEventListener('submit', handleContactFormSubmission);
-    }
-
-    // Initialize with services form active
-    setTimeout(() => {
-        const servicesSection = document.getElementById('servicesForm');
-        if (servicesSection) {
-            servicesSection.classList.add('active');
-        }
-    }, 800);
-
-    // Setup real-time validation
-    setupRealTimeValidation();
-}
-
-function handleContactFormSubmission(e) {
-    e.preventDefault();
-    const form = e.target;
-    const submitButton = form.querySelector('.submit-button');
-
-    if (!validateContactForm(form)) return;
-
-    // Show loading state
-    showContactLoading(submitButton);
-
-    // Prepare form data for Netlify
-    const formData = new FormData(form);
-
-    // Submit to Netlify
-    fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode(Object.fromEntries(formData))
-    })
-        .then(() => {
-            showContactSuccess();
-            form.reset();
-        })
-        .catch(error => {
-            console.error('Contact form submission error:', error);
-            showContactSuccess(); // Still show success for better UX
-            form.reset();
-        })
-        .finally(() => {
-            hideContactLoading(submitButton);
-        });
-}
-
-function showContactLoading(button) {
-    if (button) {
-        button.classList.add('loading');
-        button.disabled = true;
-        const buttonText = button.querySelector('.button-text');
-        const buttonLoader = button.querySelector('.button-loader');
-
-        if (buttonText) buttonText.style.display = 'none';
-        if (buttonLoader) buttonLoader.style.display = 'block';
-    }
-}
-
-function hideContactLoading(button) {
-    if (button) {
-        button.classList.remove('loading');
-        button.disabled = false;
-        const buttonText = button.querySelector('.button-text');
-        const buttonLoader = button.querySelector('.button-loader');
-
-        if (buttonText) buttonText.style.display = 'block';
-        if (buttonLoader) buttonLoader.style.display = 'none';
-    }
-}
-
-function showContactSuccess() {
-    const successElement = document.getElementById('contactSuccess');
-    if (successElement) {
-        successElement.style.display = 'flex';
-        if (DOM && DOM.body) {
-            DOM.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'hidden';
-        }
-
-        setTimeout(() => {
-            successElement.classList.add('active');
-        }, 50);
-    }
-}
-
-function hideContactSuccess() {
-    const successElement = document.getElementById('contactSuccess');
-    if (successElement) {
-        successElement.classList.remove('active');
-
-        setTimeout(() => {
-            successElement.style.display = 'none';
-            if (DOM && DOM.body) {
-                DOM.body.style.overflow = '';
-            } else {
-                document.body.style.overflow = '';
-            }
-        }, 300);
-    }
-}
-
-function resetContactForms() {
-    hideContactSuccess();
-
-    // Reset forms
-    const forms = document.querySelectorAll('.modern-contact-form');
-    forms.forEach(form => {
-        form.reset();
-    });
-
-    // Reset to services form
-    setTimeout(() => {
-        switchContactType('services');
-    }, 400);
-}
-
-// Enhanced form validation
-function validateContactForm(form) {
-    const requiredFields = form.querySelectorAll('[required]');
-    let isValid = true;
-    const errors = [];
-
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            isValid = false;
-            addFieldError(field, 'This field is required');
-            errors.push(field);
-        } else {
-            removeFieldError(field);
-        }
-    });
-
-    // Email validation
-    const emailField = form.querySelector('input[type="email"]');
-    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
-        isValid = false;
-        addFieldError(emailField, 'Please enter a valid email address');
-        errors.push(emailField);
-    }
-
-    // Phone validation (if provided)
-    const phoneField = form.querySelector('input[type="tel"]');
-    if (phoneField && phoneField.value && !isValidPhone(phoneField.value)) {
-        addFieldError(phoneField, 'Please enter a valid phone number');
-        // Don't mark as invalid since phone is optional
-    }
-
-    // Focus first error field
-    if (errors.length > 0) {
-        errors[0].focus();
-        errors[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    return isValid;
-}
-
-function addFieldError(field, message) {
-    removeFieldError(field); // Remove existing error first
-
-    field.style.borderColor = '#ff6b6b';
-    field.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
-
-    // Add error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'field-error';
-    errorDiv.textContent = message;
-    errorDiv.style.color = '#ff6b6b';
-    errorDiv.style.fontSize = '0.85rem';
-    errorDiv.style.marginTop = '5px';
-    errorDiv.style.opacity = '0';
-    errorDiv.style.animation = 'fadeInUp 0.3s ease forwards';
-
-    field.parentNode.appendChild(errorDiv);
-
-    // Remove error on input
-    field.addEventListener('input', () => removeFieldError(field), { once: true });
-}
-
-function removeFieldError(field) {
-    field.style.borderColor = '';
-    field.style.boxShadow = '';
-
-    const existingError = field.parentNode.querySelector('.field-error');
-    if (existingError) {
-        existingError.remove();
-    }
-}
-
-function isValidPhone(phone) {
-    // Simple phone validation - allows various formats
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
-    return phoneRegex.test(cleaned) && cleaned.length >= 7;
-}
-
-// Enhanced email validation
-function isValidEmail(email) {
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email);
-}
-
-// ============= ENHANCED INITIALIZATION =============
-
-// Update the main initialization to include new features
-document.addEventListener('DOMContentLoaded', () => {
-    // ... existing initialization code ...
-
-    // Initialize enhanced coming soon page
-    if (document.querySelector('.coming-soon-page')) {
-        initEnhancedComingSoonPage();
-    }
-
-    // Initialize modern contact page
-    if (document.querySelector('.modern-contact-page')) {
-        initModernContactPage();
-    }
-});
-
-// ============= CSS ANIMATION UTILITIES =============
-
-// Add shake animation for form errors
-const shakeKeyframes = `
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-`;
-
-// Inject shake animation if it doesn't exist
-if (!document.querySelector('#shake-animation')) {
-    const style = document.createElement('style');
-    style.id = 'shake-animation';
-    style.textContent = shakeKeyframes;
-    document.head.appendChild(style);
-}
-
-// ============= SMOOTH SCROLLING ENHANCEMENTS =============
-
-// Enhanced smooth scrolling for form navigation
-function smoothScrollToElement(element, offset = 80) {
-    if (!element) return;
-
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-    });
-}
-
-// ============= ACCESSIBILITY ENHANCEMENTS =============
-
-// Add focus management for modals
-function manageFocusForModal(modalElement, show = true) {
-    if (!modalElement) return;
-
-    if (show) {
-        // Store the previously focused element
-        modalElement.setAttribute('data-previous-focus', document.activeElement?.tagName || '');
-
-        // Focus the first focusable element in modal
-        const focusableElements = modalElement.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusableElements.length > 0) {
-            focusableElements[0].focus();
-        }
-    } else {
-        // Return focus to previously focused element
-        const previousFocus = modalElement.getAttribute('data-previous-focus');
-        if (previousFocus && document.querySelector(previousFocus.toLowerCase())) {
-            document.querySelector(previousFocus.toLowerCase()).focus();
-        }
-    }
-}
-
-// ============= PERFORMANCE OPTIMIZATIONS =============
-
-// Debounce function for form validation
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Optimized form validation with debouncing
-const debouncedValidation = debounce((field) => {
-    if (field.value.trim()) {
-        removeFieldError(field);
-    }
-}, 300);
-
-// Apply debounced validation to form fields
-function setupRealTimeValidation() {
-    const formFields = document.querySelectorAll('.modern-contact-form input, .modern-contact-form select, .modern-contact-form textarea');
-
-    formFields.forEach(field => {
-        field.addEventListener('input', () => debouncedValidation(field));
-        field.addEventListener('blur', () => {
-            if (field.hasAttribute('required') && !field.value.trim()) {
-                addFieldError(field, 'This field is required');
-            }
-        });
-    });
-}
-
-// Initialize real-time validation when contact page loads
-if (document.querySelector('.modern-contact-page')) {
-    setTimeout(setupRealTimeValidation, 1000);
-}
+}, 500);
