@@ -7,16 +7,11 @@
   <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
   <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
   <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/navigation.css">
-  <link rel="stylesheet" href="/css/animations.css">
-  <link rel="stylesheet" href="/css/forms.css">
-  <link rel="stylesheet" href="/css/modals.css">
-  <script src="/js/core.js" defer></script>
-  <script src="/js/navigation.js" defer></script>
-  <script src="/js/forms.js" defer></script>
-  <script src="/js/modals.js" defer></script>
-  <script src="/js/contact.js" defer></script>
+  <!-- Preload and apply stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- Preload and apply scripts -->
+  <link rel="preload" href="/js/script.js" as="script">
+  <script src="/js/script.js" defer></script>
 </head>
 <body>
 
@@ -75,24 +70,38 @@
     </div>
   </div>
 
-  <!-- Enhanced Notification Form -->
+  <!-- Enhanced notification signup form -->
   <div class="notify-form-overlay" id="notifyFormOverlay">
-    <div class="notify-form">
-      <h3>Stay Updated</h3>
-      <p>Be the first to know when our products launch</p>
+    <div class="notify-form-container">
+      <div class="notify-form" id="notifyFormMain">
+        <button class="notify-close" onclick="hideNotifyForm()">×</button>
+        <h3>Stay Updated</h3>
+        <p>Be the first to know when our products launch</p>
+        <form name="notify-signup" method="POST" data-netlify="true" id="notifyForm">
+          <input type="hidden" name="form-name" value="notify-signup">
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Enter your email address" required>
+          </div>
+          <div class="form-buttons">
+            <button type="submit">NOTIFY ME</button>
+            <button type="button" onclick="hideNotifyForm()">CANCEL</button>
+          </div>
+        </form>
+      </div>
 
-      <!-- Netlify Forms Integration -->
-      <form id="notifyForm" name="notify-list" method="POST" netlify netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="notify-list">
-        <p class="hidden">
-          <label>Don't fill this out: <input name="bot-field" /></label>
-        </p>
-        <input type="email" name="email" placeholder="Enter your email address" required>
-        <div class="form-buttons">
-          <button type="submit">NOTIFY ME</button>
-          <button type="button" onclick="hideNotifyForm()">CANCEL</button>
+      <!-- Success animation container -->
+      <div class="notify-success" id="notifySuccess" style="display: none;">
+        <div class="success-content">
+          <div class="checkmark-wrapper">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+          <h3>Thank You!</h3>
+          <p>We'll notify you when our collection launches</p>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

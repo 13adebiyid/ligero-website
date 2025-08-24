@@ -1,18 +1,5 @@
-# Netlify configuration - Forms enabled
+# Netlify configuration - no publish directory needed
 
-# Enable Netlify Forms processing
-[build]
-publish = "/"
-
-# Form handling settings
-[[headers]]
-for = "/*"
-[headers.values]
-X-Frame-Options = "DENY"
-X-XSS-Protection = "1; mode=block"
-X-Content-Type-Options = "nosniff"
-
-# Existing redirects
 [[redirects]]
 from = "/shop"
 to = "/shop/"
@@ -82,14 +69,3 @@ status = 200
 from = "/members/ifeoluwa-segun-oludimu"
 to = "/members/ifeoluwa-segun-oludimu.html"
 status = 200
-
-# Form submission success pages (optional)
-[[redirects]]
-from = "/contact/success"
-to = "/contact/#success"
-status = 200
-
-# Netlify Forms Configuration
-# Forms are automatically detected by data-netlify="true" attribute
-# Email notifications can be configured in Netlify dashboard
-# Form submissions are stored in Netlify dashboard under Forms section

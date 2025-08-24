@@ -1,25 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Ligero</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact – Ligero</title>
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <link rel="stylesheet" href="/css/base.css">
-    <link rel="stylesheet" href="/css/navigation.css">
-    <link rel="stylesheet" href="/css/animations.css">
-    <link rel="stylesheet" href="/css/forms.css">
-    <link rel="stylesheet" href="/css/modals.css">
-    <link rel="stylesheet" href="/css/contact.css">
-    <script src="/js/core.js" defer></script>
-    <script src="/js/navigation.js" defer></script>
-    <script src="/js/forms.js" defer></script>
-    <script src="/js/modals.js" defer></script>
-    <script src="/js/contact-enhanced.js" defer></script>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="preload" href="/js/script.js" as="script">
+    <script src="/js/script.js" defer></script>
 </head>
-<body>
+<body class="coming-soon-page">
 
 <!-- Navigation -->
 <nav>
@@ -28,7 +20,9 @@
         <div class="hamburger-line"></div>
         <div class="hamburger-line"></div>
     </div>
+
     <a href="/" class="logo">LIGERO</a>
+
     <div class="nav-menu">
         <a href="/shop/" class="nav-item">Shop</a>
         <span class="nav-separator">|</span>
@@ -40,6 +34,7 @@
     </div>
 </nav>
 
+<!-- Mobile Menu -->
 <div class="mobile-menu-overlay">
     <a href="/" class="mobile-menu-item">HOME</a>
     <a href="/shop/" class="mobile-menu-item">SHOP</a>
@@ -48,249 +43,15 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<!-- Contact Hero -->
-<div class="contact-hero">
-    <div class="hero-content">
-        <h1 class="hero-title" data-aos="fade-up">LET'S CREATE</h1>
-        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">Choose your path</p>
-    </div>
-</div>
+<!-- Contact Coming Soon Section -->
+<div class="coming-soon-container">
+    <h1 class="coming-soon-title">we're still polishing our dedicated submission form</h1>
+    <p class="coming-soon-subtitle">in the meantime shoot our<br>spokesperson a dm</p>
 
-<!-- Enquiry Type Selection -->
-<div class="enquiry-selection">
-    <div class="enquiry-cards">
-        <div class="enquiry-card" data-type="clothing" data-aos="fade-right">
-            <div class="card-inner">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M16 7c0-2.21-3.58-4-8-4S0 4.79 0 7c0 1.9 2.66 3.49 6.25 3.89L4 21h1.41l1.76-7.52C7.44 13.49 7.72 13.5 8 13.5s.56-.01.83-.02L10.59 21H12l-2.25-10.11C13.34 10.49 16 8.9 16 7z"/>
-                    </svg>
-                </div>
-                <h2 class="card-title">CLOTHING ENQUIRY</h2>
-                <p class="card-description">Custom pieces, collections, and product inquiries</p>
-                <button class="select-btn" onclick="selectEnquiryType('clothing')">
-                    <span>SELECT</span>
-                    <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="enquiry-card" data-type="services" data-aos="fade-left">
-            <div class="card-inner">
-                <div class="card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M21 8.5l-7.5 7.5L9 11.5 1.5 19M21 8.5v6M21 8.5h-6"/>
-                    </svg>
-                </div>
-                <h2 class="card-title">SERVICE ENQUIRY</h2>
-                <p class="card-description">Creative direction, styling, and production services</p>
-                <button class="select-btn" onclick="selectEnquiryType('services')">
-                    <span>SELECT</span>
-                    <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Clothing Enquiry Form -->
-<div class="form-section" id="clothingForm" style="display: none;">
-    <div class="form-container">
-        <button class="back-btn" onclick="backToSelection()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            <span>Back</span>
-        </button>
-
-        <h2 class="form-title">CLOTHING ENQUIRY</h2>
-        <p class="form-subtitle">Tell us about your vision</p>
-
-        <form name="clothing-enquiry" method="POST" netlify netlify-honeypot="bot-field" class="enquiry-form">
-            <input type="hidden" name="form-name" value="clothing-enquiry">
-            <p class="hidden">
-                <label>Don't fill this out: <input name="bot-field" /></label>
-            </p>
-
-            <div class="form-grid">
-                <div class="form-field" data-aos="fade-up">
-                    <input type="text" name="name" id="clothing-name" required>
-                    <label for="clothing-name">Full Name</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="50">
-                    <input type="email" name="email" id="clothing-email" required>
-                    <label for="clothing-email">Email Address</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="100">
-                    <input type="tel" name="phone" id="clothing-phone">
-                    <label for="clothing-phone">Phone (Optional)</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="150">
-                    <select name="interest" id="clothing-interest" required>
-                        <option value=""></option>
-                        <option value="ready-to-wear">Ready to Wear</option>
-                        <option value="custom-piece">Custom Piece</option>
-                        <option value="collaboration">Brand Collaboration</option>
-                        <option value="wholesale">Wholesale Inquiry</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <label for="clothing-interest">Interest Type</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field full-width" data-aos="fade-up" data-aos-delay="200">
-                    <select name="budget" id="clothing-budget">
-                        <option value=""></option>
-                        <option value="under-500">Under $500</option>
-                        <option value="500-1000">$500 - $1,000</option>
-                        <option value="1000-5000">$1,000 - $5,000</option>
-                        <option value="5000-plus">$5,000+</option>
-                        <option value="discuss">Prefer to Discuss</option>
-                    </select>
-                    <label for="clothing-budget">Budget Range</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field full-width" data-aos="fade-up" data-aos-delay="250">
-                    <textarea name="message" id="clothing-message" rows="4" required></textarea>
-                    <label for="clothing-message">Describe Your Vision</label>
-                    <span class="field-line"></span>
-                </div>
-            </div>
-
-            <button type="submit" class="submit-btn">
-                <span class="btn-text">SEND ENQUIRY</span>
-                <span class="btn-loading">
-                    <svg class="spinner" viewBox="0 0 50 50">
-                        <circle cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                    </svg>
-                </span>
-            </button>
-        </form>
-    </div>
-</div>
-
-<!-- Service Enquiry Form -->
-<div class="form-section" id="servicesForm" style="display: none;">
-    <div class="form-container">
-        <button class="back-btn" onclick="backToSelection()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            <span>Back</span>
-        </button>
-
-        <h2 class="form-title">SERVICE ENQUIRY</h2>
-        <p class="form-subtitle">Let's bring your project to life</p>
-
-        <form name="service-enquiry" method="POST" netlify netlify-honeypot="bot-field" class="enquiry-form">
-            <input type="hidden" name="form-name" value="service-enquiry">
-            <p class="hidden">
-                <label>Don't fill this out: <input name="bot-field" /></label>
-            </p>
-
-            <div class="form-grid">
-                <div class="form-field" data-aos="fade-up">
-                    <input type="text" name="name" id="service-name" required>
-                    <label for="service-name">Full Name</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="50">
-                    <input type="email" name="email" id="service-email" required>
-                    <label for="service-email">Email Address</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="100">
-                    <input type="text" name="company" id="service-company">
-                    <label for="service-company">Company (Optional)</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="150">
-                    <select name="service" id="service-type" required>
-                        <option value=""></option>
-                        <option value="styling">Styling</option>
-                        <option value="creative-directing">Creative Directing</option>
-                        <option value="photography">Photography</option>
-                        <option value="set-designing">Set Designing</option>
-                        <option value="models">Models</option>
-                        <option value="music">Music Production</option>
-                        <option value="multiple">Multiple Services</option>
-                    </select>
-                    <label for="service-type">Service Required</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="200">
-                    <select name="timeline" id="service-timeline">
-                        <option value=""></option>
-                        <option value="asap">ASAP</option>
-                        <option value="1-month">Within 1 Month</option>
-                        <option value="2-3-months">2-3 Months</option>
-                        <option value="3-6-months">3-6 Months</option>
-                        <option value="flexible">Flexible</option>
-                    </select>
-                    <label for="service-timeline">Project Timeline</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field" data-aos="fade-up" data-aos-delay="250">
-                    <select name="budget" id="service-budget">
-                        <option value=""></option>
-                        <option value="under-5k">Under $5,000</option>
-                        <option value="5k-10k">$5,000 - $10,000</option>
-                        <option value="10k-25k">$10,000 - $25,000</option>
-                        <option value="25k-50k">$25,000 - $50,000</option>
-                        <option value="50k-plus">$50,000+</option>
-                        <option value="discuss">Prefer to Discuss</option>
-                    </select>
-                    <label for="service-budget">Budget Range</label>
-                    <span class="field-line"></span>
-                </div>
-
-                <div class="form-field full-width" data-aos="fade-up" data-aos-delay="300">
-                    <textarea name="project-details" id="service-details" rows="4" required></textarea>
-                    <label for="service-details">Project Details</label>
-                    <span class="field-line"></span>
-                </div>
-            </div>
-
-            <button type="submit" class="submit-btn">
-                <span class="btn-text">SEND ENQUIRY</span>
-                <span class="btn-loading">
-                    <svg class="spinner" viewBox="0 0 50 50">
-                        <circle cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                    </svg>
-                </span>
-            </button>
-        </form>
-    </div>
-</div>
-
-<!-- Success Confirmation -->
-<div class="success-modal" id="successModal">
-    <div class="success-content">
-        <div class="checkmark-wrapper">
-            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-            </svg>
-        </div>
-        <h3 class="success-title">Thank You</h3>
-        <p class="success-message">Your enquiry has been received. We'll be in touch within 24 hours.</p>
-        <button class="success-close" onclick="closeSuccessModal()">CLOSE</button>
+    <div class="instagram-container">
+        <a href="https://www.instagram.com/itsjustk1d/" target="_blank" rel="noopener noreferrer">
+            <img src="/images/white-instagram-icon.png" alt="Instagram" id="instagram-icon" class="instagram-icon" />
+        </a>
     </div>
 </div>
 
@@ -300,5 +61,22 @@
     <div class="theme-circle white" onclick="setTheme('white')"></div>
 </div>
 
+<!-- Optional Instagram Icon Switcher Script -->
+<script>
+    const switchIcon = (theme) => {
+        const icon = document.getElementById('instagram-icon');
+        icon.src = theme === 'white' ? '/images/black-instagram-icon.png' : '/images/white-instagram-icon.png';
+    };
+
+    document.querySelectorAll('.theme-circle').forEach(circle => {
+        circle.addEventListener('click', () => switchIcon(circle.dataset.theme));
+    });
+
+    // Initial icon setup (based on saved theme)
+    try {
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) switchIcon(currentTheme);
+    } catch (e) {}
+</script>
 </body>
 </html>
