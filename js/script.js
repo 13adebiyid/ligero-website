@@ -33,7 +33,19 @@ let currentFilter = 'all';
 
 // ============= UTILITIES =============
 const utils = {
-    isMobile: () => window.innerWidth <= 768,
+    isMobile: () => {
+        // Enhanced mobile detection
+        return window.innerWidth <= 768 ||
+            ('ontouchstart' in window) ||
+            (navigator.maxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0);
+    },
+
+    isTouchDevice: () => {
+        return ('ontouchstart' in window) ||
+            (navigator.maxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0);
+    },
 
     isOnHomePage: () => {
         const path = window.location.pathname;
@@ -53,6 +65,31 @@ const utils = {
         };
     }
 };
+
+// Initialize mobile-specific features
+function initMobileFeatures() {
+    if (utils.isMobile() || utils.isTouchDevice()) {
+        // Hide theme switcher on mobile
+        const themeSwitchers = document.querySelectorAll('.theme-switcher');
+        themeSwitchers.forEach(switcher => {
+            switcher.style.display = 'none';
+        });
+
+        // Ensure custom cursor is hidden
+        const customCursor = document.getElementById('customCursor');
+        if (customCursor) {
+            customCursor.style.display = 'none';
+        }
+
+        // Reset body cursor to auto
+        document.body.style.cursor = 'auto';
+
+        // Disable custom cursor initialization on photography page
+        if (document.querySelector('.photography-page')) {
+            DOM.customCursor = null;
+        }
+    }
+}
 
 // ============= NAVIGATION STATE =============
 function resetNavigationState() {
@@ -897,7 +934,12 @@ function openPhotographyModal(index) {
 // ============= PHOTOGRAPHY CURSOR =============
 function setupCustomCursor() {
     // Only run on photography page and not on mobile
-    if (!document.querySelector('.photography-page') || utils.isMobile()) return;
+    if (utils.isMobile() || utils.isTouchDevice()) {
+        document.body.style.cursor = 'auto';
+        return;
+    }
+
+    if (!document.querySelector('.photography-page')) return;
 
     let cursor = document.getElementById('customCursor');
 
@@ -2202,6 +2244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetPageState();
         initPageLoad();
         setupPageTransitions();
+        initMobileFeatures();
 
         try {
             const savedTheme = localStorage.getItem('theme');
@@ -2282,6 +2325,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setupImageLoading();
                 setupEnhancedFeedVideoAutoplay();
                 initializeModals();
+                initMobileFeatures();
             }, 100);
         }
 
