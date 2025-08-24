@@ -3310,7 +3310,7 @@ body.white-theme .cursor-text {
 /* ================== PHOTOGRAPHY PAGE ================== */
 .photography-page {
     min-height: 100vh;
-    padding: 120px 50px 80px;
+    padding: 100px 50px 80px;
 }
 
 /* ===================== MUSIC PAGE ===================== */
@@ -4964,11 +4964,6 @@ body.white-theme .selector-icon {
     background: rgba(0, 0, 0, 0.1);
 }
 
-.selector-icon svg {
-    width: 28px;
-    height: 28px;
-}
-
 .type-selector-btn:hover .selector-icon,
 .type-selector-btn.active .selector-icon {
     background: rgba(255, 255, 255, 0.2);
@@ -5344,11 +5339,6 @@ body.white-theme .back-button:hover {
         height: 50px;
     }
 
-    .selector-icon svg {
-        width: 24px;
-        height: 24px;
-    }
-
     .contact-form-section {
         padding: 0 20px;
     }
@@ -5712,4 +5702,38 @@ body.white-theme .services-button:focus {
         animation: none !important;
         transition: opacity 0.3s ease !important;
     }
+}
+
+/* messy code*/
+/* Fix theme switcher positioning for all pages */
+.service-detail-page .theme-switcher,
+.designer-profile-page .theme-switcher,
+.set-design-feed .theme-switcher,
+.policies-page .theme-switcher {
+    position: fixed !important;
+    bottom: 30px !important;
+    left: 30px !important;
+    z-index: 1000 !important;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .service-detail-page .theme-switcher,
+    .designer-profile-page .theme-switcher,
+    .set-design-feed .theme-switcher,
+    .policies-page .theme-switcher {
+        bottom: 20px !important;
+        left: 20px !important;
+    }
+}
+
+.selector-icon-img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+body.white-theme .selector-icon-img {
+    filter: brightness(0) invert(0);
 }

@@ -1323,6 +1323,16 @@ function hideContactLoading(button) {
 
         if (buttonText) buttonText.style.display = 'block';
         if (buttonLoader) buttonLoader.style.display = 'none';
+
+        // Clear any lingering validation states
+        const form = button.closest('form');
+        if (form) {
+            const phoneInput = form.querySelector('input[type="tel"]');
+            if (phoneInput) {
+                phoneInput.style.borderColor = '';
+                phoneInput.style.boxShadow = '';
+            }
+        }
     }
 }
 
@@ -1356,30 +1366,29 @@ function resetContactForms() {
     const forms = document.querySelectorAll('.modern-contact-form');
     forms.forEach(form => {
         form.reset();
+        // Clear any validation errors
+        const errorFields = form.querySelectorAll('.field-error');
+        errorFields.forEach(error => error.remove());
+
+        const inputsWithErrors = form.querySelectorAll('input.error, select.error, textarea.error');
+        inputsWithErrors.forEach(input => {
+            input.classList.remove('error');
+            input.style.borderColor = '';
+            input.style.boxShadow = '';
+        });
+
+        // Clear any red styling from all inputs
+        const allInputs = form.querySelectorAll('input, select, textarea');
+        allInputs.forEach(input => {
+            input.style.borderColor = '';
+            input.style.boxShadow = '';
+        });
     });
 
     setTimeout(() => {
         switchContactType('services');
     }, 400);
 }
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-const debouncedValidation = debounce((field) => {
-    if (field.value.trim()) {
-        removeFieldError(field);
-    }
-}, 300);
 
 function setupRealTimeValidation() {
     const formFields = document.querySelectorAll('.modern-contact-form input, .modern-contact-form select, .modern-contact-form textarea');
