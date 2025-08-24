@@ -3313,7 +3313,7 @@ body.white-theme .cursor-text {
 /* ================== PHOTOGRAPHY PAGE ================== */
 .photography-page {
     min-height: 100vh;
-    padding: 0 50px 80px 50px;
+    padding: 20px 50px 80px 50px;
 }
 
 /* ===================== MUSIC PAGE ===================== */
@@ -4441,7 +4441,7 @@ body.white-theme .photographer-link {
     }
 
     .photography-page {
-        padding: 0 50px 80px 50px;
+        padding: 20px 50px 80px 50px;
     }
 
     .service-title {
@@ -4528,7 +4528,7 @@ body.white-theme .photographer-link {
 
 @media screen and (max-width: 480px) {
     .photography-page {
-        padding: 0 50px 80px 50px;
+        padding: 20px 50px 80px 50px;
     }
 
     .service-title {
