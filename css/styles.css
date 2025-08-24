@@ -3250,9 +3250,10 @@ body.white-theme .form-buttons button:hover {
     border-radius: 50%;
     pointer-events: none;
     z-index: 999999 !important;
-    transition: all 0.15s ease;
+    transition: width 0.1s ease, height 0.1s ease, background 0.1s ease; /* Faster transitions */
     mix-blend-mode: difference;
     transform: translate(-50%, -50%);
+    will-change: transform; /* Optimize for animation */
 }
 
 body.white-theme .custom-cursor {
@@ -3265,6 +3266,7 @@ body.white-theme .custom-cursor {
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     backdrop-filter: blur(10px);
+    transition: all 0.1s ease; /* Faster transition */
 }
 
 body.white-theme .custom-cursor.hover {
@@ -3278,6 +3280,7 @@ body.white-theme .custom-cursor.hover {
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid white;
     backdrop-filter: blur(15px);
+    transition: all 0.1s ease; /* Faster transition */
 }
 
 body.white-theme .custom-cursor.view {
@@ -3294,7 +3297,7 @@ body.white-theme .custom-cursor.view {
     font-weight: 500;
     letter-spacing: 1px;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.1s ease; /* Faster transition */
     color: white;
     text-transform: uppercase;
 }
@@ -3310,7 +3313,7 @@ body.white-theme .cursor-text {
 /* ================== PHOTOGRAPHY PAGE ================== */
 .photography-page {
     min-height: 100vh;
-    padding: 100px 50px 80px;
+    padding: 0 50px 80px 50px;
 }
 
 /* ===================== MUSIC PAGE ===================== */
@@ -4438,7 +4441,7 @@ body.white-theme .photographer-link {
     }
 
     .photography-page {
-        padding: 120px 20px 60px;
+        padding: 0 50px 80px 50px;
     }
 
     .service-title {
@@ -4525,7 +4528,7 @@ body.white-theme .photographer-link {
 
 @media screen and (max-width: 480px) {
     .photography-page {
-        padding: 100px 15px 50px;
+        padding: 0 50px 80px 50px;
     }
 
     .service-title {
@@ -5705,16 +5708,68 @@ body.white-theme .services-button:focus {
 }
 
 /* messy code*/
+
+/* Photography Modal Info Close Button */
+.modal-info-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: none;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+body.white-theme .modal-info-close {
+    color: black;
+}
+
+.modal-info-close:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+body.white-theme .modal-info-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Make modal-info hideable */
+.modal-info.hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+}
+
+.modal-info {
+    transition: all 0.3s ease;
+}
+
 /* Fix theme switcher positioning for all pages */
+.designer-profile-page .page-fade-in .theme-switcher,
+.service-detail-page .page-fade-in .theme-switcher,
+.set-design-feed .page-fade-in .theme-switcher,
+.policies-page .theme-switcher,
 .service-detail-page .theme-switcher,
 .designer-profile-page .theme-switcher,
-.set-design-feed .theme-switcher,
-.policies-page .theme-switcher {
+.set-design-feed .theme-switcher {
     position: fixed !important;
     bottom: 30px !important;
     left: 30px !important;
     z-index: 1000 !important;
+    transform: none !important;
 }
+
+
 
 /* Mobile adjustments */
 @media screen and (max-width: 768px) {
@@ -5737,3 +5792,5 @@ body.white-theme .services-button:focus {
 body.white-theme .selector-icon-img {
     filter: brightness(0) invert(0);
 }
+
+

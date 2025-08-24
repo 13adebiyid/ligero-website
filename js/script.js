@@ -773,6 +773,48 @@ function filterPhotos(category) {
     renderPhotos(filteredPhotos);
 }
 
+// Metadata exit button
+let isModalInfoVisible = true;
+
+function toggleModalInfo() {
+    const modalInfo = document.querySelector('.modal-info');
+    if (!modalInfo) return;
+
+    isModalInfoVisible = !isModalInfoVisible;
+
+    if (isModalInfoVisible) {
+        modalInfo.classList.remove('hidden');
+    } else {
+        modalInfo.classList.add('hidden');
+    }
+}
+
+// Reset info visibility when opening modal
+function openPhotographyModal(index) {
+    state.currentModalIndex = index;
+    state.isModalOpen = true;
+    isModalInfoVisible = true; // Reset to visible
+
+    const modal = DOM.imageModal;
+    if (!modal) return;
+
+    const photo = filteredPhotos[index];
+    updatePhotographyModalContent(photo);
+
+    modal.classList.add('active');
+    DOM.body.style.overflow = 'hidden';
+
+    // Make sure info is visible when opening
+    const modalInfo = modal.querySelector('.modal-info');
+    if (modalInfo) {
+        modalInfo.classList.remove('hidden');
+    }
+
+    if (DOM.customCursor) {
+        DOM.customCursor.style.display = 'block';
+    }
+}
+
 // ============= PHOTOGRAPHY CURSOR =============
 function setupCustomCursor() {
     const cursor = document.getElementById('customCursor');
@@ -783,9 +825,12 @@ function setupCustomCursor() {
     document.body.appendChild(cursor);
     cursor.style.zIndex = '999999';
 
+    // Use transform for better performance and reduce lag
     document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+        // Use requestAnimationFrame for smoother movement
+        requestAnimationFrame(() => {
+            cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+        });
     });
 
     setupPhotoHovers();
