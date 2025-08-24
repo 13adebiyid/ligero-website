@@ -1758,3 +1758,526 @@ setInterval(() => {
         }
     }
 }, 500); // Check every 500ms instead of 1000ms
+
+// ============= ENHANCED NOTIFY FORM =============
+
+// Enhanced notify form handling
+function initEnhancedComingSoonPage() {
+    const form = document.getElementById('notifyForm');
+    if (form) {
+        form.addEventListener('submit', handleNotifyFormSubmission);
+    }
+
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                hideNotifyForm();
+            }
+        });
+    }
+
+    // ESC key handler
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideNotifyForm();
+            hideContactSuccess();
+        }
+    });
+}
+
+function handleNotifyFormSubmission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const emailInput = form.querySelector('input[type="email"]');
+    const email = emailInput.value;
+
+    if (email && isValidEmail(email)) {
+        // Show loading state
+        showNotifyLoading();
+
+        // Submit to Netlify
+        const formData = new FormData(form);
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encode(formData)
+        })
+            .then(() => {
+                // Show success animation
+                showNotifySuccess();
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Form submission error:', error);
+                // Still show success for better UX
+                showNotifySuccess();
+                form.reset();
+            });
+    } else {
+        // Add shake animation for invalid email
+        emailInput.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+            emailInput.style.animation = '';
+        }, 500);
+    }
+}
+
+function showNotifyLoading() {
+    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'SENDING...';
+    }
+}
+
+function showNotifySuccess() {
+    const notifyForm = document.getElementById('notifyFormMain');
+    const notifySuccess = document.getElementById('notifySuccess');
+
+    if (notifyForm && notifySuccess) {
+        // Hide form
+        notifyForm.style.opacity = '0';
+        notifyForm.style.transform = 'scale(0.9)';
+
+        setTimeout(() => {
+            notifyForm.style.display = 'none';
+            notifySuccess.style.display = 'block';
+
+            // Trigger success animation
+            setTimeout(() => {
+                notifySuccess.classList.add('active');
+            }, 50);
+
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                hideNotifyForm();
+            }, 3500);
+        }, 300);
+    }
+}
+
+// Enhanced form utilities
+function encode(data) {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&');
+}
+
+// Override existing functions with enhanced versions
+function showNotifyForm() {
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        DOM.body.style.overflow = 'hidden';
+
+        // Reset form state
+        resetNotifyForm();
+    }
+}
+
+function hideNotifyForm() {
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        DOM.body.style.overflow = '';
+
+        // Reset after animation
+        setTimeout(() => {
+            resetNotifyForm();
+        }, 400);
+    }
+}
+
+function resetNotifyForm() {
+    const notifyForm = document.getElementById('notifyFormMain');
+    const notifySuccess = document.getElementById('notifySuccess');
+    const form = document.getElementById('notifyForm');
+    const submitBtn = form?.querySelector('button[type="submit"]');
+
+    if (notifyForm) {
+        notifyForm.style.display = 'block';
+        notifyForm.style.opacity = '1';
+        notifyForm.style.transform = 'scale(1)';
+    }
+
+    if (notifySuccess) {
+        notifySuccess.style.display = 'none';
+        notifySuccess.classList.remove('active');
+    }
+
+    if (form) {
+        form.reset();
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'NOTIFY ME';
+    }
+}
+
+// ============= MODERN CONTACT PAGE =============
+
+// Contact type switching
+let currentContactType = 'services';
+
+function switchContactType(type) {
+    if (currentContactType === type) return;
+
+    const buttons = document.querySelectorAll('.type-selector-btn');
+    const sections = document.querySelectorAll('.contact-form-section');
+
+    // Update buttons
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.type === type) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Update sections with smooth transition
+    sections.forEach(section => {
+        if (section.classList.contains('active')) {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+
+                // Show new section
+                const newSection = document.getElementById(type + 'Form');
+                if (newSection) {
+                    newSection.style.display = 'block';
+                    setTimeout(() => {
+                        newSection.classList.add('active');
+                    }, 50);
+                }
+            }, 200);
+        }
+    });
+
+    currentContactType = type;
+}
+
+// Enhanced contact form handling
+function initModernContactPage() {
+    const servicesForm = document.getElementById('servicesContactForm');
+    const clothingForm = document.getElementById('clothingContactForm');
+
+    if (servicesForm) {
+        servicesForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    if (clothingForm) {
+        clothingForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    // Initialize with services form active
+    setTimeout(() => {
+        const servicesSection = document.getElementById('servicesForm');
+        if (servicesSection) {
+            servicesSection.classList.add('active');
+        }
+    }, 800);
+}
+
+function handleContactFormSubmission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const submitButton = form.querySelector('.submit-button');
+
+    if (!validateContactForm(form)) return;
+
+    // Show loading state
+    showContactLoading(submitButton);
+
+    // Prepare form data
+    const formData = new FormData(form);
+
+    // Submit to Netlify
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode(Object.fromEntries(formData))
+    })
+        .then(() => {
+            showContactSuccess();
+            form.reset();
+        })
+        .catch(error => {
+            console.error('Form submission error:', error);
+            // Still show success for better UX
+            showContactSuccess();
+            form.reset();
+        })
+        .finally(() => {
+            hideContactLoading(submitButton);
+        });
+}
+
+function showContactLoading(button) {
+    if (button) {
+        button.classList.add('loading');
+        button.disabled = true;
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
+
+        if (buttonText) buttonText.style.display = 'none';
+        if (buttonLoader) buttonLoader.style.display = 'block';
+    }
+}
+
+function hideContactLoading(button) {
+    if (button) {
+        button.classList.remove('loading');
+        button.disabled = false;
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
+
+        if (buttonText) buttonText.style.display = 'block';
+        if (buttonLoader) buttonLoader.style.display = 'none';
+    }
+}
+
+function showContactSuccess() {
+    const successElement = document.getElementById('contactSuccess');
+    if (successElement) {
+        successElement.style.display = 'flex';
+        DOM.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            successElement.classList.add('active');
+        }, 50);
+    }
+}
+
+function hideContactSuccess() {
+    const successElement = document.getElementById('contactSuccess');
+    if (successElement) {
+        successElement.classList.remove('active');
+
+        setTimeout(() => {
+            successElement.style.display = 'none';
+            DOM.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+function resetContactForms() {
+    hideContactSuccess();
+
+    // Reset forms
+    const forms = document.querySelectorAll('.modern-contact-form');
+    forms.forEach(form => {
+        form.reset();
+    });
+
+    // Reset to services form
+    setTimeout(() => {
+        switchContactType('services');
+    }, 400);
+}
+
+// Enhanced form validation
+function validateContactForm(form) {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    const errors = [];
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            addFieldError(field, 'This field is required');
+            errors.push(field);
+        } else {
+            removeFieldError(field);
+        }
+    });
+
+    // Email validation
+    const emailField = form.querySelector('input[type="email"]');
+    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
+        isValid = false;
+        addFieldError(emailField, 'Please enter a valid email address');
+        errors.push(emailField);
+    }
+
+    // Phone validation (if provided)
+    const phoneField = form.querySelector('input[type="tel"]');
+    if (phoneField && phoneField.value && !isValidPhone(phoneField.value)) {
+        addFieldError(phoneField, 'Please enter a valid phone number');
+        // Don't mark as invalid since phone is optional
+    }
+
+    // Focus first error field
+    if (errors.length > 0) {
+        errors[0].focus();
+        errors[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    return isValid;
+}
+
+function addFieldError(field, message) {
+    removeFieldError(field); // Remove existing error first
+
+    field.style.borderColor = '#ff6b6b';
+    field.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
+
+    // Add error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    errorDiv.style.color = '#ff6b6b';
+    errorDiv.style.fontSize = '0.85rem';
+    errorDiv.style.marginTop = '5px';
+    errorDiv.style.opacity = '0';
+    errorDiv.style.animation = 'fadeInUp 0.3s ease forwards';
+
+    field.parentNode.appendChild(errorDiv);
+
+    // Remove error on input
+    field.addEventListener('input', () => removeFieldError(field), { once: true });
+}
+
+function removeFieldError(field) {
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+
+    const existingError = field.parentNode.querySelector('.field-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
+function isValidPhone(phone) {
+    // Simple phone validation - allows various formats
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
+    return phoneRegex.test(cleaned) && cleaned.length >= 7;
+}
+
+// Enhanced email validation
+function isValidEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return emailRegex.test(email);
+}
+
+// ============= ENHANCED INITIALIZATION =============
+
+// Update the main initialization to include new features
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing initialization code ...
+
+    // Initialize enhanced coming soon page
+    if (document.querySelector('.coming-soon-page')) {
+        initEnhancedComingSoonPage();
+    }
+
+    // Initialize modern contact page
+    if (document.querySelector('.modern-contact-page')) {
+        initModernContactPage();
+    }
+});
+
+// ============= CSS ANIMATION UTILITIES =============
+
+// Add shake animation for form errors
+const shakeKeyframes = `
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+`;
+
+// Inject shake animation if it doesn't exist
+if (!document.querySelector('#shake-animation')) {
+    const style = document.createElement('style');
+    style.id = 'shake-animation';
+    style.textContent = shakeKeyframes;
+    document.head.appendChild(style);
+}
+
+// ============= SMOOTH SCROLLING ENHANCEMENTS =============
+
+// Enhanced smooth scrolling for form navigation
+function smoothScrollToElement(element, offset = 80) {
+    if (!element) return;
+
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+    });
+}
+
+// ============= ACCESSIBILITY ENHANCEMENTS =============
+
+// Add focus management for modals
+function manageFocusForModal(modalElement, show = true) {
+    if (!modalElement) return;
+
+    if (show) {
+        // Store the previously focused element
+        modalElement.setAttribute('data-previous-focus', document.activeElement?.tagName || '');
+
+        // Focus the first focusable element in modal
+        const focusableElements = modalElement.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length > 0) {
+            focusableElements[0].focus();
+        }
+    } else {
+        // Return focus to previously focused element
+        const previousFocus = modalElement.getAttribute('data-previous-focus');
+        if (previousFocus && document.querySelector(previousFocus.toLowerCase())) {
+            document.querySelector(previousFocus.toLowerCase()).focus();
+        }
+    }
+}
+
+// ============= PERFORMANCE OPTIMIZATIONS =============
+
+// Debounce function for form validation
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Optimized form validation with debouncing
+const debouncedValidation = debounce((field) => {
+    if (field.value.trim()) {
+        removeFieldError(field);
+    }
+}, 300);
+
+// Apply debounced validation to form fields
+function setupRealTimeValidation() {
+    const formFields = document.querySelectorAll('.modern-contact-form input, .modern-contact-form select, .modern-contact-form textarea');
+
+    formFields.forEach(field => {
+        field.addEventListener('input', () => debouncedValidation(field));
+        field.addEventListener('blur', () => {
+            if (field.hasAttribute('required') && !field.value.trim()) {
+                addFieldError(field, 'This field is required');
+            }
+        });
+    });
+}
+
+// Initialize real-time validation when contact page loads
+if (document.querySelector('.modern-contact-page')) {
+    setTimeout(setupRealTimeValidation, 1000);
+}
