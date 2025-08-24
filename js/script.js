@@ -1797,8 +1797,10 @@ function handleNotifyFormSubmission(e) {
         // Show loading state
         showNotifyLoading();
 
-        // Submit to Netlify
+        // Prepare form data for Netlify
         const formData = new FormData(form);
+
+        // Submit to Netlify
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1807,19 +1809,19 @@ function handleNotifyFormSubmission(e) {
             .then(() => {
                 // Hide the form modal first
                 hideNotifyForm();
-                // Then show success modal
+                // Then show success modal after short delay
                 setTimeout(() => {
                     showNotifySuccess();
-                }, 400);
+                }, 300);
                 form.reset();
             })
             .catch(error => {
-                console.error('Form submission error:', error);
+                console.error('Notify form submission error:', error);
                 // Still show success for better UX
                 hideNotifyForm();
                 setTimeout(() => {
                     showNotifySuccess();
-                }, 400);
+                }, 300);
                 form.reset();
             })
             .finally(() => {
@@ -1854,7 +1856,11 @@ function showNotifySuccess() {
     const successModal = document.getElementById('notifySuccessModal');
     if (successModal) {
         successModal.style.display = 'flex';
-        DOM.body.style.overflow = 'hidden';
+        if (DOM && DOM.body) {
+            DOM.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
 
         setTimeout(() => {
             successModal.classList.add('active');
@@ -1874,7 +1880,11 @@ function hideNotifySuccess() {
 
         setTimeout(() => {
             successModal.style.display = 'none';
-            DOM.body.style.overflow = '';
+            if (DOM && DOM.body) {
+                DOM.body.style.overflow = '';
+            } else {
+                document.body.style.overflow = '';
+            }
         }, 300);
     }
 }
@@ -1891,7 +1901,11 @@ function showNotifyForm() {
     const overlay = document.getElementById('notifyFormOverlay');
     if (overlay) {
         overlay.classList.add('active');
-        DOM.body.style.overflow = 'hidden';
+        if (DOM && DOM.body) {
+            DOM.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
 
         // Reset form state
         resetNotifyForm();
@@ -1902,7 +1916,11 @@ function hideNotifyForm() {
     const overlay = document.getElementById('notifyFormOverlay');
     if (overlay) {
         overlay.classList.remove('active');
-        DOM.body.style.overflow = '';
+        if (DOM && DOM.body) {
+            DOM.body.style.overflow = '';
+        } else {
+            document.body.style.overflow = '';
+        }
 
         // Reset after animation
         setTimeout(() => {
@@ -1969,7 +1987,6 @@ function switchContactType(type) {
     currentContactType = type;
 }
 
-// Enhanced contact form handling
 function initModernContactPage() {
     const servicesForm = document.getElementById('servicesContactForm');
     const clothingForm = document.getElementById('clothingContactForm');
@@ -2004,8 +2021,10 @@ function handleContactFormSubmission(e) {
     // Show loading state
     showContactLoading(submitButton);
 
-    // Submit to Netlify
+    // Prepare form data for Netlify
     const formData = new FormData(form);
+
+    // Submit to Netlify
     fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -2016,7 +2035,7 @@ function handleContactFormSubmission(e) {
             form.reset();
         })
         .catch(error => {
-            console.error('Form submission error:', error);
+            console.error('Contact form submission error:', error);
             showContactSuccess(); // Still show success for better UX
             form.reset();
         })
@@ -2053,7 +2072,11 @@ function showContactSuccess() {
     const successElement = document.getElementById('contactSuccess');
     if (successElement) {
         successElement.style.display = 'flex';
-        DOM.body.style.overflow = 'hidden';
+        if (DOM && DOM.body) {
+            DOM.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
 
         setTimeout(() => {
             successElement.classList.add('active');
@@ -2068,7 +2091,11 @@ function hideContactSuccess() {
 
         setTimeout(() => {
             successElement.style.display = 'none';
-            DOM.body.style.overflow = '';
+            if (DOM && DOM.body) {
+                DOM.body.style.overflow = '';
+            } else {
+                document.body.style.overflow = '';
+            }
         }, 300);
     }
 }

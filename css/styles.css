@@ -4765,9 +4765,9 @@ body.white-theme .notify-form .form-buttons button:hover {
     stroke-width: 2;
     stroke: #7ac142;
     stroke-miterlimit: 10;
-    background: #7ac142; /* Solid green background */
-    box-shadow: none; /* Remove box-shadow that was causing transparency */
-    animation: checkmark-scale .3s ease-in-out .9s both;
+    background: #7ac142;
+    box-shadow: none;
+    animation: checkmark-scale .2s ease-in-out .3s both;
     position: relative;
 }
 
@@ -4783,7 +4783,7 @@ body.white-theme .checkmark {
     stroke-miterlimit: 10;
     stroke: #7ac142;
     fill: #7ac142; /* Fill the circle with green */
-    animation: checkmark-stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    animation: checkmark-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
 
 .checkmark__check {
@@ -4792,7 +4792,7 @@ body.white-theme .checkmark {
     stroke-dashoffset: 48;
     stroke: #ffffff; /* White checkmark on green background */
     stroke-width: 3; /* Slightly thicker for better visibility */
-    animation: checkmark-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    animation: checkmark-stroke 0.2s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
 
 @keyframes checkmark-stroke {
