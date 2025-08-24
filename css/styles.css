@@ -4325,9 +4325,11 @@ body.white-theme .photographer-link {
     border-radius: 8px;
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.6s ease 0.3s;
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    z-index: 10001;
 }
 
 .image-modal.active .modal-info {
@@ -5718,7 +5720,7 @@ body.white-theme .services-button:focus {
     border: none;
     color: white;
     font-size: 20px;
-    cursor: none;
+    cursor: pointer;
     opacity: 0.7;
     transition: all 0.3s ease;
     width: 25px;
@@ -5727,6 +5729,7 @@ body.white-theme .services-button:focus {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    z-index: 10002;
 }
 
 body.white-theme .modal-info-close {
@@ -5745,9 +5748,10 @@ body.white-theme .modal-info-close:hover {
 
 /* Make modal-info hideable */
 .modal-info.hidden {
-    opacity: 0;
-    transform: translateY(100%);
-    pointer-events: none;
+    opacity: 0 !important;
+    transform: translateY(100%) !important;
+    pointer-events: none !important;
+    transition: all 0.3s ease !important;
 }
 
 .modal-info {
