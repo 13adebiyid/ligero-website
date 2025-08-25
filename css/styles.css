@@ -355,33 +355,57 @@ nav {
 /* ================== THEME SWITCHER ================== */
 
 .theme-switcher {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    display: flex;
-    gap: 15px;
-    z-index: 1000;
+    position: fixed !important;
+    bottom: 30px !important;
+    left: 30px !important;
+    display: flex !important;
+    gap: 15px !important;
+    z-index: 1000 !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
+    animation: none !important;
+    opacity: 1 !important;
 }
 
-.theme-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #666;
-    transition: all 0.3s;
+/* Remove transform effects from page-fade-in wrapper */
+.page-fade-in .theme-switcher {
+    position: fixed !important;
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
 }
 
-.theme-circle.white {
-    background: white;
+/* Hide theme switcher on mobile */
+@media screen and (max-width: 768px) {
+    .theme-switcher {
+        display: none !important;
+    }
 }
 
-.theme-circle.black {
-    background: black;
+/* Hide custom cursor on mobile and touch devices */
+@media screen and (max-width: 768px) {
+    .custom-cursor {
+        display: none !important;
+    }
+
+    body {
+        cursor: auto !important;
+    }
 }
 
-.theme-circle:hover {
-    transform: scale(1.1);
+@media (hover: none) and (pointer: coarse) {
+    .custom-cursor {
+        display: none !important;
+    }
+
+    body {
+        cursor: auto !important;
+    }
 }
 
 /* ================== SHOP PAGE ================== */
@@ -4330,6 +4354,7 @@ body.white-theme .photographer-link {
     transition: all 0.3s ease;
     pointer-events: auto;
     z-index: 10001;
+    display: block !important;
 }
 
 .image-modal.active .modal-info {
@@ -5716,15 +5741,15 @@ body.white-theme .services-button:focus {
     position: absolute;
     top: 10px;
     right: 15px;
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     color: white;
     font-size: 20px;
     cursor: pointer;
     opacity: 0.7;
     transition: all 0.3s ease;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5734,6 +5759,7 @@ body.white-theme .services-button:focus {
 
 body.white-theme .modal-info-close {
     color: black;
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .modal-info-close:hover {
