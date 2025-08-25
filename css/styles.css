@@ -368,8 +368,16 @@ nav {
     right: auto !important;
     width: auto !important;
     height: auto !important;
-    animation: none !important;
     opacity: 1 !important;
+}
+
+.theme-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #666;
+    transition: all 0.3s;
 }
 
 /* Remove transform effects from page-fade-in wrapper */

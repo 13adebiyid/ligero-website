@@ -1,5 +1,5 @@
 // =========================
-// OPTIMIZED LIGERO SCRIPT - COMPLETE VERSION
+// OPTIMIZED LIGERO SCRIPT WITH ALL FIXES
 // =========================
 
 // ============= DOM CACHE & STATE =============
@@ -34,18 +34,7 @@ let isModalInfoVisible = true;
 
 // ============= UTILITIES =============
 const utils = {
-    isMobile: () => {
-        return window.innerWidth <= 768 ||
-            ('ontouchstart' in window) ||
-            (navigator.maxTouchPoints > 0) ||
-            (navigator.msMaxTouchPoints > 0);
-    },
-
-    isTouchDevice: () => {
-        return ('ontouchstart' in window) ||
-            (navigator.maxTouchPoints > 0) ||
-            (navigator.msMaxTouchPoints > 0);
-    },
+    isMobile: () => window.innerWidth <= 768,
 
     isOnHomePage: () => {
         const path = window.location.pathname;
@@ -65,37 +54,6 @@ const utils = {
         };
     }
 };
-
-// ============= MOBILE FEATURES MANAGEMENT =============
-function initMobileFeatures() {
-    if (utils.isMobile() || utils.isTouchDevice()) {
-        // Hide all theme switchers on mobile
-        const themeSwitchers = document.querySelectorAll('.theme-switcher');
-        themeSwitchers.forEach(switcher => {
-            switcher.style.display = 'none';
-        });
-
-        // Ensure custom cursor is hidden
-        const customCursor = document.getElementById('customCursor');
-        if (customCursor) {
-            customCursor.style.display = 'none';
-        }
-
-        // Reset body cursor to auto
-        document.body.style.cursor = 'auto';
-
-        // Disable custom cursor initialization on photography page
-        if (document.querySelector('.photography-page')) {
-            DOM.customCursor = null;
-        }
-    } else {
-        // Show theme switchers on desktop
-        const themeSwitchers = document.querySelectorAll('.theme-switcher');
-        themeSwitchers.forEach(switcher => {
-            switcher.style.display = 'flex';
-        });
-    }
-}
 
 // ============= NAVIGATION STATE =============
 function resetNavigationState() {
@@ -127,41 +85,6 @@ function resetPageState() {
     DOM.body.style.overflow = '';
     closeMobileMenu();
     resetCarousel();
-}
-
-// ============= THEME MANAGEMENT =============
-function setTheme(theme) {
-    if (theme === 'white') {
-        DOM.body.classList.add('white-theme');
-        try {
-            localStorage.setItem('theme', 'white');
-        } catch (e) {}
-    } else {
-        DOM.body.classList.remove('white-theme');
-        try {
-            localStorage.setItem('theme', 'black');
-        } catch (e) {}
-    }
-}
-
-// Make setTheme globally accessible
-window.setTheme = setTheme;
-
-// ============= THEME SWITCHER POSITION FIX =============
-function fixThemeSwitcherPosition() {
-    const themeSwitchers = document.querySelectorAll('.theme-switcher');
-    themeSwitchers.forEach(switcher => {
-        // Force fixed positioning
-        switcher.style.position = 'fixed';
-        switcher.style.bottom = '30px';
-        switcher.style.left = '30px';
-        switcher.style.zIndex = '1000';
-        switcher.style.transform = 'none';
-
-        // Remove any animation that might affect positioning
-        switcher.style.animation = 'none';
-        switcher.style.opacity = '1';
-    });
 }
 
 // ============= MOBILE MENU =============
@@ -221,13 +144,18 @@ function slideCarousel(direction) {
     console.log('slideCarousel called with direction:', direction);
 
     if (utils.isMobile() || !DOM.carousel) {
-        console.log('Mobile or no carousel, skipping');
+        console.log('Mobile or no carousel detected, skipping');
         return;
     }
 
     const cards = DOM.carousel.querySelectorAll('.service-card');
     const totalCards = cards.length;
-    if (totalCards === 0) return;
+    if (totalCards === 0) {
+        console.log('No service cards found');
+        return;
+    }
+
+    console.log('Found', totalCards, 'service cards');
 
     const settings = getCarouselSettings();
     const { cardWidth, cardGap, containerPadding } = settings;
@@ -253,7 +181,7 @@ function slideCarousel(direction) {
     DOM.carousel.style.transform = `translateX(${translateX}px)`;
     DOM.carousel.style.transition = 'transform 0.3s ease';
 
-    console.log('Carousel slide complete, translateX:', translateX);
+    console.log('Carousel moved to slide:', state.currentSlide, 'translateX:', translateX);
 }
 
 function resetCarousel() {
@@ -269,6 +197,7 @@ function resetCarousel() {
     }
 }
 
+// ============= CAROUSEL ARROWS FIX =============
 function setupCarouselArrows() {
     console.log('Setting up carousel arrows...');
 
@@ -276,7 +205,7 @@ function setupCarouselArrows() {
     const rightArrow = document.querySelector('.carousel-arrow.right');
 
     if (leftArrow) {
-        // Remove existing listeners
+        // Remove existing listeners by cloning
         const newLeftArrow = leftArrow.cloneNode(true);
         leftArrow.parentNode.replaceChild(newLeftArrow, leftArrow);
 
@@ -294,7 +223,7 @@ function setupCarouselArrows() {
     }
 
     if (rightArrow) {
-        // Remove existing listeners
+        // Remove existing listeners by cloning
         const newRightArrow = rightArrow.cloneNode(true);
         rightArrow.parentNode.replaceChild(newRightArrow, rightArrow);
 
@@ -313,9 +242,6 @@ function setupCarouselArrows() {
 
     console.log('Carousel arrows setup complete');
 }
-
-// Make globally accessible
-window.slideCarousel = slideCarousel;
 
 // ============= PAGE TRANSITIONS =============
 function createTransitionOverlay() {
@@ -371,7 +297,97 @@ function handleHomePageTransition(url) {
     }
 }
 
-// ============= PHOTOGRAPHY MODAL INFO TOGGLE =============
+// ============= GENERIC MODAL (Default for most pages) =============
+function openImageModal(imageSrc, title, client) {
+    const modal = DOM.imageModal;
+    const modalImage = document.getElementById('modalImage');
+    const imageTitle = document.getElementById('imageTitle');
+    const imageProject = document.getElementById('imageProject');
+
+    if (!modal || !modalImage) {
+        console.error('Image modal elements not found');
+        return;
+    }
+
+    modalImage.src = imageSrc;
+    modalImage.alt = title || 'Image';
+
+    if (imageTitle) imageTitle.textContent = title || 'Project Image';
+    if (imageProject) imageProject.textContent = client || 'Ligero';
+
+    modal.classList.add('active');
+    DOM.body.style.overflow = 'hidden';
+    DOM.body.classList.add('modal-open');
+
+    DOM.body.style.cursor = 'auto';
+    modal.style.cursor = 'auto';
+}
+
+function closeImageModal() {
+    const modal = DOM.imageModal;
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    DOM.body.style.overflow = '';
+    DOM.body.classList.remove('modal-open');
+
+    DOM.body.style.cursor = '';
+    modal.style.cursor = '';
+}
+
+// ============= VIDEO MODAL =============
+function openVideoModal(videoSrc, title, client) {
+    const modal = DOM.videoModal;
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+
+    if (!modal || !modalVideo) {
+        console.error('Video modal elements not found');
+        return;
+    }
+
+    if (modalTitle) modalTitle.textContent = title || 'Video';
+    if (modalClient) modalClient.textContent = client || 'Client';
+
+    modal.classList.add('active');
+    DOM.body.style.overflow = 'hidden';
+    DOM.body.classList.add('modal-open');
+
+    DOM.body.style.cursor = 'auto';
+    modal.style.cursor = 'auto';
+
+    modalVideo.src = videoSrc;
+    modalVideo.load();
+
+    setTimeout(() => {
+        modalVideo.play().catch(err => {
+            console.log('Autoplay prevented:', err);
+        });
+    }, 200);
+}
+
+function closeModal() {
+    const videoModal = DOM.videoModal;
+    const modalVideo = document.getElementById('modalVideo');
+
+    if (videoModal) {
+        videoModal.classList.remove('active');
+        DOM.body.style.overflow = '';
+        DOM.body.classList.remove('modal-open');
+    }
+
+    if (modalVideo) {
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+        modalVideo.src = '';
+    }
+
+    DOM.body.style.cursor = '';
+    if (videoModal) videoModal.style.cursor = '';
+}
+
+// ============= MODAL INFO BUTTON FIX =============
 function toggleModalInfo() {
     console.log('toggleModalInfo called');
 
@@ -426,111 +442,11 @@ function setupModalInfoButton() {
     console.log('Modal info button setup complete');
 }
 
-// Make globally accessible
-window.toggleModalInfo = toggleModalInfo;
-window.setupModalInfoButton = setupModalInfoButton;
-
-// ============= GENERIC MODAL (Default for most pages) =============
-function openImageModal(imageSrc, title, client) {
-    const modal = DOM.imageModal;
-    const modalImage = document.getElementById('modalImage');
-    const imageTitle = document.getElementById('imageTitle');
-    const imageProject = document.getElementById('imageProject');
-
-    if (!modal || !modalImage) {
-        console.error('Image modal elements not found');
-        return;
-    }
-
-    modalImage.src = imageSrc;
-    modalImage.alt = title || 'Image';
-
-    if (imageTitle) imageTitle.textContent = title || 'Project Image';
-    if (imageProject) imageProject.textContent = client || 'Ligero';
-
-    modal.classList.add('active');
-    DOM.body.style.overflow = 'hidden';
-    DOM.body.classList.add('modal-open');
-
-    DOM.body.style.cursor = 'auto';
-    modal.style.cursor = 'auto';
-}
-
-function closeImageModal() {
-    const modal = DOM.imageModal;
-    if (!modal) return;
-
-    modal.classList.remove('active');
-    DOM.body.style.overflow = '';
-    DOM.body.classList.remove('modal-open');
-
-    DOM.body.style.cursor = '';
-    modal.style.cursor = '';
-}
-
-// Make closeImageModal globally accessible
-window.closeImageModal = closeImageModal;
-
-// ============= VIDEO MODAL =============
-function openVideoModal(videoSrc, title, client) {
-    const modal = DOM.videoModal;
-    const modalVideo = document.getElementById('modalVideo');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalClient = document.getElementById('modalClient');
-
-    if (!modal || !modalVideo) {
-        console.error('Video modal elements not found');
-        return;
-    }
-
-    if (modalTitle) modalTitle.textContent = title || 'Video';
-    if (modalClient) modalClient.textContent = client || 'Client';
-
-    modal.classList.add('active');
-    DOM.body.style.overflow = 'hidden';
-    DOM.body.classList.add('modal-open');
-
-    DOM.body.style.cursor = 'auto';
-    modal.style.cursor = 'auto';
-
-    modalVideo.src = videoSrc;
-    modalVideo.load();
-
-    setTimeout(() => {
-        modalVideo.play().catch(err => {
-            console.log('Autoplay prevented:', err);
-        });
-    }, 200);
-}
-
-function closeModal() {
-    const videoModal = DOM.videoModal;
-    const modalVideo = document.getElementById('modalVideo');
-
-    if (videoModal) {
-        videoModal.classList.remove('active');
-        DOM.body.style.overflow = '';
-        DOM.body.classList.remove('modal-open');
-    }
-
-    if (modalVideo) {
-        modalVideo.pause();
-        modalVideo.currentTime = 0;
-        modalVideo.src = '';
-    }
-
-    DOM.body.style.cursor = '';
-    if (videoModal) videoModal.style.cursor = '';
-}
-
-// Make closeModal globally accessible
-window.closeModal = closeModal;
-
-// ============= PHOTOGRAPHY MODAL =============
+// ============= PHOTOGRAPHY MODAL (Special case) =============
 function openPhotographyModal(index) {
     state.currentModalIndex = index;
     state.isModalOpen = true;
-    isModalInfoVisible = true; // Always reset to visible when opening
+    isModalInfoVisible = true; // Reset to visible
 
     const modal = DOM.imageModal;
     if (!modal) return;
@@ -541,29 +457,19 @@ function openPhotographyModal(index) {
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
 
-    // Ensure info is visible when opening
+    // Make sure info is visible when opening
     const modalInfo = modal.querySelector('.modal-info');
     if (modalInfo) {
         modalInfo.classList.remove('hidden');
-        modalInfo.style.opacity = '1';
-        modalInfo.style.transform = 'translateY(0)';
-        modalInfo.style.pointerEvents = 'auto';
-        modalInfo.style.display = 'block';
-        modalInfo.style.transition = 'all 0.3s ease';
     }
 
-    // Setup button after modal is rendered
+    // Setup modal info button
     setTimeout(() => {
         setupModalInfoButton();
     }, 100);
 
-    // Handle cursor visibility
-    if (utils.isMobile() || utils.isTouchDevice()) {
-        document.body.style.cursor = 'auto';
-        if (DOM.customCursor) {
-            DOM.customCursor.style.display = 'none';
-        }
-    } else if (DOM.customCursor) {
+    // Handle cursor properly
+    if (DOM.customCursor && window.innerWidth > 768) {
         DOM.customCursor.style.display = 'block';
         document.body.style.cursor = 'none';
     }
@@ -596,8 +502,9 @@ function closePhotographyModal() {
     DOM.body.style.overflow = '';
     state.isModalOpen = false;
 
-    if (!utils.isMobile() && !utils.isTouchDevice() && DOM.customCursor) {
+    if (DOM.customCursor && window.innerWidth > 768) {
         DOM.customCursor.style.display = 'block';
+        document.body.style.cursor = 'none';
     }
 }
 
@@ -613,12 +520,11 @@ function navigateModal(direction) {
     const photo = filteredPhotos[state.currentModalIndex];
     updatePhotographyModalContent(photo);
 
-    // Re-setup modal info button after content update
-    setTimeout(setupModalInfoButton, 100);
+    // Re-setup button after navigation
+    setTimeout(() => {
+        setupModalInfoButton();
+    }, 100);
 }
-
-// Make navigateModal globally accessible
-window.navigateModal = navigateModal;
 
 // ============= PROJECT INFO HELPER =============
 function getProjectInfo(clickedElement) {
@@ -732,7 +638,53 @@ function setupModalClicks() {
     }
 }
 
-// ============= LAZY LOADING & VIDEO AUTOPLAY =============
+// ============= SERVICE CARD PREVIEWS =============
+function setupServiceCardHoverPreviews() {
+    const setDesignCard = document.querySelector('a[href="/services/set-designing"]');
+    if (!setDesignCard) return;
+
+    const video = setDesignCard.querySelector('.service-card-video');
+    if (!video) return;
+
+    const clips = [
+        { src: '/videos/gift.mp4', start: 6, duration: 3 },
+        { src: '/videos/fashion.mp4', start: 10, duration: 3 },
+        { src: '/videos/brand.mp4', start: 3, duration: 3 }
+    ];
+
+    let currentClipIndex = 0;
+    let hoverInterval;
+
+    function playClip(index) {
+        const clip = clips[index];
+        video.src = clip.src;
+        video.currentTime = clip.start;
+
+        video.play().catch(err => {
+            console.error('Autoplay prevented:', err);
+        });
+
+        hoverInterval = setTimeout(() => {
+            currentClipIndex = (currentClipIndex + 1) % clips.length;
+            playClip(currentClipIndex);
+        }, clip.duration * 1000);
+    }
+
+    setDesignCard.addEventListener('mouseenter', () => {
+        clearTimeout(hoverInterval);
+        currentClipIndex = 0;
+        playClip(currentClipIndex);
+    });
+
+    setDesignCard.addEventListener('mouseleave', () => {
+        clearTimeout(hoverInterval);
+        video.pause();
+        video.currentTime = 0;
+        video.src = '';
+    });
+}
+
+// ============= LAZY LOADING =============
 function setupEnhancedFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
 
@@ -895,7 +847,7 @@ function renderPhotos(photos) {
     filteredPhotos = photos;
 
     setTimeout(() => {
-        setupPhotoHovers();
+        setupEnhancedPhotoHovers();
     }, 100);
 }
 
@@ -941,9 +893,8 @@ function filterPhotos(category) {
     renderPhotos(filteredPhotos);
 }
 
-// ============= PHOTOGRAPHY CURSOR =============
-
-function setupCustomCursor() {
+// ============= ENHANCED CUSTOM CURSOR SETUP =============
+function setupEnhancedCustomCursor() {
     // Only run on desktop, not mobile or touch devices
     if (window.innerWidth <= 768 ||
         ('ontouchstart' in window) ||
@@ -962,7 +913,7 @@ function setupCustomCursor() {
         return;
     }
 
-    console.log('Setting up custom cursor...');
+    console.log('Setting up enhanced custom cursor...');
 
     let cursor = document.getElementById('customCursor');
 
@@ -1015,7 +966,7 @@ function setupCustomCursor() {
 
     updateCursor();
     updateCursorForTheme();
-    setupPhotoHovers();
+    setupEnhancedPhotoHovers();
 }
 
 function updateCursorForTheme() {
@@ -1034,82 +985,15 @@ function updateCursorForTheme() {
     }
 }
 
-function forceThemeSwitcherVisibility() {
-    const themeSwitchers = document.querySelectorAll('.theme-switcher');
-    console.log('Found theme switchers:', themeSwitchers.length);
-
-    themeSwitchers.forEach(switcher => {
-        // Force display properties
-        switcher.style.display = 'flex';
-        switcher.style.visibility = 'visible';
-        switcher.style.opacity = '1';
-        switcher.style.position = 'fixed';
-        switcher.style.bottom = '30px';
-        switcher.style.left = '30px';
-        switcher.style.zIndex = '1000';
-        switcher.style.gap = '15px';
-        switcher.style.transform = 'none';
-        switcher.style.animation = 'none';
-    });
-
-    // Ensure theme circles are visible and functional
-    const themeCircles = document.querySelectorAll('.theme-circle');
-    themeCircles.forEach(circle => {
-        circle.style.display = 'block';
-        circle.style.visibility = 'visible';
-        circle.style.opacity = '1';
-        circle.style.width = '30px';
-        circle.style.height = '30px';
-        circle.style.borderRadius = '50%';
-        circle.style.cursor = 'pointer';
-        circle.style.border = '2px solid rgba(255, 255, 255, 0.3)';
-        circle.style.transition = 'all 0.3s ease';
-
-        if (circle.classList.contains('black')) {
-            circle.style.background = 'black';
-        } else if (circle.classList.contains('white')) {
-            circle.style.background = 'white';
-        }
-    });
-
-    // Hide on mobile
-    if (window.innerWidth <= 768) {
-        themeSwitchers.forEach(switcher => {
-            switcher.style.display = 'none';
-        });
-    }
-}
-
-// Enhanced setTheme function
-window.setTheme = function(theme) {
-    console.log('Setting theme to:', theme);
-
-    if (theme === 'white') {
-        document.body.classList.add('white-theme');
-        try {
-            localStorage.setItem('theme', 'white');
-        } catch (e) {}
-    } else {
-        document.body.classList.remove('white-theme');
-        try {
-            localStorage.setItem('theme', 'black');
-        } catch (e) {}
-    }
-
-    // Update custom cursor for theme
-    updateCursorForTheme();
-};
-
-
-function setupPhotoHovers() {
+function setupEnhancedPhotoHovers() {
     // Clear existing listeners
-    document.querySelectorAll('.masonry-item, .feed-item').forEach(item => {
+    document.querySelectorAll('.masonry-item').forEach(item => {
         const newItem = item.cloneNode(true);
         item.parentNode.replaceChild(newItem, item);
     });
 
     // Setup fresh listeners
-    document.querySelectorAll('.masonry-item, .feed-item').forEach(item => {
+    document.querySelectorAll('.masonry-item').forEach(item => {
         item.addEventListener('mouseenter', () => {
             const cursor = DOM.customCursor || document.getElementById('customCursor');
             if (cursor && window.innerWidth > 768) {
@@ -1126,6 +1010,9 @@ function setupPhotoHovers() {
                     cursorText.textContent = 'VIEW';
                 }
             }
+
+            // Keep body cursor hidden
+            document.body.style.cursor = 'none';
         });
 
         item.addEventListener('mouseleave', () => {
@@ -1143,12 +1030,23 @@ function setupPhotoHovers() {
                     cursorText.style.opacity = '0';
                 }
             }
+
+            // Keep body cursor hidden
+            document.body.style.cursor = 'none';
+        });
+
+        // Re-add click handlers for modal opening
+        item.addEventListener('click', () => {
+            const photoId = parseInt(item.dataset.photoId);
+            const indexInFiltered = filteredPhotos.findIndex(p => p.id === photoId);
+            if (indexInFiltered !== -1) {
+                openPhotographyModal(indexInFiltered);
+            }
         });
     });
 }
 
 function setupPhotographyEventListeners() {
-    // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const category = this.dataset.category;
@@ -1158,7 +1056,6 @@ function setupPhotographyEventListeners() {
         });
     });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (state.isModalOpen) {
             if (e.key === 'ArrowRight') navigateModal(1);
@@ -1170,7 +1067,6 @@ function setupPhotographyEventListeners() {
         }
     });
 
-    // Modal backdrop click
     const imageModal = DOM.imageModal;
     if (imageModal) {
         imageModal.addEventListener('click', (e) => {
@@ -1199,23 +1095,477 @@ function setupPhotographyEventListeners() {
             navigateModal(1);
         });
     }
-
-    // Setup modal info button on page load
-    setupModalInfoButton();
 }
 
 function initializePhotographyPortfolio() {
     if (document.getElementById('masonryGrid')) {
+        console.log('Initializing photography portfolio...');
         DOM.body.classList.add('photography-page');
         renderPhotos(photographyData);
-        setupCustomCursor();
-        setupPhotographyEventListeners();
 
-        // Multiple attempts to setup the modal info button
+        // Setup enhanced custom cursor
         setTimeout(() => {
-            setupModalInfoButton();
+            setupEnhancedCustomCursor();
+        }, 200);
+
+        setupPhotographyEventListeners();
+    }
+}
+
+// ============= CONTACT PAGE =============
+function initContactPage() {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactFormSubmission);
+    }
+    preSelectService();
+}
+
+function handleContactFormSubmission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const submitButton = form.querySelector('.submit-button');
+
+    if (!validateContactForm(form)) return;
+
+    submitButton.disabled = true;
+    submitButton.textContent = 'SENDING...';
+
+    setTimeout(() => {
+        showThankYouMessage();
+        submitButton.disabled = false;
+        submitButton.textContent = 'SEND MESSAGE';
+        form.reset();
+    }, 1000);
+}
+
+function validateContactForm(form) {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = '#ff6b6b';
+            field.addEventListener('input', () => {
+                field.style.borderColor = '';
+            }, { once: true });
+        }
+    });
+
+    const emailField = form.querySelector('#email');
+    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
+        isValid = false;
+        emailField.style.borderColor = '#ff6b6b';
+    }
+
+    if (!isValid) {
+        alert('Please fill in all required fields with valid information.');
+    }
+
+    return isValid;
+}
+
+function showThankYouMessage() {
+    const contactFormSection = document.getElementById('contactFormSection');
+    const thankYouSection = document.getElementById('thankYouSection');
+
+    if (contactFormSection && thankYouSection) {
+        contactFormSection.style.opacity = '0';
+        contactFormSection.style.transform = 'translateY(-30px)';
+
+        setTimeout(() => {
+            contactFormSection.style.display = 'none';
+            thankYouSection.style.display = 'flex';
+            setTimeout(() => {
+                thankYouSection.classList.add('show');
+            }, 50);
+        }, 300);
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function preSelectService() {
+    const serviceSelect = document.getElementById('service');
+    if (!serviceSelect) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+
+    if (serviceParam) {
+        serviceSelect.value = serviceParam;
+        return;
+    }
+
+    const referrer = document.referrer;
+    if (referrer) {
+        const serviceMap = {
+            '/services/styling': 'styling',
+            '/services/creative-directing': 'creative-directing',
+            '/services/shoots': 'shoots',
+            '/services/set-designing': 'set-designing',
+            '/services/models': 'models',
+            '/services/music': 'music'
+        };
+
+        for (const [path, value] of Object.entries(serviceMap)) {
+            if (referrer.includes(path)) {
+                serviceSelect.value = value;
+                break;
+            }
+        }
+    }
+}
+
+// ============= ENHANCED NOTIFY FORM =============
+function initEnhancedComingSoonPage() {
+    const form = document.getElementById('notifyForm');
+    if (form) {
+        form.addEventListener('submit', handleNotifyFormSubmission);
+    }
+
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                hideNotifyForm();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideNotifyForm();
+            hideNotifySuccess();
+            hideContactSuccess();
+        }
+    });
+}
+
+function handleNotifyFormSubmission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const emailInput = form.querySelector('input[type="email"]');
+    const email = emailInput.value;
+
+    if (email && isValidEmail(email)) {
+        showNotifyLoading();
+
+        const formData = new FormData(form);
+        if (!formData.has('form-name')) {
+            formData.append('form-name', 'notify-signup');
+        }
+
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+        })
+            .then(() => {
+                console.log('Notify form submitted successfully');
+                hideNotifyForm();
+                setTimeout(() => {
+                    showNotifySuccess();
+                }, 400);
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Notify form submission error:', error);
+                hideNotifyForm();
+                setTimeout(() => {
+                    showNotifySuccess();
+                }, 400);
+                form.reset();
+            })
+            .finally(() => {
+                hideNotifyLoading();
+            });
+    } else {
+        emailInput.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+            emailInput.style.animation = '';
         }, 500);
     }
+}
+
+function showNotifyLoading() {
+    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'SENDING...';
+    }
+}
+
+function hideNotifyLoading() {
+    const submitBtn = document.querySelector('#notifyForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'NOTIFY ME';
+    }
+}
+
+function showNotifySuccess() {
+    const successModal = document.getElementById('notifySuccessModal');
+    if (successModal) {
+        successModal.style.display = 'flex';
+        DOM.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            successModal.classList.add('active');
+        }, 50);
+
+        setTimeout(() => {
+            hideNotifySuccess();
+        }, 4000);
+    }
+}
+
+function hideNotifySuccess() {
+    const successModal = document.getElementById('notifySuccessModal');
+    if (successModal) {
+        successModal.classList.remove('active');
+
+        setTimeout(() => {
+            successModal.style.display = 'none';
+            DOM.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+function showNotifyForm() {
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        DOM.body.style.overflow = 'hidden';
+        resetNotifyForm();
+    }
+}
+
+function hideNotifyForm() {
+    const overlay = document.getElementById('notifyFormOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        DOM.body.style.overflow = '';
+
+        setTimeout(() => {
+            resetNotifyForm();
+        }, 400);
+    }
+}
+
+function resetNotifyForm() {
+    const form = document.getElementById('notifyForm');
+    const submitBtn = form?.querySelector('button[type="submit"]');
+
+    if (form) {
+        form.reset();
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'NOTIFY ME';
+    }
+}
+
+// ============= MODERN CONTACT PAGE =============
+let currentContactType = 'services';
+
+function initModernContactPage() {
+    const servicesForm = document.getElementById('servicesContactForm');
+    const clothingForm = document.getElementById('clothingContactForm');
+
+    if (servicesForm) {
+        servicesForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    if (clothingForm) {
+        clothingForm.addEventListener('submit', handleContactFormSubmission);
+    }
+
+    setTimeout(() => {
+        const servicesSection = document.getElementById('servicesForm');
+        if (servicesSection) {
+            servicesSection.classList.add('active');
+        }
+    }, 800);
+
+    setupRealTimeValidation();
+}
+
+function switchContactType(type) {
+    if (currentContactType === type) return;
+
+    const buttons = document.querySelectorAll('.type-selector-btn');
+    const sections = document.querySelectorAll('.contact-form-section');
+
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.type === type) {
+            btn.classList.add('active');
+        }
+    });
+
+    sections.forEach(section => {
+        if (section.classList.contains('active')) {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+
+                const newSection = document.getElementById(type + 'Form');
+                if (newSection) {
+                    newSection.style.display = 'block';
+                    setTimeout(() => {
+                        newSection.classList.add('active');
+                    }, 50);
+                }
+            }, 200);
+        }
+    });
+
+    currentContactType = type;
+}
+
+function addFieldError(field, message) {
+    removeFieldError(field);
+
+    field.style.borderColor = '#ff6b6b';
+    field.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
+
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    errorDiv.style.color = '#ff6b6b';
+    errorDiv.style.fontSize = '0.85rem';
+    errorDiv.style.marginTop = '5px';
+    errorDiv.style.opacity = '0';
+    errorDiv.style.animation = 'fadeInUp 0.3s ease forwards';
+
+    field.parentNode.appendChild(errorDiv);
+
+    field.addEventListener('input', () => removeFieldError(field), { once: true });
+}
+
+function removeFieldError(field) {
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+
+    const existingError = field.parentNode.querySelector('.field-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
+function isValidPhone(phone) {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
+    return phoneRegex.test(cleaned) && cleaned.length >= 7;
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return emailRegex.test(email);
+}
+
+function showContactLoading(button) {
+    if (button) {
+        button.classList.add('loading');
+        button.disabled = true;
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
+
+        if (buttonText) buttonText.style.display = 'none';
+        if (buttonLoader) buttonLoader.style.display = 'block';
+    }
+}
+
+function hideContactLoading(button) {
+    if (button) {
+        button.classList.remove('loading');
+        button.disabled = false;
+        const buttonText = button.querySelector('.button-text');
+        const buttonLoader = button.querySelector('.button-loader');
+
+        if (buttonText) buttonText.style.display = 'block';
+        if (buttonLoader) buttonLoader.style.display = 'none';
+
+        const form = button.closest('form');
+        if (form) {
+            const phoneInput = form.querySelector('input[type="tel"]');
+            if (phoneInput) {
+                phoneInput.style.borderColor = '';
+                phoneInput.style.boxShadow = '';
+            }
+        }
+    }
+}
+
+function showContactSuccess() {
+    const successElement = document.getElementById('contactSuccess');
+    if (successElement) {
+        successElement.style.display = 'flex';
+        DOM.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            successElement.classList.add('active');
+        }, 50);
+    }
+}
+
+function hideContactSuccess() {
+    const successElement = document.getElementById('contactSuccess');
+    if (successElement) {
+        successElement.classList.remove('active');
+
+        setTimeout(() => {
+            successElement.style.display = 'none';
+            DOM.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+function resetContactForms() {
+    hideContactSuccess();
+
+    const forms = document.querySelectorAll('.modern-contact-form');
+    forms.forEach(form => {
+        form.reset();
+        const errorFields = form.querySelectorAll('.field-error');
+        errorFields.forEach(error => error.remove());
+
+        const inputsWithErrors = form.querySelectorAll('input.error, select.error, textarea.error');
+        inputsWithErrors.forEach(input => {
+            input.classList.remove('error');
+            input.style.borderColor = '';
+            input.style.boxShadow = '';
+        });
+
+        const allInputs = form.querySelectorAll('input, select, textarea');
+        allInputs.forEach(input => {
+            input.style.borderColor = '';
+            input.style.boxShadow = '';
+        });
+    });
+
+    setTimeout(() => {
+        switchContactType('services');
+    }, 400);
+}
+
+function setupRealTimeValidation() {
+    const formFields = document.querySelectorAll('.modern-contact-form input, .modern-contact-form select, .modern-contact-form textarea');
+
+    formFields.forEach(field => {
+        field.addEventListener('input', () => debouncedValidation(field));
+        field.addEventListener('blur', () => {
+            if (field.hasAttribute('required') && !field.value.trim()) {
+                addFieldError(field, 'This field is required');
+            }
+        });
+    });
 }
 
 // ============= VIDEO CONTROLS =============
@@ -1265,65 +1615,444 @@ function setupVideoControls() {
     });
 }
 
-// ============= CONTACT & FORM FUNCTIONS (abbreviated for space) =============
-// [Include all your existing contact form functions here]
-// Including: switchContactType, showNotifyForm, hideNotifyForm, etc.
+// === PRODUCERS PAGE PLAYER ===
+const tracks = [
+    { id: 1, title: "Copy Cat", artist: "K1D", src: "/audio/track1.mp3" },
+    { id: 2, title: "Electric Pulse", artist: "Sofia Rodriguez", src: "/audio/track2.mp3" },
+    { id: 3, title: "Golden Hour", artist: "James Williams", src: "/audio/track3.mp3" },
+    { id: 4, title: "Neon Nights", artist: "Luna Park", src: "/audio/track4.mp3" },
+    { id: 5, title: "Urban Symphony", artist: "Alex Kim", src: "/audio/track5.mp3" }
+];
 
-// Make functions globally accessible
-window.switchContactType = function(type) {
-    // Your existing switchContactType code
-};
+let currentTrackId = null;
+let isPlaying = false;
+const audioPlayer = document.getElementById('audioPlayer');
+const nowPlaying = document.getElementById('nowPlaying');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
 
-window.showNotifyForm = function() {
-    const overlay = document.getElementById('notifyFormOverlay');
-    if (overlay) {
-        overlay.classList.add('active');
-        DOM.body.style.overflow = 'hidden';
+function playTrack(trackId) {
+    const track = tracks.find(t => t.id === trackId);
+    if (!track) return;
+
+    document.querySelectorAll('.audio-track').forEach(el => {
+        el.classList.remove('playing');
+        el.querySelector('.play-btn').classList.remove('playing');
+    });
+
+    const trackElement = document.querySelector(`[data-track-id="${trackId}"]`);
+    trackElement.classList.add('playing');
+    trackElement.querySelector('.play-btn').classList.add('playing');
+
+    document.getElementById('playingTitle').textContent = track.title;
+    document.getElementById('playingArtist').textContent = track.artist;
+    document.getElementById('miniPlayBtn').classList.remove('paused');
+    nowPlaying.classList.add('active');
+    currentTrackId = trackId;
+
+    audioPlayer.src = track.src;
+
+    audioPlayer.addEventListener('loadedmetadata', () => {
+        const duration = audioPlayer.duration;
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
+        durationEl.textContent = `${minutes}:${seconds}`;
+    }, { once: true });
+
+    audioPlayer.play();
+    isPlaying = true;
+}
+
+function togglePlay() {
+    if (!currentTrackId) return;
+
+    if (isPlaying) {
+        audioPlayer.pause();
+        document.getElementById('miniPlayBtn').classList.add('paused');
+    } else {
+        audioPlayer.play();
+        document.getElementById('miniPlayBtn').classList.remove('paused');
     }
-};
+    isPlaying = !isPlaying;
+}
 
-window.hideNotifyForm = function() {
-    const overlay = document.getElementById('notifyFormOverlay');
-    if (overlay) {
+function previousTrack() {
+    if (currentTrackId > 1) {
+        playTrack(currentTrackId - 1);
+    }
+}
+
+function nextTrack() {
+    if (currentTrackId < tracks.length) {
+        playTrack(currentTrackId + 1);
+    }
+}
+
+let isDragging = false;
+let progressBar = null;
+let progressContainer = null;
+
+audioPlayer?.addEventListener('timeupdate', () => {
+    if (!isDragging && audioPlayer.duration) {
+        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progress.style.width = `${progressPercent}%`;
+
+        const minutes = Math.floor(audioPlayer.currentTime / 60);
+        const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
+        currentTimeEl.textContent = `${minutes}:${seconds}`;
+    }
+});
+
+audioPlayer?.addEventListener('ended', () => {
+    nextTrack();
+});
+
+function initProgressBar() {
+    progressBar = document.getElementById('progressBar');
+    progressContainer = document.querySelector('.progress-container');
+    if (!progressBar || !progressContainer) return;
+
+    const hoverIndicator = document.createElement('div');
+    hoverIndicator.className = 'progress-hover';
+    progressBar.appendChild(hoverIndicator);
+
+    progressBar.addEventListener('mouseenter', handleProgressHover);
+    progressBar.addEventListener('mousemove', handleProgressHover);
+    progressBar.addEventListener('mouseleave', handleProgressLeave);
+    progressBar.addEventListener('mousedown', startDragging);
+    progressBar.addEventListener('click', seek);
+
+    document.addEventListener('mousemove', handleDragging);
+    document.addEventListener('mouseup', stopDragging);
+
+    progressBar.addEventListener('touchstart', startDraggingTouch, { passive: false });
+    document.addEventListener('touchmove', handleDraggingTouch, { passive: false });
+    document.addEventListener('touchend', stopDraggingTouch);
+}
+
+function handleProgressHover(e) {
+    if (!progressBar || !audioPlayer.duration) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+    const hoverIndicator = progressBar.querySelector('.progress-hover');
+    if (hoverIndicator) {
+        hoverIndicator.style.width = `${percentage}%`;
+        hoverIndicator.style.opacity = '1';
+    }
+
+    const hoverTime = (percentage / 100) * audioPlayer.duration;
+    const minutes = Math.floor(hoverTime / 60);
+    const seconds = Math.floor(hoverTime % 60).toString().padStart(2, '0');
+
+    let tooltip = progressBar.querySelector('.progress-tooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'progress-tooltip';
+        progressBar.appendChild(tooltip);
+    }
+
+    tooltip.textContent = `${minutes}:${seconds}`;
+    tooltip.style.left = `${percentage}%`;
+    tooltip.style.opacity = '1';
+}
+
+function handleProgressLeave() {
+    const hoverIndicator = progressBar?.querySelector('.progress-hover');
+    const tooltip = progressBar?.querySelector('.progress-tooltip');
+
+    if (hoverIndicator) hoverIndicator.style.opacity = '0';
+    if (tooltip) tooltip.style.opacity = '0';
+}
+
+function startDragging(e) {
+    if (!audioPlayer.duration) return;
+    isDragging = true;
+    progressBar.classList.add('dragging');
+    updateProgress(e.clientX);
+}
+
+function startDraggingTouch(e) {
+    if (!audioPlayer.duration) return;
+    e.preventDefault();
+    isDragging = true;
+    progressBar.classList.add('dragging');
+    updateProgress(e.touches[0].clientX);
+}
+
+function handleDragging(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    updateProgress(e.clientX);
+}
+
+function handleDraggingTouch(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    updateProgress(e.touches[0].clientX);
+}
+
+function stopDragging() {
+    if (!isDragging) return;
+    isDragging = false;
+    progressBar?.classList.remove('dragging');
+
+    if (progressBar && audioPlayer.duration) {
+        const progressWidth = parseFloat(progress.style.width);
+        const newTime = (progressWidth / 100) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    }
+}
+
+function stopDraggingTouch() {
+    if (!isDragging) return;
+    isDragging = false;
+    progressBar?.classList.remove('dragging');
+
+    if (progressBar && audioPlayer.duration) {
+        const progressWidth = parseFloat(progress.style.width);
+        const newTime = (progressWidth / 100) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    }
+}
+
+function updateProgress(clientX) {
+    if (!progressBar || !audioPlayer.duration) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+    progress.style.width = `${percentage}%`;
+
+    const newTime = (percentage / 100) * audioPlayer.duration;
+    const minutes = Math.floor(newTime / 60);
+    const seconds = Math.floor(newTime % 60).toString().padStart(2, '0');
+    currentTimeEl.textContent = `${minutes}:${seconds}`;
+
+    if (!isDragging) {
+        audioPlayer.currentTime = newTime;
+    }
+}
+
+function seek(e) {
+    if (isDragging) return;
+    if (!audioPlayer.duration) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = (x / rect.width);
+    audioPlayer.currentTime = audioPlayer.duration * percentage;
+}
+
+document.querySelectorAll('.audio-track').forEach(track => {
+    track.addEventListener('click', (e) => {
+        if (!e.target.closest('a') && !e.target.closest('.play-btn')) {
+            const trackId = parseInt(track.dataset.trackId);
+            playTrack(trackId);
+        }
+    });
+});
+
+function updateProducerControls() {
+    const controlButtons = document.querySelectorAll('.control-btn');
+    if (controlButtons.length >= 2) {
+        controlButtons[0].innerHTML = '<img src="/images/next-icon.webp" alt="Previous" style="width: 20px; height: 20px;">';
+        controlButtons[1].innerHTML = '<img src="/images/previous-icon.webp" alt="Next" style="width: 20px; height: 20px;">';
+    }
+}
+
+// ============= INITIALIZATION =============
+function initPageLoad() {
+    try {
+        const hasVisited = sessionStorage.getItem('hasVisited');
+        const isHomePage = utils.isOnHomePage();
+        const shouldShowLoading = (!hasVisited && isHomePage) ||
+            (!document.referrer || !document.referrer.includes(window.location.hostname));
+
+        if (shouldShowLoading && !document.querySelector('.page-transition')) {
+            sessionStorage.setItem('hasVisited', 'true');
+            showInitialLoading();
+            setTimeout(() => {
+                DOM.body.classList.add('page-loaded');
+            }, 1600);
+            setTimeout(() => {
+                DOM.body.classList.add('content-loaded');
+            }, 1900);
+        } else {
+            setTimeout(() => {
+                DOM.body.classList.add('page-loaded');
+            }, 100);
+            setTimeout(() => {
+                DOM.body.classList.add('content-loaded');
+            }, 300);
+        }
+    } catch (error) {
+        DOM.body.classList.add('page-loaded', 'content-loaded');
+    }
+}
+
+function showInitialLoading() {
+    const overlay = createTransitionOverlay();
+    overlay.classList.add('active');
+    setTimeout(() => {
         overlay.classList.remove('active');
-        DOM.body.style.overflow = '';
-    }
-};
-
-window.showNotifySuccess = function() {
-    const successModal = document.getElementById('notifySuccessModal');
-    if (successModal) {
-        successModal.style.display = 'flex';
-        DOM.body.style.overflow = 'hidden';
-
         setTimeout(() => {
-            successModal.classList.add('active');
-        }, 50);
+            overlay.parentNode?.removeChild(overlay);
+        }, 600);
+    }, 1800);
+    return overlay;
+}
 
-        setTimeout(() => {
-            hideNotifySuccess();
-        }, 4000);
+function setupPageTransitions() {
+    document.addEventListener('click', (e) => {
+        try {
+            const target = e.target.closest('a[href]');
+            if (!target) return;
+
+            const href = target.getAttribute('href');
+            if (!href || !href.startsWith('/') || href.startsWith('//')) return;
+
+            const isSamePage = href === window.location.pathname;
+            if (isSamePage) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (state.isNavigating) return;
+
+            const isGoingHome = href === '/' || href.endsWith('index.html') || href === '';
+
+            if (isGoingHome) {
+                handleHomePageTransition(href);
+            } else {
+                handleSimplePageTransition(href);
+            }
+
+        } catch (error) {
+            console.error('Error in navigation click handler:', error);
+            emergencyCleanup();
+        }
+    });
+}
+
+function setupModalCloseHandlers() {
+    const videoCloseBtn = document.querySelector('#videoModal .modal-close');
+    const imageCloseBtn = document.querySelector('#imageModal .modal-close');
+
+    if (videoCloseBtn) {
+        videoCloseBtn.addEventListener('click', closeModal);
     }
-};
 
-window.hideNotifySuccess = function() {
-    const successModal = document.getElementById('notifySuccessModal');
-    if (successModal) {
-        successModal.classList.remove('active');
-
-        setTimeout(() => {
-            successModal.style.display = 'none';
-            DOM.body.style.overflow = '';
-        }, 300);
+    if (imageCloseBtn) {
+        const isPhotographyPage = document.querySelector('.photography-page') !== null;
+        imageCloseBtn.addEventListener('click', isPhotographyPage ? closePhotographyModal : closeImageModal);
     }
-};
+
+    if (DOM.videoModal) {
+        const backdrop = DOM.videoModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeModal);
+        }
+    }
+
+    if (DOM.imageModal && !document.querySelector('.photography-page')) {
+        const backdrop = DOM.imageModal.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.addEventListener('click', closeImageModal);
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            closeImageModal();
+        }
+    });
+}
+
+function initializeModals() {
+    setupModalClicks();
+    setupModalCloseHandlers();
+}
+
+function handleTouchStart(e) {
+    if (utils.isMobile()) return;
+    state.touchStartX = e.changedTouches[0].screenX;
+    state.isSwiping = true;
+}
+
+function handleTouchMove(e) {
+    if (!state.isSwiping || utils.isMobile()) return;
+    e.preventDefault();
+}
+
+function handleTouchEnd(e) {
+    if (!state.isSwiping || utils.isMobile()) return;
+
+    state.touchEndX = e.changedTouches[0].screenX;
+    const swipeDistance = state.touchStartX - state.touchEndX;
+
+    if (Math.abs(swipeDistance) > 50) {
+        slideCarousel(swipeDistance > 0 ? 1 : -1);
+    }
+
+    state.isSwiping = false;
+}
+
+function setupCarouselKeyboardNavigation() {
+    if (utils.isMobile()) return;
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            slideCarousel(-1);
+        } else if (e.key === 'ArrowRight') {
+            slideCarousel(1);
+        }
+    });
+}
+
+function setupImageLoading() {
+    const images = document.querySelectorAll('.feed-item img');
+
+    images.forEach((img, index) => {
+        if (img.complete && img.naturalHeight !== 0) {
+            img.classList.add('loaded');
+        } else {
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
+
+            img.addEventListener('error', () => {
+                console.error(`Failed to load image ${index + 1}: ${img.src}`);
+                img.classList.add('loaded');
+            });
+        }
+    });
+}
+
+// ============= MAKE FUNCTIONS GLOBALLY ACCESSIBLE =============
+window.slideCarousel = slideCarousel;
+window.toggleModalInfo = toggleModalInfo;
+window.setupModalInfoButton = setupModalInfoButton;
+window.showNotifyForm = showNotifyForm;
+window.hideNotifyForm = hideNotifyForm;
+window.showNotifySuccess = showNotifySuccess;
+window.hideNotifySuccess = hideNotifySuccess;
+window.switchContactType = switchContactType;
+window.resetContactForms = resetContactForms;
+window.navigateModal = navigateModal;
+window.closeImageModal = closeImageModal;
+window.closeModal = closeModal;
 
 // ============= MAIN INITIALIZATION =============
 document.addEventListener('DOMContentLoaded', () => {
     try {
         console.log('🚀 Initializing Ligero website...');
 
-        // Initialize DOM cache
         DOM.carousel = document.getElementById('carousel');
         DOM.mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
         DOM.hamburger = document.querySelector('.hamburger-menu');
@@ -1332,24 +2061,10 @@ document.addEventListener('DOMContentLoaded', () => {
         DOM.bgVideo = document.getElementById('bgVideo');
         DOM.customCursor = document.getElementById('customCursor');
 
-        // Reset states
         resetPageState();
+        initPageLoad();
+        setupPageTransitions();
 
-        // Initialize mobile features FIRST
-        initMobileFeatures();
-
-        // Fix theme switcher positioning
-        fixThemeSwitcherPosition();
-
-        forceThemeSwitcherVisibility();
-        setupCustomCursor();
-        setupCarouselArrows();
-
-        setTimeout(setupModalInfoButton, 100);
-        setTimeout(setupModalInfoButton, 500);
-        setTimeout(setupModalInfoButton, 1000);
-
-        // Apply saved theme
         try {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'white') {
@@ -1357,73 +2072,108 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (e) {}
 
-        // Setup carousel if present
         if (DOM.carousel) {
             resetCarousel();
+            setupCarouselArrows();
+
             if (!utils.isMobile()) {
-                // Carousel keyboard navigation and touch events
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') slideCarousel(-1);
-                    if (e.key === 'ArrowRight') slideCarousel(1);
-                });
+                setupCarouselKeyboardNavigation();
+                DOM.carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
+                DOM.carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
+                DOM.carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
+                setupServiceCardHoverPreviews();
             }
         }
 
-        // Setup video controls
         setupVideoControls();
-
-        // Setup modals
         setupModalClicks();
-
-        // Setup video autoplay
         setupEnhancedFeedVideoAutoplay();
 
-        // Mobile menu
         if (DOM.hamburger) {
             DOM.hamburger.addEventListener('click', toggleMobileMenu);
         }
 
-        // Handle window resize
+        document.querySelectorAll('.mobile-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                setTimeout(closeMobileMenu, 100);
+            });
+        });
+
+        if (DOM.mobileMenuOverlay) {
+            DOM.mobileMenuOverlay.addEventListener('click', (e) => {
+                if (e.target === DOM.mobileMenuOverlay) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        // Multiple attempts for modal button setup
+        setTimeout(setupModalInfoButton, 100);
+        setTimeout(setupModalInfoButton, 500);
+        setTimeout(setupModalInfoButton, 1000);
+
         const handleResize = utils.debounce(() => {
-            initMobileFeatures();
-            fixThemeSwitcherPosition();
             resetCarousel();
-            forceThemeSwitcherVisibility();
-            setupCustomCursor();
             if (window.innerWidth > 768) {
                 closeMobileMenu();
             }
+            setupEnhancedCustomCursor();
         }, 250);
 
         window.addEventListener('resize', handleResize);
 
-        // Initialize photography portfolio if on that page
+        document.querySelectorAll('.theme-circle.white').forEach(el => {
+            el.onclick = () => setTheme('white');
+        });
+
+        document.querySelectorAll('.theme-circle.black').forEach(el => {
+            el.onclick = () => setTheme('black');
+        });
+
+        if (document.querySelector('.set-design-feed') ||
+            document.querySelector('.designer-profile-page') ||
+            document.querySelector('.electra-style-page')) {
+
+            if (window.location.pathname.includes('creative-directing')) {
+                DOM.body.classList.add('creative-directing-page');
+            }
+
+            if (!DOM.customCursor) {
+                const cursor = document.createElement('div');
+                cursor.id = 'customCursor';
+                cursor.className = 'custom-cursor';
+                cursor.style.display = 'none';
+                document.body.appendChild(cursor);
+                DOM.customCursor = cursor;
+            }
+
+            setTimeout(() => {
+                setupImageLoading();
+                setupEnhancedFeedVideoAutoplay();
+                initializeModals();
+            }, 100);
+        }
+
+        if (document.querySelector('.contact-page')) {
+            initContactPage();
+        }
+
+        if (document.querySelector('.modern-contact-page')) {
+            console.log('Initializing modern contact page...');
+            initModernContactPage();
+        }
+
+        if (document.querySelector('.coming-soon-page')) {
+            console.log('Initializing coming soon page...');
+            initEnhancedComingSoonPage();
+        }
+
         initializePhotographyPortfolio();
 
-        // Handle modal close buttons
-        const videoCloseBtn = document.querySelector('#videoModal .modal-close');
-        const imageCloseBtn = document.querySelector('#imageModal .modal-close');
-
-        if (videoCloseBtn) {
-            videoCloseBtn.addEventListener('click', closeModal);
+        if (document.querySelector('.producers-page')) {
+            updateProducerControls();
+            initProgressBar();
         }
-
-        if (imageCloseBtn) {
-            const isPhotographyPage = document.querySelector('.photography-page') !== null;
-            imageCloseBtn.addEventListener('click', isPhotographyPage ? closePhotographyModal : closeImageModal);
-        }
-
-        // Escape key handler
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                if (document.querySelector('.photography-page')) {
-                    closePhotographyModal();
-                } else {
-                    closeImageModal();
-                }
-            }
-        });
 
         console.log('✅ Ligero website initialized successfully');
 
@@ -1431,16 +2181,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error during initialization:', error);
         emergencyCleanup();
     }
+
+    // Fallback initializations outside the try-catch
+    setTimeout(() => {
+        setupCarouselArrows();
+        setupModalInfoButton();
+        if (document.querySelector('.photography-page') || document.getElementById('masonryGrid')) {
+            setupEnhancedCustomCursor();
+        }
+    }, 1000);
 });
 
-setTimeout(() => {
-    forceThemeSwitcherVisibility();
-    setupCustomCursor();
-    setupCarouselArrows();
-    setupModalInfoButton();
-}, 1000);
-
-// Handle page visibility changes
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         if (state.isNavigating && Date.now() - state.lastNavigationTime > 3000) {
@@ -1449,22 +2200,24 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Handle browser back/forward
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
         resetPageState();
-        initMobileFeatures();
-        fixThemeSwitcherPosition();
+        setTimeout(() => {
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'white') {
+                    DOM.body.classList.add('white-theme');
+                }
+            } catch (e) {}
+        }, 50);
     }
 });
 
 window.addEventListener('popstate', function() {
     resetPageState();
-    initMobileFeatures();
-    fixThemeSwitcherPosition();
 });
 
-// Cleanup on page unload
 window.addEventListener('beforeunload', () => {
     const allVideos = document.querySelectorAll('video');
     allVideos.forEach(video => {
@@ -1472,3 +2225,13 @@ window.addEventListener('beforeunload', () => {
         video.currentTime = 0;
     });
 });
+
+setInterval(() => {
+    if (state.isNavigating && Date.now() - state.lastNavigationTime > 2000) {
+        console.warn('Navigation appears stuck, forcing cleanup...');
+        emergencyCleanup();
+        if (window.location.pathname.includes('services') && state.isNavigating) {
+            window.location.reload();
+        }
+    }
+}, 500);
