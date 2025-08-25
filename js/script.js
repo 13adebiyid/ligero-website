@@ -847,25 +847,10 @@ function setupCustomCursor() {
 
     DOM.customCursor = cursor;
 
-    // Force cursor to be visible and properly styled
-    cursor.style.position = 'fixed';
-    cursor.style.width = '20px';
-    cursor.style.height = '20px';
-    cursor.style.background = 'white';
-    cursor.style.borderRadius = '50%';
-    cursor.style.pointerEvents = 'none';
-    cursor.style.zIndex = '999999';
-    cursor.style.transition = 'width 0.1s ease, height 0.1s ease, background 0.1s ease';
-    cursor.style.mixBlendMode = 'difference';
-    cursor.style.transform = 'translate(-50%, -50%)';
-    cursor.style.display = 'block';
-    cursor.style.opacity = '1';
-    cursor.style.visibility = 'visible';
-
     // Hide default cursor on photography page
     document.body.style.cursor = 'none';
 
-    // Smooth cursor movement with better performance
+    // Smooth cursor movement
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
 
@@ -882,30 +867,20 @@ function setupCustomCursor() {
         mouseY = e.clientY;
     });
 
-    // Start the cursor animation loop
+    // Start loop
     updateCursor();
 
     // Setup photo hovers
     setupPhotoHovers();
 
-    // Handle other interactive elements
+    // Handle generic interactive elements
     document.querySelectorAll('a, button, .theme-circle, .filter-btn').forEach(item => {
         item.addEventListener('mouseenter', () => {
             cursor.classList.add('hover');
-            cursor.style.width = '80px';
-            cursor.style.height = '80px';
-            cursor.style.background = 'rgba(255, 255, 255, 0.1)';
-            cursor.style.border = '2px solid white';
-            cursor.style.backdropFilter = 'blur(10px)';
         });
 
         item.addEventListener('mouseleave', () => {
             cursor.classList.remove('hover');
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            cursor.style.background = 'white';
-            cursor.style.border = 'none';
-            cursor.style.backdropFilter = 'none';
         });
     });
 
@@ -932,64 +907,27 @@ function setupCustomCursor() {
             }
         }
     });
-
-    // White theme handling
-    function updateCursorForTheme() {
-        const isWhiteTheme = document.body.classList.contains('white-theme');
-        if (isWhiteTheme) {
-            cursor.style.background = 'black';
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.style.color = 'black';
-            }
-        } else {
-            cursor.style.background = 'white';
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.style.color = 'white';
-            }
-        }
-    }
-
-    // Initial theme check
-    updateCursorForTheme();
-
-    // Listen for theme changes
-    const observer = new MutationObserver(updateCursorForTheme);
-    observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class']
-    });
 }
 
 function setupPhotoHovers() {
-    // Clear any existing event listeners first
+    // Clear existing listeners
     document.querySelectorAll('.masonry-item').forEach(item => {
-        // Clone node to remove all event listeners
         const newItem = item.cloneNode(true);
         item.parentNode.replaceChild(newItem, item);
     });
 
-    // Setup fresh event listeners
+    // Re-bind hover + click
     document.querySelectorAll('.masonry-item').forEach(item => {
         item.addEventListener('mouseenter', () => {
             const cursor = document.getElementById('customCursor');
             if (cursor) {
                 cursor.classList.add('view');
-                cursor.style.width = '100px';
-                cursor.style.height = '100px';
-                cursor.style.background = 'rgba(255, 255, 255, 0.05)';
-                cursor.style.border = '2px solid white';
-                cursor.style.backdropFilter = 'blur(15px)';
-
                 const cursorText = cursor.querySelector('.cursor-text');
                 if (cursorText) {
                     cursorText.style.opacity = '1';
                     cursorText.textContent = 'VIEW';
                 }
             }
-
-            // Ensure body cursor is still hidden
             document.body.style.cursor = 'none';
         });
 
@@ -997,12 +935,6 @@ function setupPhotoHovers() {
             const cursor = document.getElementById('customCursor');
             if (cursor) {
                 cursor.classList.remove('view');
-                cursor.style.width = '20px';
-                cursor.style.height = '20px';
-                cursor.style.background = document.body.classList.contains('white-theme') ? 'black' : 'white';
-                cursor.style.border = 'none';
-                cursor.style.backdropFilter = 'none';
-
                 const cursorText = cursor.querySelector('.cursor-text');
                 if (cursorText) {
                     cursorText.style.opacity = '0';
@@ -1010,7 +942,6 @@ function setupPhotoHovers() {
             }
         });
 
-        // Re-add click handlers
         item.addEventListener('click', () => {
             const photoId = parseInt(item.dataset.photoId);
             const indexInFiltered = filteredPhotos.findIndex(p => p.id === photoId);
@@ -1021,71 +952,6 @@ function setupPhotoHovers() {
     });
 }
 
-function setupPhotographyEventListeners() {
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const category = this.dataset.category;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            filterPhotos(category);
-        });
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (state.isModalOpen) {
-            if (e.key === 'ArrowRight') navigateModal(1);
-            if (e.key === 'ArrowLeft') navigateModal(-1);
-            if (e.key === 'Escape') closePhotographyModal();
-            if (e.key === 'i' || e.key === 'I') window.toggleModalInfo(); // 'i' key to toggle info
-        }
-    });
-
-    // Modal backdrop click
-    const imageModal = DOM.imageModal;
-    if (imageModal) {
-        imageModal.addEventListener('click', (e) => {
-            if (e.target.id === 'imageModal' || e.target.classList.contains('modal-backdrop')) {
-                closePhotographyModal();
-            }
-        });
-    }
-
-    // Modal navigation arrows
-    const prevBtn = document.querySelector('.modal-nav.prev');
-    const nextBtn = document.querySelector('.modal-nav.next');
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navigateModal(-1);
-        });
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navigateModal(1);
-        });
-    }
-}
-
-function initializePhotographyPortfolio() {
-    if (document.getElementById('masonryGrid')) {
-        DOM.body.classList.add('photography-page');
-        renderPhotos(photographyData);
-        setupCustomCursor();
-        setupPhotographyEventListeners();
-
-        // Make sure the modal info button works
-        setTimeout(() => {
-            setupModalInfoButton();
-        }, 500);
-    }
-}
 // ============= CONTACT PAGE =============
 function initContactPage() {
     const contactForm = document.getElementById('contactForm');

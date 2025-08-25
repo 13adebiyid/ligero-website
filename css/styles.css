@@ -3243,49 +3243,44 @@ body.white-theme .form-buttons button:hover {
 
 /* ================== CUSTOM CURSOR ================== */
 .custom-cursor {
-    position: fixed;
     width: 20px;
     height: 20px;
-    background: white;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 999999 !important;
-    transition: width 0.1s ease, height 0.1s ease, background 0.1s ease;
-    mix-blend-mode: difference;
+    position: fixed;
     transform: translate(-50%, -50%);
-    will-change: transform;
+    transition: width 0.1s, height 0.1s, background 0.1s, border 0.1s, backdrop-filter 0.1s;
+    z-index: 9999;
 }
 
 body.white-theme .custom-cursor {
     background: black;
-    border-color: black;
+}
+body:not(.white-theme) .custom-cursor {
+    background: white;
 }
 
 .custom-cursor.hover {
     width: 80px;
     height: 80px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.1);
     border: 2px solid white;
     backdrop-filter: blur(10px);
-    transition: all 0.1s ease;
 }
-
 body.white-theme .custom-cursor.hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0,0,0,0.1);
     border-color: black;
 }
 
 .custom-cursor.view {
     width: 100px;
     height: 100px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255,255,255,0.05);
     border: 2px solid white;
     backdrop-filter: blur(15px);
-    transition: all 0.1s ease; /* Faster transition */
 }
-
 body.white-theme .custom-cursor.view {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0,0,0,0.05);
     border-color: black;
 }
 
@@ -3298,18 +3293,23 @@ body.white-theme .custom-cursor.view {
     font-weight: 500;
     letter-spacing: 1px;
     opacity: 0;
-    transition: opacity 0.1s ease; /* Faster transition */
-    color: white;
+    transition: opacity 0.1s ease;
+    color: inherit; /* follows parent color */
     text-transform: uppercase;
+}
+
+.custom-cursor.view .cursor-text,
+.custom-cursor.open-mode .cursor-text {
+    opacity: 1;
 }
 
 body.white-theme .cursor-text {
     color: black;
 }
-
-.custom-cursor.view .cursor-text {
-    opacity: 1;
+body:not(.white-theme) .cursor-text {
+    color: white;
 }
+
 
 /* ================== PHOTOGRAPHY PAGE ================== */
 .photography-page {
@@ -5721,22 +5721,17 @@ body.white-theme .services-button:focus {
 /* Photography Modal Info Close Button */
 .modal-info-close {
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 15px;
-    background: none;
-    border: none;
+    background: rgba(0,0,0,0.5);
     color: white;
-    font-size: 20px;
+    font-size: 1.5rem;
+    border: none;
     cursor: pointer;
-    opacity: 0.7;
-    transition: all 0.3s ease;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 50%;
-    z-index: 10002;
+    padding: 6px 10px;
+    transition: all 0.3s;
+    z-index: 10;
 }
 
 body.white-theme .modal-info-close {
@@ -5750,7 +5745,12 @@ body.white-theme .modal-info-close {
 }
 
 body.white-theme .modal-info-close:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,0.9);
+}
+
+body.white-theme .modal-info-close {
+    background: rgba(255,255,255,0.7);
+    color: black;
 }
 
 /* Make modal-info hideable */
