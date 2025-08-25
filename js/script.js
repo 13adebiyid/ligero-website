@@ -2118,3 +2118,10 @@ setInterval(() => {
         }
     }
 }, 500);
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.querySelector(".photography-page")) {
+        initializePhotographyPortfolio();
+        setupCustomCursor();
+    }
+});
