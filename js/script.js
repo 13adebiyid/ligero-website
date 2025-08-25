@@ -218,7 +218,12 @@ function getCarouselSettings() {
 }
 
 function slideCarousel(direction) {
-    if (utils.isMobile() || !DOM.carousel) return;
+    console.log('slideCarousel called with direction:', direction);
+
+    if (utils.isMobile() || !DOM.carousel) {
+        console.log('Mobile or no carousel, skipping');
+        return;
+    }
 
     const cards = DOM.carousel.querySelectorAll('.service-card');
     const totalCards = cards.length;
@@ -246,10 +251,10 @@ function slideCarousel(direction) {
     }
 
     DOM.carousel.style.transform = `translateX(${translateX}px)`;
-}
+    DOM.carousel.style.transition = 'transform 0.3s ease';
 
-// Make slideCarousel globally accessible
-window.slideCarousel = slideCarousel;
+    console.log('Carousel slide complete, translateX:', translateX);
+}
 
 function resetCarousel() {
     if (state.isNavigating || !DOM.carousel) return;
@@ -263,6 +268,54 @@ function resetCarousel() {
         DOM.carousel.style.transition = 'none';
     }
 }
+
+function setupCarouselArrows() {
+    console.log('Setting up carousel arrows...');
+
+    const leftArrow = document.querySelector('.carousel-arrow.left');
+    const rightArrow = document.querySelector('.carousel-arrow.right');
+
+    if (leftArrow) {
+        // Remove existing listeners
+        const newLeftArrow = leftArrow.cloneNode(true);
+        leftArrow.parentNode.replaceChild(newLeftArrow, leftArrow);
+
+        newLeftArrow.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Left arrow clicked');
+            slideCarousel(-1);
+        });
+
+        // Ensure clickability
+        newLeftArrow.style.pointerEvents = 'auto';
+        newLeftArrow.style.cursor = 'pointer';
+        newLeftArrow.style.zIndex = '100';
+    }
+
+    if (rightArrow) {
+        // Remove existing listeners
+        const newRightArrow = rightArrow.cloneNode(true);
+        rightArrow.parentNode.replaceChild(newRightArrow, rightArrow);
+
+        newRightArrow.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Right arrow clicked');
+            slideCarousel(1);
+        });
+
+        // Ensure clickability
+        newRightArrow.style.pointerEvents = 'auto';
+        newRightArrow.style.cursor = 'pointer';
+        newRightArrow.style.zIndex = '100';
+    }
+
+    console.log('Carousel arrows setup complete');
+}
+
+// Make globally accessible
+window.slideCarousel = slideCarousel;
 
 // ============= PAGE TRANSITIONS =============
 function createTransitionOverlay() {
@@ -320,8 +373,13 @@ function handleHomePageTransition(url) {
 
 // ============= PHOTOGRAPHY MODAL INFO TOGGLE =============
 function toggleModalInfo() {
+    console.log('toggleModalInfo called');
+
     const modalInfo = document.querySelector('.modal-info');
-    if (!modalInfo) return;
+    if (!modalInfo) {
+        console.error('Modal info element not found');
+        return;
+    }
 
     isModalInfoVisible = !isModalInfoVisible;
 
@@ -339,24 +397,38 @@ function toggleModalInfo() {
     }
 }
 
-// Make toggleModalInfo globally accessible
-window.toggleModalInfo = toggleModalInfo;
-
 function setupModalInfoButton() {
-    const modalInfoCloseBtn = document.querySelector('.modal-info-close');
-    if (modalInfoCloseBtn) {
-        // Remove any existing listeners by cloning
-        const newBtn = modalInfoCloseBtn.cloneNode(true);
-        modalInfoCloseBtn.parentNode.replaceChild(newBtn, modalInfoCloseBtn);
+    console.log('Setting up modal info button...');
 
-        // Add fresh listener
-        newBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleModalInfo();
-        });
+    const modalInfoCloseBtn = document.querySelector('.modal-info-close');
+    if (!modalInfoCloseBtn) {
+        console.error('Modal info close button not found');
+        return;
     }
+
+    // Remove existing listeners by cloning
+    const newBtn = modalInfoCloseBtn.cloneNode(true);
+    modalInfoCloseBtn.parentNode.replaceChild(newBtn, modalInfoCloseBtn);
+
+    // Add fresh click listener
+    newBtn.addEventListener('click', function(e) {
+        console.log('Modal info close button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        toggleModalInfo();
+    });
+
+    // Ensure button is interactive
+    newBtn.style.pointerEvents = 'auto';
+    newBtn.style.cursor = 'pointer';
+    newBtn.style.zIndex = '10002';
+
+    console.log('Modal info button setup complete');
 }
+
+// Make globally accessible
+window.toggleModalInfo = toggleModalInfo;
+window.setupModalInfoButton = setupModalInfoButton;
 
 // ============= GENERIC MODAL (Default for most pages) =============
 function openImageModal(imageSrc, title, client) {
@@ -542,9 +614,7 @@ function navigateModal(direction) {
     updatePhotographyModalContent(photo);
 
     // Re-setup modal info button after content update
-    setTimeout(() => {
-        setupModalInfoButton();
-    }, 100);
+    setTimeout(setupModalInfoButton, 100);
 }
 
 // Make navigateModal globally accessible
@@ -872,15 +942,27 @@ function filterPhotos(category) {
 }
 
 // ============= PHOTOGRAPHY CURSOR =============
+
 function setupCustomCursor() {
-    // Exit early if mobile or touch device
-    if (utils.isMobile() || utils.isTouchDevice()) {
+    // Only run on desktop, not mobile or touch devices
+    if (window.innerWidth <= 768 ||
+        ('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        (navigator.msMaxTouchPoints > 0)) {
         document.body.style.cursor = 'auto';
+        const existingCursor = document.getElementById('customCursor');
+        if (existingCursor) {
+            existingCursor.style.display = 'none';
+        }
         return;
     }
 
     // Only run on photography page
-    if (!document.querySelector('.photography-page')) return;
+    if (!document.querySelector('.photography-page') && !document.body.classList.contains('photography-page')) {
+        return;
+    }
+
+    console.log('Setting up custom cursor...');
 
     let cursor = document.getElementById('customCursor');
 
@@ -893,9 +975,7 @@ function setupCustomCursor() {
         document.body.appendChild(cursor);
     }
 
-    DOM.customCursor = cursor;
-
-    // Force cursor to be visible and properly styled
+    // Force cursor styles
     cursor.style.position = 'fixed';
     cursor.style.width = '20px';
     cursor.style.height = '20px';
@@ -903,21 +983,22 @@ function setupCustomCursor() {
     cursor.style.borderRadius = '50%';
     cursor.style.pointerEvents = 'none';
     cursor.style.zIndex = '999999';
-    cursor.style.transition = 'width 0.1s ease, height 0.1s ease, background 0.1s ease';
+    cursor.style.transition = 'all 0.1s ease';
     cursor.style.mixBlendMode = 'difference';
     cursor.style.transform = 'translate(-50%, -50%)';
     cursor.style.display = 'block';
-    cursor.style.opacity = '1';
     cursor.style.visibility = 'visible';
+    cursor.style.opacity = '1';
 
-    // Hide default cursor on photography page
+    // Store cursor reference
+    DOM.customCursor = cursor;
+
+    // Hide default cursor
     document.body.style.cursor = 'none';
 
-    // Smooth cursor movement with better performance
+    // Cursor movement
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
-    let isOverPhoto = false;
-    let isOverSpecialLink = false;
 
     function updateCursor() {
         cursorX += (mouseX - cursorX) * 0.1;
@@ -930,110 +1011,108 @@ function setupCustomCursor() {
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-
-        // Check if we're over a photo
-        const photoElement = e.target.closest('.masonry-item');
-        const specialLink = e.target.closest('.photographer-link, .modal-photographer, .modal-meta-item a');
-
-        isOverPhoto = !!photoElement;
-        isOverSpecialLink = !!specialLink;
-
-        const cursorText = cursor.querySelector('.cursor-text');
-
-        if (isOverSpecialLink) {
-            // Over a special link - show OPEN
-            if (cursorText) {
-                cursorText.textContent = 'OPEN';
-                cursorText.style.opacity = '1';
-            }
-        } else if (isOverPhoto) {
-            // Over a photo but not a special link - show VIEW
-            if (cursorText) {
-                cursorText.textContent = 'VIEW';
-                cursorText.style.opacity = '1';
-            }
-        } else {
-            // Not over a photo - hide text
-            if (cursorText) {
-                cursorText.style.opacity = '0';
-            }
-        }
     });
 
-    // Start the cursor animation loop
     updateCursor();
-
-    // Setup photo hovers
-    setupPhotoHovers();
-
-    // Handle other interactive elements (not photos)
-    document.querySelectorAll('a:not(.photographer-link), button, .theme-circle, .filter-btn').forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            cursor.classList.add('hover');
-            cursor.style.width = '80px';
-            cursor.style.height = '80px';
-            cursor.style.background = 'rgba(255, 255, 255, 0.1)';
-            cursor.style.border = '2px solid white';
-            cursor.style.backdropFilter = 'blur(10px)';
-
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.style.opacity = '0';
-            }
-        });
-
-        item.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hover');
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            cursor.style.background = document.body.classList.contains('white-theme') ? 'black' : 'white';
-            cursor.style.border = 'none';
-            cursor.style.backdropFilter = 'none';
-        });
-    });
-
-    // White theme handling
-    function updateCursorForTheme() {
-        const isWhiteTheme = document.body.classList.contains('white-theme');
-        if (isWhiteTheme) {
-            cursor.style.background = 'black';
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.style.color = 'black';
-            }
-        } else {
-            cursor.style.background = 'white';
-            const cursorText = cursor.querySelector('.cursor-text');
-            if (cursorText) {
-                cursorText.style.color = 'white';
-            }
-        }
-    }
-
-    // Initial theme check
     updateCursorForTheme();
-
-    // Listen for theme changes
-    const observer = new MutationObserver(updateCursorForTheme);
-    observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class']
-    });
+    setupPhotoHovers();
 }
 
+function updateCursorForTheme() {
+    const cursor = DOM.customCursor || document.getElementById('customCursor');
+    if (!cursor) return;
+
+    const isWhiteTheme = document.body.classList.contains('white-theme');
+    if (isWhiteTheme) {
+        cursor.style.background = 'black';
+        const cursorText = cursor.querySelector('.cursor-text');
+        if (cursorText) cursorText.style.color = 'black';
+    } else {
+        cursor.style.background = 'white';
+        const cursorText = cursor.querySelector('.cursor-text');
+        if (cursorText) cursorText.style.color = 'white';
+    }
+}
+
+function forceThemeSwitcherVisibility() {
+    const themeSwitchers = document.querySelectorAll('.theme-switcher');
+    console.log('Found theme switchers:', themeSwitchers.length);
+
+    themeSwitchers.forEach(switcher => {
+        // Force display properties
+        switcher.style.display = 'flex';
+        switcher.style.visibility = 'visible';
+        switcher.style.opacity = '1';
+        switcher.style.position = 'fixed';
+        switcher.style.bottom = '30px';
+        switcher.style.left = '30px';
+        switcher.style.zIndex = '1000';
+        switcher.style.gap = '15px';
+        switcher.style.transform = 'none';
+        switcher.style.animation = 'none';
+    });
+
+    // Ensure theme circles are visible and functional
+    const themeCircles = document.querySelectorAll('.theme-circle');
+    themeCircles.forEach(circle => {
+        circle.style.display = 'block';
+        circle.style.visibility = 'visible';
+        circle.style.opacity = '1';
+        circle.style.width = '30px';
+        circle.style.height = '30px';
+        circle.style.borderRadius = '50%';
+        circle.style.cursor = 'pointer';
+        circle.style.border = '2px solid rgba(255, 255, 255, 0.3)';
+        circle.style.transition = 'all 0.3s ease';
+
+        if (circle.classList.contains('black')) {
+            circle.style.background = 'black';
+        } else if (circle.classList.contains('white')) {
+            circle.style.background = 'white';
+        }
+    });
+
+    // Hide on mobile
+    if (window.innerWidth <= 768) {
+        themeSwitchers.forEach(switcher => {
+            switcher.style.display = 'none';
+        });
+    }
+}
+
+// Enhanced setTheme function
+window.setTheme = function(theme) {
+    console.log('Setting theme to:', theme);
+
+    if (theme === 'white') {
+        document.body.classList.add('white-theme');
+        try {
+            localStorage.setItem('theme', 'white');
+        } catch (e) {}
+    } else {
+        document.body.classList.remove('white-theme');
+        try {
+            localStorage.setItem('theme', 'black');
+        } catch (e) {}
+    }
+
+    // Update custom cursor for theme
+    updateCursorForTheme();
+};
+
+
 function setupPhotoHovers() {
-    // Clear any existing event listeners first
-    document.querySelectorAll('.masonry-item').forEach(item => {
-        // Clone node to remove all event listeners
+    // Clear existing listeners
+    document.querySelectorAll('.masonry-item, .feed-item').forEach(item => {
         const newItem = item.cloneNode(true);
         item.parentNode.replaceChild(newItem, item);
     });
 
-    // Setup fresh event listeners
-    document.querySelectorAll('.masonry-item').forEach(item => {
+    // Setup fresh listeners
+    document.querySelectorAll('.masonry-item, .feed-item').forEach(item => {
         item.addEventListener('mouseenter', () => {
-            const cursor = document.getElementById('customCursor');
-            if (cursor && !utils.isMobile() && !utils.isTouchDevice()) {
+            const cursor = DOM.customCursor || document.getElementById('customCursor');
+            if (cursor && window.innerWidth > 768) {
                 cursor.classList.add('view');
                 cursor.style.width = '100px';
                 cursor.style.height = '100px';
@@ -1047,16 +1126,11 @@ function setupPhotoHovers() {
                     cursorText.textContent = 'VIEW';
                 }
             }
-
-            // Ensure body cursor is still hidden on desktop
-            if (!utils.isMobile() && !utils.isTouchDevice()) {
-                document.body.style.cursor = 'none';
-            }
         });
 
         item.addEventListener('mouseleave', () => {
-            const cursor = document.getElementById('customCursor');
-            if (cursor && !utils.isMobile() && !utils.isTouchDevice()) {
+            const cursor = DOM.customCursor || document.getElementById('customCursor');
+            if (cursor && window.innerWidth > 768) {
                 cursor.classList.remove('view');
                 cursor.style.width = '20px';
                 cursor.style.height = '20px';
@@ -1068,15 +1142,6 @@ function setupPhotoHovers() {
                 if (cursorText) {
                     cursorText.style.opacity = '0';
                 }
-            }
-        });
-
-        // Re-add click handlers
-        item.addEventListener('click', () => {
-            const photoId = parseInt(item.dataset.photoId);
-            const indexInFiltered = filteredPhotos.findIndex(p => p.id === photoId);
-            if (indexInFiltered !== -1) {
-                openPhotographyModal(indexInFiltered);
             }
         });
     });
@@ -1276,6 +1341,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fix theme switcher positioning
         fixThemeSwitcherPosition();
 
+        forceThemeSwitcherVisibility();
+        setupCustomCursor();
+        setupCarouselArrows();
+
+        setTimeout(setupModalInfoButton, 100);
+        setTimeout(setupModalInfoButton, 500);
+        setTimeout(setupModalInfoButton, 1000);
+
         // Apply saved theme
         try {
             const savedTheme = localStorage.getItem('theme');
@@ -1315,6 +1388,8 @@ document.addEventListener('DOMContentLoaded', () => {
             initMobileFeatures();
             fixThemeSwitcherPosition();
             resetCarousel();
+            forceThemeSwitcherVisibility();
+            setupCustomCursor();
             if (window.innerWidth > 768) {
                 closeMobileMenu();
             }
@@ -1357,6 +1432,13 @@ document.addEventListener('DOMContentLoaded', () => {
         emergencyCleanup();
     }
 });
+
+setTimeout(() => {
+    forceThemeSwitcherVisibility();
+    setupCustomCursor();
+    setupCarouselArrows();
+    setupModalInfoButton();
+}, 1000);
 
 // Handle page visibility changes
 document.addEventListener('visibilitychange', () => {
