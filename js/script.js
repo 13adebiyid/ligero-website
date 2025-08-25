@@ -350,15 +350,9 @@ window.toggleModalInfo = function() {
     isModalInfoVisible = !isModalInfoVisible;
 
     if (isModalInfoVisible) {
-        modalInfo.classList.remove('hidden');
-        modalInfo.style.opacity = '1';
-        modalInfo.style.transform = 'translateY(0)';
-        modalInfo.style.pointerEvents = 'auto';
+        modalInfo.classList.add('visible');
     } else {
-        modalInfo.classList.add('hidden');
-        modalInfo.style.opacity = '0';
-        modalInfo.style.transform = 'translateY(100%)';
-        modalInfo.style.pointerEvents = 'none';
+        modalInfo.classList.remove('visible');
     }
 };
 
@@ -807,22 +801,6 @@ function filterPhotos(category) {
     }
 
     renderPhotos(filteredPhotos);
-}
-
-// Metadata exit button
-let isModalInfoVisible = true;
-
-function toggleModalInfo() {
-    const modalInfo = document.querySelector('.modal-info');
-    if (!modalInfo) return;
-
-    isModalInfoVisible = !isModalInfoVisible;
-
-    if (isModalInfoVisible) {
-        modalInfo.classList.remove('hidden');
-    } else {
-        modalInfo.classList.add('hidden');
-    }
 }
 
 // Reset info visibility when opening modal

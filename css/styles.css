@@ -3250,14 +3250,15 @@ body.white-theme .form-buttons button:hover {
     border-radius: 50%;
     pointer-events: none;
     z-index: 999999 !important;
-    transition: width 0.1s ease, height 0.1s ease, background 0.1s ease; /* Faster transitions */
+    transition: width 0.1s ease, height 0.1s ease, background 0.1s ease;
     mix-blend-mode: difference;
     transform: translate(-50%, -50%);
-    will-change: transform; /* Optimize for animation */
+    will-change: transform;
 }
 
 body.white-theme .custom-cursor {
     background: black;
+    border-color: black;
 }
 
 .custom-cursor.hover {
@@ -3266,7 +3267,7 @@ body.white-theme .custom-cursor {
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid white;
     backdrop-filter: blur(10px);
-    transition: all 0.1s ease; /* Faster transition */
+    transition: all 0.1s ease;
 }
 
 body.white-theme .custom-cursor.hover {
@@ -4327,9 +4328,15 @@ body.white-theme .photographer-link {
     border: 1px solid rgba(255, 255, 255, 0.1);
     transform: translateY(0);
     opacity: 1;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: auto;
     z-index: 10001;
+}
+
+.modal-info:not(.visible) {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
 }
 
 .image-modal.active .modal-info {
