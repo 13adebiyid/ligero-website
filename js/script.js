@@ -55,6 +55,25 @@ const utils = {
     }
 };
 
+// ============= THEME SWITCHER =============
+
+function setTheme(theme) {
+    if (theme === 'white') {
+        document.body.classList.add('white-theme');
+        localStorage.setItem('theme', 'white');
+    } else {
+        document.body.classList.remove('white-theme');
+        localStorage.setItem('theme', 'black');
+    }
+
+    // Update cursor if it exists (for photography page)
+    if (DOM.customCursor) {
+        updateCursorForTheme();
+    }
+}
+
+window.setTheme = setTheme;
+
 // ============= NAVIGATION STATE =============
 function resetNavigationState() {
     state.isNavigating = false;
