@@ -13,16 +13,13 @@
 </head>
 <body>
 
-<!-- Navigation -->
 <nav>
     <div class="hamburger-menu">
         <div class="hamburger-line"></div>
         <div class="hamburger-line"></div>
         <div class="hamburger-line"></div>
     </div>
-
     <a href="/" class="logo">LIGERO</a>
-
     <div class="nav-menu">
         <a href="/shop/" class="nav-item">Shop</a>
         <span class="nav-separator">|</span>
@@ -34,7 +31,6 @@
     </div>
 </nav>
 
-<!-- Mobile Menu -->
 <div class="mobile-menu-overlay">
     <a href="/" class="mobile-menu-item">HOME</a>
     <a href="/shop/" class="mobile-menu-item">SHOP</a>
@@ -43,26 +39,25 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
-<!-- Contact Page -->
 <div class="modern-contact-page">
-    <!-- Theme Switcher -->
     <div class="theme-switcher">
         <div class="theme-circle black" onclick="setTheme('black')"></div>
         <div class="theme-circle white" onclick="setTheme('white')"></div>
     </div>
 
-    <!-- Contact Header -->
     <div class="contact-header">
         <h1 class="contact-main-title">GET IN TOUCH</h1>
         <p class="contact-main-subtitle">Choose how you'd like to connect with us</p>
     </div>
 
-    <!-- Form Type Selector -->
     <div class="contact-type-selector" id="contactTypeSelector">
         <div class="selector-container">
             <button class="type-selector-btn active" data-type="services" onclick="switchContactType('services')">
                 <div class="selector-icon">
-                    <img src="/images/clapperboard-icon.webp" alt="Creative Services" class="selector-icon-img">
+                    <svg class="selector-icon-img" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                        <circle cx="12" cy="13" r="3"/>
+                    </svg>
                 </div>
                 <div class="selector-content">
                     <h3>Creative Services</h3>
@@ -108,7 +103,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="services-email">Email Address *</label>
-                        <input  class="numbers" type="email" id="services-email" name="email" required>
+                        <input class="numbers" type="email" id="services-email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="services-phone">Phone Number</label>
@@ -163,6 +158,10 @@
                     <textarea class="numbers" id="services-message" name="message" rows="6" placeholder="Tell us about your project, vision, goals, and any specific requirements..." required></textarea>
                 </div>
 
+                <div class="form-group recaptcha-container">
+                    <div data-netlify-recaptcha="true"></div>
+                </div>
+
                 <div class="form-actions">
                     <button type="submit" class="submit-button">
                         <span class="button-text">SUBMIT</span>
@@ -186,7 +185,7 @@
                 <p>Questions about your order</p>
             </div>
 
-            <form name="clothing-contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" class="modern-contact-form" id="clothingContactForm">
+            <form name="clothing-contact" method="POST" data-netlify="true" class="modern-contact-form" id="clothingContactForm">
                 <input type="hidden" name="form-name" value="clothing-contact">
                 <input type="hidden" name="enquiry-type" value="clothing">
 
@@ -232,7 +231,6 @@
                     <textarea class="numbers" id="clothing-message" name="message" rows="6" placeholder="Please provide details about your enquiry..." required></textarea>
                 </div>
 
-                <!-- reCAPTCHA -->
                 <div class="form-group recaptcha-container">
                     <div data-netlify-recaptcha="true"></div>
                 </div>
@@ -252,7 +250,6 @@
         </div>
     </div>
 
-    <!-- Success Message -->
     <div class="contact-success" id="contactSuccess" style="display: none;">
         <div class="success-content">
             <div class="checkmark-wrapper">

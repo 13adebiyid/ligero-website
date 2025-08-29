@@ -733,6 +733,44 @@ nav {
     color: black;
 }
 
+/* ================== CREATIVE DIRECTION SCROLL ANIMATIONS ================== */
+
+.scroll-reveal-text .word {
+    display: inline-block;
+    opacity: 0.1;
+    filter: blur(4px);
+    transform: translateY(20px);
+    transition: none;
+}
+
+.video-section {
+    opacity: 0;
+    transform: translateY(60px) rotateX(5deg);
+    transform-origin: center bottom;
+}
+
+.dual-video-item {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+/* Ensure smooth animations */
+.video-container-main {
+    will-change: transform, filter;
+}
+
+.video-metadata * {
+    will-change: opacity, transform, filter;
+}
+
+.scroll-word {
+    display: inline-block;
+    opacity: 0.1;
+    filter: blur(4px);
+    transform: translateY(25px);
+    transition: none;
+}
+
 /* ================== FEED LAYOUTS (SET DESIGN & MEMBER PAGES) ================== */
 
 .set-design-feed,
@@ -905,6 +943,33 @@ nav {
     letter-spacing: 2px;
     margin-top: 10px;
 }
+
+.designer-link.typewriter-active {
+    animation: designer-pulse 3s ease-in-out infinite;
+    white-space: pre-line;
+}
+
+.designer-link .typewriter-display {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1.4;
+    text-align: inherit;
+}
+
+.designer-link .typewriter-caret {
+    display: inline-block;
+    font-weight: normal;
+    margin-left: 1px;
+    text-align: inherit;
+    animation: typewriter-blink 1s steps(1) infinite;
+}
+
+
+@keyframes typewriter-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 
 /* ================== DUAL VIDEO SECTION ================== */
 
@@ -1440,6 +1505,7 @@ nav {
     font-weight: 300;
     margin-bottom: 8px;
     color: white;
+    font-family: "Dubai Light" !important;
 }
 
 .image-project {
@@ -4278,8 +4344,8 @@ body.white-theme .photographer-link {
     font-size: 2rem;
     cursor: none;
     padding: 10px;
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -4345,7 +4411,7 @@ body.white-theme .photographer-link {
 }
 
 .modal-title {
-    font-family: 'Madani', sans-serif;
+    font-family: "Dubai Light" !important;
     font-size: 1.6rem;
     font-weight: 300;
     margin-bottom: 8px;
@@ -5732,6 +5798,8 @@ body.white-theme .services-button:focus {
     padding: 6px 10px;
     transition: all 0.3s;
     z-index: 10;
+    width: 40px ;
+    height: 40px ;
 }
 
 body.white-theme .modal-info-close {

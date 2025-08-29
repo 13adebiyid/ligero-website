@@ -7,10 +7,10 @@
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <!-- Preload and apply stylesheet -->
     <link rel="stylesheet" href="/css/styles.css">
-    <!-- Preload and apply scripts -->
     <link rel="preload" href="/js/script.js" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="/js/script.js" defer></script>
 </head>
 <body>
@@ -50,131 +50,125 @@
     </div>
 
     <div class="page-fade-in">
-    <h1 class="service-title">SET DESIGN</h1>
+        <h1 class="service-title">SET DESIGN</h1>
 
-    <div class="feed-container">
+        <div class="feed-container">
 
-        <!-- Project 1: A Gift for a Gift - Video Section -->
-        <div class="video-section">
-            <div class="video-container-main" data-video="/videos/gift.mp4" data-title="A Gift for a Gift" data-client="Anisah Myers-Grey">
-                <video id="gift-video" class="feed-video" muted loop preload="auto" playsinline>
-                    <source src="/videos/gift-preview.mp4" type="video/mp4">
-                </video>
-                <div class="video-overlay">
-                    <div class="play-indicator">▶</div>
+            <div class="video-section">
+                <div class="video-container-main" data-video="/videos/gift.mp4" data-title="A Gift for a Gift" data-client="Anisah Myers-Grey">
+                    <video id="gift-video" class="feed-video" muted loop preload="auto" playsinline>
+                        <source src="/videos/gift-preview.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                    </div>
+                </div>
+
+                <div class="video-metadata">
+                    <div class="client-name">Anisah Myers-Grey</div>
+                    <div class="project-title">A Gift for a Gift - Short Film</div>
+                    <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
                 </div>
             </div>
 
-            <div class="video-metadata">
-                <div class="client-name">Anisah Myers-Grey</div>
-                <div class="project-title">A Gift for a Gift - Short Film</div>
-                <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
+            <div class="images-grid">
+                <div class="feed-item image-medium" data-image="/images/gift-still-4.webp">
+                    <img src="/images/gift-still-4.webp" fetchpriority="high" alt="A Gift for a Gift Behind Scenes" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="feed-item image-small" data-image="/images/gift-still-1.webp">
+                    <img src="/images/gift-still-1.webp" fetchpriority="high" alt="A Gift for a Gift Set Details" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="feed-item image-large" data-image="/images/gift-still-2.webp">
+                    <img src="/images/gift-still-2.webp" fetchpriority="high" alt="A Gift for a Gift Set Details" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="feed-item image-medium" data-image="/images/gift-still-3.webp">
+                    <img src="/images/gift-still-3.webp" fetchpriority="high" alt="A Gift for a Gift Behind Scenes" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
             </div>
+
+            <div class="video-section reverse">
+                <div class="video-container-main" data-video="/videos/fashion.mp4" data-title="Tolu Coker Collection" data-client="London Fashion Week">
+                    <video id="fashion-video" class="feed-video" muted loop preload="auto" playsinline>
+                        <source src="/videos/fashion-preview.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                    </div>
+                </div>
+
+                <div class="video-metadata">
+                    <div class="client-name">London Fashion Week</div>
+                    <div class="project-title">Tolu Coker SS<span class="number">25</span> Collection - 'Olapeju'</div>
+                    <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
+                </div>
+            </div>
+
+            <div class="images-grid">
+                <div class="feed-item image-large" data-image="/images/fashion-still-1.webp">
+                    <img src="/images/fashion-still-1.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="feed-item image-medium" data-image="/images/fashion-still-2.webp">
+                    <img src="/images/fashion-still-2.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="feed-item image-small" data-image="/images/fashion-still-3.webp">
+                    <img src="/images/fashion-still-3.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="feed-item image-small" data-image="/images/fashion-still-4.webp">
+                    <img src="/images/fashion-still-4.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <div class="item-overlay">
+                        <div class="play-indicator"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-section">
+                <div class="video-container-main" data-video="/videos/brand.mp4" data-title="A Seat at the Table" data-client="Johnnie Walker x Dankie Sounds">
+                    <video id="brand-video" class="feed-video" muted loop preload="auto" playsinline>
+                        <source src="/videos/brand-preview.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-indicator">▶</div>
+                    </div>
+                </div>
+
+                <div class="video-metadata">
+                    <div class="client-name">Johnnie Walker x Dankie Sounds</div>
+                    <div class="project-title">A Seat at the Table - by Mara Lee</div>
+                    <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
+                </div>
+            </div>
+
         </div>
-
-        <!-- Project 1 Images Grid -->
-        <div class="images-grid">
-            <div class="feed-item image-medium" data-image="/images/gift-still-4.webp">
-                <img src="/images/gift-still-4.webp" fetchpriority="high" alt="A Gift for a Gift Behind Scenes" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-
-            <div class="feed-item image-small" data-image="/images/gift-still-1.webp">
-                <img src="/images/gift-still-1.webp" fetchpriority="high" alt="A Gift for a Gift Set Details" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-
-            <div class="feed-item image-large" data-image="/images/gift-still-2.webp">
-                <img src="/images/gift-still-2.webp" fetchpriority="high" alt="A Gift for a Gift Set Details" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-
-            <div class="feed-item image-medium" data-image="/images/gift-still-3.webp">
-                <img src="/images/gift-still-3.webp" fetchpriority="high" alt="A Gift for a Gift Behind Scenes" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 2: Fashion Campaign - Video Section (Reversed) -->
-        <div class="video-section reverse">
-            <div class="video-container-main" data-video="/videos/fashion.mp4" data-title="Tolu Coker Collection" data-client="London Fashion Week">
-                <video id="fashion-video" class="feed-video" muted loop preload="auto" playsinline>
-                    <source src="/videos/fashion-preview.mp4" type="video/mp4">
-                </video>
-                <div class="video-overlay">
-                    <div class="play-indicator">▶</div>
-                </div>
-            </div>
-
-            <div class="video-metadata">
-                <div class="client-name">London Fashion Week</div>
-                <div class="project-title">Tolu Coker SS<span class="number">25</span> Collection - 'Olapeju'</div>
-                <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
-            </div>
-        </div>
-
-        <!-- Project 2 Images Grid -->
-        <div class="images-grid">
-            <div class="feed-item image-large" data-image="/images/fashion-still-1.webp">
-                <img src="/images/fashion-still-1.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-
-            <div class="feed-item image-medium" data-image="/images/fashion-still-2.webp">
-                <img src="/images/fashion-still-2.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-
-            <div class="feed-item image-small" data-image="/images/fashion-still-3.webp">
-                <img src="/images/fashion-still-3.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-
-            <div class="feed-item image-small" data-image="/images/fashion-still-4.webp">
-                <img src="/images/fashion-still-4.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                <div class="item-overlay">
-                    <div class="play-indicator"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 3: Johnnie Walker - Video Section -->
-        <div class="video-section">
-            <div class="video-container-main" data-video="/videos/brand.mp4" data-title="A Seat at the Table" data-client="Johnnie Walker x Dankie Sounds">
-                <video id="brand-video" class="feed-video" muted loop preload="auto" playsinline>
-                    <source src="/videos/brand-preview.mp4" type="video/mp4">
-                </video>
-                <div class="video-overlay">
-                    <div class="play-indicator">▶</div>
-                </div>
-            </div>
-
-            <div class="video-metadata">
-                <div class="client-name">Johnnie Walker x Dankie Sounds</div>
-                <div class="project-title">A Seat at the Table - by Mara Lee</div>
-                <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
-            </div>
-        </div>
-
-    </div>
     </div>
 </div>
 
-<!-- Video Modal -->
 <div class="video-modal" id="videoModal">
     <div class="modal-backdrop" onclick="closeModal()"></div>
     <div class="modal-container">
@@ -194,7 +188,6 @@
     </div>
 </div>
 
-<!-- Enhanced Image Modal -->
 <div class="image-modal" id="imageModal">
     <div class="modal-backdrop" onclick="closeImageModal()"></div>
     <button class="modal-close" onclick="closeImageModal()">×</button>

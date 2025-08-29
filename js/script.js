@@ -97,6 +97,7 @@ function emergencyCleanup() {
 
 function resetPageState() {
     resetNavigationState();
+    cleanupTypewriterLinks();
     document.querySelectorAll('.page-transition').forEach(overlay => {
         overlay.parentNode?.removeChild(overlay);
     });
@@ -216,7 +217,7 @@ function resetCarousel() {
     }
 }
 
-// ============= CAROUSEL ARROWS FIX =============
+// ============= CAROUSEL ARROWS =============
 function setupCarouselArrows() {
     console.log('Setting up carousel arrows...');
 
@@ -224,7 +225,6 @@ function setupCarouselArrows() {
     const rightArrow = document.querySelector('.carousel-arrow.right');
 
     if (leftArrow) {
-        // Remove existing listeners by cloning
         const newLeftArrow = leftArrow.cloneNode(true);
         leftArrow.parentNode.replaceChild(newLeftArrow, leftArrow);
 
@@ -235,14 +235,12 @@ function setupCarouselArrows() {
             slideCarousel(-1);
         });
 
-        // Ensure clickability
         newLeftArrow.style.pointerEvents = 'auto';
         newLeftArrow.style.cursor = 'pointer';
         newLeftArrow.style.zIndex = '100';
     }
 
     if (rightArrow) {
-        // Remove existing listeners by cloning
         const newRightArrow = rightArrow.cloneNode(true);
         rightArrow.parentNode.replaceChild(newRightArrow, rightArrow);
 
@@ -253,7 +251,6 @@ function setupCarouselArrows() {
             slideCarousel(1);
         });
 
-        // Ensure clickability
         newRightArrow.style.pointerEvents = 'auto';
         newRightArrow.style.cursor = 'pointer';
         newRightArrow.style.zIndex = '100';
@@ -263,6 +260,218 @@ function setupCarouselArrows() {
 }
 
 // ============= PAGE TRANSITIONS =============
+
+function initCreativeDirectionScrollAnimations() {
+    if (typeof gsap === 'undefined' || !gsap.registerPlugin) {
+        return;
+    }
+
+    const isCreativeDirection = document.querySelector('.designer-profile-page') ||
+        document.querySelector('.creative-directing-page');
+    const isSetDesign = document.querySelector('.set-design-feed');
+
+    if (!isCreativeDirection && !isSetDesign) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    setTimeout(() => {
+        gsap.utils.toArray('.video-section').forEach((section, i) => {
+            gsap.set(section, {
+                opacity: 1,
+                y: 0,
+                rotationX: 0
+            });
+
+            gsap.fromTo(section,
+                {
+                    opacity: 0.3,
+                    y: 80,
+                    rotationX: 8,
+                    transformOrigin: "center bottom"
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotationX: 0,
+                    duration: 1.5,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top bottom-=120px",
+                        end: "bottom top",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            const videoContainer = section.querySelector('.video-container-main');
+            if (videoContainer) {
+                gsap.fromTo(videoContainer,
+                    { scale: 0.85, filter: "blur(8px)" },
+                    {
+                        scale: 1,
+                        filter: "blur(0px)",
+                        duration: 2,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top bottom-=80px",
+                            end: "center center",
+                            scrub: 1.5
+                        }
+                    }
+                );
+            }
+
+            animateTextElements(section);
+        });
+
+        gsap.utils.toArray('.dual-video-item').forEach((item, i) => {
+            gsap.fromTo(item,
+                {
+                    opacity: 0.2,
+                    y: 60,
+                    rotationY: i % 2 === 0 ? -5 : 5,
+                    transformOrigin: "center center"
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotationY: 0,
+                    duration: 1.3,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top bottom-=100px",
+                        end: "bottom top",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            const videoContainer = item.querySelector('.video-container-main');
+            if (videoContainer) {
+                gsap.fromTo(videoContainer,
+                    { scale: 0.9, filter: "blur(5px)" },
+                    {
+                        scale: 1,
+                        filter: "blur(0px)",
+                        duration: 1.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top bottom-=60px",
+                            end: "center center",
+                            scrub: 1
+                        }
+                    }
+                );
+            }
+
+            animateTextElements(item);
+        });
+
+        gsap.utils.toArray('.images-grid').forEach((grid, i) => {
+            const images = grid.querySelectorAll('.feed-item');
+
+            gsap.fromTo(images,
+                {
+                    opacity: 0,
+                    y: 40,
+                    scale: 0.9
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: grid,
+                        start: "top bottom-=80px",
+                        end: "bottom top",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+    }, 800);
+}
+
+function animateTextElements(container) {
+    const clientName = container.querySelector('.client-name');
+    const projectTitle = container.querySelector('.project-title');
+    const designerLink = container.querySelector('.designer-link');
+
+    [clientName, projectTitle, designerLink].forEach(element => {
+        if (element && !element.classList.contains('animated-text')) {
+            element.classList.add('animated-text');
+
+            const originalHTML = element.innerHTML;
+            const text = element.textContent;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = originalHTML;
+
+            function wrapTextNodes(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent;
+                    if (text.trim()) {
+                        const words = text.split(/(\s+)/).map((word, index) => {
+                            if (word.match(/^\s+$/)) return word;
+                            return `<span class="scroll-word">${word}</span>`;
+                        }).join('');
+
+                        const wrapper = document.createElement('span');
+                        wrapper.innerHTML = words;
+                        node.parentNode.replaceChild(wrapper, node);
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    Array.from(node.childNodes).forEach(wrapTextNodes);
+                }
+            }
+
+            wrapTextNodes(tempDiv);
+            element.innerHTML = tempDiv.innerHTML;
+
+            const wordElements = element.querySelectorAll('.scroll-word');
+            if (wordElements.length > 0) {
+                gsap.fromTo(wordElements,
+                    {
+                        opacity: 0.1,
+                        filter: "blur(4px)",
+                        y: 25
+                    },
+                    {
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.06,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: container,
+                            start: "top bottom-=25%",
+                            end: "bottom bottom",
+                            scrub: 1.2
+                        }
+                    }
+                );
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
+            initCreativeDirectionScrollAnimations();
+        }
+    }, 100);
+});
+
 function createTransitionOverlay() {
     let overlay = document.querySelector('.page-transition');
     if (!overlay) {
@@ -316,7 +525,7 @@ function handleHomePageTransition(url) {
     }
 }
 
-// ============= GENERIC MODAL (Default for most pages) =============
+// ============= GENERIC MODAL =============
 function openImageModal(imageSrc, title, client) {
     const modal = DOM.imageModal;
     const modalImage = document.getElementById('modalImage');
@@ -406,7 +615,96 @@ function closeModal() {
     if (videoModal) videoModal.style.cursor = '';
 }
 
-// ============= MODAL INFO BUTTON FIX =============
+// ============= TYPEWRITER EFFECT =============
+
+const typewriterIntervals = new Map();
+
+function initializeTypewriterLinks() {
+    document.querySelectorAll('.designer-link').forEach(link => {
+        const originalText = link.innerHTML.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+        link.dataset.texts = JSON.stringify([originalText, 'Learn\nMore']);
+
+        link.innerHTML = '<span class="typewriter-display"></span>';
+        link.classList.add('typewriter-active');
+        const display = link.querySelector('.typewriter-display');
+
+        display.innerHTML = originalText.replace(/\n/g, '<br>');
+
+        setTimeout(() => {
+            startTypewriterLoop(link);
+        }, Math.random() * 2000 + 1500);
+    });
+}
+
+function typewriterText(element, text) {
+    element.innerHTML = '';
+    const lines = text.split('\n');
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+
+    const lineContainers = lines.map((line, index) => {
+        const container = document.createElement('div');
+        container.style.textAlign = 'center';
+        container.style.lineHeight = '1.4';
+        element.appendChild(container);
+        return container;
+    });
+
+    const cursor = document.createElement('span');
+    cursor.className = 'typewriter-caret';
+    cursor.textContent = '.';
+
+    function typeLine() {
+        if (currentLineIndex >= lines.length) {
+            lineContainers[lineContainers.length - 1].appendChild(cursor);
+            return;
+        }
+
+        const currentLine = lines[currentLineIndex];
+        const currentContainer = lineContainers[currentLineIndex];
+
+        if (currentCharIndex < currentLine.length) {
+            const span = document.createElement('span');
+            span.textContent = currentLine[currentCharIndex];
+            currentContainer.appendChild(span);
+
+            if (cursor.parentNode) cursor.remove();
+            currentContainer.appendChild(cursor);
+
+            currentCharIndex++;
+            setTimeout(typeLine, 120);
+        } else {
+            currentLineIndex++;
+            currentCharIndex = 0;
+            setTimeout(typeLine, 300);
+        }
+    }
+
+    typeLine();
+}
+
+function startTypewriterLoop(link) {
+    const texts = JSON.parse(link.dataset.texts);
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % texts.length;
+        const display = link.querySelector('.typewriter-display');
+        typewriterText(display, texts[currentIndex]);
+    }, 4500);
+
+    typewriterIntervals.set(link, interval);
+}
+
+function cleanupTypewriterLinks() {
+    typewriterIntervals.forEach(interval => clearInterval(interval));
+    typewriterIntervals.clear();
+}
+
+// ============= MODAL INFO BUTTON =============
+
+let modalInfoStates = {};
+
 function toggleModalInfo() {
     console.log('toggleModalInfo called');
 
@@ -416,9 +714,12 @@ function toggleModalInfo() {
         return;
     }
 
-    isModalInfoVisible = !isModalInfoVisible;
+    const currentImageId = filteredPhotos[state.currentModalIndex]?.id || state.currentModalIndex;
 
-    if (isModalInfoVisible) {
+    modalInfoStates[currentImageId] = !modalInfoStates[currentImageId];
+    const isVisible = modalInfoStates[currentImageId];
+
+    if (isVisible) {
         modalInfo.classList.remove('hidden');
         modalInfo.style.opacity = '1';
         modalInfo.style.transform = 'translateY(0)';
@@ -441,31 +742,37 @@ function setupModalInfoButton() {
         return;
     }
 
-    // Remove existing listeners by cloning
-    const newBtn = modalInfoCloseBtn.cloneNode(true);
-    modalInfoCloseBtn.parentNode.replaceChild(newBtn, modalInfoCloseBtn);
+    modalInfoCloseBtn.onclick = null;
+    modalInfoCloseBtn.removeAttribute('onclick');
 
-    // Add fresh click listener
-    newBtn.addEventListener('click', function(e) {
+    modalInfoCloseBtn.onclick = function(e) {
         console.log('Modal info close button clicked');
         e.preventDefault();
         e.stopPropagation();
-        toggleModalInfo();
-    });
 
-    // Ensure button is interactive
-    newBtn.style.pointerEvents = 'auto';
-    newBtn.style.cursor = 'pointer';
-    newBtn.style.zIndex = '10002';
+        const modalInfo = document.querySelector('.modal-info');
+        if (modalInfo) {
+            modalInfo.classList.add('hidden');
+            modalInfo.style.opacity = '0';
+            modalInfo.style.transform = 'translateY(100%)';
+            modalInfo.style.pointerEvents = 'none';
+        }
+    };
 
-    console.log('Modal info button setup complete');
+    modalInfoCloseBtn.style.pointerEvents = 'auto';
+    modalInfoCloseBtn.style.cursor = 'pointer';
+    modalInfoCloseBtn.style.zIndex = '10002';
 }
 
-// ============= PHOTOGRAPHY MODAL (Special case) =============
+// ============= PHOTOGRAPHY MODAL =============
 function openPhotographyModal(index) {
     state.currentModalIndex = index;
     state.isModalOpen = true;
-    isModalInfoVisible = true; // Reset to visible
+
+    const currentImageId = filteredPhotos[index]?.id || index;
+    if (modalInfoStates[currentImageId] === undefined) {
+        modalInfoStates[currentImageId] = true; 
+    }
 
     const modal = DOM.imageModal;
     if (!modal) return;
@@ -476,20 +783,28 @@ function openPhotographyModal(index) {
     modal.classList.add('active');
     DOM.body.style.overflow = 'hidden';
 
-    // Make sure info is visible when opening
     const modalInfo = modal.querySelector('.modal-info');
     if (modalInfo) {
-        modalInfo.classList.remove('hidden');
+        const isVisible = modalInfoStates[currentImageId];
+        if (isVisible) {
+            modalInfo.classList.remove('hidden');
+        } else {
+            modalInfo.classList.add('hidden');
+            modalInfo.style.opacity = '0';
+            modalInfo.style.transform = 'translateY(100%)';
+            modalInfo.style.pointerEvents = 'none';
+        }
     }
 
-    // Setup modal info button
     setTimeout(() => {
         setupModalInfoButton();
     }, 100);
 
-    // Handle cursor properly
     if (DOM.customCursor && window.innerWidth > 768) {
         DOM.customCursor.style.display = 'block';
+        DOM.customCursor.style.background = 'white';
+        const cursorText = DOM.customCursor.querySelector('.cursor-text');
+        if (cursorText) cursorText.style.color = 'white';
         document.body.style.cursor = 'none';
     }
 }
@@ -523,6 +838,7 @@ function closePhotographyModal() {
 
     if (DOM.customCursor && window.innerWidth > 768) {
         DOM.customCursor.style.display = 'block';
+        updateCursorForTheme();
         document.body.style.cursor = 'none';
     }
 }
@@ -539,10 +855,27 @@ function navigateModal(direction) {
     const photo = filteredPhotos[state.currentModalIndex];
     updatePhotographyModalContent(photo);
 
-    // Re-setup button after navigation
-    setTimeout(() => {
-        setupModalInfoButton();
-    }, 100);
+    const currentImageId = photo.id || state.currentModalIndex;
+    const modalInfo = document.querySelector('.modal-info');
+
+    if (modalInfo) {
+        const isVisible = modalInfoStates[currentImageId] !== false;
+
+        if (isVisible) {
+            modalInfo.classList.remove('hidden');
+            modalInfo.style.opacity = '1';
+            modalInfo.style.transform = 'translateY(0)';
+            modalInfo.style.pointerEvents = 'auto';
+            modalInfo.style.display = 'block';
+        } else {
+            modalInfo.classList.add('hidden');
+            modalInfo.style.opacity = '0';
+            modalInfo.style.transform = 'translateY(100%)';
+            modalInfo.style.pointerEvents = 'none';
+        }
+    }
+
+    setupModalInfoButton();
 }
 
 // ============= PROJECT INFO HELPER =============
@@ -912,31 +1245,21 @@ function filterPhotos(category) {
     renderPhotos(filteredPhotos);
 }
 
-// ============= ENHANCED CUSTOM CURSOR SETUP =============
+// ============= CUSTOM CURSOR =============
+
 function setupEnhancedCustomCursor() {
-    // Only run on desktop, not mobile or touch devices
-    if (window.innerWidth <= 768 ||
-        ('ontouchstart' in window) ||
-        (navigator.maxTouchPoints > 0) ||
-        (navigator.msMaxTouchPoints > 0)) {
+    if (window.innerWidth <= 768 || 'ontouchstart' in window) {
         document.body.style.cursor = 'auto';
-        const existingCursor = document.getElementById('customCursor');
-        if (existingCursor) {
-            existingCursor.style.display = 'none';
-        }
         return;
     }
 
-    // Only run on photography page
-    if (!document.querySelector('.photography-page') && !document.body.classList.contains('photography-page')) {
+    if (!document.querySelector('.photography-page')) {
         return;
     }
 
-    console.log('Setting up enhanced custom cursor...');
+    console.log('Setting up custom cursor...');
 
     let cursor = document.getElementById('customCursor');
-
-    // Create cursor if it doesn't exist
     if (!cursor) {
         cursor = document.createElement('div');
         cursor.id = 'customCursor';
@@ -945,47 +1268,18 @@ function setupEnhancedCustomCursor() {
         document.body.appendChild(cursor);
     }
 
-    // Force cursor styles
-    cursor.style.position = 'fixed';
-    cursor.style.width = '20px';
-    cursor.style.height = '20px';
-    cursor.style.background = 'white';
-    cursor.style.borderRadius = '50%';
-    cursor.style.pointerEvents = 'none';
-    cursor.style.zIndex = '999999';
-    cursor.style.transition = 'all 0.1s ease';
-    cursor.style.mixBlendMode = 'difference';
-    cursor.style.transform = 'translate(-50%, -50%)';
-    cursor.style.display = 'block';
-    cursor.style.visibility = 'visible';
-    cursor.style.opacity = '1';
-
-    // Store cursor reference
     DOM.customCursor = cursor;
 
-    // Hide default cursor
+    cursor.style.display = 'block';
+    cursor.style.zIndex = '10001';
     document.body.style.cursor = 'none';
 
-    // Cursor movement
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-
-    function updateCursor() {
-        cursorX += (mouseX - cursorX) * 0.1;
-        cursorY += (mouseY - cursorY) * 0.1;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        requestAnimationFrame(updateCursor);
-    }
-
     document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
     });
 
-    updateCursor();
     updateCursorForTheme();
-    setupEnhancedPhotoHovers();
 }
 
 function updateCursorForTheme() {
@@ -1005,13 +1299,11 @@ function updateCursorForTheme() {
 }
 
 function setupEnhancedPhotoHovers() {
-    // Clear existing listeners
     document.querySelectorAll('.masonry-item').forEach(item => {
         const newItem = item.cloneNode(true);
         item.parentNode.replaceChild(newItem, item);
     });
 
-    // Setup fresh listeners
     document.querySelectorAll('.masonry-item').forEach(item => {
         item.addEventListener('mouseenter', () => {
             const cursor = DOM.customCursor || document.getElementById('customCursor');
@@ -1030,7 +1322,6 @@ function setupEnhancedPhotoHovers() {
                 }
             }
 
-            // Keep body cursor hidden
             document.body.style.cursor = 'none';
         });
 
@@ -1050,11 +1341,9 @@ function setupEnhancedPhotoHovers() {
                 }
             }
 
-            // Keep body cursor hidden
             document.body.style.cursor = 'none';
         });
 
-        // Re-add click handlers for modal opening
         item.addEventListener('click', () => {
             const photoId = parseInt(item.dataset.photoId);
             const indexInFiltered = filteredPhotos.findIndex(p => p.id === photoId);
@@ -2170,6 +2459,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setupImageLoading();
                 setupEnhancedFeedVideoAutoplay();
                 initializeModals();
+                initializeTypewriterLinks();
             }, 100);
         }
 
