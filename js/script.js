@@ -296,6 +296,204 @@ function handleHomePageTransition(url) {
     }
 }
 
+function initCreativeDirectionScrollAnimations() {
+    if (typeof gsap === 'undefined' || !gsap.registerPlugin) {
+        return;
+    }
+
+    const isCreativeDirection = document.querySelector('.designer-profile-page') ||
+        document.querySelector('.creative-directing-page');
+    const isSetDesign = document.querySelector('.set-design-feed');
+    const isMemberPage = document.querySelector('.designer-hero');
+
+    if (!isCreativeDirection && !isSetDesign) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    setTimeout(() => {
+        gsap.utils.toArray('.video-section').forEach((section, i) => {
+            gsap.set(section, { opacity: 1, y: 0, rotationX: 0 });
+
+            if (i === 0 || isMemberPage) {
+                return;
+            }
+
+            gsap.fromTo(section,
+                {
+                    opacity: 0.3,
+                    y: 80,
+                    rotationX: 8,
+                    transformOrigin: "center bottom"
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotationX: 0,
+                    duration: 1.5,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top bottom-=120px",
+                        end: "bottom top",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            const videoContainer = section.querySelector('.video-container-main');
+            if (videoContainer) {
+                gsap.fromTo(videoContainer,
+                    { scale: 0.85, filter: "blur(8px)" },
+                    {
+                        scale: 1,
+                        filter: "blur(0px)",
+                        duration: 2,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top bottom-=80px",
+                            end: "center center",
+                            scrub: 1.5
+                        }
+                    }
+                );
+            }
+
+            // only animate text elements that are not designer links
+            if (!section.querySelector('.designer-link')) {
+                animateTextElements(section);
+            }
+        });
+
+        gsap.utils.toArray('.dual-video-item').forEach((item, i) => {
+            if (isMemberPage) {
+                gsap.set(item, { opacity: 1, y: 0, rotationY: 0 });
+                return;
+            }
+
+            gsap.fromTo(item,
+                {
+                    opacity: 0.2,
+                    y: 60,
+                    rotationY: i % 2 === 0 ? -5 : 5,
+                    transformOrigin: "center center"
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotationY: 0,
+                    duration: 1.3,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top bottom-=100px",
+                        end: "bottom top",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            const videoContainer = item.querySelector('.video-container-main');
+            if (videoContainer) {
+                gsap.fromTo(videoContainer,
+                    { scale: 0.9, filter: "blur(5px)" },
+                    {
+                        scale: 1,
+                        filter: "blur(0px)",
+                        duration: 1.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top bottom-=60px",
+                            end: "center center",
+                            scrub: 1
+                        }
+                    }
+                );
+            }
+
+            // skip typewriter links
+            if (!item.querySelector('.designer-link')) {
+                animateTextElements(item);
+            }
+        });
+
+        gsap.utils.toArray('.images-grid').forEach((grid, i) => {
+            const images = grid.querySelectorAll('.feed-item');
+
+            gsap.set(images, { opacity: 1, y: 0, scale: 1 });
+
+            gsap.fromTo(images,
+                {
+                    opacity: 0,
+                    y: 30,
+                    scale: 0.95
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.08,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: grid,
+                        start: "top bottom-=60px",
+                        end: "bottom top",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+    }, 800);
+}
+
+
+// Text animation function
+function animateTextElements(container) {
+    const clientName = container.querySelector('.client-name');
+    const projectTitle = container.querySelector('.project-title');
+    const designerLink = container.querySelector('.designer-link');
+
+    // Split text into words and animate
+    [clientName, projectTitle, designerLink].forEach(element => {
+        if (element) {
+            const text = element.textContent;
+            const words = text.split(/(\s+)/).map((word, index) => {
+                if (word.match(/^\s+$/)) return word;
+                return `<span class="word">${word}</span>`;
+            }).join('');
+
+            element.innerHTML = words;
+            element.classList.add('scroll-reveal-text');
+
+            const wordElements = element.querySelectorAll('.word');
+            gsap.fromTo(wordElements,
+                {
+                    opacity: 0.1,
+                    filter: "blur(4px)",
+                    y: 20
+                },
+                {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.05,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top bottom-=20%",
+                        end: "bottom bottom",
+                        scrub: true
+                    }
+                }
+            );
+        }
+    });
+}
+
 // ============= MODALS =============
 function openImageModal(imageSrc, title, client) {
     const modal = DOM.imageModal;
@@ -1902,6 +2100,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         initializePhotographyPortfolio();
+
+        setTimeout(() => {
+            if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
+                initCreativeDirectionScrollAnimations();
+            }
+        }, 100);
+
 
         console.log('✅ Ligero website initialized successfully');
 
