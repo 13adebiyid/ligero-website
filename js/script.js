@@ -640,7 +640,7 @@ function initializeTypewriterLinks() {
 
         setTimeout(() => {
             startTypewriterLoop(link);
-        }, Math.random() * 2000 + 1500);
+        }, 3000);
     });
 }
 
@@ -694,15 +694,21 @@ function typewriterText(element, text) {
 function startTypewriterLoop(link) {
     const texts = JSON.parse(link.dataset.texts);
     let currentIndex = 0;
+    const display = link.querySelector('.typewriter-display');
+
+    setTimeout(() => {
+        currentIndex = (currentIndex + 1) % texts.length;
+        typewriterText(display, texts[currentIndex]);
+    }, 800);
 
     const interval = setInterval(() => {
         currentIndex = (currentIndex + 1) % texts.length;
-        const display = link.querySelector('.typewriter-display');
         typewriterText(display, texts[currentIndex]);
-    }, 4500);
+    }, 5000);
 
     typewriterIntervals.set(link, interval);
 }
+
 
 function cleanupTypewriterLinks() {
     typewriterIntervals.forEach(interval => clearInterval(interval));
