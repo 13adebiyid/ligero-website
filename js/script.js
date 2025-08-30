@@ -269,6 +269,7 @@ function initCreativeDirectionScrollAnimations() {
     const isCreativeDirection = document.querySelector('.designer-profile-page') ||
         document.querySelector('.creative-directing-page');
     const isSetDesign = document.querySelector('.set-design-feed');
+    const isMemberPage = document.querySelector('.designer-hero');
 
     if (!isCreativeDirection && !isSetDesign) return;
 
@@ -276,11 +277,11 @@ function initCreativeDirectionScrollAnimations() {
 
     setTimeout(() => {
         gsap.utils.toArray('.video-section').forEach((section, i) => {
-            gsap.set(section, {
-                opacity: 1,
-                y: 0,
-                rotationX: 0
-            });
+            gsap.set(section, { opacity: 1, y: 0, rotationX: 0 });
+
+            if (i === 0 || isMemberPage) {
+                return;
+            }
 
             gsap.fromTo(section,
                 {
@@ -327,6 +328,11 @@ function initCreativeDirectionScrollAnimations() {
         });
 
         gsap.utils.toArray('.dual-video-item').forEach((item, i) => {
+            if (isMemberPage) {
+                gsap.set(item, { opacity: 1, y: 0, rotationY: 0 });
+                return;
+            }
+
             gsap.fromTo(item,
                 {
                     opacity: 0.2,
@@ -374,22 +380,24 @@ function initCreativeDirectionScrollAnimations() {
         gsap.utils.toArray('.images-grid').forEach((grid, i) => {
             const images = grid.querySelectorAll('.feed-item');
 
+            gsap.set(images, { opacity: 1, y: 0, scale: 1 });
+
             gsap.fromTo(images,
                 {
                     opacity: 0,
-                    y: 40,
-                    scale: 0.9
+                    y: 30,
+                    scale: 0.95
                 },
                 {
                     opacity: 1,
                     y: 0,
                     scale: 1,
-                    duration: 1,
-                    stagger: 0.1,
+                    duration: 0.8,
+                    stagger: 0.08,
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: grid,
-                        start: "top bottom-=80px",
+                        start: "top bottom-=60px",
                         end: "bottom top",
                         toggleActions: "play none none reverse"
                     }
