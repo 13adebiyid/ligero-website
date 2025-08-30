@@ -1,5 +1,5 @@
 // =========================
-// OPTIMIZED LIGERO SCRIPT WITH ALL FIXES
+// OPTIMIZED LIGERO SCRIPT
 // =========================
 
 // ============= DOM CACHE & STATE =============
@@ -32,6 +32,9 @@ let filteredPhotos = [];
 let currentFilter = 'all';
 let isModalInfoVisible = true;
 
+// Contact State
+let currentContactType = 'services';
+
 // ============= UTILITIES =============
 const utils = {
     isMobile: () => window.innerWidth <= 768,
@@ -56,7 +59,6 @@ const utils = {
 };
 
 // ============= THEME SWITCHER =============
-
 function setTheme(theme) {
     if (theme === 'white') {
         document.body.classList.add('white-theme');
@@ -66,7 +68,6 @@ function setTheme(theme) {
         localStorage.setItem('theme', 'black');
     }
 
-    // Update cursor if it exists (for photography page)
     if (DOM.customCursor) {
         updateCursorForTheme();
     }
@@ -161,21 +162,11 @@ function getCarouselSettings() {
 }
 
 function slideCarousel(direction) {
-    console.log('slideCarousel called with direction:', direction);
-
-    if (utils.isMobile() || !DOM.carousel) {
-        console.log('Mobile or no carousel detected, skipping');
-        return;
-    }
+    if (utils.isMobile() || !DOM.carousel) return;
 
     const cards = DOM.carousel.querySelectorAll('.service-card');
     const totalCards = cards.length;
-    if (totalCards === 0) {
-        console.log('No service cards found');
-        return;
-    }
-
-    console.log('Found', totalCards, 'service cards');
+    if (totalCards === 0) return;
 
     const settings = getCarouselSettings();
     const { cardWidth, cardGap, containerPadding } = settings;
@@ -200,8 +191,6 @@ function slideCarousel(direction) {
 
     DOM.carousel.style.transform = `translateX(${translateX}px)`;
     DOM.carousel.style.transition = 'transform 0.3s ease';
-
-    console.log('Carousel moved to slide:', state.currentSlide, 'translateX:', translateX);
 }
 
 function resetCarousel() {
@@ -217,10 +206,7 @@ function resetCarousel() {
     }
 }
 
-// ============= CAROUSEL ARROWS =============
 function setupCarouselArrows() {
-    console.log('Setting up carousel arrows...');
-
     const leftArrow = document.querySelector('.carousel-arrow.left');
     const rightArrow = document.querySelector('.carousel-arrow.right');
 
@@ -231,13 +217,8 @@ function setupCarouselArrows() {
         newLeftArrow.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Left arrow clicked');
             slideCarousel(-1);
         });
-
-        newLeftArrow.style.pointerEvents = 'auto';
-        newLeftArrow.style.cursor = 'pointer';
-        newLeftArrow.style.zIndex = '100';
     }
 
     if (rightArrow) {
@@ -247,239 +228,12 @@ function setupCarouselArrows() {
         newRightArrow.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Right arrow clicked');
             slideCarousel(1);
         });
-
-        newRightArrow.style.pointerEvents = 'auto';
-        newRightArrow.style.cursor = 'pointer';
-        newRightArrow.style.zIndex = '100';
     }
-
-    console.log('Carousel arrows setup complete');
 }
 
 // ============= PAGE TRANSITIONS =============
-
-function initCreativeDirectionScrollAnimations() {
-    if (typeof gsap === 'undefined' || !gsap.registerPlugin) {
-        return;
-    }
-
-    const isCreativeDirection = document.querySelector('.designer-profile-page') ||
-        document.querySelector('.creative-directing-page');
-    const isSetDesign = document.querySelector('.set-design-feed');
-    const isMemberPage = document.querySelector('.designer-hero');
-
-    if (!isCreativeDirection && !isSetDesign) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    setTimeout(() => {
-        gsap.utils.toArray('.video-section').forEach((section, i) => {
-            gsap.set(section, { opacity: 1, y: 0, rotationX: 0 });
-
-            if (i === 0 || isMemberPage) {
-                return;
-            }
-
-            gsap.fromTo(section,
-                {
-                    opacity: 0.3,
-                    y: 80,
-                    rotationX: 8,
-                    transformOrigin: "center bottom"
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    rotationX: 0,
-                    duration: 1.5,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top bottom-=120px",
-                        end: "bottom top",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-
-            const videoContainer = section.querySelector('.video-container-main');
-            if (videoContainer) {
-                gsap.fromTo(videoContainer,
-                    { scale: 0.85, filter: "blur(8px)" },
-                    {
-                        scale: 1,
-                        filter: "blur(0px)",
-                        duration: 2,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top bottom-=80px",
-                            end: "center center",
-                            scrub: 1.5
-                        }
-                    }
-                );
-            }
-
-            animateTextElements(section);
-        });
-
-        gsap.utils.toArray('.dual-video-item').forEach((item, i) => {
-            if (isMemberPage) {
-                gsap.set(item, { opacity: 1, y: 0, rotationY: 0 });
-                return;
-            }
-
-            gsap.fromTo(item,
-                {
-                    opacity: 0.2,
-                    y: 60,
-                    rotationY: i % 2 === 0 ? -5 : 5,
-                    transformOrigin: "center center"
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    rotationY: 0,
-                    duration: 1.3,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: item,
-                        start: "top bottom-=100px",
-                        end: "bottom top",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-
-            const videoContainer = item.querySelector('.video-container-main');
-            if (videoContainer) {
-                gsap.fromTo(videoContainer,
-                    { scale: 0.9, filter: "blur(5px)" },
-                    {
-                        scale: 1,
-                        filter: "blur(0px)",
-                        duration: 1.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: item,
-                            start: "top bottom-=60px",
-                            end: "center center",
-                            scrub: 1
-                        }
-                    }
-                );
-            }
-
-            animateTextElements(item);
-        });
-
-        gsap.utils.toArray('.images-grid').forEach((grid, i) => {
-            const images = grid.querySelectorAll('.feed-item');
-
-            gsap.set(images, { opacity: 1, y: 0, scale: 1 });
-
-            gsap.fromTo(images,
-                {
-                    opacity: 0,
-                    y: 30,
-                    scale: 0.95
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.8,
-                    stagger: 0.08,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: grid,
-                        start: "top bottom-=60px",
-                        end: "bottom top",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-        });
-
-    }, 800);
-}
-
-function animateTextElements(container) {
-    const clientName = container.querySelector('.client-name');
-    const projectTitle = container.querySelector('.project-title');
-    const designerLink = container.querySelector('.designer-link');
-
-    [clientName, projectTitle, designerLink].forEach(element => {
-        if (element && !element.classList.contains('animated-text')) {
-            element.classList.add('animated-text');
-
-            const originalHTML = element.innerHTML;
-            const text = element.textContent;
-
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = originalHTML;
-
-            function wrapTextNodes(node) {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    const text = node.textContent;
-                    if (text.trim()) {
-                        const words = text.split(/(\s+)/).map((word, index) => {
-                            if (word.match(/^\s+$/)) return word;
-                            return `<span class="scroll-word">${word}</span>`;
-                        }).join('');
-
-                        const wrapper = document.createElement('span');
-                        wrapper.innerHTML = words;
-                        node.parentNode.replaceChild(wrapper, node);
-                    }
-                } else if (node.nodeType === Node.ELEMENT_NODE) {
-                    Array.from(node.childNodes).forEach(wrapTextNodes);
-                }
-            }
-
-            wrapTextNodes(tempDiv);
-            element.innerHTML = tempDiv.innerHTML;
-
-            const wordElements = element.querySelectorAll('.scroll-word');
-            if (wordElements.length > 0) {
-                gsap.fromTo(wordElements,
-                    {
-                        opacity: 0.1,
-                        filter: "blur(4px)",
-                        y: 25
-                    },
-                    {
-                        opacity: 1,
-                        filter: "blur(0px)",
-                        y: 0,
-                        duration: 0.8,
-                        stagger: 0.06,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: container,
-                            start: "top bottom-=25%",
-                            end: "bottom bottom",
-                            scrub: 1.2
-                        }
-                    }
-                );
-            }
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
-            initCreativeDirectionScrollAnimations();
-        }
-    }, 100);
-});
-
 function createTransitionOverlay() {
     let overlay = document.querySelector('.page-transition');
     if (!overlay) {
@@ -533,17 +287,14 @@ function handleHomePageTransition(url) {
     }
 }
 
-// ============= GENERIC MODAL =============
+// ============= MODALS =============
 function openImageModal(imageSrc, title, client) {
     const modal = DOM.imageModal;
     const modalImage = document.getElementById('modalImage');
     const imageTitle = document.getElementById('imageTitle');
     const imageProject = document.getElementById('imageProject');
 
-    if (!modal || !modalImage) {
-        console.error('Image modal elements not found');
-        return;
-    }
+    if (!modal || !modalImage) return;
 
     modalImage.src = imageSrc;
     modalImage.alt = title || 'Image';
@@ -571,17 +322,13 @@ function closeImageModal() {
     modal.style.cursor = '';
 }
 
-// ============= VIDEO MODAL =============
 function openVideoModal(videoSrc, title, client) {
     const modal = DOM.videoModal;
     const modalVideo = document.getElementById('modalVideo');
     const modalTitle = document.getElementById('modalTitle');
     const modalClient = document.getElementById('modalClient');
 
-    if (!modal || !modalVideo) {
-        console.error('Video modal elements not found');
-        return;
-    }
+    if (!modal || !modalVideo) return;
 
     if (modalTitle) modalTitle.textContent = title || 'Video';
     if (modalClient) modalClient.textContent = client || 'Client';
@@ -624,7 +371,6 @@ function closeModal() {
 }
 
 // ============= TYPEWRITER EFFECT =============
-
 const typewriterIntervals = new Map();
 
 function initializeTypewriterLinks() {
@@ -709,24 +455,17 @@ function startTypewriterLoop(link) {
     typewriterIntervals.set(link, interval);
 }
 
-
 function cleanupTypewriterLinks() {
     typewriterIntervals.forEach(interval => clearInterval(interval));
     typewriterIntervals.clear();
 }
 
 // ============= MODAL INFO BUTTON =============
-
 let modalInfoStates = {};
 
 function toggleModalInfo() {
-    console.log('toggleModalInfo called');
-
     const modalInfo = document.querySelector('.modal-info');
-    if (!modalInfo) {
-        console.error('Modal info element not found');
-        return;
-    }
+    if (!modalInfo) return;
 
     const currentImageId = filteredPhotos[state.currentModalIndex]?.id || state.currentModalIndex;
 
@@ -748,19 +487,13 @@ function toggleModalInfo() {
 }
 
 function setupModalInfoButton() {
-    console.log('Setting up modal info button...');
-
     const modalInfoCloseBtn = document.querySelector('.modal-info-close');
-    if (!modalInfoCloseBtn) {
-        console.error('Modal info close button not found');
-        return;
-    }
+    if (!modalInfoCloseBtn) return;
 
     modalInfoCloseBtn.onclick = null;
     modalInfoCloseBtn.removeAttribute('onclick');
 
     modalInfoCloseBtn.onclick = function(e) {
-        console.log('Modal info close button clicked');
         e.preventDefault();
         e.stopPropagation();
 
@@ -785,7 +518,7 @@ function openPhotographyModal(index) {
 
     const currentImageId = filteredPhotos[index]?.id || index;
     if (modalInfoStates[currentImageId] === undefined) {
-        modalInfoStates[currentImageId] = true; 
+        modalInfoStates[currentImageId] = true;
     }
 
     const modal = DOM.imageModal;
@@ -1004,52 +737,6 @@ function setupModalClicks() {
     }
 }
 
-// ============= SERVICE CARD PREVIEWS =============
-function setupServiceCardHoverPreviews() {
-    const setDesignCard = document.querySelector('a[href="/services/set-designing"]');
-    if (!setDesignCard) return;
-
-    const video = setDesignCard.querySelector('.service-card-video');
-    if (!video) return;
-
-    const clips = [
-        { src: '/videos/gift.mp4', start: 6, duration: 3 },
-        { src: '/videos/fashion.mp4', start: 10, duration: 3 },
-        { src: '/videos/brand.mp4', start: 3, duration: 3 }
-    ];
-
-    let currentClipIndex = 0;
-    let hoverInterval;
-
-    function playClip(index) {
-        const clip = clips[index];
-        video.src = clip.src;
-        video.currentTime = clip.start;
-
-        video.play().catch(err => {
-            console.error('Autoplay prevented:', err);
-        });
-
-        hoverInterval = setTimeout(() => {
-            currentClipIndex = (currentClipIndex + 1) % clips.length;
-            playClip(currentClipIndex);
-        }, clip.duration * 1000);
-    }
-
-    setDesignCard.addEventListener('mouseenter', () => {
-        clearTimeout(hoverInterval);
-        currentClipIndex = 0;
-        playClip(currentClipIndex);
-    });
-
-    setDesignCard.addEventListener('mouseleave', () => {
-        clearTimeout(hoverInterval);
-        video.pause();
-        video.currentTime = 0;
-        video.src = '';
-    });
-}
-
 // ============= LAZY LOADING =============
 function setupEnhancedFeedVideoAutoplay() {
     const feedVideos = document.querySelectorAll('.feed-video');
@@ -1260,7 +947,6 @@ function filterPhotos(category) {
 }
 
 // ============= CUSTOM CURSOR =============
-
 function setupEnhancedCustomCursor() {
     if (window.innerWidth <= 768 || 'ontouchstart' in window) {
         document.body.style.cursor = 'auto';
@@ -1270,8 +956,6 @@ function setupEnhancedCustomCursor() {
     if (!document.querySelector('.photography-page')) {
         return;
     }
-
-    console.log('Setting up custom cursor...');
 
     let cursor = document.getElementById('customCursor');
     if (!cursor) {
@@ -1398,7 +1082,6 @@ function setupPhotographyEventListeners() {
         });
     }
 
-    // Modal navigation arrows
     const prevBtn = document.querySelector('.modal-nav.prev');
     const nextBtn = document.querySelector('.modal-nav.next');
 
@@ -1421,11 +1104,9 @@ function setupPhotographyEventListeners() {
 
 function initializePhotographyPortfolio() {
     if (document.getElementById('masonryGrid')) {
-        console.log('Initializing photography portfolio...');
         DOM.body.classList.add('photography-page');
         renderPhotos(photographyData);
 
-        // Setup enhanced custom cursor
         setTimeout(() => {
             setupEnhancedCustomCursor();
         }, 200);
@@ -1434,117 +1115,43 @@ function initializePhotographyPortfolio() {
     }
 }
 
-// ============= CONTACT PAGE =============
-function initContactPage() {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactFormSubmission);
-    }
-    preSelectService();
-}
-
-function handleContactFormSubmission(e) {
-    e.preventDefault();
-    const form = e.target;
-    const submitButton = form.querySelector('.submit-button');
-
-    if (!validateContactForm(form)) return;
-
-    submitButton.disabled = true;
-    submitButton.textContent = 'SENDING...';
-
-    setTimeout(() => {
-        showThankYouMessage();
-        submitButton.disabled = false;
-        submitButton.textContent = 'SEND MESSAGE';
-        form.reset();
-    }, 1000);
-}
-
-function validateContactForm(form) {
-    const requiredFields = form.querySelectorAll('[required]');
-    let isValid = true;
-
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            isValid = false;
-            field.style.borderColor = '#ff6b6b';
-            field.addEventListener('input', () => {
-                field.style.borderColor = '';
-            }, { once: true });
-        }
-    });
-
-    const emailField = form.querySelector('#email');
-    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
-        isValid = false;
-        emailField.style.borderColor = '#ff6b6b';
-    }
-
-    if (!isValid) {
-        alert('Please fill in all required fields with valid information.');
-    }
-
-    return isValid;
-}
-
-function showThankYouMessage() {
-    const contactFormSection = document.getElementById('contactFormSection');
-    const thankYouSection = document.getElementById('thankYouSection');
-
-    if (contactFormSection && thankYouSection) {
-        contactFormSection.style.opacity = '0';
-        contactFormSection.style.transform = 'translateY(-30px)';
-
-        setTimeout(() => {
-            contactFormSection.style.display = 'none';
-            thankYouSection.style.display = 'flex';
-            setTimeout(() => {
-                thankYouSection.classList.add('show');
-            }, 50);
-        }, 300);
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
-
-function preSelectService() {
-    const serviceSelect = document.getElementById('service');
-    if (!serviceSelect) return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const serviceParam = urlParams.get('service');
-
-    if (serviceParam) {
-        serviceSelect.value = serviceParam;
-        return;
-    }
-
-    const referrer = document.referrer;
-    if (referrer) {
-        const serviceMap = {
-            '/services/styling': 'styling',
-            '/services/creative-directing': 'creative-directing',
-            '/services/shoots': 'shoots',
-            '/services/set-designing': 'set-designing',
-            '/services/models': 'models',
-            '/services/music': 'music'
-        };
-
-        for (const [path, value] of Object.entries(serviceMap)) {
-            if (referrer.includes(path)) {
-                serviceSelect.value = value;
-                break;
-            }
-        }
-    }
-}
-
 // ============= ENHANCED NOTIFY FORM =============
 function initEnhancedComingSoonPage() {
     const form = document.getElementById('notifyForm');
     if (form) {
-        form.addEventListener('submit', handleNotifyFormSubmission);
+        form.removeEventListener('submit', handleNotifyFormSubmission);
+
+        if (!form.hasAttribute('action')) {
+            form.setAttribute('action', '/shop/?notify=success');
+        }
+
+        form.addEventListener('submit', function(e) {
+            const emailInput = this.querySelector('input[type="email"]');
+            const email = emailInput.value;
+
+            if (!email || !isValidEmail(email)) {
+                e.preventDefault();
+                emailInput.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    emailInput.style.animation = '';
+                }, 500);
+                return false;
+            }
+
+            showNotifyLoading();
+            return true;
+        });
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('notify') === 'success') {
+        setTimeout(() => {
+            showNotifySuccess();
+        }, 500);
+
+        // Clean the URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
     }
 
     const overlay = document.getElementById('notifyFormOverlay');
@@ -1560,7 +1167,6 @@ function initEnhancedComingSoonPage() {
         if (e.key === 'Escape') {
             hideNotifyForm();
             hideNotifySuccess();
-            hideContactSuccess();
         }
     });
 }
@@ -1585,7 +1191,6 @@ function handleNotifyFormSubmission(e) {
             body: new URLSearchParams(formData).toString()
         })
             .then(() => {
-                console.log('Notify form submitted successfully');
                 hideNotifyForm();
                 setTimeout(() => {
                     showNotifySuccess();
@@ -1691,18 +1296,34 @@ function resetNotifyForm() {
 }
 
 // ============= MODERN CONTACT PAGE =============
-let currentContactType = 'services';
-
 function initModernContactPage() {
+    console.log('Initializing modern contact page...');
+
     const servicesForm = document.getElementById('servicesContactForm');
     const clothingForm = document.getElementById('clothingContactForm');
 
     if (servicesForm) {
-        servicesForm.addEventListener('submit', handleContactFormSubmission);
+        servicesForm.addEventListener('submit', function(e) {
+            if (!validateModernContactForm(this)) {
+                e.preventDefault();
+                return false;
+            }
+            const submitButton = this.querySelector('.submit-button');
+            showContactLoading(submitButton);
+            return true;
+        });
     }
 
     if (clothingForm) {
-        clothingForm.addEventListener('submit', handleContactFormSubmission);
+        clothingForm.addEventListener('submit', function(e) {
+            if (!validateModernContactForm(this)) {
+                e.preventDefault();
+                return false;
+            }
+            const submitButton = this.querySelector('.submit-button');
+            showContactLoading(submitButton);
+            return true;
+        });
     }
 
     setTimeout(() => {
@@ -1713,6 +1334,112 @@ function initModernContactPage() {
     }, 800);
 
     setupRealTimeValidation();
+    checkForSuccessReturn();
+}
+
+function checkForSuccessReturn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+        setTimeout(() => {
+            showContactSuccess();
+        }, 500);
+
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+    }
+}
+
+function handleContactFormSubmission(e) {
+    const form = e.target;
+    const submitButton = form.querySelector('.submit-button');
+
+    if (!validateModernContactForm(form)) {
+        e.preventDefault();
+        return false;
+    }
+
+    showContactLoading(submitButton);
+
+    // Let the form submit naturally to Netlify
+    return true;
+}
+
+function validateModernContactForm(form) {
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+
+    // Clear previous errors
+    form.querySelectorAll('.field-error').forEach(error => error.remove());
+    form.querySelectorAll('.error').forEach(field => {
+        field.classList.remove('error');
+        removeContactFieldError(field);
+    });
+
+    // Check required fields
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            addContactFieldError(field, 'This field is required');
+        }
+    });
+
+    // Validate email format
+    const emailFields = form.querySelectorAll('input[type="email"]');
+    emailFields.forEach(emailField => {
+        if (emailField.value && !isValidEmail(emailField.value)) {
+            isValid = false;
+            addContactFieldError(emailField, 'Please enter a valid email address');
+        }
+    });
+
+    // Validate phone format (if provided)
+    const phoneFields = form.querySelectorAll('input[type="tel"]');
+    phoneFields.forEach(phoneField => {
+        if (phoneField.value && !isValidPhone(phoneField.value)) {
+            isValid = false;
+            addContactFieldError(phoneField, 'Please enter a valid phone number');
+        }
+    });
+
+    return isValid;
+}
+
+function addContactFieldError(field, message) {
+    removeContactFieldError(field);
+
+    field.classList.add('error');
+    field.style.borderColor = '#ff6b6b';
+    field.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
+
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    field.parentNode.appendChild(errorDiv);
+
+    field.addEventListener('input', () => {
+        removeContactFieldError(field);
+    }, { once: true });
+}
+
+function removeContactFieldError(field) {
+    field.classList.remove('error');
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+
+    const existingError = field.parentNode.querySelector('.field-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function isValidPhone(phone) {
+    const cleaned = phone.replace(/\D/g, '');
+    return cleaned.length >= 7 && cleaned.length <= 15;
 }
 
 function switchContactType(type) {
@@ -1742,6 +1469,8 @@ function switchContactType(type) {
                     newSection.style.display = 'block';
                     setTimeout(() => {
                         newSection.classList.add('active');
+                        newSection.style.opacity = '1';
+                        newSection.style.transform = 'translateY(0)';
                     }, 50);
                 }
             }, 200);
@@ -1751,85 +1480,37 @@ function switchContactType(type) {
     currentContactType = type;
 }
 
-function addFieldError(field, message) {
-    removeFieldError(field);
-
-    field.style.borderColor = '#ff6b6b';
-    field.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
-
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'field-error';
-    errorDiv.textContent = message;
-    errorDiv.style.color = '#ff6b6b';
-    errorDiv.style.fontSize = '0.85rem';
-    errorDiv.style.marginTop = '5px';
-    errorDiv.style.opacity = '0';
-    errorDiv.style.animation = 'fadeInUp 0.3s ease forwards';
-
-    field.parentNode.appendChild(errorDiv);
-
-    field.addEventListener('input', () => removeFieldError(field), { once: true });
-}
-
-function removeFieldError(field) {
-    field.style.borderColor = '';
-    field.style.boxShadow = '';
-
-    const existingError = field.parentNode.querySelector('.field-error');
-    if (existingError) {
-        existingError.remove();
-    }
-}
-
-function isValidPhone(phone) {
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
-    return phoneRegex.test(cleaned) && cleaned.length >= 7;
-}
-
-function isValidEmail(email) {
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email);
-}
-
 function showContactLoading(button) {
-    if (button) {
-        button.classList.add('loading');
-        button.disabled = true;
-        const buttonText = button.querySelector('.button-text');
-        const buttonLoader = button.querySelector('.button-loader');
+    if (!button) return;
 
-        if (buttonText) buttonText.style.display = 'none';
-        if (buttonLoader) buttonLoader.style.display = 'block';
-    }
+    button.classList.add('loading');
+    button.disabled = true;
+
+    const buttonText = button.querySelector('.button-text');
+    const buttonLoader = button.querySelector('.button-loader');
+
+    if (buttonText) buttonText.style.display = 'none';
+    if (buttonLoader) buttonLoader.style.display = 'block';
 }
 
 function hideContactLoading(button) {
-    if (button) {
-        button.classList.remove('loading');
-        button.disabled = false;
-        const buttonText = button.querySelector('.button-text');
-        const buttonLoader = button.querySelector('.button-loader');
+    if (!button) return;
 
-        if (buttonText) buttonText.style.display = 'block';
-        if (buttonLoader) buttonLoader.style.display = 'none';
+    button.classList.remove('loading');
+    button.disabled = false;
 
-        const form = button.closest('form');
-        if (form) {
-            const phoneInput = form.querySelector('input[type="tel"]');
-            if (phoneInput) {
-                phoneInput.style.borderColor = '';
-                phoneInput.style.boxShadow = '';
-            }
-        }
-    }
+    const buttonText = button.querySelector('.button-text');
+    const buttonLoader = button.querySelector('.button-loader');
+
+    if (buttonText) buttonText.style.display = 'block';
+    if (buttonLoader) buttonLoader.style.display = 'none';
 }
 
 function showContactSuccess() {
     const successElement = document.getElementById('contactSuccess');
     if (successElement) {
         successElement.style.display = 'flex';
-        DOM.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
 
         setTimeout(() => {
             successElement.classList.add('active');
@@ -1844,7 +1525,7 @@ function hideContactSuccess() {
 
         setTimeout(() => {
             successElement.style.display = 'none';
-            DOM.body.style.overflow = '';
+            document.body.style.overflow = '';
         }, 300);
     }
 }
@@ -1855,18 +1536,13 @@ function resetContactForms() {
     const forms = document.querySelectorAll('.modern-contact-form');
     forms.forEach(form => {
         form.reset();
+
         const errorFields = form.querySelectorAll('.field-error');
         errorFields.forEach(error => error.remove());
 
-        const inputsWithErrors = form.querySelectorAll('input.error, select.error, textarea.error');
+        const inputsWithErrors = form.querySelectorAll('.error');
         inputsWithErrors.forEach(input => {
             input.classList.remove('error');
-            input.style.borderColor = '';
-            input.style.boxShadow = '';
-        });
-
-        const allInputs = form.querySelectorAll('input, select, textarea');
-        allInputs.forEach(input => {
             input.style.borderColor = '';
             input.style.boxShadow = '';
         });
@@ -1881,10 +1557,19 @@ function setupRealTimeValidation() {
     const formFields = document.querySelectorAll('.modern-contact-form input, .modern-contact-form select, .modern-contact-form textarea');
 
     formFields.forEach(field => {
-        field.addEventListener('input', () => debouncedValidation(field));
+        field.addEventListener('input', () => {
+            if (field.classList.contains('error')) {
+                removeContactFieldError(field);
+            }
+        });
+
         field.addEventListener('blur', () => {
             if (field.hasAttribute('required') && !field.value.trim()) {
-                addFieldError(field, 'This field is required');
+                addContactFieldError(field, 'This field is required');
+            } else if (field.type === 'email' && field.value && !isValidEmail(field.value)) {
+                addContactFieldError(field, 'Please enter a valid email address');
+            } else if (field.type === 'tel' && field.value && !isValidPhone(field.value)) {
+                addContactFieldError(field, 'Please enter a valid phone number');
             }
         });
     });
@@ -1935,256 +1620,6 @@ function setupVideoControls() {
     video.addEventListener('pause', () => {
         playPauseIcon.src = '/images/play-icon.webp';
     });
-}
-
-// === PRODUCERS PAGE PLAYER ===
-const tracks = [
-    { id: 1, title: "Copy Cat", artist: "K1D", src: "/audio/track1.mp3" },
-    { id: 2, title: "Electric Pulse", artist: "Sofia Rodriguez", src: "/audio/track2.mp3" },
-    { id: 3, title: "Golden Hour", artist: "James Williams", src: "/audio/track3.mp3" },
-    { id: 4, title: "Neon Nights", artist: "Luna Park", src: "/audio/track4.mp3" },
-    { id: 5, title: "Urban Symphony", artist: "Alex Kim", src: "/audio/track5.mp3" }
-];
-
-let currentTrackId = null;
-let isPlaying = false;
-const audioPlayer = document.getElementById('audioPlayer');
-const nowPlaying = document.getElementById('nowPlaying');
-const progress = document.getElementById('progress');
-const currentTimeEl = document.getElementById('currentTime');
-const durationEl = document.getElementById('duration');
-
-function playTrack(trackId) {
-    const track = tracks.find(t => t.id === trackId);
-    if (!track) return;
-
-    document.querySelectorAll('.audio-track').forEach(el => {
-        el.classList.remove('playing');
-        el.querySelector('.play-btn').classList.remove('playing');
-    });
-
-    const trackElement = document.querySelector(`[data-track-id="${trackId}"]`);
-    trackElement.classList.add('playing');
-    trackElement.querySelector('.play-btn').classList.add('playing');
-
-    document.getElementById('playingTitle').textContent = track.title;
-    document.getElementById('playingArtist').textContent = track.artist;
-    document.getElementById('miniPlayBtn').classList.remove('paused');
-    nowPlaying.classList.add('active');
-    currentTrackId = trackId;
-
-    audioPlayer.src = track.src;
-
-    audioPlayer.addEventListener('loadedmetadata', () => {
-        const duration = audioPlayer.duration;
-        const minutes = Math.floor(duration / 60);
-        const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
-        durationEl.textContent = `${minutes}:${seconds}`;
-    }, { once: true });
-
-    audioPlayer.play();
-    isPlaying = true;
-}
-
-function togglePlay() {
-    if (!currentTrackId) return;
-
-    if (isPlaying) {
-        audioPlayer.pause();
-        document.getElementById('miniPlayBtn').classList.add('paused');
-    } else {
-        audioPlayer.play();
-        document.getElementById('miniPlayBtn').classList.remove('paused');
-    }
-    isPlaying = !isPlaying;
-}
-
-function previousTrack() {
-    if (currentTrackId > 1) {
-        playTrack(currentTrackId - 1);
-    }
-}
-
-function nextTrack() {
-    if (currentTrackId < tracks.length) {
-        playTrack(currentTrackId + 1);
-    }
-}
-
-let isDragging = false;
-let progressBar = null;
-let progressContainer = null;
-
-audioPlayer?.addEventListener('timeupdate', () => {
-    if (!isDragging && audioPlayer.duration) {
-        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progress.style.width = `${progressPercent}%`;
-
-        const minutes = Math.floor(audioPlayer.currentTime / 60);
-        const seconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
-        currentTimeEl.textContent = `${minutes}:${seconds}`;
-    }
-});
-
-audioPlayer?.addEventListener('ended', () => {
-    nextTrack();
-});
-
-function initProgressBar() {
-    progressBar = document.getElementById('progressBar');
-    progressContainer = document.querySelector('.progress-container');
-    if (!progressBar || !progressContainer) return;
-
-    const hoverIndicator = document.createElement('div');
-    hoverIndicator.className = 'progress-hover';
-    progressBar.appendChild(hoverIndicator);
-
-    progressBar.addEventListener('mouseenter', handleProgressHover);
-    progressBar.addEventListener('mousemove', handleProgressHover);
-    progressBar.addEventListener('mouseleave', handleProgressLeave);
-    progressBar.addEventListener('mousedown', startDragging);
-    progressBar.addEventListener('click', seek);
-
-    document.addEventListener('mousemove', handleDragging);
-    document.addEventListener('mouseup', stopDragging);
-
-    progressBar.addEventListener('touchstart', startDraggingTouch, { passive: false });
-    document.addEventListener('touchmove', handleDraggingTouch, { passive: false });
-    document.addEventListener('touchend', stopDraggingTouch);
-}
-
-function handleProgressHover(e) {
-    if (!progressBar || !audioPlayer.duration) return;
-
-    const rect = progressBar.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-
-    const hoverIndicator = progressBar.querySelector('.progress-hover');
-    if (hoverIndicator) {
-        hoverIndicator.style.width = `${percentage}%`;
-        hoverIndicator.style.opacity = '1';
-    }
-
-    const hoverTime = (percentage / 100) * audioPlayer.duration;
-    const minutes = Math.floor(hoverTime / 60);
-    const seconds = Math.floor(hoverTime % 60).toString().padStart(2, '0');
-
-    let tooltip = progressBar.querySelector('.progress-tooltip');
-    if (!tooltip) {
-        tooltip = document.createElement('div');
-        tooltip.className = 'progress-tooltip';
-        progressBar.appendChild(tooltip);
-    }
-
-    tooltip.textContent = `${minutes}:${seconds}`;
-    tooltip.style.left = `${percentage}%`;
-    tooltip.style.opacity = '1';
-}
-
-function handleProgressLeave() {
-    const hoverIndicator = progressBar?.querySelector('.progress-hover');
-    const tooltip = progressBar?.querySelector('.progress-tooltip');
-
-    if (hoverIndicator) hoverIndicator.style.opacity = '0';
-    if (tooltip) tooltip.style.opacity = '0';
-}
-
-function startDragging(e) {
-    if (!audioPlayer.duration) return;
-    isDragging = true;
-    progressBar.classList.add('dragging');
-    updateProgress(e.clientX);
-}
-
-function startDraggingTouch(e) {
-    if (!audioPlayer.duration) return;
-    e.preventDefault();
-    isDragging = true;
-    progressBar.classList.add('dragging');
-    updateProgress(e.touches[0].clientX);
-}
-
-function handleDragging(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    updateProgress(e.clientX);
-}
-
-function handleDraggingTouch(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    updateProgress(e.touches[0].clientX);
-}
-
-function stopDragging() {
-    if (!isDragging) return;
-    isDragging = false;
-    progressBar?.classList.remove('dragging');
-
-    if (progressBar && audioPlayer.duration) {
-        const progressWidth = parseFloat(progress.style.width);
-        const newTime = (progressWidth / 100) * audioPlayer.duration;
-        audioPlayer.currentTime = newTime;
-    }
-}
-
-function stopDraggingTouch() {
-    if (!isDragging) return;
-    isDragging = false;
-    progressBar?.classList.remove('dragging');
-
-    if (progressBar && audioPlayer.duration) {
-        const progressWidth = parseFloat(progress.style.width);
-        const newTime = (progressWidth / 100) * audioPlayer.duration;
-        audioPlayer.currentTime = newTime;
-    }
-}
-
-function updateProgress(clientX) {
-    if (!progressBar || !audioPlayer.duration) return;
-
-    const rect = progressBar.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-
-    progress.style.width = `${percentage}%`;
-
-    const newTime = (percentage / 100) * audioPlayer.duration;
-    const minutes = Math.floor(newTime / 60);
-    const seconds = Math.floor(newTime % 60).toString().padStart(2, '0');
-    currentTimeEl.textContent = `${minutes}:${seconds}`;
-
-    if (!isDragging) {
-        audioPlayer.currentTime = newTime;
-    }
-}
-
-function seek(e) {
-    if (isDragging) return;
-    if (!audioPlayer.duration) return;
-
-    const rect = progressBar.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = (x / rect.width);
-    audioPlayer.currentTime = audioPlayer.duration * percentage;
-}
-
-document.querySelectorAll('.audio-track').forEach(track => {
-    track.addEventListener('click', (e) => {
-        if (!e.target.closest('a') && !e.target.closest('.play-btn')) {
-            const trackId = parseInt(track.dataset.trackId);
-            playTrack(trackId);
-        }
-    });
-});
-
-function updateProducerControls() {
-    const controlButtons = document.querySelectorAll('.control-btn');
-    if (controlButtons.length >= 2) {
-        controlButtons[0].innerHTML = '<img src="/images/next-icon.webp" alt="Previous" style="width: 20px; height: 20px;">';
-        controlButtons[1].innerHTML = '<img src="/images/previous-icon.webp" alt="Next" style="width: 20px; height: 20px;">';
-    }
 }
 
 // ============= INITIALIZATION =============
@@ -2301,61 +1736,6 @@ function initializeModals() {
     setupModalCloseHandlers();
 }
 
-function handleTouchStart(e) {
-    if (utils.isMobile()) return;
-    state.touchStartX = e.changedTouches[0].screenX;
-    state.isSwiping = true;
-}
-
-function handleTouchMove(e) {
-    if (!state.isSwiping || utils.isMobile()) return;
-    e.preventDefault();
-}
-
-function handleTouchEnd(e) {
-    if (!state.isSwiping || utils.isMobile()) return;
-
-    state.touchEndX = e.changedTouches[0].screenX;
-    const swipeDistance = state.touchStartX - state.touchEndX;
-
-    if (Math.abs(swipeDistance) > 50) {
-        slideCarousel(swipeDistance > 0 ? 1 : -1);
-    }
-
-    state.isSwiping = false;
-}
-
-function setupCarouselKeyboardNavigation() {
-    if (utils.isMobile()) return;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            slideCarousel(-1);
-        } else if (e.key === 'ArrowRight') {
-            slideCarousel(1);
-        }
-    });
-}
-
-function setupImageLoading() {
-    const images = document.querySelectorAll('.feed-item img');
-
-    images.forEach((img, index) => {
-        if (img.complete && img.naturalHeight !== 0) {
-            img.classList.add('loaded');
-        } else {
-            img.addEventListener('load', () => {
-                img.classList.add('loaded');
-            });
-
-            img.addEventListener('error', () => {
-                console.error(`Failed to load image ${index + 1}: ${img.src}`);
-                img.classList.add('loaded');
-            });
-        }
-    });
-}
-
 // ============= MAKE FUNCTIONS GLOBALLY ACCESSIBLE =============
 window.slideCarousel = slideCarousel;
 window.toggleModalInfo = toggleModalInfo;
@@ -2399,11 +1779,30 @@ document.addEventListener('DOMContentLoaded', () => {
             setupCarouselArrows();
 
             if (!utils.isMobile()) {
-                setupCarouselKeyboardNavigation();
-                DOM.carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-                DOM.carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-                DOM.carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-                setupServiceCardHoverPreviews();
+                DOM.carousel.addEventListener('touchstart', (e) => {
+                    state.touchStartX = e.changedTouches[0].screenX;
+                    state.isSwiping = true;
+                }, { passive: true });
+
+                DOM.carousel.addEventListener('touchend', (e) => {
+                    if (!state.isSwiping) return;
+                    state.touchEndX = e.changedTouches[0].screenX;
+                    const swipeDistance = state.touchStartX - state.touchEndX;
+
+                    if (Math.abs(swipeDistance) > 50) {
+                        slideCarousel(swipeDistance > 0 ? 1 : -1);
+                    }
+
+                    state.isSwiping = false;
+                }, { passive: true });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        slideCarousel(-1);
+                    } else if (e.key === 'ArrowRight') {
+                        slideCarousel(1);
+                    }
+                });
             }
         }
 
@@ -2429,7 +1828,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Multiple attempts for modal button setup
         setTimeout(setupModalInfoButton, 100);
         setTimeout(setupModalInfoButton, 500);
         setTimeout(setupModalInfoButton, 1000);
@@ -2470,33 +1868,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             setTimeout(() => {
-                setupImageLoading();
                 setupEnhancedFeedVideoAutoplay();
                 initializeModals();
                 initializeTypewriterLinks();
             }, 100);
         }
 
-        if (document.querySelector('.contact-page')) {
-            initContactPage();
-        }
-
         if (document.querySelector('.modern-contact-page')) {
-            console.log('Initializing modern contact page...');
             initModernContactPage();
         }
 
         if (document.querySelector('.coming-soon-page')) {
-            console.log('Initializing coming soon page...');
             initEnhancedComingSoonPage();
         }
 
         initializePhotographyPortfolio();
-
-        if (document.querySelector('.producers-page')) {
-            updateProducerControls();
-            initProgressBar();
-        }
 
         console.log('✅ Ligero website initialized successfully');
 
@@ -2505,7 +1891,6 @@ document.addEventListener('DOMContentLoaded', () => {
         emergencyCleanup();
     }
 
-    // Fallback initializations outside the try-catch
     setTimeout(() => {
         setupCarouselArrows();
         setupModalInfoButton();

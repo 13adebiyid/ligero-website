@@ -3,23 +3,36 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact — Ligero</title>
+    <title>Contact – Ligero</title>
+
+    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
+
+    <!-- Styles & Scripts -->
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="preload" href="/js/script.js" as="script">
     <script src="/js/script.js" defer></script>
+
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
+<!-- Navigation -->
 <nav>
     <div class="hamburger-menu">
         <div class="hamburger-line"></div>
         <div class="hamburger-line"></div>
         <div class="hamburger-line"></div>
     </div>
+
     <a href="/" class="logo">LIGERO</a>
+
     <div class="nav-menu">
         <a href="/shop/" class="nav-item">Shop</a>
         <span class="nav-separator">|</span>
@@ -31,6 +44,7 @@
     </div>
 </nav>
 
+<!-- Mobile Menu -->
 <div class="mobile-menu-overlay">
     <a href="/" class="mobile-menu-item">HOME</a>
     <a href="/shop/" class="mobile-menu-item">SHOP</a>
@@ -39,22 +53,30 @@
     <a href="/policies/" class="mobile-menu-item">POLICIES</a>
 </div>
 
+<!-- Contact Page -->
 <div class="modern-contact-page">
+
+    <!-- Theme Switcher -->
     <div class="theme-switcher">
         <div class="theme-circle black" onclick="setTheme('black')"></div>
         <div class="theme-circle white" onclick="setTheme('white')"></div>
     </div>
 
+    <!-- Contact Header -->
     <div class="contact-header">
         <h1 class="contact-main-title">GET IN TOUCH</h1>
         <p class="contact-main-subtitle">Choose how you'd like to connect with us</p>
     </div>
 
+    <!-- Form Type Selector -->
     <div class="contact-type-selector" id="contactTypeSelector">
         <div class="selector-container">
+
+            <!-- Services Button -->
             <button class="type-selector-btn active" data-type="services" onclick="switchContactType('services')">
                 <div class="selector-icon">
-                    <svg class="selector-icon-img" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="selector-icon-img" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
                         <circle cx="12" cy="13" r="3"/>
                     </svg>
@@ -65,6 +87,7 @@
                 </div>
             </button>
 
+            <!-- Clothing Button -->
             <button class="type-selector-btn" data-type="clothing" onclick="switchContactType('clothing')">
                 <div class="selector-icon">
                     <img src="/images/clothe-icon.webp" alt="Clothing Enquiries" class="selector-icon-img">
@@ -74,6 +97,7 @@
                     <p>Product questions, sizing, availability, and orders</p>
                 </div>
             </button>
+
         </div>
     </div>
 
@@ -85,9 +109,9 @@
                 <p>Tell us about your project and we'll bring your vision to life</p>
             </div>
 
-            <form name="services-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="modern-contact-form" id="servicesContactForm">
+            <form name="services-contact" method="POST" data-netlify="true"
+                  class="modern-contact-form" id="servicesContactForm" action="/">
                 <input type="hidden" name="form-name" value="services-contact">
-                <input type="hidden" name="enquiry-type" value="services">
 
                 <div class="form-grid">
                     <div class="form-group">
@@ -130,36 +154,34 @@
                     <div class="form-group">
                         <label for="services-budget">Project Budget</label>
                         <select class="numbers" id="services-budget" name="budget">
-                            <option class="numbers" value="">Select budget range</option>
-                            <option class="numbers" value="under-1k">Under $1,000</option>
-                            <option class="numbers" value="1k-5k">$1,000 - $5,000</option>
-                            <option class="numbers" value="5k-10k">$5,000 - $10,000</option>
-                            <option class="numbers" value="10k-25k">$10,000 - $25,000</option>
-                            <option class="numbers" value="25k-plus">$25,000+</option>
-                            <option class="numbers" value="discuss">Prefer to discuss</option>
+                            <option value="">Select budget range</option>
+                            <option value="under-1k">Under $1,000</option>
+                            <option value="1k-5k">$1,000 - $5,000</option>
+                            <option value="5k-10k">$5,000 - $10,000</option>
+                            <option value="10k-25k">$10,000 - $25,000</option>
+                            <option value="25k-plus">$25,000+</option>
+                            <option value="discuss">Prefer to discuss</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="services-timeline">Project Timeline</label>
                         <select class="numbers" id="services-timeline" name="timeline">
-                            <option class="numbers" value="">Select timeline</option>
-                            <option class="numbers" value="asap">ASAP</option>
-                            <option class="numbers" value="1-month">Within 1 month</option>
-                            <option class="numbers" value="2-3-months">2-3 months</option>
-                            <option class="numbers" value="3-6-months">3-6 months</option>
-                            <option class="numbers" value="6-plus-months">6+ months</option>
-                            <option class="numbers" value="flexible">Flexible</option>
+                            <option value="">Select timeline</option>
+                            <option value="asap">ASAP</option>
+                            <option value="1-month">Within 1 month</option>
+                            <option value="2-3-months">2-3 months</option>
+                            <option value="3-6-months">3-6 months</option>
+                            <option value="6-plus-months">6+ months</option>
+                            <option value="flexible">Flexible</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="services-message">Project Details *</label>
-                    <textarea class="numbers" id="services-message" name="message" rows="6" placeholder="Tell us about your project, vision, goals, and any specific requirements..." required></textarea>
-                </div>
-
-                <div class="form-group recaptcha-container">
-                    <div data-netlify-recaptcha="true"></div>
+                    <textarea class="numbers" id="services-message" name="message" rows="6"
+                              placeholder="Tell us about your project, vision, goals, and any specific requirements..."
+                              required></textarea>
                 </div>
 
                 <div class="form-actions">
@@ -185,9 +207,9 @@
                 <p>Questions about your order</p>
             </div>
 
-            <form name="clothing-contact" method="POST" data-netlify="true" class="modern-contact-form" id="clothingContactForm">
+            <form name="clothing-contact" method="POST" data-netlify="true" data-netlify-recaptcha="true"
+                  class="modern-contact-form" id="clothingContactForm" action="/">
                 <input type="hidden" name="form-name" value="clothing-contact">
-                <input type="hidden" name="enquiry-type" value="clothing">
 
                 <div class="form-grid">
                     <div class="form-group">
@@ -223,14 +245,17 @@
 
                 <div class="form-group">
                     <label for="clothing-product">Order ID</label>
-                    <input class="numbers" type="text" id="clothing-product" name="productReference" placeholder="Order number" required>
+                    <input class="numbers" type="text" id="clothing-product" name="productReference"
+                           placeholder="Order number">
                 </div>
 
                 <div class="form-group">
                     <label for="clothing-message">Message *</label>
-                    <textarea class="numbers" id="clothing-message" name="message" rows="6" placeholder="Please provide details about your enquiry..." required></textarea>
+                    <textarea class="numbers" id="clothing-message" name="message" rows="6"
+                              placeholder="Please provide details about your enquiry..." required></textarea>
                 </div>
 
+                <!-- reCAPTCHA -->
                 <div class="form-group recaptcha-container">
                     <div data-netlify-recaptcha="true"></div>
                 </div>
@@ -250,20 +275,22 @@
         </div>
     </div>
 
+    <!-- Success Message -->
     <div class="contact-success" id="contactSuccess" style="display: none;">
         <div class="success-content">
             <div class="checkmark-wrapper">
                 <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                     <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    <path class="checkmark__check" fill="none"
+                          d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                 </svg>
             </div>
             <h2>Message Sent!</h2>
-            <p>Thank you for reaching out to us. We'll get back to you.</p>
+            <p>Thank you for reaching out to us. We'll get back to you soon.</p>
             <button class="back-button" onclick="resetContactForms()">Back</button>
         </div>
     </div>
-</div>
 
+</div>
 </body>
 </html>
