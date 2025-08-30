@@ -71,6 +71,15 @@ function setTheme(theme) {
     if (DOM.customCursor) {
         updateCursorForTheme();
     }
+
+    const icon = document.querySelector('.instagram-icon');
+    if (icon) {
+        if (theme === 'white') {
+            icon.src = icon.getAttribute('data-icon-white');
+        } else {
+            icon.src = icon.getAttribute('data-icon-black');
+        }
+    }
 }
 
 window.setTheme = setTheme;
@@ -1772,7 +1781,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (savedTheme === 'white') {
                 DOM.body.classList.add('white-theme');
             }
+
+            const icon = document.querySelector('.instagram-icon');
+            if (icon) {
+                if (DOM.body.classList.contains('white-theme')) {
+                    icon.src = icon.getAttribute('data-icon-white');
+                } else {
+                    icon.src = icon.getAttribute('data-icon-black');
+                }
+            }
         } catch (e) {}
+
 
         if (DOM.carousel) {
             resetCarousel();
