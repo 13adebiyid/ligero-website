@@ -38,7 +38,7 @@
         }
 
         .research-title {
-            font-family: 'Madani', serif;
+            font-family: 'Suissnord', serif;
             font-size: 3rem;
             font-weight: 300;
             margin-bottom: 15px;
@@ -273,7 +273,6 @@
             justify-content: center;
             margin-bottom: 40px;
             gap: 10px;
-            font-family: "Dubai Light", serif !important;
         }
 
         .step-dot {
@@ -304,7 +303,6 @@
             border-radius: 20px;
             padding: 40px;
             backdrop-filter: blur(10px);
-            font-family: "Dubai Light", serif !important;
         }
 
         body.white-theme .questionnaire-form {
@@ -314,7 +312,6 @@
 
         .form-group {
             margin-bottom: 30px;
-            font-family: "Dubai Light", serif !important;
         }
 
         .form-group label {
@@ -323,7 +320,6 @@
             font-size: 1.1rem;
             font-weight: 500;
             letter-spacing: 0.5px;
-
         }
 
         .form-group input,
@@ -1072,7 +1068,7 @@
             <div class="form-step" id="step5">
                 <div class="cta-section">
                     <h2 class="cta-title">Thank You for Your Feedback!</h2>
-                    <p class="cta-subtitle">Stay updated with our latest releases and exclusive offers. Enter your email below to be the first to know when we release new clothing.</p>
+                    <p class="cta-subtitle">Stay updated with our latest releases and exclusive offers. Enter your email below to be the first to know when this jacket becomes available.</p>
 
                     <div class="form-group">
                         <label for="email">Email Address *</label>
@@ -1080,14 +1076,14 @@
                     </div>
 
                     <p style="text-align: center; margin: 30px 0; opacity: 0.8;">
-                        Follow us on Instagram to keep track of our progress!:
+                        Follow us on Instagram for behind-the-scenes content and style inspiration:
                     </p>
 
                     <a href="https://instagram.com/by.ligero" target="_blank" class="instagram-cta">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                         </svg>
-                        Follow us
+                        Follow @by.ligero
                     </a>
                 </div>
             </div>
@@ -1302,6 +1298,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         initForm();
 
+        // Track page source
+        trackPageSource();
+
         // Apply saved theme
         try {
             const savedTheme = localStorage.getItem('theme');
@@ -1310,6 +1309,53 @@
             }
         } catch (e) {}
     });
+
+    // Track where users came from
+    function trackPageSource() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('utm_source') || 'direct';
+        const medium = urlParams.get('utm_medium') || 'unknown';
+
+        // Track page visit (click)
+        if (source === 'instagram' && medium === 'story') {
+            // Send visit data to a tracking service or log locally
+            console.log('Instagram Story Click:', new Date().toISOString());
+
+            // Store visit in localStorage for later analysis
+            const visits = JSON.parse(localStorage.getItem('page_visits') || '[]');
+            visits.push({
+                source: source,
+                medium: medium,
+                timestamp: new Date().toISOString(),
+                page: 'market-research'
+            });
+            localStorage.setItem('page_visits', JSON.stringify(visits));
+        }
+
+        // Add hidden fields to form
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            if (!form.querySelector('input[name="traffic_source"]')) {
+                const sourceInput = document.createElement('input');
+                sourceInput.type = 'hidden';
+                sourceInput.name = 'traffic_source';
+                sourceInput.value = source;
+                form.appendChild(sourceInput);
+
+                const mediumInput = document.createElement('input');
+                mediumInput.type = 'hidden';
+                mediumInput.name = 'traffic_medium';
+                mediumInput.value = medium;
+                form.appendChild(mediumInput);
+
+                const timestampInput = document.createElement('input');
+                timestampInput.type = 'hidden';
+                timestampInput.name = 'page_entry_time';
+                timestampInput.value = new Date().toISOString();
+                form.appendChild(timestampInput);
+            }
+        });
+    }
 
     // Theme switcher function (from main script)
     function setTheme(theme) {
