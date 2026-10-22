@@ -1,145 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Directing - Ligero</title>
-    <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
-    <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="preload" href="/js/script.js" as="script">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="/js/script.js" defer></script>
+    <script src="/js/theme.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Creative direction by Ligero. Music videos and independent films directed by Ashleigh Cooper.">
+  <title>Creative Direction — Ligero</title>
+  <link rel="icon" href="/images/ligero-browser-icon.png">
+  <link rel="preload" href="/fonts/ABCDiatype-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/MadaniDEMO-Thin.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="/fonts/suissnord.regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="/css/page-transitions.css">
+  <link rel="stylesheet" href="/services/creative-direction/page.css">
+  <link rel="stylesheet" href="/services/creative-direction/player.css">
+  <script src="/js/page-transitions.js"></script>
+  <script>document.documentElement.classList.add("cinema-pending");</script>
+  <script type="module" src="/services/creative-direction/page.mjs" onerror="document.documentElement.classList.remove(&quot;cinema-pending&quot;)"></script>
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
-
-<nav>
-    <div class="hamburger-menu">
-        <div class="hamburger-line"></div>
-        <div class="hamburger-line"></div>
-        <div class="hamburger-line"></div>
-    </div>
-    <a href="/" class="logo">LIGERO</a>
-    <div class="nav-menu">
-        <a href="/shop/" class="nav-item">Shop</a>
-        <span class="nav-separator">|</span>
-        <a href="/services/" class="nav-item">Services</a>
-        <span class="nav-separator">|</span>
-        <a href="/contact/" class="nav-item">Contact</a>
-        <span class="nav-separator">|</span>
-        <a href="/policies/" class="nav-item">Policies</a>
-    </div>
-</nav>
-
-<div class="mobile-menu-overlay">
-    <a href="/" class="mobile-menu-item">HOME</a>
-    <a href="/shop/" class="mobile-menu-item">SHOP</a>
-    <a href="/services/" class="mobile-menu-item">SERVICES</a>
-    <a href="/contact/" class="mobile-menu-item">CONTACT</a>
-    <a href="/policies/" class="mobile-menu-item">POLICIES</a>
-</div>
-
-<div class="designer-profile-page creative-directing-page">
-    <div class="theme-switcher">
-        <div class="theme-circle black" onclick="setTheme('black')"></div>
-        <div class="theme-circle white" onclick="setTheme('white')"></div>
-    </div>
-    <div class="page-fade-in">
-        <div class="profile-content">
-            <h1 class="service-title">CREATIVE DIRECTING</h1>
-
-            <div class="feed-container">
-                <div class="video-section scroll-reveal">
-                    <div class="video-container-main" data-video="/videos/gabzy.mp4" data-title="King Promise, GABZY / 'PERFECT COMBI'" data-client="Sony Music">
-                        <video id="gabzy-video" class="feed-video" muted loop preload="none" playsinline>
-                            <source src="/videos/gabzy-preview.mp4" type="video/mp4">
-                        </video>
-                        <div class="video-overlay">
-                            <div class="play-indicator">▶</div>
-                        </div>
-                    </div>
-
-                    <div class="video-metadata">
-                        <div class="client-name scroll-reveal-text">Sony Music / <span class="number">5</span>k Records</div>
-                        <div class="project-title scroll-reveal-text">King Promise, GABZY / "PERFECT COMBI"</div>
-                        <a href="/members/ashleigh-cooper-creative-director" class="designer-link">Ashleigh<br>Cooper</a>
-                    </div>
-                </div>
-
-                <div class="dual-video-section">
-                    <div class="dual-video-item scroll-reveal">
-                        <div class="video-container-main" data-video="/videos/grime.mp4" data-title="Diaspora / 'WEAR YOUR CROWN'" data-client="Independent Commercial">
-                            <video id="grime-video" class="feed-video" muted loop preload="none" playsinline>
-                                <source src="/videos/grime-preview.mp4" type="video/mp4">
-                            </video>
-                            <div class="video-overlay">
-                                <div class="play-indicator">▶</div>
-                            </div>
-                        </div>
-                        <div class="video-metadata">
-                            <div class="client-name scroll-reveal-text">Independent Commercial</div>
-                            <div class="project-title scroll-reveal-text">Diaspora / "WEAR YOUR CROWN"</div>
-                            <a href="/members/ashleigh-cooper-creative-director" class="designer-link">Ashleigh<br>Cooper</a>
-                        </div>
-                    </div>
-
-                    <div class="dual-video-item scroll-reveal">
-                        <div class="video-container-main" data-video="/videos/note.mp4" data-title="'ONE MORE NOTE'" data-client="Self-Filmed/Self-Produced">
-                            <video id="note-video" class="feed-video" muted loop preload="none" playsinline>
-                                <source src="/videos/note-preview.mp4" type="video/mp4">
-                            </video>
-                            <div class="video-overlay">
-                                <div class="play-indicator">▶</div>
-                            </div>
-                        </div>
-                        <div class="video-metadata">
-                            <div class="client-name scroll-reveal-text">Self-Filmed/Self-Produced</div>
-                            <div class="project-title scroll-reveal-text">"ONE MORE NOTE"</div>
-                            <a href="/members/ashleigh-cooper-creative-director" class="designer-link">Ashleigh<br>Cooper</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="video-section scroll-reveal">
-                    <div class="video-container-main" data-video="/videos/reem.mp4" data-title="Reem / 'OneHundredTimes'" data-client="Music Video">
-                        <video id="reem-video" class="feed-video" muted loop preload="none" playsinline>
-                            <source src="/videos/reem-preview.mp4" type="video/mp4">
-                        </video>
-                        <div class="video-overlay">
-                            <div class="play-indicator">▶</div>
-                        </div>
-                    </div>
-
-                    <div class="video-metadata">
-                        <div class="client-name scroll-reveal-text">Music Video</div>
-                        <div class="project-title scroll-reveal-text">Reem / "<span class="number">100</span>X"</div>
-                        <a href="/members/ashleigh-cooper-creative-director" class="designer-link">Ashleigh<br>Cooper</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="video-modal" id="videoModal">
-    <div class="modal-backdrop" onclick="closeModal()"></div>
-    <div class="modal-container">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle">Video Title</h2>
-            <div class="modal-client" id="modalClient">Client Name</div>
-        </div>
-        <div class="modal-video-wrap">
-            <video class="modal-video" id="modalVideo" controls preload="metadata">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div class="modal-footer">
-            <div class="modal-director">Ashleigh Cooper</div>
-        </div>
-    </div>
-</div>
+  <header class="direction-header">
+    <a href="/" class="logo" aria-label="Ligero home">LIGERO</a>
+    <h1 class="service-title">Creative Direction</h1>
+    <button class="menu-toggle" aria-label="Open menu" aria-controls="direction-menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav-menu" id="direction-menu" aria-label="Main navigation">
+      <a class="nav-item nav-home" href="/">Home</a>
+      <a class="nav-item" href="/shop/">Shop</a><span class="nav-separator" aria-hidden="true">|</span>
+      <a class="nav-item" href="/services/">Services</a><span class="nav-separator" aria-hidden="true">|</span>
+      <a class="nav-item" href="/contact/">Contact</a><span class="nav-separator" aria-hidden="true">|</span>
+      <a class="nav-item" href="/policies/">Policies</a>
+    </nav>
+  </header>
+  <div class="entry-mark" aria-hidden="true"><span>LIGERO</span><small>Creative Direction</small></div>
+  <canvas id="film-canvas" aria-hidden="true"></canvas>
+  <main id="films" aria-label="Creative direction films">
+    <p class="sr-only" id="film-instructions">Scroll, swipe, or use the up and down arrow keys to change films. Select a film to watch it in full.</p>
+    <article class="film" data-id="gabzy" data-preview="/videos/Gabzy-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/creative-direction/gabzy.webp" alt="Perfect Combi music video" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">01</span>
+        <p class="film-client" data-order="1">Sony Music / 5k Records</p>
+        <h2 data-order="2">King Promise, GABZY / “Perfect Combi”</h2>
+        <a class="film-credit" data-order="3" href="/members/ashleigh-cooper-creative-director.html">Ashleigh<br> Cooper</a>
+      </div>
+      <a class="film-open" href="/videos/gabzy.mp4" aria-label="Watch King Promise, GABZY — Perfect Combi"><span class="sr-only">Watch full film</span></a>
+    </article>
+    <article class="film" data-id="grime" data-preview="/videos/Grime-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/creative-direction/grime.webp" alt="Diaspora — Wear Your Crown" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">02</span>
+        <p class="film-client" data-order="1">Independent Commercial</p>
+        <h2 data-order="2">Diaspora / “Wear Your Crown”</h2>
+        <a class="film-credit" data-order="3" href="/members/ashleigh-cooper-creative-director.html">Ashleigh<br> Cooper</a>
+      </div>
+      <a class="film-open" href="/videos/grime.mp4" aria-label="Watch Diaspora — Wear Your Crown"><span class="sr-only">Watch full film</span></a>
+    </article>
+    <article class="film" data-id="note" data-preview="/videos/Note-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/creative-direction/note.webp" alt="One More Note" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">03</span>
+        <p class="film-client" data-order="1">Self-Filmed / Self-Produced</p>
+        <h2 data-order="2">“One More Note”</h2>
+        <a class="film-credit" data-order="3" href="/members/ashleigh-cooper-creative-director.html">Ashleigh<br> Cooper</a>
+      </div>
+      <a class="film-open" href="/videos/note.mp4" aria-label="Watch One More Note"><span class="sr-only">Watch full film</span></a>
+    </article>
+    <article class="film" data-id="reem" data-preview="/videos/Reem-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/creative-direction/reem.webp" alt="Reem — 100X music video" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">04</span>
+        <p class="film-client" data-order="1">Music Video</p>
+        <h2 data-order="2">Reem / “100X”</h2>
+        <a class="film-credit" data-order="3" href="/members/ashleigh-cooper-creative-director.html">Ashleigh<br> Cooper</a>
+      </div>
+      <a class="film-open" href="/videos/reem.mp4" aria-label="Watch Reem — 100X"><span class="sr-only">Watch full film</span></a>
+    </article>
+  </main>
+  <p id="film-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+  <dialog id="film-dialog" aria-labelledby="film-dialog-title">
+    <button class="film-close" aria-label="Close film">×</button>
+    <h2 id="film-dialog-title"></h2>
+    <p id="film-dialog-client"></p>
+    <video id="full-film" controls playsinline preload="none"></video>
+    <p class="playback-status" role="status" hidden>The video could not load. <a id="film-direct-link">Open the video directly</a>.</p>
+    <a class="dialog-credit" href="/members/ashleigh-cooper-creative-director.html">Creative direction — Ashleigh Cooper</a>
+  </dialog>
 </body>
 </html>

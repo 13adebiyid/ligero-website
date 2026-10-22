@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="/js/theme.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ligero services gallery</title>
+  <base target="_top">
+  <link rel="stylesheet" href="/services/gallery/gallery.css">
+  <link rel="stylesheet" href="/css/scrollbars.css">
+  <style>
+    [hidden] { display: none !important; }
+    html, body { height: 100%; }
+    #readable { position: fixed; inset: 0; overflow: auto; background: #000; color: #fff; font: 16px/1.4 Arial, sans-serif; padding: clamp(16px, 3vw, 40px); }
+    #readable h2 { font-size: 18px; font-weight: normal; margin-bottom: 20px; }
+    .service-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .service-links a { display: block; color: inherit; text-decoration: none; background: #252525; border-radius: 12px; overflow: hidden; }
+    .service-links img { width: 100%; aspect-ratio: 8 / 5; object-fit: cover; display: block; }
+    .service-links span { display: block; padding: 12px; }
+    .service-links a:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+    .gallery-mode [data-gl="card"]:focus-visible { outline: 3px solid white; outline-offset: -3px; }
+    .gallery-mode #readable { display: none; }
+    .gallery-loading #readable { display: none; }
+    @media (max-width: 650px) { .service-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 400px) { .service-links { grid-template-columns: 1fr; } }
+  </style>
+  <link rel="stylesheet" href="/css/theme.css">
+  <script>document.documentElement.classList.add('gallery-loading');</script>
+</head>
+<body>
+  <div id="__nuxt"></div>
+  <main id="readable">
+    <h2>Explore our services</h2>
+    <div class="service-links">
+      <a id="creative-directing" href="/services/creative-directing.html"><img src="/services/gallery/media/creative-directing.webp" alt="King Promise and GABZY, Perfect Combi"><span>Creative directing ↗</span></a>
+      <a id="set-designing" href="/services/set-designing.html"><img src="/services/gallery/media/set-design.webp" alt="A Gift for a Gift, set design"><span>Set design ↗</span></a>
+      <a id="photography" href="/services/photography.html"><img src="/services/gallery/media/photography-mosaic.webp" alt="Photography by Ashleigh Cooper"><span>Photography ↗</span></a>
+      <a id="models" href="/services/models.html"><img src="/services/gallery/media/models.svg" alt="Coloured artwork for models"><span>Models ↗</span></a>
+      <a id="music" href="/services/music/"><img src="/services/gallery/media/music.svg" alt="Coloured artwork for music"><span>Music ↗</span></a>
+      <a id="styling" href="/services/styling.html"><img src="/services/gallery/media/styling.svg" alt="Coloured artwork for styling"><span>Styling ↗</span></a>
+    </div>
+  </main>
+  <script>window.__NUXT__={serverRendered:false,config:{public:{siteUrl:location.origin},app:{baseURL:"/services/gallery/",buildId:"ligero-services",buildAssetsDir:"_nuxt/",cdnURL:""}}};</script>
+  <script src="/services/gallery/gallery.js" type="module" onerror="document.documentElement.classList.remove('gallery-loading')"></script>
+</body>
+</html>

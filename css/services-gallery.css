@@ -1,0 +1,26 @@
+.services-page:has(#services-gallery) {
+    padding: 96px 0 0;
+    min-height: 100dvh;
+}
+
+.services-page:has(#services-gallery) .services-title {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(1.6rem, 3vw, 3rem);
+    margin: 0 20px;
+}
+
+#services-gallery {
+    display: block;
+    border: 0;
+    width: 100%;
+    height: calc(100dvh - 166px);
+    min-height: 480px;
+    background: var(--site-background, #000);
+}
+
+@media (max-width: 768px) {
+    .services-page:has(#services-gallery) { padding-top: 120px; }
+    .services-page:has(#services-gallery) .services-title { margin: 0 15px; }
+    #services-gallery { min-height: 440px; height: calc(100dvh - 172px); }
+}

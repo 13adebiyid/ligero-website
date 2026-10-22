@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/theme.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Services - Ligero</title>
@@ -9,9 +10,12 @@
   <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
   <!-- Preload and apply stylesheet -->
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/services-gallery.css">
   <!-- Preload and apply scripts -->
   <link rel="preload" href="/js/script.js" as="script">
-  <script src="/js/script.js" defer></script>
+  <script src="/js/page-transitions.js"></script>
+    <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
 
@@ -52,53 +56,25 @@
   </div>
   <h1 class="services-title">OUR CAPABILITIES</h1>
 
-  <!-- Added missing carousel container and arrows -->
-  <div class="carousel-container">
-    <!-- Left Arrow -->
-    <button class="carousel-arrow left" onclick="slideCarousel(-1)">‹</button>
-
-    <!-- Carousel -->
-    <div class="carousel" id="carousel">
-      <a href="/services/styling" class="service-card">
-        <div class="service-card-content">
-          <span class="service-card-title">STYLING</span>
-        </div>
-      </a>
-
-      <a href="/services/creative-directing" class="service-card">
-        <div class="service-card-content">
-          <span class="service-card-title">CREATIVE DIRECTING</span>
-        </div>
-      </a>
-
-      <a href="/services/photography" class="service-card">
-        <div class="service-card-content">
-          <span class="service-card-title">PHOTOGRAPHY</span>
-        </div>
-      </a>
-
-      <a href="/services/set-designing" class="service-card">
-        <div class="service-card-content">
-          <span class="service-card-title">SET DESIGNING</span>
-        </div>
-      </a>
-
-      <a href="/services/models" class="service-card">
-        <div class="service-card-content">
-          <span class="service-card-title">MODELS</span>
-        </div>
-      </a>
-
-      <a href="/services/music/index" class="service-card">
-        <div class="service-card-content">
-          <span class="service-card-title">MUSIC</span>
-        </div>
-      </a>
-    </div>
-
-    <!-- Right Arrow -->
-    <button class="carousel-arrow right" onclick="slideCarousel(1)">›</button>
-  </div>
+  <iframe id="services-gallery" src="/services/gallery/" title="Explore Ligero services" loading="eager"></iframe>
+  <script>
+    const servicePaths = Object.freeze({
+      'creative-directing': '/services/creative-directing.html',
+      'set-designing': '/services/set-designing.html',
+      photography: '/services/photography.html',
+      models: '/services/models.html',
+      music: '/services/music/',
+      styling: '/services/styling.html'
+    });
+    window.addEventListener('message', event => {
+      const frame = document.getElementById('services-gallery');
+      if (event.origin === location.origin && event.source === frame.contentWindow &&
+          event.data?.type === 'ligero:service-select' &&
+          Object.hasOwn(servicePaths, event.data?.slug)) {
+        window.LigeroNavigation.navigate(servicePaths[event.data.slug]);
+      }
+    });
+  </script>
 </div>
 </body>
 </html>

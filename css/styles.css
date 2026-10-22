@@ -1,3 +1,6 @@
+@import url("/css/page-transitions.css");
+@import url("/css/scrollbars.css");
+
 /* ================== BASE STYLES ================== */
 
 * {
@@ -14,10 +17,11 @@
 @font-face {
     font-family: 'Madani';
     src: url('../fonts/MadaniDEMO-Thin.woff') format('woff');
+    unicode-range: U+0000-002F, U+003A-10FFFF;
 }
 
 body {
-    font-family: "Madani";
+    font-family: "Madani", Arial, sans-serif;
     background: black;
     color: white;
     overflow-x: hidden;
@@ -27,12 +31,6 @@ body {
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 0.6s ease-out 0.2s forwards;
-}
-
-/* ================== NUMBER FONT FIXES ================== */
-
-.number{
-    font-family: "Arial Nova Light", sans-serif !important;
 }
 
 /* ================== PAGE TRANSITIONS ================== */
@@ -260,7 +258,7 @@ nav {
     color: white;
     text-decoration: none;
     font-size: 2rem;
-    font-family: 'Suissnord';
+    font-family: 'Madani';
     transition: opacity 0.3s;
     text-align: center;
 }
@@ -272,6 +270,7 @@ nav {
 /* ================== HOME PAGE ================== */
 
 .home-page {
+    isolation: isolate;
     height: 100vh;
     position: relative;
     display: flex;
@@ -346,38 +345,6 @@ nav {
     border: none;
     color: white;
     animation: none;
-}
-
-/* ================== THEME SWITCHER ================== */
-
-.theme-switcher {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    display: flex;
-    gap: 15px;
-    z-index: 1000;
-}
-
-.theme-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #666;
-    transition: all 0.3s;
-}
-
-.theme-circle.white {
-    background: white;
-}
-
-.theme-circle.black {
-    background: black;
-}
-
-.theme-circle:hover {
-    transform: scale(1.1);
 }
 
 /* ================== SHOP PAGE ================== */
@@ -971,6 +938,18 @@ nav {
     51%, 100% { opacity: 0; }
 }
 
+.designer-profile-page .page-fade-in,
+.designer-profile-page .video-section:first-of-type {
+    opacity: 1;
+    transform: none;
+    animation-fill-mode: backwards;
+}
+
+.designer-profile-page .video-container-main,
+.designer-profile-page .video-metadata * {
+    will-change: auto;
+}
+
 .designer-profile-page .video-section:not(:first-of-type),
 .designer-profile-page .dual-video-item {
     opacity: 1;
@@ -1512,7 +1491,6 @@ nav {
     font-weight: 300;
     margin-bottom: 8px;
     color: white;
-    font-family: "Dubai Light" !important;
 }
 
 .image-project {
@@ -1625,7 +1603,7 @@ body.page-loaded * {
     border-radius: 5px;
     color: white;
     font-size: 1rem;
-    font-family: Aptos Light, serif;
+    font-family: inherit;
     transition: all 0.3s;
 }
 
@@ -2683,24 +2661,6 @@ body.white-theme .form-buttons button:hover {
         color: black !important;
     }
 
-    .carousel-container::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .carousel-container::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 3px;
-    }
-
-    .carousel-container::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 3px;
-    }
-
-    .carousel-container::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.5);
-    }
-
     .policies-page {
         padding: 120px 20px 50px;
     }
@@ -2723,17 +2683,6 @@ body.white-theme .form-buttons button:hover {
     .policy-section p {
         font-size: 0.95rem;
         margin-bottom: 12px;
-    }
-
-    .theme-switcher {
-        bottom: 20px;
-        left: 20px;
-        gap: 10px;
-    }
-
-    .theme-circle {
-        width: 25px;
-        height: 25px;
     }
 
     .service-detail-page {
@@ -3138,16 +3087,6 @@ body.white-theme .form-buttons button:hover {
         font-size: 0.9rem;
     }
 
-    .theme-switcher {
-        bottom: 15px;
-        left: 15px;
-    }
-
-    .theme-circle {
-        width: 22px;
-        height: 22px;
-    }
-
     .service-detail-page {
         padding: 100px 15px 30px;
     }
@@ -3314,76 +3253,6 @@ body.white-theme .form-buttons button:hover {
     }
 }
 
-/* ================== CUSTOM CURSOR ================== */
-.custom-cursor {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    pointer-events: none;
-    position: fixed;
-    transform: translate(-50%, -50%);
-    transition: width 0.1s, height 0.1s, background 0.1s, border 0.1s, backdrop-filter 0.1s;
-    z-index: 9999;
-}
-
-body.white-theme .custom-cursor {
-    background: black;
-}
-body:not(.white-theme) .custom-cursor {
-    background: white;
-}
-
-.custom-cursor.hover {
-    width: 80px;
-    height: 80px;
-    background: rgba(255,255,255,0.1);
-    border: 2px solid white;
-    backdrop-filter: blur(10px);
-}
-body.white-theme .custom-cursor.hover {
-    background: rgba(0,0,0,0.1);
-    border-color: black;
-}
-
-.custom-cursor.view {
-    width: 100px;
-    height: 100px;
-    background: rgba(255,255,255,0.05);
-    border: 2px solid white;
-    backdrop-filter: blur(15px);
-}
-body.white-theme .custom-cursor.view {
-    background: rgba(0,0,0,0.05);
-    border-color: black;
-}
-
-.cursor-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    opacity: 0;
-    transition: opacity 0.1s ease;
-    color: inherit; /* follows parent color */
-    text-transform: uppercase;
-}
-
-.custom-cursor.view .cursor-text,
-.custom-cursor.open-mode .cursor-text {
-    opacity: 1;
-}
-
-body.white-theme .cursor-text {
-    color: black;
-}
-body:not(.white-theme) .cursor-text {
-    color: white;
-}
-
-
 /* ================== PHOTOGRAPHY PAGE ================== */
 .photography-page {
     min-height: 100vh;
@@ -3391,24 +3260,6 @@ body:not(.white-theme) .cursor-text {
 }
 
 /* ===================== MUSIC PAGE ===================== */
-.cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    transition: all 0.1s ease;
-    z-index: 9999;
-    mix-blend-mode: difference;
-}
-
-.cursor.hover {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.1);
-}
-
 .music-container {
     height: 100vh;
     display: flex;
@@ -3553,7 +3404,6 @@ body:not(.white-theme) .cursor-text {
 }
 
 @media (max-width: 768px) {
-    .cursor { display: none; }
     .music-container { flex-direction: column; }
     .split-section { border-right: none; }
     .producers { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
@@ -3703,7 +3553,6 @@ body:not(.white-theme) .cursor-text {
     color: #fff;
     text-decoration: none;
     transition: opacity 0.3s;
-    font-family: "Dubai Light";
 }
 
 .artist-name:hover {
@@ -3740,7 +3589,6 @@ body:not(.white-theme) .cursor-text {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-family: "Dubai Light";
 }
 
 /* Now Playing Bar */
@@ -3772,14 +3620,12 @@ body:not(.white-theme) .cursor-text {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 15px;
-    font-family: "Dubai Light";
 }
 
 .playing-track-info {
     display: flex;
     align-items: center;
     gap: 20px;
-    font-family: "Dubai Light";
 }
 
 .mini-play-btn {
@@ -3845,7 +3691,6 @@ body:not(.white-theme) .cursor-text {
     display: flex;
     align-items: center;
     gap: 15px;
-    font-family: "Dubai Light";
 }
 
 .time {
@@ -4120,7 +3965,7 @@ body:not(.white-theme) .cursor-text {
     color: white;
     padding: 12px 24px;
     font-size: 0.9rem;
-    cursor: none;
+    cursor: pointer;
     transition: all 0.3s ease;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -4164,7 +4009,7 @@ body.white-theme .filter-btn:hover {
     break-inside: avoid;
     margin-bottom: 30px;
     position: relative;
-    cursor: none;
+    cursor: pointer;
     overflow: hidden;
     border-radius: 0;
     background: #111;
@@ -4268,7 +4113,7 @@ body.white-theme .photo-category {
 }
 
 .photo-title {
-    font-family: 'Suissnord', sans-serif;
+    font-family: 'Madani', sans-serif;
     font-size: 1.4rem;
     font-weight: 300;
     margin-bottom: 6px;
@@ -4288,7 +4133,6 @@ body.white-theme .photo-category {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-family: "Dubai Light", serif;
 }
 
 .photographer-link {
@@ -4296,7 +4140,7 @@ body.white-theme .photo-category {
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.3s ease;
-    cursor: none;
+    cursor: pointer;
 }
 
 body.white-theme .photographer-link {
@@ -4321,7 +4165,7 @@ body.white-theme .photographer-link {
     justify-content: center;
     opacity: 0;
     transition: opacity 0.4s ease;
-    cursor: none;
+    cursor: pointer;
 }
 
 .image-modal.active {
@@ -4349,7 +4193,7 @@ body.white-theme .photographer-link {
     border: none;
     color: white;
     font-size: 2rem;
-    cursor: none;
+    cursor: pointer;
     padding: 10px;
     width: 50px !important;
     height: 50px !important;
@@ -4381,7 +4225,6 @@ body.white-theme .photographer-link {
     background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
     padding: 2rem;
     color: white;
-    font-family: "Dubai Light", serif;
 }
 
 .image-modal.active .modal-image {
@@ -4418,7 +4261,6 @@ body.white-theme .photographer-link {
 }
 
 .modal-title {
-    font-family: "Dubai Light" !important;
     font-size: 1.6rem;
     font-weight: 300;
     margin-bottom: 8px;
@@ -4462,7 +4304,7 @@ body.white-theme .photographer-link {
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.3s ease;
-    cursor: none;
+    cursor: pointer;
 }
 
 .modal-photographer:hover {
@@ -4480,7 +4322,7 @@ body.white-theme .photographer-link {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    cursor: none;
+    cursor: pointer;
     font-size: 1.2rem;
     display: flex;
     align-items: center;
@@ -4516,10 +4358,6 @@ body.white-theme .photographer-link {
 @media screen and (max-width: 768px) {
     body {
         cursor: auto;
-    }
-
-    .custom-cursor {
-        display: none;
     }
 
     .photography-page {
@@ -5140,10 +4978,6 @@ body.white-theme .modern-contact-form {
 
 body.white-theme .modern-contact-form::before {
     background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.3), transparent);
-}
-
-.form-group .numbers{
-    font-family: "Dubai Light" !important;
 }
 
 .form-grid {
@@ -5838,34 +5672,6 @@ body.white-theme .modal-info-close {
 
 .modal-info {
     transition: all 0.3s ease;
-}
-
-/* Fix theme switcher positioning for all pages */
-.designer-profile-page .page-fade-in .theme-switcher,
-.service-detail-page .page-fade-in .theme-switcher,
-.set-design-feed .page-fade-in .theme-switcher,
-.policies-page .theme-switcher,
-.service-detail-page .theme-switcher,
-.designer-profile-page .theme-switcher,
-.set-design-feed .theme-switcher {
-    position: fixed !important;
-    bottom: 30px !important;
-    left: 30px !important;
-    z-index: 1000 !important;
-    transform: none !important;
-}
-
-
-
-/* Mobile adjustments */
-@media screen and (max-width: 768px) {
-    .service-detail-page .theme-switcher,
-    .designer-profile-page .theme-switcher,
-    .set-design-feed .theme-switcher,
-    .policies-page .theme-switcher {
-        bottom: 20px !important;
-        left: 20px !important;
-    }
 }
 
 .selector-icon-img {

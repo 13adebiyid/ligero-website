@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Research - Ligero</title>
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
+    <link rel="preload" href="/fonts/suissnord.regular.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="/fonts/MadaniDEMO-Thin.woff" as="font" type="font/woff" crossorigin>
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* Market Research Page Styles */
@@ -303,7 +306,6 @@
             border-radius: 20px;
             padding: 40px;
             backdrop-filter: blur(10px);
-            font-family: "Dubai Light", serif;
         }
 
         body.white-theme .questionnaire-form {
@@ -569,7 +571,7 @@
             font-size: 2.5rem;
             font-weight: 300;
             margin-bottom: 20px;
-            font-family: 'Suissnord', serif;
+            font-family: 'Madani', sans-serif;
         }
 
         .success-subtitle {
@@ -767,11 +769,8 @@
         body:not(.white-theme) .jacket-modal-image-container {
             background: white !important;
         }
-
-        .numbers {
-            font-family: "Arial Nova Light", sans-serif !important;
-        }
     </style>
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
 
@@ -791,10 +790,10 @@
             <!-- Jacket Showcase -->
             <div class="jacket-showcase">
                 <div class="jacket-image-container">
-                    <img src="/images/jacket-front.png" alt="Leather Jacket Front" class="jacket-image" id="jacket-front">
+                    <img src="/images/jacket-front.webp" alt="Leather Jacket Front" class="jacket-image" id="jacket-front">
                 </div>
                 <div class="jacket-image-container">
-                    <img src="/images/jacket-back.png" alt="Leather Jacket Back" class="jacket-image" id="jacket-back">
+                    <img src="/images/jacket-back.webp" alt="Leather Jacket Back" class="jacket-image" id="jacket-back">
                 </div>
             </div>
         </div>
@@ -1122,7 +1121,8 @@
     <div class="jacket-modal-info" id="jacketModalInfo">Premium Leather Jacket</div>
 </div>
 
-<script src="/js/script.js"></script>
+<script src="/js/page-transitions.js"></script>
+    <script src="/js/script.js"></script>
 <script>
     // Market Research Form Logic
     let currentStep = 1;
@@ -1381,12 +1381,12 @@
 
     const jacketData = [
         {
-            src: '/images/jacket-front.png',
+            src: '/images/jacket-front.webp',
             alt: 'Leather Jacket Front View',
             info: 'Premium Leather Jacket - Front View'
         },
         {
-            src: '/images/jacket-back.png',
+            src: '/images/jacket-back.webp',
             alt: 'Leather Jacket Back View',
             info: 'Premium Leather Jacket - Back View'
         }

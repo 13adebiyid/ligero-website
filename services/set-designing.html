@@ -1,203 +1,121 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Designing - Ligero</title>
-    <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
-    <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="preload" href="/js/script.js" as="script">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="/js/script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Set design by Ligero. Three films, with the photographs taken behind the set.">
+  <title>Set Design — Ligero</title>
+  <link rel="icon" href="/images/ligero-browser-icon.png">
+  <link rel="preload" href="/fonts/MadaniDEMO-Thin.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="/fonts/suissnord.regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="/css/page-transitions.css">
+  <link rel="stylesheet" href="/services/creative-direction/page.css">
+  <link rel="stylesheet" href="/services/creative-direction/player.css">
+  <link rel="stylesheet" href="/services/set-design/page.css">
+  <script src="/js/theme.js"></script>
+  <script src="/js/page-transitions.js"></script>
+  <script>document.documentElement.classList.add("cinema-pending");</script>
+  <script type="module" src="/services/creative-direction/page.mjs" onerror="document.documentElement.classList.remove(&quot;cinema-pending&quot;)"></script>
+  <script type="module" src="/services/set-design/page.mjs"></script>
+  <link rel="stylesheet" href="/css/theme.css">
 </head>
-<body>
-
-<nav>
-    <div class="hamburger-menu">
-        <div class="hamburger-line"></div>
-        <div class="hamburger-line"></div>
-        <div class="hamburger-line"></div>
-    </div>
-
-    <a href="/" class="logo">LIGERO</a>
-
-    <div class="nav-menu">
-        <a href="/shop/" class="nav-item">Shop</a>
-        <span class="nav-separator">|</span>
-        <a href="/services/" class="nav-item">Services</a>
-        <span class="nav-separator">|</span>
-        <a href="/contact/" class="nav-item">Contact</a>
-        <span class="nav-separator">|</span>
-        <a href="/policies/" class="nav-item">Policies</a>
-    </div>
-</nav>
-
-<div class="mobile-menu-overlay">
-    <a href="/" class="mobile-menu-item">HOME</a>
-    <a href="/shop/" class="mobile-menu-item">SHOP</a>
-    <a href="/services/" class="mobile-menu-item">SERVICES</a>
-    <a href="/contact/" class="mobile-menu-item">CONTACT</a>
-    <a href="/policies/" class="mobile-menu-item">POLICIES</a>
-</div>
-
-<div class="set-design-feed">
-    <div class="theme-switcher">
-        <div class="theme-circle black" onclick="setTheme('black')"></div>
-        <div class="theme-circle white" onclick="setTheme('white')"></div>
-    </div>
-
-    <div class="page-fade-in">
-        <h1 class="service-title">SET DESIGN</h1>
-
-        <div class="feed-container">
-
-            <div class="video-section">
-                <div class="video-container-main" data-video="/videos/gift.mp4" data-title="A Gift for a Gift" data-client="Anisah Myers-Grey">
-                    <video id="gift-video" class="feed-video" muted loop preload="auto" playsinline>
-                        <source src="/videos/gift-preview.mp4" type="video/mp4">
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-indicator">▶</div>
-                    </div>
-                </div>
-
-                <div class="video-metadata">
-                    <div class="client-name">Anisah Myers-Grey</div>
-                    <div class="project-title">A Gift for a Gift - Short Film</div>
-                    <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
-                </div>
-            </div>
-
-            <div class="images-grid">
-                <div class="feed-item image-medium" data-image="/images/gift-still-4.webp">
-                    <img src="/images/gift-still-4.webp" fetchpriority="high" alt="A Gift for a Gift Behind Scenes" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-
-                <div class="feed-item image-small" data-image="/images/gift-still-1.webp">
-                    <img src="/images/gift-still-1.webp" fetchpriority="high" alt="A Gift for a Gift Set Details" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-
-                <div class="feed-item image-large" data-image="/images/gift-still-2.webp">
-                    <img src="/images/gift-still-2.webp" fetchpriority="high" alt="A Gift for a Gift Set Details" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-
-                <div class="feed-item image-medium" data-image="/images/gift-still-3.webp">
-                    <img src="/images/gift-still-3.webp" fetchpriority="high" alt="A Gift for a Gift Behind Scenes" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-section reverse">
-                <div class="video-container-main" data-video="/videos/fashion.mp4" data-title="Tolu Coker Collection" data-client="London Fashion Week">
-                    <video id="fashion-video" class="feed-video" muted loop preload="auto" playsinline>
-                        <source src="/videos/fashion-preview.mp4" type="video/mp4">
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-indicator">▶</div>
-                    </div>
-                </div>
-
-                <div class="video-metadata">
-                    <div class="client-name">London Fashion Week</div>
-                    <div class="project-title">Tolu Coker SS<span class="number">25</span> Collection - 'Olapeju'</div>
-                    <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
-                </div>
-            </div>
-
-            <div class="images-grid">
-                <div class="feed-item image-large" data-image="/images/fashion-still-1.webp">
-                    <img src="/images/fashion-still-1.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-
-                <div class="feed-item image-medium" data-image="/images/fashion-still-2.webp">
-                    <img src="/images/fashion-still-2.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-
-                <div class="feed-item image-small" data-image="/images/fashion-still-3.webp">
-                    <img src="/images/fashion-still-3.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-
-                <div class="feed-item image-small" data-image="/images/fashion-still-4.webp">
-                    <img src="/images/fashion-still-4.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
-                    <div class="item-overlay">
-                        <div class="play-indicator"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-section">
-                <div class="video-container-main" data-video="/videos/brand.mp4" data-title="A Seat at the Table" data-client="Johnnie Walker x Dankie Sounds">
-                    <video id="brand-video" class="feed-video" muted loop preload="auto" playsinline>
-                        <source src="/videos/brand-preview.mp4" type="video/mp4">
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-indicator">▶</div>
-                    </div>
-                </div>
-
-                <div class="video-metadata">
-                    <div class="client-name">Johnnie Walker x Dankie Sounds</div>
-                    <div class="project-title">A Seat at the Table - by Mara Lee</div>
-                    <a href="/members/ifeoluwa-segun-oludimu" class="designer-link">Ifeoluwa<br>Segun-Oludimu</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="video-modal" id="videoModal">
-    <div class="modal-backdrop" onclick="closeModal()"></div>
-    <div class="modal-container">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle">Video Title</h2>
-            <div class="modal-client" id="modalClient">Client Name</div>
-        </div>
-        <div class="modal-video-wrap">
-            <video class="modal-video" id="modalVideo" controls preload="metadata">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div class="modal-footer">
-            <div class="modal-director">Ifeoluwa Segun-Oludimu</div>
-        </div>
-    </div>
-</div>
-
-<div class="image-modal" id="imageModal">
-    <div class="modal-backdrop" onclick="closeImageModal()"></div>
-    <button class="modal-close" onclick="closeImageModal()">×</button>
-    <div class="image-container">
-        <img class="modal-image" id="modalImage" src="" alt="" loading="lazy">
-        <div class="image-info" id="imageInfo">
-            <div class="image-title" id="imageTitle">Image Title</div>
-            <div class="image-project" id="imageProject">Project Name</div>
-        </div>
-    </div>
-</div>
+<body class="set-design-page">
+  <header class="direction-header">
+    <a href="/" class="logo" aria-label="Ligero home">LIGERO</a>
+    <h1 class="service-title">Set Design</h1>
+    <button class="menu-toggle" aria-label="Open menu" aria-controls="direction-menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav-menu" id="direction-menu" aria-label="Main navigation">
+      <a class="nav-item nav-home" href="/">Home</a>
+      <a class="nav-item" href="/shop/">Shop</a><span class="nav-separator" aria-hidden="true">|</span>
+      <a class="nav-item" href="/services/">Services</a><span class="nav-separator" aria-hidden="true">|</span>
+      <a class="nav-item" href="/contact/">Contact</a><span class="nav-separator" aria-hidden="true">|</span>
+      <a class="nav-item" href="/policies/">Policies</a>
+    </nav>
+  </header>
+  <div class="entry-mark" aria-hidden="true"><span>LIGERO</span><small>Set Design</small></div>
+  <canvas id="film-canvas" aria-hidden="true"></canvas>
+  <main id="films" aria-label="Set design films">
+    <p class="sr-only" id="film-instructions">Scroll, swipe, or use the up and down arrow keys to change films. Select a film to watch it in full. Where available, open Behind the set for photographs from the production.</p>
+    <article class="film" data-id="gift" data-preview="/videos/Gift-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/set-design/gift.webp" alt="A Gift for a Gift short film" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">01</span>
+        <p class="film-client" data-order="1">Anisah Myers-Grey</p>
+        <h2 data-order="2">“A Gift for a Gift” — Short Film</h2>
+        <a class="film-credit" data-order="3" href="/members/ifeoluwa-segun-oludimu.html">Ifeoluwa<br> Segun-Oludimu</a>
+      </div>
+      <a class="film-open" href="/videos/gift.mp4" aria-label="Watch A Gift for a Gift"><span class="sr-only">Watch full film</span></a>
+      <button class="film-bts" type="button" data-bts="gift" aria-haspopup="dialog" aria-label="Behind the set: 4 photographs from A Gift for a Gift"><span class="bts-stack" aria-hidden="true"><img src="/services/set-design/thumbs/gift-still-4.webp" alt="" width="720" height="406" loading="lazy" decoding="async"><img src="/services/set-design/thumbs/gift-still-1.webp" alt="" width="720" height="406" loading="lazy" decoding="async"><img src="/services/set-design/thumbs/gift-still-2.webp" alt="" width="720" height="406" loading="lazy" decoding="async"></span><span class="bts-cta">Behind the set<small>04 photographs</small></span></button>
+    </article>
+    <article class="film" data-id="fashion" data-preview="/videos/Fashion-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/set-design/fashion.webp" alt="Tolu Coker SS25 Collection, Olapeju" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">02</span>
+        <p class="film-client" data-order="1">London Fashion Week</p>
+        <h2 data-order="2">Tolu Coker SS<span class="number">25</span> Collection / ‘Olapeju’</h2>
+        <a class="film-credit" data-order="3" href="/members/ifeoluwa-segun-oludimu.html">Ifeoluwa<br> Segun-Oludimu</a>
+      </div>
+      <a class="film-open" href="/videos/fashion.mp4" aria-label="Watch Tolu Coker SS25 Collection — ‘Olapeju’"><span class="sr-only">Watch full film</span></a>
+      <button class="film-bts" type="button" data-bts="fashion" aria-haspopup="dialog" aria-label="Behind the set: 4 photographs from Tolu Coker SS25 Collection — ‘Olapeju’"><span class="bts-stack" aria-hidden="true"><img src="/services/set-design/thumbs/fashion-still-1.webp" alt="" width="600" height="900" loading="lazy" decoding="async"><img src="/services/set-design/thumbs/fashion-still-2.webp" alt="" width="720" height="900" loading="lazy" decoding="async"><img src="/services/set-design/thumbs/fashion-still-3.webp" alt="" width="720" height="900" loading="lazy" decoding="async"></span><span class="bts-cta">Behind the set<small>04 photographs</small></span></button>
+    </article>
+    <article class="film" data-id="brand" data-preview="/videos/Brand-Preview.mp4" aria-describedby="film-instructions">
+      <img class="film-poster" src="/services/set-design/brand.webp" alt="A Seat at the Table" width="1280" height="720">
+      <div class="film-info">
+        <span class="film-number" data-order="0">03</span>
+        <p class="film-client" data-order="1">Johnnie Walker x Dankie Sounds</p>
+        <h2 data-order="2">“A Seat at the Table” — by Mara Lee</h2>
+        <a class="film-credit" data-order="3" href="/members/ifeoluwa-segun-oludimu.html">Ifeoluwa<br> Segun-Oludimu</a>
+      </div>
+      <a class="film-open" href="/videos/brand.mp4" aria-label="Watch A Seat at the Table"><span class="sr-only">Watch full film</span></a>
+    </article>
+  </main>
+  <div id="bts-sheets">
+  <section class="bts-sheet" data-for="gift" data-title="A Gift for a Gift" data-meta="Behind the set / Anisah Myers-Grey" aria-label="Behind the set: A Gift for a Gift">
+    <h2>Behind the set — A Gift for a Gift</h2>
+    <ol>
+      <li><a href="/images/gift-still-4.webp" data-caption="Behind the scenes"><img src="/services/set-design/thumbs/gift-still-4.webp" alt="A Gift for a Gift behind the scenes" width="720" height="406" loading="lazy" decoding="async"></a></li>
+      <li><a href="/images/gift-still-1.webp" data-caption="Set detail"><img src="/services/set-design/thumbs/gift-still-1.webp" alt="A Gift for a Gift set detail" width="720" height="406" loading="lazy" decoding="async"></a></li>
+      <li><a href="/images/gift-still-2.webp" data-caption="Set detail"><img src="/services/set-design/thumbs/gift-still-2.webp" alt="A Gift for a Gift set detail" width="720" height="406" loading="lazy" decoding="async"></a></li>
+      <li><a href="/images/gift-still-3.webp" data-caption="Behind the scenes"><img src="/services/set-design/thumbs/gift-still-3.webp" alt="A Gift for a Gift behind the scenes" width="720" height="406" loading="lazy" decoding="async"></a></li>
+    </ol>
+  </section>
+  <section class="bts-sheet" data-for="fashion" data-title="Tolu Coker SS25 Collection — ‘Olapeju’" data-meta="Behind the set / London Fashion Week" aria-label="Behind the set: Tolu Coker SS25 Collection — ‘Olapeju’">
+    <h2>Behind the set — Tolu Coker SS25 Collection — ‘Olapeju’</h2>
+    <ol>
+      <li><a href="/images/fashion-still-1.webp" data-caption="Fashion set"><img src="/services/set-design/thumbs/fashion-still-1.webp" alt="Fashion set" width="600" height="900" loading="lazy" decoding="async"></a></li>
+      <li><a href="/images/fashion-still-2.webp" data-caption="Fashion set"><img src="/services/set-design/thumbs/fashion-still-2.webp" alt="Fashion set" width="720" height="900" loading="lazy" decoding="async"></a></li>
+      <li><a href="/images/fashion-still-3.webp" data-caption="Fashion set"><img src="/services/set-design/thumbs/fashion-still-3.webp" alt="Fashion set" width="720" height="900" loading="lazy" decoding="async"></a></li>
+      <li><a href="/images/fashion-still-4.webp" data-caption="Fashion set"><img src="/services/set-design/thumbs/fashion-still-4.webp" alt="Fashion set" width="720" height="900" loading="lazy" decoding="async"></a></li>
+    </ol>
+  </section>
+  </div>
+  <p id="film-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+  <dialog id="film-dialog" aria-labelledby="film-dialog-title">
+    <button class="film-close" aria-label="Close film">×</button>
+    <h2 id="film-dialog-title"></h2>
+    <p id="film-dialog-client"></p>
+    <video id="full-film" controls playsinline preload="none"></video>
+    <p class="playback-status" role="status" hidden>The video could not load. <a id="film-direct-link">Open the video directly</a>.</p>
+    <a class="dialog-credit" href="/members/ifeoluwa-segun-oludimu.html">Set design — Ifeoluwa Segun-Oludimu</a>
+  </dialog>
+  <dialog id="bts-drawer" class="bts-drawer" data-creative-overlay aria-labelledby="bts-title">
+    <aside class="bts-panel">
+      <header class="bts-head">
+        <p class="bts-meta"></p>
+        <h2 class="bts-title" id="bts-title"></h2>
+        <button class="bts-close" type="button" aria-label="Close behind the set">×</button>
+      </header>
+      <div class="bts-body"></div>
+    </aside>
+  </dialog>
+  <dialog id="still-dialog" class="still-dialog" data-creative-overlay aria-label="Photograph">
+    <button class="still-close" type="button" aria-label="Close photograph">×</button>
+    <figure class="still-figure">
+      <img class="still-image" alt="">
+      <figcaption><span class="still-count"></span><span class="still-caption"></span><span class="still-status" role="status"></span><a class="still-original" target="_blank" rel="noopener">Open original</a></figcaption>
+    </figure>
+    <button class="still-prev" type="button" aria-label="Previous photograph">←</button>
+    <button class="still-next" type="button" aria-label="Next photograph">→</button>
+  </dialog>
 </body>
 </html>

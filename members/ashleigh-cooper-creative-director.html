@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ashleigh Cooper - Creative Director - Ligero</title>
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
+    <link rel="preload" href="/fonts/suissnord.regular.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="/fonts/MadaniDEMO-Thin.woff" as="font" type="font/woff" crossorigin>
     <!-- Preload and apply stylesheet -->
     <link rel="stylesheet" href="/css/styles.css">
     <!-- Preload and apply scripts -->
     <link rel="preload" href="/js/script.js" as="script">
+    <script src="/js/page-transitions.js"></script>
     <script src="/js/script.js" defer></script>
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
 
@@ -50,7 +55,7 @@
 
     <!-- Full-Width Hero Image -->
     <div class="designer-hero">
-        <img src="/images/ash-hero.png" alt="Ashleigh Cooper" class="hero-image-ash">
+        <img src="/images/ash-hero.webp" alt="Ashleigh Cooper" class="hero-image-ash" width="1920" height="1080" fetchpriority="high" decoding="async">
         <div class="hero-overlay">
             <h1 class="hero-title">Ashleigh Cooper</h1>
             <p class="hero-subtitle">BOLD. AUTHENTIC. CULTURAL</p>
@@ -84,7 +89,7 @@
             <div class="video-section">
                 <div class="video-container-main" data-video="/videos/gabzy.mp4" data-title="King Promise, GABZY / 'PERFECT COMBI'" data-client="Sony Music">
                     <video id="gabzy-video" class="feed-video" muted loop preload="none" playsinline>
-                        <source src="/videos/gabzy-preview.mp4" type="video/mp4">
+                        <source src="/videos/Gabzy-Preview.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
                         <div class="play-indicator">▶</div>
@@ -103,7 +108,7 @@
                 <div class="dual-video-item">
                     <div class="video-container-main" data-video="/videos/grime.mp4" data-title="Diaspora / 'WEAR YOUR CROWN'" data-client="Independent Commercial">
                         <video id="grime-video" class="feed-video" muted loop preload="none" playsinline>
-                            <source src="/videos/grime-preview.mp4" type="video/mp4">
+                            <source src="/videos/Grime-Preview.mp4" type="video/mp4">
                         </video>
                         <div class="video-overlay">
                             <div class="play-indicator">▶</div>
@@ -119,7 +124,7 @@
                 <div class="dual-video-item">
                     <div class="video-container-main" data-video="/videos/note.mp4" data-title="'ONE MORE NOTE'" data-client="Self-Filmed/Self-Produced">
                         <video id="note-video" class="feed-video" muted loop preload="none" playsinline>
-                            <source src="/videos/note-preview.mp4" type="video/mp4">
+                            <source src="/videos/Note-Preview.mp4" type="video/mp4">
                         </video>
                         <div class="video-overlay">
                             <div class="play-indicator">▶</div>
@@ -136,7 +141,7 @@
             <div class="video-section">
                 <div class="video-container-main" data-video="/videos/reem.mp4" data-title="Reem / 'OneHundredTimes'" data-client="Music Video">
                     <video id="reem-video" class="feed-video" muted loop preload="none" playsinline>
-                        <source src="/videos/reem-preview.mp4" type="video/mp4">
+                        <source src="/videos/Reem-Preview.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
                         <div class="play-indicator">▶</div>
@@ -164,7 +169,7 @@
             <div class="modal-client" id="modalClient">Client Name</div>
         </div>
         <div class="modal-video-wrap">
-            <video class="modal-video" id="modalVideo" controls preload="metadata">
+            <video class="modal-video" id="modalVideo" controls preload="none">
                 Your browser does not support the video tag.
             </video>
         </div>

@@ -1,0 +1,88 @@
+.film-player-dialog{
+  --fp-ease:cubic-bezier(.22,.8,.2,1);--fp-time:380ms;
+  --fp-line:rgba(255,255,255,.38);--fp-line-soft:rgba(255,255,255,.16);
+  font-family:Madani,ABCDiatype,sans-serif;
+  border:1px solid var(--fp-line-soft);
+  opacity:0;transform:translateY(22px) scale(.975);
+  transition:opacity var(--fp-time) var(--fp-ease),transform var(--fp-time) var(--fp-ease);
+  will-change:opacity,transform;
+}
+.film-player-dialog.is-open{opacity:1;transform:none}
+.film-player-dialog.is-closing{transition-timing-function:cubic-bezier(.5,0,.75,0)}
+.film-player-dialog::backdrop{opacity:0;transition:opacity var(--fp-time) var(--fp-ease)}
+.film-player-dialog.is-open::backdrop{opacity:1}
+.film-player-dialog h2,.film-player-dialog p,.film-player-dialog .dialog-credit{font-family:inherit}
+.film-player-dialog h2{letter-spacing:.14em}
+.film-player-dialog p{letter-spacing:.06em}
+
+.film-player-dialog .film-close{
+  font-family:inherit;color:inherit;cursor:pointer;line-height:1;
+  min-width:44px;min-height:44px;top:8px;right:10px;
+  border:1px solid transparent;border-radius:999px;
+  transition:border-color .2s,background-color .2s;
+}
+.film-player-dialog .film-close:hover{border-color:var(--fp-line)}
+.film-player-dialog .film-close:focus-visible,
+.film-player .fp-button:focus-visible,
+.film-player .fp-range:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+
+.film-player{position:relative;margin:20px 0;background:#000;display:flex;flex-direction:column}
+.film-player #full-film{margin:0;cursor:pointer}
+.film-player-controls{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:12px 2px 2px;color:#fff;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.16em;
+}
+.film-player .fp-time{margin:0;font-size:.75rem;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:.08em}
+.film-player .fp-button{
+  font:inherit;color:inherit;background:none;cursor:pointer;
+  border:1px solid var(--fp-line);border-radius:999px;
+  min-height:36px;min-width:84px;padding:0 16px;
+  text-transform:inherit;letter-spacing:inherit;
+  transition:background-color .2s,border-color .2s,color .2s;
+}
+.film-player .fp-button:hover{border-color:currentColor;background:rgba(255,255,255,.08)}
+.film-player .fp-button:active{background:rgba(255,255,255,.18)}
+.film-player .fp-range{
+  -webkit-appearance:none;appearance:none;background:none;margin:0;height:36px;cursor:pointer;min-width:0;
+  --fp-progress:0%;
+}
+.film-player .fp-scrub{flex:1 1 180px}
+.film-player .fp-volume{flex:0 0 84px;width:84px}
+.film-player .fp-range:disabled{opacity:.4;cursor:default}
+.film-player .fp-range::-webkit-slider-runnable-track{
+  height:2px;border-radius:2px;
+  background:linear-gradient(to right,var(--site-foreground,#fff) var(--fp-progress),var(--fp-line-soft) var(--fp-progress));
+}
+.film-player .fp-range::-moz-range-track{height:2px;border-radius:2px;background:var(--fp-line-soft)}
+.film-player .fp-range::-moz-range-progress{height:2px;background:var(--site-foreground,#fff)}
+.film-player .fp-range::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:14px;height:14px;margin-top:-6px;
+  border-radius:50%;border:1px solid var(--site-foreground,#fff);background:var(--site-surface,#181818);
+}
+.film-player .fp-range::-moz-range-thumb{width:12px;height:12px;border-radius:50%;border:1px solid var(--site-foreground,#fff);background:var(--site-surface,#181818)}
+.film-player-message{
+  margin:10px 2px 0;font-size:.75rem;letter-spacing:.06em;color:rgba(255,255,255,.82);
+}
+.film-player-message[hidden]{display:none}
+
+.film-player:fullscreen{justify-content:center;margin:0}
+.film-player:fullscreen #full-film{max-height:none;flex:1 1 auto;min-height:0}
+.film-player:fullscreen .film-player-controls{padding:12px 20px 18px;background:#000}
+
+@media (pointer:coarse){
+  .film-player .fp-button{min-height:44px}
+  .film-player .fp-range{height:44px}
+  .film-player .fp-range::-webkit-slider-thumb{width:20px;height:20px;margin-top:-9px}
+}
+@media (max-width:768px){
+  .film-player-controls{gap:10px}
+  .film-player .fp-time{order:1}
+  .film-player .fp-scrub{order:5;flex:1 0 100%}
+  .film-player .fp-volume{display:none}
+  .film-player .fp-button{min-width:0;padding:0 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .film-player-dialog,.film-player-dialog::backdrop,.film-player .fp-button,.film-player-dialog .film-close{transition:none}
+  .film-player-dialog{transform:none}
+}

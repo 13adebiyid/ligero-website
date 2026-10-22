@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ifeoluwa Segun-Oludimu - Ligero</title>
     <link rel="icon" type="image/png" sizes="64x64" href="/images/ligero-browser-icon.png">
     <link rel="shortcut icon" href="/images/ligero-browser-icon.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/images/ligero-browser-icon.png">
+    <link rel="preload" href="/fonts/suissnord.regular.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="/fonts/MadaniDEMO-Thin.woff" as="font" type="font/woff" crossorigin>
     <!-- Preload and apply stylesheet -->
     <link rel="stylesheet" href="/css/styles.css">
     <!-- Preload and apply scripts -->
     <link rel="preload" href="/js/script.js" as="script">
+    <script src="/js/page-transitions.js"></script>
     <script src="/js/script.js" defer></script>
-    <link rel="preload" as="video" href="/videos/gift.mp4" type="video/mp4">
 
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
 
@@ -53,7 +57,7 @@
 
     <!-- Full-Width Hero Image -->
     <div class="designer-hero">
-        <img src="/images/ifeoluwa-hero.png" alt="Ifeoluwa Segun-Oludimu" class="hero-image">
+        <img src="/images/ifeoluwa-hero.webp" alt="Ifeoluwa Segun-Oludimu" class="hero-image" width="1920" height="1080" fetchpriority="high" decoding="async">
         <div class="hero-overlay">
             <h1 class="hero-title">Ifeoluwa Segun-Oludimu</h1>
             <p class="hero-subtitle">CREATIVE. INNOVATIVE. VISIONARY</p>
@@ -103,7 +107,7 @@
             <div class="video-section">
                 <div class="video-container-main" data-video="/videos/gift.mp4" data-title="A Gift for a Gift" data-client="Anisah Myers-Grey">
                     <video id="gift-video" class="feed-video"  muted loop preload="none" playsinline>
-                        <source src="/videos/gift-preview.mp4" type="video/mp4">
+                        <source src="/videos/Gift-Preview.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
                         <div class="play-indicator">▶</div>
@@ -119,28 +123,36 @@
             <!-- A gift for a gift Images Grid -->
             <div class="images-grid">
                 <div class="feed-item image-medium" data-image="/images/gift-still-4.webp">
-                    <img src="/images/gift-still-4.webp" fetchpriority="high" alt="Short Film Behind Scenes" loading="lazy">
+                    <img src="/members/media/gift-still-4-1440.webp" fetchpriority="low" alt="Short Film Behind Scenes" loading="lazy" decoding="async" width="3840" height="2160"
+                         srcset="/members/media/gift-still-4-720.webp 720w, /members/media/gift-still-4-1440.webp 1440w, /members/media/gift-still-4-2160.webp 2160w, /images/gift-still-4.webp 3840w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 554.88px), (max-width: 768px) max(calc(91.5552vw), 554.88px), (max-width: 911.7647px) max(calc(44.217vw - 13.005px), 739.84px), (max-width: 1024px) max(calc(29.478vw - 17.34px), 739.84px), (max-width: 1129.4117px) max(calc(44.217vw - 15.606px), 739.84px), (max-width: 1199.9999px) max(calc(29.478vw - 20.808px), 739.84px), (max-width: 1465.909px) max(calc(30.5184vw - 20.808px), 739.84px), (max-width: 1840.909px) max(calc(22.8888vw - 23.409px), 739.84px), (max-width: 2215.909px) max(calc(18.31104vw - 24.9696px), 739.84px), max(calc(18.31104vw - 24.9696px), 739.84px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-small" data-image="/images/gift-still-1.webp">
-                    <img src="/images/gift-still-1.webp" fetchpriority="high" alt="Short Film Set Details" loading="lazy">
+                    <img src="/members/media/gift-still-1-1440.webp" fetchpriority="low" alt="Short Film Set Details" loading="lazy" decoding="async" width="3840" height="2160"
+                         srcset="/members/media/gift-still-1-720.webp 720w, /members/media/gift-still-1-1440.webp 1440w, /members/media/gift-still-1-2160.webp 2160w, /images/gift-still-1.webp 3840w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 462.4px), (max-width: 768px) max(calc(91.5552vw), 462.4px), (max-width: 911.7647px) max(calc(44.217vw - 13.005px), 554.88px), (max-width: 1024px) max(calc(29.478vw - 17.34px), 554.88px), (max-width: 1129.4117px) max(calc(44.217vw - 15.606px), 554.88px), (max-width: 1199.9999px) max(calc(29.478vw - 20.808px), 554.88px), (max-width: 1465.909px) max(calc(30.5184vw - 20.808px), 554.88px), (max-width: 1840.909px) max(calc(22.8888vw - 23.409px), 554.88px), (max-width: 2215.909px) max(calc(18.31104vw - 24.9696px), 554.88px), max(calc(18.31104vw - 24.9696px), 554.88px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-large" data-image="/images/gift-still-2.webp">
-                    <img src="/images/gift-still-2.webp" fetchpriority="high" alt="Short Film Set Details" loading="lazy">
+                    <img src="/members/media/gift-still-2-1440.webp" fetchpriority="low" alt="Short Film Set Details" loading="lazy" decoding="async" width="3840" height="2160"
+                         srcset="/members/media/gift-still-2-720.webp 720w, /members/media/gift-still-2-1440.webp 1440w, /members/media/gift-still-2-2160.webp 2160w, /images/gift-still-2.webp 3840w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 647.36px), (max-width: 768px) max(calc(91.5552vw), 647.36px), (max-width: 911.7647px) max(calc(88.434vw), 924.8px), (max-width: 1024px) max(calc(58.956vw - 8.67px), 924.8px), (max-width: 1129.4117px) max(calc(88.434vw), 924.8px), (max-width: 1199.9999px) max(calc(58.956vw - 10.404px), 924.8px), (max-width: 1465.909px) max(calc(61.0368vw - 10.404px), 924.8px), (max-width: 1840.909px) max(calc(45.7776vw - 15.606px), 924.8px), (max-width: 2215.909px) max(calc(36.62208vw - 18.7272px), 924.8px), max(calc(36.62208vw - 18.7272px), 924.8px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-medium" data-image="/images/gift-still-3.webp">
-                    <img src="/images/gift-still-3.webp" fetchpriority="high" alt="Short Film Behind Scenes" loading="lazy">
+                    <img src="/members/media/gift-still-3-1440.webp" fetchpriority="low" alt="Short Film Behind Scenes" loading="lazy" decoding="async" width="3840" height="2160"
+                         srcset="/members/media/gift-still-3-720.webp 720w, /members/media/gift-still-3-1440.webp 1440w, /members/media/gift-still-3-2160.webp 2160w, /images/gift-still-3.webp 3840w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 554.88px), (max-width: 768px) max(calc(91.5552vw), 554.88px), (max-width: 911.7647px) max(calc(44.217vw - 13.005px), 739.84px), (max-width: 1024px) max(calc(29.478vw - 17.34px), 739.84px), (max-width: 1129.4117px) max(calc(44.217vw - 15.606px), 739.84px), (max-width: 1199.9999px) max(calc(29.478vw - 20.808px), 739.84px), (max-width: 1465.909px) max(calc(30.5184vw - 20.808px), 739.84px), (max-width: 1840.909px) max(calc(22.8888vw - 23.409px), 739.84px), (max-width: 2215.909px) max(calc(18.31104vw - 24.9696px), 739.84px), max(calc(18.31104vw - 24.9696px), 739.84px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
@@ -151,7 +163,7 @@
             <div class="video-section reverse">
                 <div class="video-container-main" data-video="/videos/fashion.mp4" data-title="Tolu Coker Collection" data-client="London Fashion Week">
                     <video id="fashion-video" class="feed-video" muted loop preload="none" playsinline>
-                        <source src="/videos/fashion-preview.mp4" type="video/mp4">
+                        <source src="/videos/Fashion-Preview.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
                         <div class="play-indicator">▶</div>
@@ -167,28 +179,36 @@
             <!-- Fashion Images Grid -->
             <div class="images-grid">
                 <div class="feed-item image-large" data-image="/images/fashion-still-1.webp">
-                    <img src="/images/fashion-still-1.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <img src="/members/media/fashion-still-1-1440.webp" fetchpriority="low" alt="Fashion set" loading="lazy" decoding="async" width="2837" height="4256"
+                         srcset="/members/media/fashion-still-1-720.webp 720w, /members/media/fashion-still-1-1440.webp 1440w, /members/media/fashion-still-1-2160.webp 2160w, /images/fashion-still-1.webp 2837w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 242.73148px), (max-width: 768px) max(calc(91.5552vw), 242.73148px), (max-width: 911.7647px) max(calc(88.434vw), 346.759258px), (max-width: 1024px) max(calc(58.956vw - 8.67px), 346.759258px), (max-width: 1129.4117px) max(calc(88.434vw), 346.759258px), (max-width: 1199.9999px) max(calc(58.956vw - 10.404px), 346.759258px), (max-width: 1465.909px) max(calc(61.0368vw - 10.404px), 346.759258px), (max-width: 1840.909px) max(calc(45.7776vw - 15.606px), 346.759258px), (max-width: 2215.909px) max(calc(36.62208vw - 18.7272px), 346.759258px), max(calc(30.5184vw - 20.808px), 346.759258px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-large" data-image="/images/fashion-still-2.webp">
-                    <img src="/images/fashion-still-2.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <img src="/members/media/fashion-still-2-1440.webp" fetchpriority="low" alt="Fashion set" loading="lazy" decoding="async" width="3405" height="4256"
+                         srcset="/members/media/fashion-still-2-720.webp 720w, /members/media/fashion-still-2-1440.webp 1440w, /members/media/fashion-still-2-2160.webp 2160w, /images/fashion-still-2.webp 3405w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 291.329112px), (max-width: 768px) max(calc(91.5552vw), 291.329112px), (max-width: 911.7647px) max(calc(88.434vw), 416.184445px), (max-width: 1024px) max(calc(58.956vw - 8.67px), 416.184445px), (max-width: 1129.4117px) max(calc(88.434vw), 416.184445px), (max-width: 1199.9999px) max(calc(58.956vw - 10.404px), 416.184445px), (max-width: 1465.909px) max(calc(61.0368vw - 10.404px), 416.184445px), (max-width: 1840.909px) max(calc(45.7776vw - 15.606px), 416.184445px), (max-width: 2215.909px) max(calc(36.62208vw - 18.7272px), 416.184445px), max(calc(30.5184vw - 20.808px), 416.184445px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-small" data-image="/images/fashion-still-3.webp">
-                    <img src="/images/fashion-still-3.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <img src="/members/media/fashion-still-3-1440.webp" fetchpriority="low" alt="Fashion set" loading="lazy" decoding="async" width="4319" height="5399"
+                         srcset="/members/media/fashion-still-3-720.webp 720w, /members/media/fashion-still-3-1440.webp 1440w, /members/media/fashion-still-3-2160.webp 2160w, /images/fashion-still-3.webp 4319w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 208.070365px), (max-width: 768px) max(calc(91.5552vw), 208.070365px), (max-width: 911.7647px) max(calc(44.217vw - 13.005px), 249.684438px), (max-width: 1024px) max(calc(29.478vw - 17.34px), 249.684438px), (max-width: 1129.4117px) max(calc(44.217vw - 15.606px), 249.684438px), (max-width: 1199.9999px) max(calc(29.478vw - 20.808px), 249.684438px), (max-width: 1465.909px) max(calc(30.5184vw - 20.808px), 249.684438px), (max-width: 1840.909px) max(calc(22.8888vw - 23.409px), 249.684438px), (max-width: 2215.909px) max(calc(18.31104vw - 24.9696px), 249.684438px), max(calc(15.2592vw - 26.01px), 249.684438px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
                 </div>
 
                 <div class="feed-item image-small" data-image="/images/fashion-still-4.webp">
-                    <img src="/images/fashion-still-4.webp" fetchpriority="low" alt="Fashion set" loading="lazy">
+                    <img src="/members/media/fashion-still-4-1440.webp" fetchpriority="low" alt="Fashion set" loading="lazy" decoding="async" width="3508" height="4385"
+                         srcset="/members/media/fashion-still-4-720.webp 720w, /members/media/fashion-still-4-1440.webp 1440w, /members/media/fashion-still-4-2160.webp 2160w, /images/fashion-still-4.webp 3508w"
+                         sizes="(max-width: 576px) max(calc(93.636vw), 208.08px), (max-width: 768px) max(calc(91.5552vw), 208.08px), (max-width: 911.7647px) max(calc(44.217vw - 13.005px), 249.696px), (max-width: 1024px) max(calc(29.478vw - 17.34px), 249.696px), (max-width: 1129.4117px) max(calc(44.217vw - 15.606px), 249.696px), (max-width: 1199.9999px) max(calc(29.478vw - 20.808px), 249.696px), (max-width: 1465.909px) max(calc(30.5184vw - 20.808px), 249.696px), (max-width: 1840.909px) max(calc(22.8888vw - 23.409px), 249.696px), (max-width: 2215.909px) max(calc(18.31104vw - 24.9696px), 249.696px), max(calc(15.2592vw - 26.01px), 249.696px)">
                     <div class="item-overlay">
                         <div class="play-indicator"></div>
                     </div>
@@ -199,7 +219,7 @@
             <div class="video-section">
                 <div class="video-container-main" data-video="/videos/brand.mp4" data-title="A Seat at the Table" data-client="Johnnie Walker x Dankie Sounds">
                     <video id="brand-video" class="feed-video" muted loop preload="none" playsinline>
-                        <source src="/videos/brand-preview.mp4" type="video/mp4">
+                        <source src="/videos/Brand-Preview.mp4" type="video/mp4">
                     </video>
                     <div class="video-overlay">
                         <div class="play-indicator">▶</div>
@@ -227,8 +247,8 @@
             <div class="modal-client" id="modalClient"></div>
         </div>
         <div class="modal-video-wrap">
-            <video class="modal-video" id="modalVideo" controls>
-                <source src="" type="video/mp4">
+            <video class="modal-video" id="modalVideo" controls preload="none">
+                Your browser does not support the video tag.
             </video>
         </div>
         <div class="modal-footer">
