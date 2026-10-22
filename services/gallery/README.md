@@ -99,3 +99,17 @@ Run `node tests/services-titles.browser.mjs` with the Edge/Playwright environmen
 All four delayed-glyph cases failed before the CSS fix on the duplicate HTML title paint assertion. The first post-fix run exposed a harness assumption: the card's href is its readable fallback, while keyboard selection uses the parent's service mapping. The test now asserts arrival at the corresponding service URL rather than the fallback href; production navigation was not changed.
 
 Verification: all 16 new title/fallback cases pass in local Edge; the four title cases failed before the fix. Existing Services entrance, theme/reflection and visual-startup suites also pass (9 cases), including canvas-text/no-parallel-shader paths and visible home-film pixels. All 89 Node tests pass (77 root + 12 colocated player); all 11 static Photography pages build and match the generator. Syntax, recommended ESLint (zero warnings), strict production CSS and whitespace checks pass. Desktop dark/mobile light screenshots were inspected. Test browsers are closed; bounded logs and screenshots are in `~/.aki/tmp/ligero-titles`. Safari/physical phones are not checked. Local only, not committed, pushed or deployed.
+
+
+## First-visit preparation overlap — 22 October 2026
+
+The adapter now starts the renderer without waiting for the parent page transition. At the application mount boundary, `Promise.all` waits for both shader preparation and `window.parent.ligeroRouteReady` before releasing the entrance. Direct entry, where the parent has no route promise, still waits for shader readiness. This overlaps preparation with the page handoff without consuming the top-left flight while it is hidden. Shader programs, error checks, materials, media, titles, reflections and animation durations are unchanged.
+
+```sh
+node --test tests/services-cold-start.test.mjs
+node tests/services-cold-start.browser.mjs
+```
+
+The deterministic tests execute the actual adapter and mount callback: import must progress while arrival is held; either readiness signal can finish first; entrance is released exactly once after both; standalone startup remains supported. The Edge test holds the actual parent promise at desktop/mobile widths in both themes, verifies GPU preparation finishes without starting the flight, then releases arrival and checks the original flight and real coloured pixels. It also checks failed glyph requests retain canvas-text fallback. Use the same preview/Playwright environment described above.
+
+Before the fix, the import-overlap and shader-first unit cases failed and all four held-arrival browser cases timed out waiting for preparation. After the fix, all five browser cases pass. Broader regression results and first/repeat measurements are recorded with the repair evidence in `~/.aki/tmp/ligero-cold-start/repair`. This repair is local; it has not been pushed or deployed.

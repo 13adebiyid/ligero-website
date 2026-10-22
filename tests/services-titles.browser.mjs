@@ -57,6 +57,7 @@ async function animatedTitles(width, theme) {
       assert.equal(title.visibility, 'visible', `${title.text}: preserve renderer visibility`);
       assert.equal(title.filter, 'opacity(0)', `${title.text}: duplicate HTML must not flash before the animated title`);
     }
+    await page.evaluate(() => window.ligeroRouteReady);
     const before = PNG.sync.read(await page.screenshot());
     const hide = await frame.addStyleTag({content:`${titleSelector} { visibility: hidden !important; }`});
     const hidden = PNG.sync.read(await page.screenshot());
@@ -146,7 +147,7 @@ async function readableTitles(width, mode) {
 
 try {
   for (const width of [1440,390]) {
-    for (const theme of ['black','white']) await check(`titles ${width} ${theme}`, () => animatedTitles(width, theme));
+    if (process.argv[2] !== 'fallbacks') for (const theme of ['black','white']) await check(`titles ${width} ${theme}`, () => animatedTitles(width, theme));
     if (process.argv[2] !== 'titles') {
       for (const mode of ['readable','reduced-motion','no-webgl','no-javascript','data-failure','module-failure']) {
         await check(`fallback ${width} ${mode}`, () => readableTitles(width, mode));
