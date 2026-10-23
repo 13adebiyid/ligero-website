@@ -66,10 +66,11 @@ async function heldArrival(width,theme) {
     if(output)await page.screenshot({path:`${output}/arrival-${theme}-${width}.png`});
   } finally {await context.close();}
 }
-async function failedGlyphs() {
+async function failedGlyphs(mode='all') {
   const context=await browser.newContext({viewport:{width:1440,height:900}});
   try {
-    await context.route('**/services/gallery/glyphs/*',route=>route.abort());
+    if(mode==='no-stream')await context.addInitScript(()=>{window.DecompressionStream=undefined;});
+    else await context.route(mode==='gzip'?'**/services/gallery/glyphs/*.gz':'**/services/gallery/glyphs/*',route=>route.abort());
     const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
     await page.goto(base+'/services/gallery/',{waitUntil:'domcontentloaded'});
     await page.waitForFunction(()=>{
@@ -78,13 +79,56 @@ async function failedGlyphs() {
     });
     const fallback=await page.evaluate(()=>{
       const gallery=document.querySelector('#__nuxt').__vue_app__.config.globalProperties.$nuxt.$folio;
-      return gallery.core.shaderReady&&gallery.texts.every(text=>!text.outline&&text.texture?.image.width>0);
+      return {ready:gallery.core.shaderReady,canvas:gallery.texts.every(text=>!text.outline&&text.texture?.image.width>0),outline:gallery.texts.every(text=>text.outline)};
     });
-    assert.equal(fallback,true,'failed glyph assets retain the real canvas-text fallback');assert.deepEqual(errors,[]);
+    assert.equal(fallback.ready,true);assert.equal(mode==='all'?fallback.canvas:fallback.outline,true,'failed gzip or missing stream uses original glyphs; total failure retains canvas text');assert.deepEqual(errors,[]);
   } finally {await context.close();}
 }
+async function startupDependencies(path) {
+  const context=await browser.newContext({viewport:{width:1440,height:900}});
+  let releaseData,releaseGlyphs;
+  const dataHeld=new Promise(resolve=>{releaseData=resolve;}),glyphsHeld=new Promise(resolve=>{releaseGlyphs=resolve;});
+  try {
+    const requests=[],errors=[];
+    await context.addInitScript(()=>{
+      window.startupLinks=[];
+      const link=WebGL2RenderingContext.prototype.linkProgram;
+      WebGL2RenderingContext.prototype.linkProgram=function(program){window.startupLinks.push(performance.now());return link.call(this,program);};
+    });
+    await context.route('**/services/gallery/services.json',async route=>{await dataHeld;await route.continue().catch(()=>{});});
+    await context.route('**/services/gallery/glyphs/*',async route=>{await glyphsHeld;await route.continue().catch(()=>{});});
+    const page=await context.newPage();
+    page.on('request',request=>requests.push({url:request.url(),frame:request.frame().url()}));
+    page.on('pageerror',error=>errors.push(error.message));
+    await page.goto(base+path,{waitUntil:'domcontentloaded'});
+    const frame=path==='/services/'?await(await page.locator('#services-gallery').elementHandle()).contentFrame():page.mainFrame();
+    const resources=['_nuxt/DZyj3ghP.js','_nuxt/mriNB3Nt.js','_nuxt/CSMsEA09.js','_nuxt/D6Jn8M47.js','glyphs/sans-400.bin.gz','glyphs/sans-500.bin.gz'];
+    await frame.waitForFunction(()=>document.querySelector('script[src="/services/gallery/gallery.js"]'));
+    for(const file of resources)assert.ok(requests.some(request=>request.url.endsWith('/services/gallery/'+file)),`${file} must start while data is held`);
+    assert.equal(await frame.locator('#readable').isVisible(),false);
+    releaseData();
+    await frame.waitForFunction(()=>window.startupLinks.length>=10,null,{timeout:5000});
+    const pending=await frame.evaluate(()=>{
+      const gallery=document.querySelector('#__nuxt').__vue_app__.config.globalProperties.$nuxt.$folio;
+      return {shaderReady:gallery.core.shaderReady===true,cards:gallery.cards.length};
+    });
+    assert.equal(pending.shaderReady,false,'glyph readiness still gates first draw');
+    assert.equal(pending.cards,0,'early compilation must not consume the flight');
+    releaseGlyphs();
+    await frame.waitForFunction(()=>{
+      const gallery=document.querySelector('#__nuxt')?.__vue_app__?.config.globalProperties.$nuxt?.$folio;
+      return gallery?.cards.length===6&&gallery.cards.every(card=>card.landed);
+    });
+    assert.equal(requests.filter(request=>request.url.endsWith('/services/gallery/services.json')&&request.frame.includes('/services/gallery/')).length,1,'one Services response in gallery document');
+    assert.equal(requests.filter(request=>request.url.endsWith('/textures/manifest.json')).length,0,'no empty manifest on image path');
+    assert.equal(requests.filter(request=>/glyphs\/.*\.bin$/.test(request.url)).length,0,'successful compressed loads must not fetch raw tables');
+    assert.deepEqual(errors,[]);
+  } finally {releaseData();releaseGlyphs();await context.close();}
+}
+
 try {
-  for(const width of [1440,390])for(const theme of ['black','white'])await check(`held arrival ${width} ${theme}`,()=>heldArrival(width,theme));
-  if(process.argv[2]!=='held')await check('standalone failed glyphs',failedGlyphs);
+  if(process.argv[2]!=='dependencies')for(const width of [1440,390])for(const theme of ['black','white'])await check(`held arrival ${width} ${theme}`,()=>heldArrival(width,theme));
+  if(!process.argv[2]||process.argv[2]==='dependencies')for(const path of ['/services/','/services/gallery/'])await check(`startup dependencies ${path}`,()=>startupDependencies(path));
+  if(!process.argv[2])for(const mode of ['all','gzip','no-stream'])await check(`standalone glyph fallback ${mode}`,()=>failedGlyphs(mode));
 } finally {await browser.close();}
 assert.deepEqual(failures,[]);

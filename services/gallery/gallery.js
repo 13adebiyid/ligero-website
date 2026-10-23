@@ -15,6 +15,7 @@ async function startGallery() {
     const data = await response.json();
     if (!data?.featured?.length) return;
 
+    window.ligeroServices = data;
     await import('./_nuxt/DZyj3ghP.js');
     document.documentElement.classList.add('gallery-mode');
     readable.hidden = true;
